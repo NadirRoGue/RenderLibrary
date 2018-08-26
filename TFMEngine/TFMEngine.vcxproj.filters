@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Archivos de origen">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Archivos de encabezado">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Archivos de recursos">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Archivos de encabezado\pipeline">
+      <UniqueIdentifier>{b94a83d9-076c-4909-b382-070203341495}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\pipeline">
+      <UniqueIdentifier>{55ed5f9b-ad15-423b-8f06-7e8d3d4ee10e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\CPU">
+      <UniqueIdentifier>{dc9b6a79-8ff9-4bad-ae14-274ec38ad5db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\GPU">
+      <UniqueIdentifier>{0473fbf2-5ee8-4864-b86f-5bd3bb0a6a73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\CPU">
+      <UniqueIdentifier>{1b62e0f1-c59a-47d5-b7e5-da587fe84570}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\GPU">
+      <UniqueIdentifier>{6f5d92d8-2797-47ab-964f-55ae86b560b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\CPU\memory">
+      <UniqueIdentifier>{67f7d0e4-c7a9-4198-9192-dc053723aaf1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\CPU\memory">
+      <UniqueIdentifier>{56ae5d15-9ead-405c-9e70-49a8d27ee78c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\Component.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SceneObject.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ComponentList.hpp">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Transform.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Defines.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Scene.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="include\pipeline\Pipeline.h">
+      <Filter>Archivos de encabezado\pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="include\pipeline\PipelineStage.h">
+      <Filter>Archivos de encabezado\pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CPU\memory\MemoryPool.h">
+      <Filter>Archivos de encabezado\CPU\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CPU\memory\MemoryPoolManager.h">
+      <Filter>Archivos de encabezado\CPU\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CPU\memory\MemoryUtil.h">
+      <Filter>Archivos de encabezado\CPU\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CPU\memory\PoolAttribute.hpp">
+      <Filter>Archivos de encabezado\CPU\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Program.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="include\pipeline\PipelineBroker.h">
+      <Filter>Archivos de encabezado\pipeline</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Component.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SceneObject.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Main.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Transform.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Scene.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\pipeline\Pipeline.cpp">
+      <Filter>Archivos de origen\pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="src\pipeline\PipelineStage.cpp">
+      <Filter>Archivos de origen\pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CPU\memory\MemoryPool.cpp">
+      <Filter>Archivos de origen\CPU\memory</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CPU\memory\MemoryPoolManager.cpp">
+      <Filter>Archivos de origen\CPU\memory</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CPU\memory\MemoryUtil.cpp">
+      <Filter>Archivos de origen\CPU\memory</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Program.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\pipeline\PipelineBroker.cpp">
+      <Filter>Archivos de origen\pipeline</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

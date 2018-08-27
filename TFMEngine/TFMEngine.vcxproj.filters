@@ -81,6 +81,15 @@
     <ClInclude Include="include\pipeline\PipelineBroker.h">
       <Filter>Archivos de encabezado\pipeline</Filter>
     </ClInclude>
+    <ClInclude Include="include\EngineInstance.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="include\pipeline\PipelineManager.h">
+      <Filter>Archivos de encabezado\pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SceneManager.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Component.cpp">
@@ -118,6 +127,15 @@
     </ClCompile>
     <ClCompile Include="src\pipeline\PipelineBroker.cpp">
       <Filter>Archivos de origen\pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EngineInstance.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\pipeline\PipelineManager.cpp">
+      <Filter>Archivos de origen\pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SceneManager.cpp">
+      <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

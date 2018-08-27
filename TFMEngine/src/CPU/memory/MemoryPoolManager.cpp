@@ -36,12 +36,17 @@ namespace RenderLib
 					catch (std::bad_alloc & balloc)
 					{
 						// FIXME: Error code / message returned. Could not create pool because there is no memory left
+						const char * exception = balloc.what();
 						return NULL;
 					}
 
 					memoryPool[name] = std::move(pool);
 
 					return pool.get();
+				}
+				else
+				{
+					// Return existing pool or warn about duplicate pool name
 				}
 
 				return NULL;

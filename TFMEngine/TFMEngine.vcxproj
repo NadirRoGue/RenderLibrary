@@ -138,11 +138,14 @@
     <ClInclude Include="include\CPU\memory\MemoryUtil.h" />
     <ClInclude Include="include\CPU\memory\PoolAttribute.hpp" />
     <ClInclude Include="include\Defines.h" />
+    <ClInclude Include="include\EngineInstance.h" />
     <ClInclude Include="include\pipeline\Pipeline.h" />
     <ClInclude Include="include\pipeline\PipelineBroker.h" />
+    <ClInclude Include="include\pipeline\PipelineManager.h" />
     <ClInclude Include="include\pipeline\PipelineStage.h" />
     <ClInclude Include="include\Program.h" />
     <ClInclude Include="include\Scene.h" />
+    <ClInclude Include="include\SceneManager.h" />
     <ClInclude Include="include\SceneObject.h" />
     <ClInclude Include="include\Transform.h" />
   </ItemGroup>
@@ -151,12 +154,15 @@
     <ClCompile Include="src\CPU\memory\MemoryPool.cpp" />
     <ClCompile Include="src\CPU\memory\MemoryPoolManager.cpp" />
     <ClCompile Include="src\CPU\memory\MemoryUtil.cpp" />
+    <ClCompile Include="src\EngineInstance.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\pipeline\Pipeline.cpp" />
     <ClCompile Include="src\pipeline\PipelineBroker.cpp" />
+    <ClCompile Include="src\pipeline\PipelineManager.cpp" />
     <ClCompile Include="src\pipeline\PipelineStage.cpp" />
     <ClCompile Include="src\Program.cpp" />
     <ClCompile Include="src\Scene.cpp" />
+    <ClCompile Include="src\SceneManager.cpp" />
     <ClCompile Include="src\SceneObject.cpp" />
     <ClCompile Include="src\Transform.cpp" />
   </ItemGroup>

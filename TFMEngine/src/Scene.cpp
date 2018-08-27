@@ -7,9 +7,20 @@ namespace RenderLib
 
 	}
 
+	Scene::Scene(std::string sceneName)
+		:name(sceneName)
+	{
+
+	}
+
 	Scene::~Scene()
 	{
 
+	}
+
+	const std::string & Scene::getSceneName()
+	{
+		return name;
 	}
 
 	void Scene::addObject(SceneObject * object)

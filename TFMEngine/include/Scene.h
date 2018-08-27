@@ -13,11 +13,15 @@ namespace RenderLib
 	class Scene
 	{
 	private:
+		std::string name;
 		std::vector<SceneObject *> sceneObjects;
 
 	public:
 		Scene();
+		Scene(std::string name);
 		~Scene();
+
+		const std::string & getSceneName();
 
 		void addObject(SceneObject * object);
 

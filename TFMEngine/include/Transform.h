@@ -22,6 +22,8 @@ namespace RenderLib
 
 		SceneObject * object;
 
+		TRANSFORM transform;
+
 	public:
 		Transform();
 		~Transform();
@@ -34,6 +36,8 @@ namespace RenderLib
 
 		void rotate(VECTOR3 axis, FLOAT angleRadians);
 		void setRotation(QUATERNION rotation);
+
+		void update();
 	};
 }
 

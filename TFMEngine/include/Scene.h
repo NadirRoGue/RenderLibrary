@@ -26,6 +26,8 @@ namespace RenderLib
 		void addObject(SceneObject * object);
 
 		const std::vector<SceneObject *> & getSceneObjects();
+
+		void destroyScene();
 	};
 }
 

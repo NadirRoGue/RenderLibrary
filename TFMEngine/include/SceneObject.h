@@ -1,12 +1,15 @@
 #ifndef __CPU_SCENEOBJECT__
 #define __CPU_SCENEOBJECT__
 
+#include <list>
+
 #include "ComponentList.hpp"
 #include "Transform.h"
 
 namespace RenderLib
 {
 	class Component;
+	class EngineInstance;
 
 	class SceneObject
 	{
@@ -18,14 +21,22 @@ namespace RenderLib
 	private:
 		// List with all the components attached to this object
 		ComponentList componentList;
+
+		// Parent object
+		SceneObject * parent;
+
 	public:
-		SceneObject();
+		SceneObject(SceneObject * parent = NULL);
 		~SceneObject();
 
+		void setParent(SceneObject * object);
+
+		void setEngine(EngineInstance * instance);
+
 		template<class T>
-		void addComponent()
+		T * addComponent()
 		{
-			componentList.addComponent<T>();
+			return componentList.addComponent<T>();
 		}
 
 		template<class T>
@@ -40,7 +51,7 @@ namespace RenderLib
 			return componentList.getComponent<T>();
 		}
 
-		std::vector<Component*> getAllComponents()
+		const std::list<std::unique_ptr<Component>> & getAllComponents()
 		{
 			return componentList.getAllComponents();
 		}

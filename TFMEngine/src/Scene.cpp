@@ -32,4 +32,12 @@ namespace RenderLib
 	{
 		return sceneObjects;
 	}
+
+	void Scene::destroyScene()
+	{
+		for (auto so : sceneObjects)
+		{
+			delete so;
+		}
+	}
 }

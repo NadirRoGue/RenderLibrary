@@ -10,12 +10,6 @@ namespace RenderLib
 {
 	class SceneManager
 	{
-	public:
-		static unsigned int CREATE_CODE_SUCCESS;
-		static unsigned int CREATE_CODE_DUPLICATE_NAME;
-
-		static unsigned int ACTIVATE_CODE_SUCCESS;
-		static unsigned int ACTIVATE_CODE_SCENE_NOT_FOUND;
 	private:
 		std::map<std::string, std::unique_ptr<Scene>> sceneCache;
 
@@ -25,10 +19,13 @@ namespace RenderLib
 		SceneManager();
 		~SceneManager();
 
-		Scene * createScene(const std::string & sceneName, unsigned int & result);
+		Scene * createScene(const std::string & sceneName);
+
+		void deleteScene(const std::string & sceneName);
+
 		Scene * getScene(const std::string & sceneName);
 		Scene * getActiveScene();
-		void setActiveScene(std::string sceneName, unsigned int & result);
+		void setActiveScene(std::string sceneName);
 	};
 }
 

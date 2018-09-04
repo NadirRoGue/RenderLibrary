@@ -27,6 +27,11 @@ namespace RenderLib
 				memcpy(allocatedMemory, other.allocatedMemory, sizeBytes);
 			}
 
+			MemoryBlock * MemoryPool::requestMemoryBlock(size_t sizeBytes, bool checkForGaps)
+			{
+				return append(NULL, sizeBytes, checkForGaps);
+			}
+
 			MemoryBlock * MemoryPool::append(void * data, size_t sizeBytes, bool checkForGaps)
 			{
 				bool added = false;
@@ -43,7 +48,10 @@ namespace RenderLib
 							if (start < mbPtr->offset && mbPtr->length >= sizeBytes)
 							{
 								mbPtr->sizeUsedBlock = sizeBytes;
-								copyToPool(data, sizeBytes, mbPtr);
+								if (data)
+								{
+									copyToPool(data, sizeBytes, mbPtr);
+								}
 								result = mbPtr;
 								added = true;
 								break;
@@ -65,7 +73,10 @@ namespace RenderLib
 						newBlock.get()->index = memoryBlockList.size();
 						result = newBlock.get();
 						memoryBlockList.push_back(std::move(newBlock));
-						copyToPool(data, sizeBytes, result);
+						if (data)
+						{
+							copyToPool(data, sizeBytes, result);
+						}
 					}
 				}
 

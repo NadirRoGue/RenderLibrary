@@ -1,5 +1,7 @@
 #include "SceneManager.h"
 
+#include <iostream>
+
 namespace RenderLib
 {
 	SceneManager::SceneManager()
@@ -12,26 +14,35 @@ namespace RenderLib
 
 	}
 
-	Scene * SceneManager::createScene(const std::string & sceneName, unsigned int & result)
+	Scene * SceneManager::createScene(const std::string & sceneName)
 	{
 		std::map<std::string, std::unique_ptr<Scene>>::iterator it = sceneCache.find(sceneName);
 
-		result = CREATE_CODE_SUCCESS;
 		Scene * scene = NULL;
 
 		if (it != sceneCache.end())
 		{
-			result |= CREATE_CODE_DUPLICATE_NAME;
+			return NULL; // FIXME: Throw exception
 		}
 
-		if(result == CREATE_CODE_SUCCESS)
-		{
-			std::unique_ptr<Scene> newScene = std::make_unique<Scene>(sceneName);
-			sceneCache[sceneName] = std::move(newScene);
-			scene = newScene.get();
-		}
-
+		std::unique_ptr<Scene> newScene = std::make_unique<Scene>(sceneName);
+		scene = newScene.get();
+		sceneCache[sceneName] = std::move(newScene);
+		//scene = sceneCache[sceneName].get();
+		
 		return scene;
+	}
+
+	void SceneManager::deleteScene(const std::string & sceneName)
+	{
+		std::map<std::string, std::unique_ptr<Scene>>::iterator it = sceneCache.find(sceneName);
+		if (it != sceneCache.end())
+		{
+			it->second.get()->destroyScene();
+			it->second.reset();
+
+			sceneCache.erase(it);
+		}
 	}
 
 	Scene * SceneManager::getScene(const std::string & sceneName)
@@ -50,17 +61,10 @@ namespace RenderLib
 		return activeScene;
 	}
 
-	void SceneManager::setActiveScene(std::string sceneName, unsigned int & result)
+	void SceneManager::setActiveScene(std::string sceneName)
 	{
-		result = ACTIVATE_CODE_SUCCESS;
-
 		std::map<std::string, std::unique_ptr<Scene>>::iterator it = sceneCache.find(sceneName);
-		if (it == sceneCache.end())
-		{
-			result |= ACTIVATE_CODE_SCENE_NOT_FOUND;
-		}
-		
-		if (result == ACTIVATE_CODE_SUCCESS)
+		if (it != sceneCache.end())
 		{
 			activeScene = it->second.get();
 		}

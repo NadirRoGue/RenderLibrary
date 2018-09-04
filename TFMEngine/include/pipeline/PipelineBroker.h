@@ -21,9 +21,9 @@ namespace RenderLib
 		PipelineBroker();
 		~PipelineBroker();
 
-		template<class T>
-		T * registerPipelineStage()
-		{
+		//template<class T>
+		void registerPipelineStage(PipelineStage * stage);
+		/*{
 			T * newStage = new T();
 			AbstractElementBasedStage * aebs = dynamic_cast<AbstractElementBasedStage*>(newStage);
 
@@ -37,7 +37,7 @@ namespace RenderLib
 			}
 
 			return newStage;
-		}
+		}*/
 
 		void registerElement(Component * component);
 

@@ -12,6 +12,16 @@ namespace RenderLib
 
 	}
 
+	void PipelineBroker::registerPipelineStage(PipelineStage * stage)
+	{
+		AbstractElementBasedStage * aebs = dynamic_cast<AbstractElementBasedStage*>(stage);
+
+		if (aebs != NULL)
+		{
+			elementStages[aebs->getAssociatedElementType()].push_back(aebs);
+		}
+	}
+
 	void PipelineBroker::registerElement(Component * component)
 	{
 		std::type_index type = component->getComponentType();

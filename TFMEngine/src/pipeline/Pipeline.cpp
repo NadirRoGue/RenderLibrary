@@ -1,5 +1,7 @@
 #include "pipeline/Pipeline.h"
 
+#include <iostream>
+
 namespace RenderLib
 {
 	Pipeline::Pipeline()
@@ -10,11 +12,12 @@ namespace RenderLib
 	{
 	}
 
-	void Pipeline::executePipeline()
+	void Pipeline::execute()
 	{
-		for(size_t i = 0; i < stages.size(); i++)
+		std::cout << "Pipeline.cpp: About to exectue " << stages.size() << " stage(s)" << std::endl;
+		for (auto & st : stages)
 		{
-			stages[i].get()->runStage();
+			st.get()->runStage();
 		}
 	}
 }

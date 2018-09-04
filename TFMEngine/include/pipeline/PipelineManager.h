@@ -24,7 +24,14 @@ namespace RenderLib
 		template<class T> 
 		T * addPipelineStage()
 		{
-			return pipeline.registerStage<T>();
+			T * result = pipeline.registerStage<T>();
+			PipelineStage * stage = dynamic_cast<PipelineStage*>(result);
+			if (result && stage)
+			{
+				stageBroker.registerPipelineStage(result);
+			}
+
+			return result;
 		}
 
 		template<class T>
@@ -34,6 +41,7 @@ namespace RenderLib
 		}
 
 		void registerComponent(Component * component);
+		void removeComponent(Component * component);
 
 		void executePipeline();
 	};

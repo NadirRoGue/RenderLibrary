@@ -1,5 +1,7 @@
 #include "pipeline/PipelineManager.h"
 
+#include <iostream>
+
 namespace RenderLib
 {
 	PipelineManager::PipelineManager()
@@ -27,8 +29,13 @@ namespace RenderLib
 		stageBroker.registerElement(component);
 	}
 
+	void PipelineManager::removeComponent(Component * component)
+	{
+
+	}
+
 	void PipelineManager::executePipeline()
 	{
-		pipeline.executePipeline();
+		pipeline.execute();
 	}
 }

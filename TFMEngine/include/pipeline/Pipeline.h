@@ -1,6 +1,8 @@
 #ifndef __CPU_PIPELINE_H__
 #define __CPU_PIPELINE_H__
 
+#include <iostream>
+
 #include <vector>
 #include <memory>
 
@@ -20,9 +22,16 @@ namespace RenderLib
 		T * registerStage()
 		{
 			std::unique_ptr<T> newStage = std::make_unique<T>();
+			
+			if (dynamic_cast<PipelineStage*>(newStage.get()) == NULL)
+			{
+				return NULL; // FIXME: Throw exception
+			}
+			
+			T * result = newStage.get();
 			stages.push_back(std::move(newStage));
 
-			return newStage.get();
+			return result;
 		}
 
 		template<class T>
@@ -57,7 +66,7 @@ namespace RenderLib
 			}
 		}
 
-		void executePipeline();
+		void execute();
 	};
 }
 

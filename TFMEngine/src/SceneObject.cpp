@@ -2,7 +2,8 @@
 
 namespace RenderLib
 {
-	SceneObject::SceneObject()
+	SceneObject::SceneObject(SceneObject * parent)
+		:parent(parent)
 	{
 		transform.object = this;
 	}
@@ -10,5 +11,15 @@ namespace RenderLib
 	SceneObject::~SceneObject()
 	{
 
+	}
+
+	void SceneObject::setEngine(EngineInstance * instance)
+	{
+		componentList.setEngineInstance(instance);
+	}
+
+	void SceneObject::setParent(SceneObject * object)
+	{
+		parent = object;
 	}
 }

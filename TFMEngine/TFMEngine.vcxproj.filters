@@ -37,6 +37,24 @@
     <Filter Include="Archivos de origen\CPU\memory">
       <UniqueIdentifier>{56ae5d15-9ead-405c-9e70-49a8d27ee78c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Archivos de encabezado\tests">
+      <UniqueIdentifier>{49fca1cb-09e8-4fe2-91f2-76176276c316}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\tests">
+      <UniqueIdentifier>{0290d527-2cab-49ef-b6af-616bed3df723}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\CPU\mesh">
+      <UniqueIdentifier>{c812926f-c358-441a-9beb-624f93a22629}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\CPU\mesh\meshloaders">
+      <UniqueIdentifier>{f959e8d1-89ac-4d09-b37a-8951c1661e44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\CPU\mesh">
+      <UniqueIdentifier>{22a45604-f676-4de8-904a-8b844ed5e965}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\CPU\mesh\meshloaders">
+      <UniqueIdentifier>{7f9f8e0f-30ef-4b58-a325-7989248673ba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Component.h">
@@ -90,6 +108,24 @@
     <ClInclude Include="include\SceneManager.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="include\tests\TestClasses.h">
+      <Filter>Archivos de encabezado\tests</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CPU\mesh\AbstractMeshLoader.h">
+      <Filter>Archivos de encabezado\CPU\mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CPU\mesh\Mesh.h">
+      <Filter>Archivos de encabezado\CPU\mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CPU\mesh\MeshManager.h">
+      <Filter>Archivos de encabezado\CPU\mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CPU\mesh\meshloaders\AssimpMeshLoader.h">
+      <Filter>Archivos de encabezado\CPU\mesh\meshloaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CPU\mesh\MeshUtil.h">
+      <Filter>Archivos de encabezado\CPU\mesh</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Component.cpp">
@@ -136,6 +172,24 @@
     </ClCompile>
     <ClCompile Include="src\SceneManager.cpp">
       <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tests\TestClasses.cpp">
+      <Filter>Archivos de origen\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CPU\mesh\Mesh.cpp">
+      <Filter>Archivos de origen\CPU\mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CPU\mesh\MeshManager.cpp">
+      <Filter>Archivos de origen\CPU\mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CPU\mesh\meshloaders\AssimpMeshLoader.cpp">
+      <Filter>Archivos de origen\CPU\mesh\meshloaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CPU\mesh\MeshUtil.cpp">
+      <Filter>Archivos de origen\CPU\mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CPU\mesh\AbstractMeshLoader.cpp">
+      <Filter>Archivos de origen\CPU\mesh</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

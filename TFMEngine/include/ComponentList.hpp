@@ -1,17 +1,21 @@
-#ifndef __CPU_COMPONENTLIST__
-#define __CPU_COMPONENTLIST__
+#ifndef __RENDERLIB_COMPONENTLIST__
+#define __RENDERLIB_COMPONENTLIST__
 
 #include "Component.h"
 
-#include <vector>
 #include <list>
+#include <memory>
+
+#include "EngineInstance.h"
 
 namespace RenderLib
 {
 	class ComponentList
 	{
 	private:
-		std::vector<Component*> componentList;
+		std::list<std::unique_ptr<Component>> componentList;
+
+		EngineInstance * engine;
 	public:
 		ComponentList()
 		{
@@ -26,19 +30,32 @@ namespace RenderLib
 			}
 		}
 
+		void setEngineInstance(EngineInstance * instance)
+		{
+			engine = instance;
+		}
+
 		template<class T>
 		T * addComponent()
 		{
-			T * comp = new T();
-			Component * component = dynamic_cast<Component*>(comp);
+			std::unique_ptr<T> comp = std::make_unique<T>();
+			Component * component = dynamic_cast<Component*>(comp.get());
 
 			if (component != NULL)
 			{
 				component->initialize();
-				componentList.push_back(component);
+				T * result = comp.get();
+				componentList.push_back(std::move(comp));
 
-				return comp;
+				if (engine)
+				{
+					engine->getPipelineManager().registerComponent(component);
+				}
+
+				return result;
 			}
+			
+			comp.reset();
 
 			return NULL;
 		}
@@ -46,25 +63,31 @@ namespace RenderLib
 		template<class T>
 		void removeComponent()
 		{
-			for (auto & c : componentList)
+			std::list<std::unique_ptr<Component>>::iterator it = componentList.begin();
+			while (it != componentList.end())
 			{
-				if (dynamic_cast<T*>(c) != NULL)
+				if (dynamic_cast<T*>((*it).get()) != NULL)
 				{
-					destroyComponent(c);
+					destroyComponent(*it);
+					componentList.erase(it);
 					break;
 				}
+				it++;
 			}
 		}
 
 		template<class T>
 		void removeAllComponents()
 		{
-			for (auto & c : componentList)
+			std::list<std::unique_ptr<Component>>::iterator it = componentList.begin();
+			while (it != componentList.end())
 			{
-				if (dynamic_cast<T*>(c) != NULL)
+				if (dynamic_cast<T*>((*it).get()) != NULL)
 				{
-					destroyComponent(c);
+					destroyComponent(*it);
+					componentList.erase(it);
 				}
+				it++;
 			}
 		}
 
@@ -74,7 +97,7 @@ namespace RenderLib
 			T * ptr = NULL;
 			for (auto & c : componentList)
 			{
-				if ((ptr = dynamic_cast<T*>(c)) != NULL)
+				if ((ptr = dynamic_cast<T*>(c.get())) != NULL)
 				{
 					return ptr;
 				}
@@ -82,51 +105,36 @@ namespace RenderLib
 
 			return NULL;
 		}
-		/*
+		
 		template<class T>
-		T * getComponent()
-		{
-			for (auto & c : componentList)
-			{
-				T * ptr = dynamic_cast<T*>(c);
-				if (ptr != NULL)
-				{
-					return ptr;
-				}
-			}
-
-			return NULL;
-		}
-		*/
-		template<class T>
-		std::vector<T*> getComponentsOfType()
+		std::list<T*> getComponentsOfType()
 		{
 			std::list<T*> bufer;
 
 			for (auto & c : componentList)
 			{
-				T * ptr = dynamic_cast<T*>(c);
+				T * ptr = dynamic_cast<T*>(c.get());
 				if (ptr != NULL)
 				{
 					bufer.push_back(ptr);
 				}
 			}
 
-			std::vector<T*> result = { std::make_move_iterator(std::begin(bufer)), std::make_move_iterator(std::end(bufer)) };
+			//std::vector<T*> result = { std::make_move_iterator(std::begin(bufer)), std::make_move_iterator(std::end(bufer)) };
 
-			return result;
+			return bufer;
 		}
 
-		const std::vector<Component*> getAllComponents()
+		const std::list<std::unique_ptr<Component>> & getAllComponents()
 		{
 			return componentList;
 		}
 
 	private:
-		void destroyComponent(Component * component)
+		void destroyComponent(std::unique_ptr<Component> & component)
 		{
-			component->destroy();
-			delete component;
+			component.get()->destroy();
+			component.reset();
 		}
 	};
 }

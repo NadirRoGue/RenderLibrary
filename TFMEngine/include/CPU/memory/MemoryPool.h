@@ -28,6 +28,12 @@ namespace RenderLib
 				{
 				}
 
+				bool operator==(const struct MemoryBlock & other)
+				{
+					return pool == other.pool
+						&& index == other.index;
+				}
+
 			} MemoryBlock;
 
 			class MemoryPool
@@ -44,6 +50,7 @@ namespace RenderLib
 				MemoryPool(size_t size);
 				MemoryPool(const MemoryPool & other);
 
+				MemoryBlock * requestMemoryBlock(size_t sizeBytes, bool checkForGaps = false);
 				MemoryBlock * append(void * data, size_t sizeBytes, bool checkForGaps = false);
 				void retrieve(void * dst, MemoryBlock * block, size_t offset, size_t length) const;
 				void compact();

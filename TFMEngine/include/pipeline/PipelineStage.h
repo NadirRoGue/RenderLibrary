@@ -2,6 +2,7 @@
 #define __CPU_PIPELINE_STAGE_H__
 
 #include <vector>
+#include <iostream>
 
 #include <typeindex>
 #include <typeinfo>
@@ -49,17 +50,35 @@ namespace RenderLib
 			return typeid(T);
 		}
 
-		void registerElement(T * element)
-		{
-			elements.push_back(element);
-		}
-
 		void runStage()
 		{
+			std::cout << "Element stage with " << elements.size() << " element(s)" << std::endl;
+			std::vector<Component*>::iterator it = elements.begin();
+			while (it != elements.end())
+			{
+				if ((*it) != NULL)
+				{
+					if ((*it)->enabled)
+					{
+						processElement(static_cast<T*>(*it));
+					}
+				}
+				else // Invalid/null or scheduled to delete component. Remove it
+				{
+					elements.erase(it);
+				}
+
+				it++;
+			}
+			/*
 			for (auto e : elements)
 			{
-				processElement(static_cast<T*>(e));
+				if (e != NULL)
+				{
+					processElement(static_cast<T*>(e));
+				}
 			}
+			*/
 		}
 
 		virtual void processElement(T * element) = 0;

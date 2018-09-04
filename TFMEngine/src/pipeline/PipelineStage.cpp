@@ -24,6 +24,9 @@ namespace RenderLib
 
 	void AbstractElementBasedStage::registerElement(Component * comp)
 	{
-		elements.push_back(comp);
+		if (comp != NULL)
+		{
+			elements.push_back(comp);
+		}
 	}
 }

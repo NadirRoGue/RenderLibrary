@@ -13,6 +13,10 @@ namespace RenderLib
 	protected:
 		SceneObject * object;
 	public:
+		bool enabled;
+	public:
+		Component();
+		~Component();
 		virtual void initialize();
 		virtual void update();
 		virtual void fixedUpdate();

@@ -4,6 +4,8 @@
 #include "Defines.h"
 #include "CPU/memory/MemoryPool.h"
 
+#include <stdexcept>
+
 #include <Eigen/Eigen>
 
 namespace RenderLib
@@ -21,13 +23,21 @@ namespace RenderLib
 				size_t offset;
 				size_t stride;
 
-				T value;
-
 			public:
-				PoolAttribute(MemoryBlock * src, size_t offset = 0, size_t stride = 0)
+				PoolAttribute()
+					: srcBlock(NULL)
+					, elementCount(0)
+					, offset(0)
+					, stride(0)
+				{
+
+				}
+
+				PoolAttribute(MemoryBlock * src, size_t offset = 0, size_t stride = 0, size_t elementCount = 1)
 					: srcBlock(src)
 					, offset(offset)
 					, stride(stride)
+					, elementCount(elementCount)
 				{
 				}
 
@@ -35,38 +45,38 @@ namespace RenderLib
 					: srcBlock(other.srcBlock)
 					, offset(other.offset)
 					, stride(other.stride)
+					, elementCount(other.elementCount)
 				{
 				}
 
-				T at(size_t index)
+				void setAttributeSource(MemoryBlock * src, size_t offset = 0, size_t stride = 0, size_t elementCount = 1)
+				{
+					srcBlock = src;
+					this->offset = offset;
+					this->stride = stride;
+					this->elementCount = elementCount;
+				}
+
+				size_t size()
+				{
+					return elementCount;
+				}
+
+				const T & at(size_t index)
 				{
 					size_t start, end;
 					getBytePosition(index, start, end);
 
-					if (start >= srcBlock->offset && end <= srcBlock->offset + srcBlock->length)
-					{
-						const char * byteData = srcBlock->pool->getDataAsBytes();
-						return *((T*)(byteData + start));
-					}
-
-					// FIXME: throw exception if out of bounds
-					return T();
+					return *((T*)(byteData + start));
 				}
 
-				bool set(size_t index, T value)
+				void set(size_t index, T * value)
 				{
 					size_t start, end;
 					getBytePosition(index, start, end);
 
-					if (start >= srcBlock->offset && end <= srcBlock->offset + srcBlock->length)
-					{
-						const char * byteData = srcBlock->pool->getDataAsBytes();
-						*((T*)(byteData + start)) = value;
-						return true;
-					}
-
-					// FIXME: throw exception if out of bounds
-					return false;
+					const char * byteData = srcBlock->pool->getDataAsBytes();
+					*((T*)(byteData + start)) = *value;
 				}
 
 				T & operator[](size_t index)
@@ -84,10 +94,11 @@ namespace RenderLib
 					return *this;
 				}
 
-				bool operator==(const PoolAttribute & other)
+				/*bool operator==(const PoolAttribute & other)
 				{
-					return getValue() == other.getValue();
-				}
+					return srcBlock == other.srcBlock
+						&& getValue() == other.getValue();
+				}*/
 
 				T getValue()
 				{
@@ -95,11 +106,16 @@ namespace RenderLib
 				}
 
 			private:
-				inline void getBytePosition(size_t index, size_t & start, size_t & end)
+				inline void getBytePosition(const size_t & index, size_t & start, size_t & end)
 				{
 					const size_t typeSize = sizeof(T) * numElements;
 					start = offset + (typeSize + stride) * index;
 					end = start + typeSize;
+
+					if (start < srcBlock->offset || end > srcBlock->offset + srcBlock->length)
+					{
+						throw std::bad_exception("PoolAttribute: index out of bounds: " + std::to_string(index));
+					}
 				}
 			};
 

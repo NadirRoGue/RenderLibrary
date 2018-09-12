@@ -81,7 +81,7 @@
     <Link>
       <AdditionalLibraryDirectories>lib/x86/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>assimp-vc140-mt.lib;FreeImage.lib;opengl32.lib;freeglut.lib;glew32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -95,7 +95,7 @@
     <Link>
       <AdditionalLibraryDirectories>lib/x64/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>assimp-vc140-mt.lib;FreeImage.lib;opengl32.lib;freeglut.lib;glew32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -113,7 +113,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>lib/x86/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>assimp-vc140-mt.lib;FreeImage.lib;opengl32.lib;freeglut.lib;glew32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -131,23 +131,47 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>lib/x64/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>assimp-vc140-mt.lib;FreeImage.lib;opengl32.lib;freeglut.lib;glew32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\Component.h" />
     <ClInclude Include="include\ComponentList.hpp" />
+    <ClInclude Include="include\components\MeshFilter.h" />
+    <ClInclude Include="include\components\MeshRenderer.h" />
+    <ClInclude Include="include\CPU\io\defaultloaders\AssimpFileLoader.h" />
+    <ClInclude Include="include\CPU\io\FileLoader.h" />
+    <ClInclude Include="include\CPU\io\FileLoadResult.h" />
+    <ClInclude Include="include\CPU\io\FileManager.h" />
     <ClInclude Include="include\CPU\memory\MemoryPool.h" />
-    <ClInclude Include="include\CPU\memory\MemoryPoolManager.h" />
+    <ClInclude Include="include\CPU\memory\MemoryManager.h" />
     <ClInclude Include="include\CPU\memory\MemoryUtil.h" />
+    <ClInclude Include="include\CPU\memory\PoolObjectBuilder.h" />
     <ClInclude Include="include\CPU\memory\PoolAttribute.hpp" />
-    <ClInclude Include="include\CPU\mesh\AbstractMeshLoader.h" />
+    <ClInclude Include="include\CPU\memory\SortablePoolElement.h" />
     <ClInclude Include="include\CPU\mesh\Mesh.h" />
-    <ClInclude Include="include\CPU\mesh\meshloaders\AssimpMeshLoader.h" />
+    <ClInclude Include="include\CPU\mesh\meshattributebuilders\CompactMeshBuilder.h" />
+    <ClInclude Include="include\CPU\mesh\meshattributebuilders\InterleavedMeshBuilder.h" />
+    <ClInclude Include="include\CPU\mesh\MeshBlockConfiguration.h" />
+    <ClInclude Include="include\CPU\mesh\MeshLoadResult.h" />
     <ClInclude Include="include\CPU\mesh\MeshManager.h" />
     <ClInclude Include="include\CPU\mesh\MeshUtil.h" />
     <ClInclude Include="include\Defines.h" />
+    <ClInclude Include="include\EngineException.h" />
     <ClInclude Include="include\EngineInstance.h" />
+    <ClInclude Include="include\GPU\mesh\GPUMesh.h" />
+    <ClInclude Include="include\GPU\mesh\GPUMeshManager.h" />
+    <ClInclude Include="include\graphics\ContextManager.h" />
+    <ClInclude Include="include\graphics\Window.h" />
+    <ClInclude Include="include\inputhandlers\InputManager.h" />
+    <ClInclude Include="include\inputhandlers\KeyboardInputHandler.h" />
+    <ClInclude Include="include\inputhandlers\MouseInputHandler.h" />
+    <ClInclude Include="include\inputhandlers\MouseMotionHandler.h" />
+    <ClInclude Include="include\logger\AbstractLogger.h" />
+    <ClInclude Include="include\logger\BufferedFileLogger.h" />
+    <ClInclude Include="include\logger\ConsoleLogger.h" />
+    <ClInclude Include="include\logger\FileLogger.h" />
+    <ClInclude Include="include\logger\Log.h" />
     <ClInclude Include="include\pipeline\Pipeline.h" />
     <ClInclude Include="include\pipeline\PipelineBroker.h" />
     <ClInclude Include="include\pipeline\PipelineManager.h" />
@@ -158,18 +182,37 @@
     <ClInclude Include="include\SceneObject.h" />
     <ClInclude Include="include\tests\TestClasses.h" />
     <ClInclude Include="include\Transform.h" />
+    <ClInclude Include="include\util\StringUtils.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Component.cpp" />
+    <ClCompile Include="src\components\MeshFilter.cpp" />
+    <ClCompile Include="src\components\MeshRenderer.cpp" />
+    <ClCompile Include="src\CPU\io\defaultloaders\AssimpFileLoader.cpp" />
+    <ClCompile Include="src\CPU\io\FileLoader.cpp" />
+    <ClCompile Include="src\CPU\io\FileManager.cpp" />
     <ClCompile Include="src\CPU\memory\MemoryPool.cpp" />
-    <ClCompile Include="src\CPU\memory\MemoryPoolManager.cpp" />
+    <ClCompile Include="src\CPU\memory\MemoryManager.cpp" />
     <ClCompile Include="src\CPU\memory\MemoryUtil.cpp" />
-    <ClCompile Include="src\CPU\mesh\AbstractMeshLoader.cpp" />
     <ClCompile Include="src\CPU\mesh\Mesh.cpp" />
-    <ClCompile Include="src\CPU\mesh\meshloaders\AssimpMeshLoader.cpp" />
+    <ClCompile Include="src\CPU\mesh\meshattributebuilder\CompactMeshBuilder.cpp" />
+    <ClCompile Include="src\CPU\mesh\meshattributebuilder\InterleavedMeshBuilder.cpp" />
+    <ClCompile Include="src\CPU\mesh\MeshBlockConfiguration.cpp" />
+    <ClCompile Include="src\CPU\mesh\MeshLoadResult.cpp" />
     <ClCompile Include="src\CPU\mesh\MeshManager.cpp" />
     <ClCompile Include="src\CPU\mesh\MeshUtil.cpp" />
+    <ClCompile Include="src\EngineException.cpp" />
     <ClCompile Include="src\EngineInstance.cpp" />
+    <ClCompile Include="src\GPU\mesh\GPUMesh.cpp" />
+    <ClCompile Include="src\GPU\mesh\GPUMeshManager.cpp" />
+    <ClCompile Include="src\graphics\ContextManager.cpp" />
+    <ClCompile Include="src\graphics\Window.cpp" />
+    <ClCompile Include="src\inputhandlers\InputManager.cpp" />
+    <ClCompile Include="src\logger\AbstractLogger.cpp" />
+    <ClCompile Include="src\logger\BufferedFileLogger.cpp" />
+    <ClCompile Include="src\logger\ConsoleLogger.cpp" />
+    <ClCompile Include="src\logger\FileLogger.cpp" />
+    <ClCompile Include="src\logger\Log.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\pipeline\Pipeline.cpp" />
     <ClCompile Include="src\pipeline\PipelineBroker.cpp" />
@@ -181,6 +224,7 @@
     <ClCompile Include="src\SceneObject.cpp" />
     <ClCompile Include="src\tests\TestClasses.cpp" />
     <ClCompile Include="src\Transform.cpp" />
+    <ClCompile Include="src\util\StringUtils.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

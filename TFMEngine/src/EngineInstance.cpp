@@ -1,17 +1,14 @@
 #include "EngineInstance.h"
 
-#include <iostream>
-
 #include "pipeline/PipelineManager.h"
-
-#include "SceneObject.h"
 #include "SceneManager.h"
 
 namespace RenderLib
 {
-	EngineInstance::EngineInstance()
+	EngineInstance::EngineInstance(const std::string & instanceName)
+		:instanceName(instanceName)
 	{
-		pipelineManager = std::make_unique<PipelineManager>();
+		pipelineManager = std::make_unique<Pipeline::PipelineManager>();
 		sceneManager = std::make_unique<SceneManager>();
 	}
 
@@ -21,29 +18,12 @@ namespace RenderLib
 		sceneManager.reset();
 	}
 
-	SceneObject * EngineInstance::createObject(SceneObject * parent, bool addToActiveScene)
+	const std::string & EngineInstance::getInstanceName()
 	{
-		SceneObject * newObject = new SceneObject(parent);
-		newObject->setEngine(this);
-
-		if (addToActiveScene)
-		{
-			Scene * active = sceneManager.get()->getActiveScene();
-			if (active != NULL)
-			{
-				active->addObject(newObject);
-			}
-		}
-
-		return newObject;
+		return instanceName;
 	}
 
-	Scene * EngineInstance::createScene(std::string sceneName)
-	{
-		return sceneManager.get()->createScene(sceneName);
-	}
-
-	PipelineManager & EngineInstance::getPipelineManager()
+	Pipeline::PipelineManager & EngineInstance::getPipelineManager()
 	{
 		return *(pipelineManager.get());
 	}

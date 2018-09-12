@@ -11,39 +11,32 @@ namespace RenderLib
 {
 	namespace CPU
 	{
-		enum MeshMemoryLayout
+		namespace Mesh
 		{
-			MEMORY_LAYOUT_COMPACT,
-			MEMORY_LAYOUT_INTERLEAVED
-		};
+			class Mesh
+			{
+			public:
+				Memory::IVector3Attribute faces;
 
-		class Mesh
-		{
-		private:
-			MeshMemoryLayout memLayout;
-		public:
-			Memory::IVector3Attribute faces;
+				Memory::Vector3Attribute vertices;
+				Memory::Vector3Attribute normals;
+				Memory::Vector3Attribute tangents;
+				Memory::Vector3Attribute bitangents;
+				std::vector<Memory::Vector2Attribute> uvs;
+				std::vector<Memory::Vector4Attribute> colors;
 
-			Memory::Vector3Attribute vertices;
-			Memory::Vector3Attribute normals;
-			Memory::Vector3Attribute tangents;
-			Memory::Vector3Attribute bitangents;
-			Memory::Vector2Attribute uvs [MAX_UV_MAPS_PER_MESH];
-			Memory::Vector4Attribute colors [MAX_COLOR_LAYER_PER_MESH];
+				size_t index;
+			public:
+				Mesh();
+				Mesh(const Mesh & other);
+				~Mesh();
 
-		public:
-			Mesh(MeshMemoryLayout memLayout);
-			Mesh(const Mesh & other);
-			~Mesh();
-
-			const MeshMemoryLayout & getDataMemoryLayout();
-		};
-
-		class MeshWrapper
-		{
-		public:
-			std::vector<Mesh*> meshes;
-		};
+				size_t getNumFaces();
+				size_t getNumVertices();
+				size_t getNumUVChannels();
+				size_t getNumColorChannels();
+			};
+		}
 	}
 }
 

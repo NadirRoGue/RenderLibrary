@@ -7,82 +7,109 @@
 #include <typeindex>
 #include <typeinfo>
 
+#include <array>
+
+#include "CPU/memory/SortablePoolElement.h"
+
 #include "Component.h"
 
 namespace RenderLib
 {
-	class PipelineStage
+	namespace Pipeline
 	{
-	public:
-		PipelineStage();
-		~PipelineStage();
-		virtual void runStage() = 0;
-	};
-
-	class AbstractElementBasedStage : public PipelineStage
-	{
-	protected:
-		std::vector<Component*> elements;
-	public:
-		AbstractElementBasedStage();
-		~AbstractElementBasedStage();
-
-		void registerElement(Component * comp);
-
-		virtual std::type_index getAssociatedElementType() = 0;
-	};
-
-	template<class T>
-	class ElementBasedStage : public AbstractElementBasedStage
-	{
-	public:
-		ElementBasedStage()
+		class PipelineStage
 		{
-		}
+		public:
+			PipelineStage();
+			~PipelineStage();
+			virtual void preRunStage();
+			virtual void runStage() = 0;
+			virtual void postRunStage();
+		};
 
-		~ElementBasedStage()
+		class AbstractElementBasedStage : public PipelineStage
 		{
+		protected:
+			std::vector<Component*> elements;
+		public:
+			AbstractElementBasedStage();
+			~AbstractElementBasedStage();
 
-		}
+			void registerElement(Component * comp);
 
-		std::type_index getAssociatedElementType()
+			virtual std::type_index getAssociatedElementType() = 0;
+		};
+
+		template<class T>
+		class ElementBasedStage : public AbstractElementBasedStage
 		{
-			return typeid(T);
-		}
-
-		void runStage()
-		{
-			std::cout << "Element stage with " << elements.size() << " element(s)" << std::endl;
-			std::vector<Component*>::iterator it = elements.begin();
-			while (it != elements.end())
+		public:
+			ElementBasedStage()
 			{
-				if ((*it) != NULL)
+			}
+
+			~ElementBasedStage()
+			{
+
+			}
+
+			std::type_index getAssociatedElementType()
+			{
+				return typeid(T);
+			}
+
+			virtual void preRunStage()
+			{
+				if (elements.size() > 0)
 				{
-					if ((*it)->enabled)
+					Component * comp = elements[0];
+					// Check whether the type of elements we are storing
+					// can be sorted to access memory more eficiently
+					if (dynamic_cast<CPU::Memory::SortablePoolElement*>(comp) != NULL)
 					{
-						processElement(static_cast<T*>(*it));
+						std::sort(elements.begin(), elements.end(),
+						[](Component * a, Component * b) -> bool
+						{
+							if (a == NULL)
+								return false;
+
+							if (b == NULL)
+								return true;
+
+							CPU::Memory::SortablePoolElement * aSortable = dynamic_cast<CPU::Memory::SortablePoolElement*>(a);
+							CPU::Memory::SortablePoolElement * bSortable = dynamic_cast<CPU::Memory::SortablePoolElement*>(b);
+
+							return aSortable->getIndex() < bSortable->getIndex();
+						});
 					}
 				}
-				else // Invalid/null or scheduled to delete component. Remove it
-				{
-					elements.erase(it);
-				}
-
-				it++;
 			}
-			/*
-			for (auto e : elements)
+
+			void runStage()
 			{
-				if (e != NULL)
+				std::cout << "Element stage with " << elements.size() << " element(s)" << std::endl;
+				std::vector<Component*>::iterator it = elements.begin();
+				while (it != elements.end())
 				{
-					processElement(static_cast<T*>(e));
+					if ((*it) != NULL)
+					{
+						if ((*it)->enabled)
+						{
+							processElement(static_cast<T*>(*it));
+						}
+					}
+					else // Invalid/null or scheduled to delete component. Remove it
+					{
+						elements.erase(it);
+					}
+
+					it++;
 				}
 			}
-			*/
-		}
 
-		virtual void processElement(T * element) = 0;
-	};
+			virtual void processElement(T * element) = 0;
+		};
+	}
 }
 
 #endif

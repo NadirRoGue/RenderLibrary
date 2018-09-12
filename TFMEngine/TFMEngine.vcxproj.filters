@@ -46,14 +46,62 @@
     <Filter Include="Archivos de encabezado\CPU\mesh">
       <UniqueIdentifier>{c812926f-c358-441a-9beb-624f93a22629}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Archivos de encabezado\CPU\mesh\meshloaders">
-      <UniqueIdentifier>{f959e8d1-89ac-4d09-b37a-8951c1661e44}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Archivos de origen\CPU\mesh">
       <UniqueIdentifier>{22a45604-f676-4de8-904a-8b844ed5e965}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Archivos de origen\CPU\mesh\meshloaders">
-      <UniqueIdentifier>{7f9f8e0f-30ef-4b58-a325-7989248673ba}</UniqueIdentifier>
+    <Filter Include="Archivos de encabezado\CPU\io">
+      <UniqueIdentifier>{6cf719d5-ec27-40d2-b8b2-2663bd6d65da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\CPU\io">
+      <UniqueIdentifier>{c9f63ebd-62d6-403f-8688-1f42ebeb6257}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\CPU\io\defaultloaders">
+      <UniqueIdentifier>{9ce7d3b7-ba2a-43f4-8a56-c68f4f3d739b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\CPU\io\defaultloaders">
+      <UniqueIdentifier>{bf6fc789-5490-4290-abe2-e7e09a0b7390}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\CPU\mesh\meshattributebuilders">
+      <UniqueIdentifier>{8b28e0c7-da0a-4a79-a626-52babbf528fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\CPU\mesh\meshattributebuilders">
+      <UniqueIdentifier>{ab16763a-e75e-4537-8d05-8baed8d66a22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\util">
+      <UniqueIdentifier>{a58f5707-5cb2-4490-b2ae-d3e1faeb572f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\util">
+      <UniqueIdentifier>{cd32fbf5-7da1-4c1b-b8fa-3465ddb288ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\GPU\mesh">
+      <UniqueIdentifier>{328aa39f-193d-42c6-92d8-4d8b7c76ab45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\GPU\mesh">
+      <UniqueIdentifier>{3892f729-d88a-4765-97d4-b609267e1909}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\components">
+      <UniqueIdentifier>{31c855f4-117e-44ab-8202-97eec677c5ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\components">
+      <UniqueIdentifier>{c97bc8d3-ab75-4727-8c88-8c807dc07a1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\logger">
+      <UniqueIdentifier>{c411e377-3f53-48c5-85c6-d0d03bcc3fe0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\logger">
+      <UniqueIdentifier>{03f8a090-e5ad-4e17-92d3-256032ceefdd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\graphics">
+      <UniqueIdentifier>{25af791e-eb20-433a-9056-4152eb3afd85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\graphics">
+      <UniqueIdentifier>{d900a8eb-2d4a-4a48-b02d-91e19eb09ff5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\inputhandlers">
+      <UniqueIdentifier>{a4d6562f-2341-4a6e-96ac-9d177228b405}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\inputhandlers">
+      <UniqueIdentifier>{c863a3f7-5694-4d8e-9b14-ecc28733eeee}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -84,9 +132,6 @@
     <ClInclude Include="include\CPU\memory\MemoryPool.h">
       <Filter>Archivos de encabezado\CPU\memory</Filter>
     </ClInclude>
-    <ClInclude Include="include\CPU\memory\MemoryPoolManager.h">
-      <Filter>Archivos de encabezado\CPU\memory</Filter>
-    </ClInclude>
     <ClInclude Include="include\CPU\memory\MemoryUtil.h">
       <Filter>Archivos de encabezado\CPU\memory</Filter>
     </ClInclude>
@@ -111,20 +156,98 @@
     <ClInclude Include="include\tests\TestClasses.h">
       <Filter>Archivos de encabezado\tests</Filter>
     </ClInclude>
-    <ClInclude Include="include\CPU\mesh\AbstractMeshLoader.h">
-      <Filter>Archivos de encabezado\CPU\mesh</Filter>
-    </ClInclude>
     <ClInclude Include="include\CPU\mesh\Mesh.h">
       <Filter>Archivos de encabezado\CPU\mesh</Filter>
     </ClInclude>
     <ClInclude Include="include\CPU\mesh\MeshManager.h">
       <Filter>Archivos de encabezado\CPU\mesh</Filter>
     </ClInclude>
-    <ClInclude Include="include\CPU\mesh\meshloaders\AssimpMeshLoader.h">
-      <Filter>Archivos de encabezado\CPU\mesh\meshloaders</Filter>
-    </ClInclude>
     <ClInclude Include="include\CPU\mesh\MeshUtil.h">
       <Filter>Archivos de encabezado\CPU\mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CPU\memory\PoolObjectBuilder.h">
+      <Filter>Archivos de encabezado\CPU\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CPU\memory\MemoryManager.h">
+      <Filter>Archivos de encabezado\CPU\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CPU\io\FileLoader.h">
+      <Filter>Archivos de encabezado\CPU\io</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CPU\io\FileLoadResult.h">
+      <Filter>Archivos de encabezado\CPU\io</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CPU\io\FileManager.h">
+      <Filter>Archivos de encabezado\CPU\io</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CPU\mesh\MeshLoadResult.h">
+      <Filter>Archivos de encabezado\CPU\mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CPU\io\defaultloaders\AssimpFileLoader.h">
+      <Filter>Archivos de encabezado\CPU\io\defaultloaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CPU\mesh\meshattributebuilders\CompactMeshBuilder.h">
+      <Filter>Archivos de encabezado\CPU\mesh\meshattributebuilders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CPU\mesh\meshattributebuilders\InterleavedMeshBuilder.h">
+      <Filter>Archivos de encabezado\CPU\mesh\meshattributebuilders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\util\StringUtils.h">
+      <Filter>Archivos de encabezado\util</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CPU\mesh\MeshBlockConfiguration.h">
+      <Filter>Archivos de encabezado\CPU\mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\mesh\GPUMesh.h">
+      <Filter>Archivos de encabezado\GPU\mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\mesh\GPUMeshManager.h">
+      <Filter>Archivos de encabezado\GPU\mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="include\components\MeshFilter.h">
+      <Filter>Archivos de encabezado\components</Filter>
+    </ClInclude>
+    <ClInclude Include="include\components\MeshRenderer.h">
+      <Filter>Archivos de encabezado\components</Filter>
+    </ClInclude>
+    <ClInclude Include="include\logger\AbstractLogger.h">
+      <Filter>Archivos de encabezado\logger</Filter>
+    </ClInclude>
+    <ClInclude Include="include\logger\BufferedFileLogger.h">
+      <Filter>Archivos de encabezado\logger</Filter>
+    </ClInclude>
+    <ClInclude Include="include\logger\ConsoleLogger.h">
+      <Filter>Archivos de encabezado\logger</Filter>
+    </ClInclude>
+    <ClInclude Include="include\logger\FileLogger.h">
+      <Filter>Archivos de encabezado\logger</Filter>
+    </ClInclude>
+    <ClInclude Include="include\logger\Log.h">
+      <Filter>Archivos de encabezado\logger</Filter>
+    </ClInclude>
+    <ClInclude Include="include\graphics\Window.h">
+      <Filter>Archivos de encabezado\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\EngineException.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="include\inputhandlers\InputManager.h">
+      <Filter>Archivos de encabezado\inputhandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\inputhandlers\KeyboardInputHandler.h">
+      <Filter>Archivos de encabezado\inputhandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\inputhandlers\MouseInputHandler.h">
+      <Filter>Archivos de encabezado\inputhandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\inputhandlers\MouseMotionHandler.h">
+      <Filter>Archivos de encabezado\inputhandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\graphics\ContextManager.h">
+      <Filter>Archivos de encabezado\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CPU\memory\SortablePoolElement.h">
+      <Filter>Archivos de encabezado\CPU\memory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -150,9 +273,6 @@
       <Filter>Archivos de origen\pipeline</Filter>
     </ClCompile>
     <ClCompile Include="src\CPU\memory\MemoryPool.cpp">
-      <Filter>Archivos de origen\CPU\memory</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CPU\memory\MemoryPoolManager.cpp">
       <Filter>Archivos de origen\CPU\memory</Filter>
     </ClCompile>
     <ClCompile Include="src\CPU\memory\MemoryUtil.cpp">
@@ -182,14 +302,74 @@
     <ClCompile Include="src\CPU\mesh\MeshManager.cpp">
       <Filter>Archivos de origen\CPU\mesh</Filter>
     </ClCompile>
-    <ClCompile Include="src\CPU\mesh\meshloaders\AssimpMeshLoader.cpp">
-      <Filter>Archivos de origen\CPU\mesh\meshloaders</Filter>
-    </ClCompile>
     <ClCompile Include="src\CPU\mesh\MeshUtil.cpp">
       <Filter>Archivos de origen\CPU\mesh</Filter>
     </ClCompile>
-    <ClCompile Include="src\CPU\mesh\AbstractMeshLoader.cpp">
+    <ClCompile Include="src\CPU\memory\MemoryManager.cpp">
+      <Filter>Archivos de origen\CPU\memory</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CPU\io\FileManager.cpp">
+      <Filter>Archivos de origen\CPU\io</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CPU\io\FileLoader.cpp">
+      <Filter>Archivos de origen\CPU\io</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CPU\mesh\MeshLoadResult.cpp">
       <Filter>Archivos de origen\CPU\mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CPU\io\defaultloaders\AssimpFileLoader.cpp">
+      <Filter>Archivos de origen\CPU\io\defaultloaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CPU\mesh\meshattributebuilder\CompactMeshBuilder.cpp">
+      <Filter>Archivos de origen\CPU\mesh\meshattributebuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CPU\mesh\meshattributebuilder\InterleavedMeshBuilder.cpp">
+      <Filter>Archivos de origen\CPU\mesh\meshattributebuilders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\StringUtils.cpp">
+      <Filter>Archivos de origen\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CPU\mesh\MeshBlockConfiguration.cpp">
+      <Filter>Archivos de origen\CPU\mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GPU\mesh\GPUMesh.cpp">
+      <Filter>Archivos de origen\GPU\mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GPU\mesh\GPUMeshManager.cpp">
+      <Filter>Archivos de origen\GPU\mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="src\components\MeshFilter.cpp">
+      <Filter>Archivos de origen\components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\components\MeshRenderer.cpp">
+      <Filter>Archivos de origen\components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\logger\BufferedFileLogger.cpp">
+      <Filter>Archivos de origen\logger</Filter>
+    </ClCompile>
+    <ClCompile Include="src\logger\ConsoleLogger.cpp">
+      <Filter>Archivos de origen\logger</Filter>
+    </ClCompile>
+    <ClCompile Include="src\logger\FileLogger.cpp">
+      <Filter>Archivos de origen\logger</Filter>
+    </ClCompile>
+    <ClCompile Include="src\logger\Log.cpp">
+      <Filter>Archivos de origen\logger</Filter>
+    </ClCompile>
+    <ClCompile Include="src\logger\AbstractLogger.cpp">
+      <Filter>Archivos de origen\logger</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\Window.cpp">
+      <Filter>Archivos de origen\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EngineException.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\inputhandlers\InputManager.cpp">
+      <Filter>Archivos de origen\inputhandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\ContextManager.cpp">
+      <Filter>Archivos de origen\graphics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -7,9 +7,12 @@ namespace RenderLib
 {
 	namespace CPU
 	{
-		void ComputeNormals(Mesh * mesh);
-		void ComputeTangents(Mesh * mesh);
-		void ComputeBitangents(Mesh * mesh);
+		namespace Mesh
+		{
+			void ComputeNormals(Mesh * mesh);
+			void ComputeTangents(Mesh * mesh);
+			void ComputeBitangents(Mesh * mesh);
+		}
 	}
 }
 

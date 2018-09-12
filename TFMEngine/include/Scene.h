@@ -4,9 +4,12 @@
 #include <map>
 #include <vector>
 #include <typeinfo>
+#include <memory>
 
 #include "Program.h"
 #include "SceneObject.h"
+
+#include "inputhandlers/InputManager.h"
 
 namespace RenderLib
 {
@@ -14,8 +17,9 @@ namespace RenderLib
 	{
 	private:
 		std::string name;
-		std::vector<SceneObject *> sceneObjects;
+		std::vector<SceneObjectPtr> sceneObjects;
 
+		InputHandlers::InputManager inputManager;
 	public:
 		Scene();
 		Scene(std::string name);
@@ -23,9 +27,11 @@ namespace RenderLib
 
 		const std::string & getSceneName();
 
-		void addObject(SceneObject * object);
+		void addObject(SceneObjectPtr & object);
 
-		const std::vector<SceneObject *> & getSceneObjects();
+		const std::vector<SceneObjectPtr> & getSceneObjects();
+
+		InputHandlers::InputManager & getInputManager();
 
 		void destroyScene();
 	};

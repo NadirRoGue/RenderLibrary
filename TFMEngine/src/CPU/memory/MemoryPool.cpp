@@ -67,10 +67,19 @@ namespace RenderLib
 				if (!added)
 				{
 					size_t remainingMem = this->sizeBytes - usedBytes;
+					// Attempt to resize pool
+					if (remainingMem < sizeBytes)
+					{
+						resize(this->sizeBytes * 2);
+					}
+
+					remainingMem = this->sizeBytes - usedBytes;
+
 					if (remainingMem >= sizeBytes)
 					{
 						std::unique_ptr<MemoryBlock> newBlock = std::make_unique<MemoryBlock>(usedBytes, sizeBytes, this);
 						newBlock.get()->index = memoryBlockList.size();
+						this->usedBytes += sizeBytes;
 						result = newBlock.get();
 						memoryBlockList.push_back(std::move(newBlock));
 						if (data)

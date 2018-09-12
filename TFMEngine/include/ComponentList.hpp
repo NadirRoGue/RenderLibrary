@@ -3,23 +3,18 @@
 
 #include "Component.h"
 
-#include <list>
+#include <vector>
 #include <memory>
-
-#include "EngineInstance.h"
 
 namespace RenderLib
 {
 	class ComponentList
 	{
 	private:
-		std::list<std::unique_ptr<Component>> componentList;
-
-		EngineInstance * engine;
+		std::vector<std::unique_ptr<Component>> componentList;
 	public:
 		ComponentList()
 		{
-
 		}
 
 		~ComponentList()
@@ -28,11 +23,6 @@ namespace RenderLib
 			{
 				destroyComponent(c);
 			}
-		}
-
-		void setEngineInstance(EngineInstance * instance)
-		{
-			engine = instance;
 		}
 
 		template<class T>
@@ -47,23 +37,17 @@ namespace RenderLib
 				T * result = comp.get();
 				componentList.push_back(std::move(comp));
 
-				if (engine)
-				{
-					engine->getPipelineManager().registerComponent(component);
-				}
-
 				return result;
 			}
 			
 			comp.reset();
-
 			return NULL;
 		}
 
 		template<class T>
 		void removeComponent()
 		{
-			std::list<std::unique_ptr<Component>>::iterator it = componentList.begin();
+			auto it = componentList.begin();
 			while (it != componentList.end())
 			{
 				if (dynamic_cast<T*>((*it).get()) != NULL)
@@ -79,7 +63,7 @@ namespace RenderLib
 		template<class T>
 		void removeAllComponents()
 		{
-			std::list<std::unique_ptr<Component>>::iterator it = componentList.begin();
+			auto it = componentList.begin();
 			while (it != componentList.end())
 			{
 				if (dynamic_cast<T*>((*it).get()) != NULL)
@@ -107,9 +91,9 @@ namespace RenderLib
 		}
 		
 		template<class T>
-		std::list<T*> getComponentsOfType()
+		std::vector<T*> getComponentsOfType()
 		{
-			std::list<T*> bufer;
+			std::vector<T*> bufer;
 
 			for (auto & c : componentList)
 			{
@@ -120,12 +104,10 @@ namespace RenderLib
 				}
 			}
 
-			//std::vector<T*> result = { std::make_move_iterator(std::begin(bufer)), std::make_move_iterator(std::end(bufer)) };
-
 			return bufer;
 		}
 
-		const std::list<std::unique_ptr<Component>> & getAllComponents()
+		const std::vector<std::unique_ptr<Component>> & getAllComponents()
 		{
 			return componentList;
 		}

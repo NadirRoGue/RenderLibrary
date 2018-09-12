@@ -2,42 +2,45 @@
 
 namespace RenderLib
 {
-	PipelineBroker::PipelineBroker()
+	namespace Pipeline
 	{
-
-	}
-
-	PipelineBroker::~PipelineBroker()
-	{
-
-	}
-
-	void PipelineBroker::registerPipelineStage(PipelineStage * stage)
-	{
-		AbstractElementBasedStage * aebs = dynamic_cast<AbstractElementBasedStage*>(stage);
-
-		if (aebs != NULL)
+		PipelineBroker::PipelineBroker()
 		{
-			elementStages[aebs->getAssociatedElementType()].push_back(aebs);
+
 		}
-	}
 
-	void PipelineBroker::registerElement(Component * component)
-	{
-		std::type_index type = component->getComponentType();
-
-		std::map<std::type_index, std::vector<AbstractElementBasedStage*>>::iterator it = elementStages.find(type);
-		if (it != elementStages.end())
+		PipelineBroker::~PipelineBroker()
 		{
-			for (auto stage : it->second)
+
+		}
+
+		void PipelineBroker::registerPipelineStage(PipelineStage * stage)
+		{
+			AbstractElementBasedStage * aebs = dynamic_cast<AbstractElementBasedStage*>(stage);
+
+			if (aebs != NULL)
 			{
-				stage->registerElement(component);
+				elementStages[aebs->getAssociatedElementType()].push_back(aebs);
 			}
 		}
-	}
 
-	const std::map<std::type_index, std::vector<AbstractElementBasedStage*>> & PipelineBroker::getElementStages()
-	{
-		return elementStages;
+		void PipelineBroker::registerElement(Component * component)
+		{
+			std::type_index type = component->getComponentType();
+
+			std::map<std::type_index, std::vector<AbstractElementBasedStage*>>::iterator it = elementStages.find(type);
+			if (it != elementStages.end())
+			{
+				for (auto stage : it->second)
+				{
+					stage->registerElement(component);
+				}
+			}
+		}
+
+		const std::map<std::type_index, std::vector<AbstractElementBasedStage*>> & PipelineBroker::getElementStages()
+		{
+			return elementStages;
+		}
 	}
 }

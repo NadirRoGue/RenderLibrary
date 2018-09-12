@@ -23,21 +23,28 @@ namespace RenderLib
 		return name;
 	}
 
-	void Scene::addObject(SceneObject * object)
+	void Scene::addObject(SceneObjectPtr & object)
 	{
-		sceneObjects.push_back(object);
+		sceneObjects.push_back(std::move(object));
 	}
 
-	const std::vector<SceneObject*> & Scene::getSceneObjects()
+	const std::vector<SceneObjectPtr> & Scene::getSceneObjects()
 	{
 		return sceneObjects;
 	}
 
+	InputHandlers::InputManager & Scene::getInputManager()
+	{
+		return inputManager;
+	}
+
 	void Scene::destroyScene()
 	{
-		for (auto so : sceneObjects)
+		for (auto & so : sceneObjects)
 		{
-			delete so;
+			so.reset();
 		}
+
+		sceneObjects.clear();
 	}
 }

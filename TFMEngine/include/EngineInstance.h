@@ -2,33 +2,31 @@
 #define __RENDER_LIB_ENGINEINSTANCE_H__
 
 #include <memory>
-
-//#include "pipeline/PipelineManager.h"
-
 #include <string>
-
-//#include "SceneManager.h"
 
 namespace RenderLib
 {
-	class Scene;
-	class SceneObject;
 	class SceneManager;
-	class PipelineManager;
+
+	namespace Pipeline
+	{
+		class PipelineManager;
+	}
 
 	class EngineInstance
 	{
 	private:
-		std::unique_ptr<PipelineManager> pipelineManager;
+		std::string instanceName;
+
+		std::unique_ptr<Pipeline::PipelineManager> pipelineManager;
 		std::unique_ptr<SceneManager> sceneManager;
 	public:
-		EngineInstance();
+		EngineInstance(const std::string & instanceName);
 		~EngineInstance();
 
-		SceneObject * createObject(SceneObject * parent = NULL, bool addToActiveScene = true);
-		Scene * createScene(std::string sceneName);
+		const std::string & getInstanceName();
 
-		PipelineManager & getPipelineManager();
+		Pipeline::PipelineManager & getPipelineManager();
 		SceneManager & getSceneManager();
 	};
 }

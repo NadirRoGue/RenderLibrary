@@ -17,6 +17,11 @@ namespace RenderLib
 
 	}
 
+	void Component::start()
+	{
+
+	}
+
 	void Component::update()
 	{
 

@@ -13,36 +13,23 @@
 
 namespace RenderLib
 {
-	class PipelineBroker
+	namespace Pipeline
 	{
-	private:
-		std::map<std::type_index, std::vector<AbstractElementBasedStage*>> elementStages;
-	public:
-		PipelineBroker();
-		~PipelineBroker();
+		class PipelineBroker
+		{
+		private:
+			std::map<std::type_index, std::vector<AbstractElementBasedStage*>> elementStages;
+		public:
+			PipelineBroker();
+			~PipelineBroker();
 
-		//template<class T>
-		void registerPipelineStage(PipelineStage * stage);
-		/*{
-			T * newStage = new T();
-			AbstractElementBasedStage * aebs = dynamic_cast<AbstractElementBasedStage*>(newStage);
+			void registerPipelineStage(PipelineStage * stage);
 
-			if (aebs != NULL)
-			{
-				elementStages[aebs->getAssociatedElementType()].push_back(aebs);
-			}
-			else
-			{
-				delete newStage;
-			}
+			void registerElement(Component * component);
 
-			return newStage;
-		}*/
-
-		void registerElement(Component * component);
-
-		const std::map<std::type_index, std::vector<AbstractElementBasedStage*>> & getElementStages();
-	};
+			const std::map<std::type_index, std::vector<AbstractElementBasedStage*>> & getElementStages();
+		};
+	}
 }
 
 #endif

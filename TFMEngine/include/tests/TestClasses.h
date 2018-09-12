@@ -36,13 +36,13 @@ namespace RenderLib
 			void destroy();
 		};
 
-		class TestGlobalStage : public PipelineStage
+		class TestGlobalStage : public Pipeline::PipelineStage
 		{
 		public:
 			void runStage();
 		};
 
-		class TestElementStage : public ElementBasedStage<TestComponent>
+		class TestElementStage : public Pipeline::ElementBasedStage<TestComponent>
 		{
 		public:
 			void processElement(TestComponent * component);

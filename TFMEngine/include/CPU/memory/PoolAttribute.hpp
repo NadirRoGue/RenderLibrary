@@ -4,6 +4,7 @@
 #include "Defines.h"
 #include "CPU/memory/MemoryPool.h"
 
+#include <vector>
 #include <stdexcept>
 
 #include <Eigen/Eigen>
@@ -57,7 +58,7 @@ namespace RenderLib
 					this->elementCount = elementCount;
 				}
 
-				size_t size()
+				const size_t & size()
 				{
 					return elementCount;
 				}
@@ -94,6 +95,30 @@ namespace RenderLib
 					return *this;
 				}
 
+				std::vector<T> dumpAttributes()
+				{
+					std::vector<T> result(elementCount);
+					size_t i = 0;
+					while (i < elementCount)
+					{
+						result.push_back(*this[i++]);
+					}
+
+					return result;
+				}
+
+				void setAttributes(const std::vector<T> & source)
+				{
+					size_t i = 0;
+					// Use the smallest element count
+					size_t minElementCount = std::min(elementCount, source.size());
+					while (i < minElementCount)
+					{
+						(*this)[i] = source[i];
+						i++;
+					}
+				}
+
 				/*bool operator==(const PoolAttribute & other)
 				{
 					return srcBlock == other.srcBlock
@@ -108,13 +133,19 @@ namespace RenderLib
 			private:
 				inline void getBytePosition(const size_t & index, size_t & start, size_t & end)
 				{
+					if (srcBlock == NULL)
+					{
+						throw std::runtime_error("PoolAttribute: Attempted to use non-initialized PoolAttribute");
+					}
+
 					const size_t typeSize = sizeof(T) * numElements;
 					start = offset + (typeSize + stride) * index;
 					end = start + typeSize;
 
 					if (start < srcBlock->offset || end > srcBlock->offset + srcBlock->length)
 					{
-						throw std::bad_exception("PoolAttribute: index out of bounds: " + std::to_string(index));
+						std::cout << index << std::endl;
+						throw std::runtime_error("PoolAttribute: index out of bounds: " + std::to_string(index));
 					}
 				}
 			};

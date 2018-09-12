@@ -1,5 +1,5 @@
-#ifndef __CPU_COMPONENT__
-#define __CPU_COMPONENT__
+#ifndef __RENDERLIB_COMPONENT__
+#define __RENDERLIB_COMPONENT__
 
 #include <typeinfo>
 #include <typeindex>
@@ -18,11 +18,12 @@ namespace RenderLib
 		Component();
 		~Component();
 		virtual void initialize();
+		virtual void start();
 		virtual void update();
 		virtual void fixedUpdate();
 		virtual void destroy();
 
-		std::type_index getComponentType();
+		virtual std::type_index getComponentType();
 	};
 }
 

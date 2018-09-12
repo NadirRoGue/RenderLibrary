@@ -1,42 +1,59 @@
 #ifndef __CPU_SCENEOBJECT__
 #define __CPU_SCENEOBJECT__
 
-#include <list>
+#include <vector>
+#include <string>
+#include <memory>
 
 #include "ComponentList.hpp"
 #include "Transform.h"
 
 namespace RenderLib
 {
-	class Component;
-	class EngineInstance;
+	typedef std::unique_ptr<SceneObject> SceneObjectPtr;
 
 	class SceneObject
 	{
+	public:
+		static SceneObjectPtr createObject(const std::string & name = "", SceneObject * parent = NULL);
 	public:
 		// Transformation state for this object
 		Transform transform;
 		// Wether this object is enabled for processing
 		bool active;
+		// Object name
+		std::string objectName;
 	private:
 		// List with all the components attached to this object
 		ComponentList componentList;
 
 		// Parent object
 		SceneObject * parent;
-
+		
+		// Child objects
+		std::vector<SceneObject *> children;
+	
 	public:
-		SceneObject(SceneObject * parent = NULL);
+		SceneObject();
+		SceneObject(const std::string & name);
+		SceneObject(const std::string & name, SceneObject * parent = NULL);
 		~SceneObject();
 
 		void setParent(SceneObject * object);
-
-		void setEngine(EngineInstance * instance);
+		void addChildren(SceneObject * object);
+		void removeChildren(SceneObject * object);
 
 		template<class T>
 		T * addComponent()
 		{
-			return componentList.addComponent<T>();
+			T * comp = componentList.addComponent<T>();
+			if(comp)
+			{
+				Component * compInstance = static_cast<Component*>(comp);
+				compInstance->object = this;
+			}
+
+			return comp;
 		}
 
 		template<class T>
@@ -46,12 +63,12 @@ namespace RenderLib
 		}
 
 		template<class T>
-		T getComponent()
+		T * getComponent()
 		{
 			return componentList.getComponent<T>();
 		}
 
-		const std::list<std::unique_ptr<Component>> & getAllComponents()
+		const std::vector<std::unique_ptr<Component>> & getAllComponents()
 		{
 			return componentList.getAllComponents();
 		}

@@ -2,31 +2,44 @@
 
 namespace RenderLib
 {
-	PipelineStage::PipelineStage()
+	namespace Pipeline
 	{
-
-	}
-
-	PipelineStage::~PipelineStage()
-	{
-	
-	}
-
-	AbstractElementBasedStage::AbstractElementBasedStage()
-	{
-
-	}
-
-	AbstractElementBasedStage::~AbstractElementBasedStage()
-	{
-
-	}
-
-	void AbstractElementBasedStage::registerElement(Component * comp)
-	{
-		if (comp != NULL)
+		PipelineStage::PipelineStage()
 		{
-			elements.push_back(comp);
+
+		}
+
+		PipelineStage::~PipelineStage()
+		{
+
+		}
+
+		void PipelineStage::preRunStage()
+		{
+
+		}
+
+		void PipelineStage::postRunStage()
+		{
+
+		}
+
+		AbstractElementBasedStage::AbstractElementBasedStage()
+		{
+
+		}
+
+		AbstractElementBasedStage::~AbstractElementBasedStage()
+		{
+
+		}
+
+		void AbstractElementBasedStage::registerElement(Component * comp)
+		{
+			if (comp != NULL)
+			{
+				elements.push_back(comp);
+			}
 		}
 	}
 }

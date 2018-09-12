@@ -8,43 +8,46 @@
 
 namespace RenderLib
 {
-	class PipelineManager
+	namespace Pipeline
 	{
-	private:
-		Pipeline pipeline;
-		PipelineBroker stageBroker;
-
-	public:
-		PipelineManager();
-		~PipelineManager();
-
-		const Pipeline & getPipeline();
-		const PipelineBroker & getStageBroker();
-
-		template<class T> 
-		T * addPipelineStage()
+		class PipelineManager
 		{
-			T * result = pipeline.registerStage<T>();
-			PipelineStage * stage = dynamic_cast<PipelineStage*>(result);
-			if (result && stage)
+		private:
+			Pipeline pipeline;
+			PipelineBroker stageBroker;
+
+		public:
+			PipelineManager();
+			~PipelineManager();
+
+			const Pipeline & getPipeline();
+			const PipelineBroker & getStageBroker();
+
+			template<class T>
+			T * addPipelineStage()
 			{
-				stageBroker.registerPipelineStage(result);
+				T * result = pipeline.registerStage<T>();
+				PipelineStage * stage = dynamic_cast<PipelineStage*>(result);
+				if (result && stage)
+				{
+					stageBroker.registerPipelineStage(result);
+				}
+
+				return result;
 			}
 
-			return result;
-		}
+			template<class T>
+			T * getPipelineStage()
+			{
+				return pipeline.getStage<T>();
+			}
 
-		template<class T>
-		T * getPipelineStage()
-		{
-			return pipeline.getStage<T>();
-		}
+			void registerComponent(Component * component);
+			void removeComponent(Component * component);
 
-		void registerComponent(Component * component);
-		void removeComponent(Component * component);
-
-		void executePipeline();
-	};
+			void executePipeline();
+		};
+	}
 }
 
 #endif

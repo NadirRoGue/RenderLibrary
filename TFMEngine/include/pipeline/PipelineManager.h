@@ -45,6 +45,10 @@ namespace RenderLib
 			void registerComponent(Component * component);
 			void removeComponent(Component * component);
 
+			void initializeStages();
+
+			void finishStages();
+
 			void executePipeline();
 		};
 	}

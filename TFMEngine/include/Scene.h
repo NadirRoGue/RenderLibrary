@@ -8,6 +8,7 @@
 
 #include "Program.h"
 #include "SceneObject.h"
+#include "Camera.h"
 
 #include "inputhandlers/InputManager.h"
 
@@ -18,6 +19,7 @@ namespace RenderLib
 	private:
 		std::string name;
 		std::vector<SceneObjectPtr> sceneObjects;
+		std::vector<CameraPtr> cameras;
 
 		InputHandlers::InputManager inputManager;
 	public:
@@ -29,7 +31,11 @@ namespace RenderLib
 
 		void addObject(SceneObjectPtr & object);
 
+		void addCamera(CameraPtr & camera);
+
 		const std::vector<SceneObjectPtr> & getSceneObjects();
+
+		const std::vector<CameraPtr> & getAllCameras();
 
 		InputHandlers::InputManager & getInputManager();
 

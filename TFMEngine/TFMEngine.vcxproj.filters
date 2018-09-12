@@ -249,6 +249,9 @@
     <ClInclude Include="include\CPU\memory\SortablePoolElement.h">
       <Filter>Archivos de encabezado\CPU\memory</Filter>
     </ClInclude>
+    <ClInclude Include="include\Camera.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Component.cpp">
@@ -370,6 +373,9 @@
     </ClCompile>
     <ClCompile Include="src\graphics\ContextManager.cpp">
       <Filter>Archivos de origen\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Camera.cpp">
+      <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

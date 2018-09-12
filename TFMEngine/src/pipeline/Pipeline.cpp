@@ -12,6 +12,11 @@ namespace RenderLib
 		{
 		}
 
+		const std::vector<std::unique_ptr<PipelineStage>> & Pipeline::getAllStages()
+		{
+			return stages;
+		}
+
 		void Pipeline::execute()
 		{
 			for (auto & st : stages)

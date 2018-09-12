@@ -68,6 +68,7 @@ namespace RenderLib
 				}
 			}
 
+			const std::vector<std::unique_ptr<PipelineStage>> & getAllStages();
 			void execute();
 		};
 	}

@@ -4,15 +4,11 @@
 #include <memory>
 #include <string>
 
+#include "SceneManager.h"
+#include "pipeline/PipelineManager.h"
+
 namespace RenderLib
 {
-	class SceneManager;
-
-	namespace Pipeline
-	{
-		class PipelineManager;
-	}
-
 	class EngineInstance
 	{
 	private:
@@ -28,6 +24,12 @@ namespace RenderLib
 
 		Pipeline::PipelineManager & getPipelineManager();
 		SceneManager & getSceneManager();
+
+		void launchExecution();
+	private:
+		void initialize();
+		void execute();
+		void finalize();
 	};
 }
 

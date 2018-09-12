@@ -28,9 +28,19 @@ namespace RenderLib
 		sceneObjects.push_back(std::move(object));
 	}
 
+	void Scene::addCamera(CameraPtr & camera)
+	{
+		cameras.push_back(std::move(camera));
+	}
+
 	const std::vector<SceneObjectPtr> & Scene::getSceneObjects()
 	{
 		return sceneObjects;
+	}
+
+	const std::vector<CameraPtr> & Scene::getAllCameras()
+	{
+		return cameras;
 	}
 
 	InputHandlers::InputManager & Scene::getInputManager()

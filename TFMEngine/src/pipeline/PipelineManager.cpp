@@ -34,6 +34,30 @@ namespace RenderLib
 
 		}
 
+		void PipelineManager::initializeStages()
+		{
+			for (auto & stagePtr : pipeline.getAllStages())
+			{
+				PipelineStage * stage = stagePtr.get();
+				if (stage)
+				{
+					stage->preRunStage();
+				}
+			}
+		}
+
+		void PipelineManager::finishStages()
+		{
+			for (auto & stagePtr : pipeline.getAllStages())
+			{
+				PipelineStage * stage = stagePtr.get();
+				if (stage)
+				{
+					stage->postRunStage();
+				}
+			}
+		}
+
 		void PipelineManager::executePipeline()
 		{
 			pipeline.execute();

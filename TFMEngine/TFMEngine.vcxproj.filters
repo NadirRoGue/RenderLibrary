@@ -252,6 +252,9 @@
     <ClInclude Include="include\Camera.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="include\graphics\WindowResizeObserver.h">
+      <Filter>Archivos de encabezado\graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Component.cpp">

@@ -20,14 +20,12 @@ namespace RenderLib
 
 	void Camera::initializeProjectionMatrix()
 	{
-		const FLOAT PI = M_PI;
-
 		projectionMatrix.fill(0.0);
-		projectionMatrix(0, 0) = 1.0 / tan(fov*PI / 180.0);
-		projectionMatrix(1, 1) = 1.0f / tan(fov*PI / 180.0f);
+		projectionMatrix(0, 0) = FLOAT(1.0) / tan(fov*M_PI / FLOAT(180.0));
+		projectionMatrix(1, 1) = FLOAT(1.0) / tan(fov*M_PI / FLOAT(180.0));
 		projectionMatrix(2, 2) = -(farPlane + nearPlane) / (farPlane - nearPlane);
-		projectionMatrix(3, 2) = -2.0* nearPlane*farPlane / (farPlane - nearPlane);
-		projectionMatrix(2, 3) = -1.0;
+		projectionMatrix(3, 2) = FLOAT(-2.0) * nearPlane * farPlane / (farPlane - nearPlane);
+		projectionMatrix(2, 3) = FLOAT(-1.0);
 	}
 
 	void Camera::initializeViewMatrix()
@@ -47,5 +45,33 @@ namespace RenderLib
 			up.x(),				up.y(),				up.z(),				-up.dot(eye),
 			-forward.x(), -forward.y(), -forward.z(), forward.dot(eye),
 			0,						0,						0,						1;
+	}
+
+	void Camera::translateView(const VECTOR3 & translation)
+	{
+
+	}
+
+	void Camera::rotateView(const VECTOR3 & angles)
+	{
+
+	}
+
+	void Camera::updateViewMatrix()
+	{
+
+	}
+
+	void Camera::onWindowResize(const int & width, const int & height)
+	{
+		float fWidth = (float)width;
+		float fHeight = (float)height;
+
+		projectionMatrix.fill(0.0);
+		projectionMatrix(0, 0) = FLOAT(1.0) / (tan(fov*M_PI / FLOAT(180.0)) * (fWidth / fHeight));
+		projectionMatrix(1, 1) = FLOAT(1.0) / tan(fov*M_PI / FLOAT(180.0));
+		projectionMatrix(2, 2) = -(farPlane + nearPlane) / (farPlane - nearPlane);
+		projectionMatrix(3, 2) = FLOAT(-2.0) * nearPlane * farPlane / (farPlane - nearPlane);
+		projectionMatrix(2, 3) = FLOAT(-1.0);
 	}
 }

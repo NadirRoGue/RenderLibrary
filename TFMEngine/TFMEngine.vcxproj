@@ -164,6 +164,7 @@
     <ClInclude Include="include\GPU\mesh\GPUMeshManager.h" />
     <ClInclude Include="include\graphics\ContextManager.h" />
     <ClInclude Include="include\graphics\Window.h" />
+    <ClInclude Include="include\graphics\WindowResizeObserver.h" />
     <ClInclude Include="include\inputhandlers\InputManager.h" />
     <ClInclude Include="include\inputhandlers\KeyboardInputHandler.h" />
     <ClInclude Include="include\inputhandlers\MouseInputHandler.h" />

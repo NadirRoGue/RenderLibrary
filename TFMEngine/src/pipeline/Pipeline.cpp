@@ -12,7 +12,7 @@ namespace RenderLib
 		{
 		}
 
-		const std::vector<std::unique_ptr<PipelineStage>> & Pipeline::getAllStages()
+		std::vector<std::unique_ptr<PipelineStage>> & Pipeline::getAllStages()
 		{
 			return stages;
 		}

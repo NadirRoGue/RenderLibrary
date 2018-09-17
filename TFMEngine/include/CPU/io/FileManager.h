@@ -17,7 +17,7 @@ namespace RenderLib
 				static std::map<std::string, FileLoader *> fileLoaders;
 			public:
 				static void registerFileLoader(FileLoader * loaderInstance);
-				static std::vector<AbstractLoadResult *> loadFile(const std::string & filePath, unsigned int options);
+				static std::vector<AbstractLoadResultPtr> loadFile(const std::string & filePath, unsigned int options);
 			};
 		}
 	}

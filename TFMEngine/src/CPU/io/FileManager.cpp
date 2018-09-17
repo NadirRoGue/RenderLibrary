@@ -41,9 +41,9 @@ namespace RenderLib
 				}
 			}
 
-			std::vector<AbstractLoadResult*> FileManager::loadFile(const std::string & path, unsigned int options)
+			std::vector<AbstractLoadResultPtr> FileManager::loadFile(const std::string & path, unsigned int options)
 			{
-				std::vector<AbstractLoadResult*> result;
+				std::vector<AbstractLoadResultPtr> result;
 
 				if (path.empty())
 				{

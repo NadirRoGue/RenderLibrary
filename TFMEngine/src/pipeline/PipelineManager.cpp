@@ -1,12 +1,14 @@
 #include "pipeline/PipelineManager.h"
 
+#include "pipeline/defaultstages/ComponentRegisterStage.h"
+
 namespace RenderLib
 {
 	namespace Pipeline
 	{
 		PipelineManager::PipelineManager()
 		{
-
+			addPipelineStage<ComponentRegisterStage>();
 		}
 
 		PipelineManager::~PipelineManager()
@@ -14,12 +16,12 @@ namespace RenderLib
 
 		}
 
-		const Pipeline & PipelineManager::getPipeline()
+		Pipeline & PipelineManager::getPipeline()
 		{
 			return pipeline;
 		}
 
-		const PipelineBroker & PipelineManager::getStageBroker()
+		PipelineBroker & PipelineManager::getStageBroker()
 		{
 			return stageBroker;
 		}
@@ -34,13 +36,14 @@ namespace RenderLib
 
 		}
 
-		void PipelineManager::initializeStages()
+		void PipelineManager::initializeStages(Scene * scene)
 		{
 			for (auto & stagePtr : pipeline.getAllStages())
 			{
 				PipelineStage * stage = stagePtr.get();
 				if (stage)
 				{
+					stage->scene = scene;
 					stage->preRunStage();
 				}
 			}

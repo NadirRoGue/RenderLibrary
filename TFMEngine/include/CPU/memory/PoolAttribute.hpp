@@ -95,16 +95,18 @@ namespace RenderLib
 					return *this;
 				}
 
-				std::vector<T> dumpAttributes()
+				void dumpAttributes(std::vector<T> & bufer)
 				{
-					std::vector<T> result(elementCount);
+					if (bufer.capacity() < elementCount)
+					{
+						bufer.reserve(elementCount);
+					}
+					
 					size_t i = 0;
 					while (i < elementCount)
 					{
-						result.push_back(*this[i++]);
+						bufer.push_back((*this)[i++]);
 					}
-
-					return result;
 				}
 
 				void setAttributes(const std::vector<T> & source)
@@ -144,7 +146,6 @@ namespace RenderLib
 
 					if (start < srcBlock->offset || end > srcBlock->offset + srcBlock->length)
 					{
-						std::cout << index << std::endl;
 						throw std::runtime_error("PoolAttribute: index out of bounds: " + std::to_string(index));
 					}
 				}
@@ -160,7 +161,7 @@ namespace RenderLib
 			typedef PoolAttribute<VECTOR3, 1> Vector3Attribute;
 			typedef PoolAttribute<VECTOR4, 1> Vector4Attribute;
 
-			typedef PoolAttribute<Eigen::Vector3i, 1> IVector3Attribute;
+			typedef PoolAttribute<IVECTOR3, 1> IVector3Attribute;
 		}
 	}
 }

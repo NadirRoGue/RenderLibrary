@@ -8,6 +8,8 @@
 
 #include "pipeline/PipelineStage.h"
 
+#include "EngineException.h"
+
 namespace RenderLib
 {
 	namespace Pipeline
@@ -23,17 +25,18 @@ namespace RenderLib
 			template<class T>
 			T * registerStage()
 			{
-				std::unique_ptr<T> newStage = std::make_unique<T>();
-
-				if (dynamic_cast<PipelineStage*>(newStage.get()) == NULL)
+				if (std::is_base_of<PipelineStage, T>::value)
 				{
-					return NULL; // FIXME: Throw exception
+					std::unique_ptr<T> newStage = std::make_unique<T>();
+					T * result = newStage.get();
+					stages.push_back(std::move(newStage));
+					return result;
 				}
 
-				T * result = newStage.get();
-				stages.push_back(std::move(newStage));
+				std::string message = "Pipeline Attempted to register a non PipelineStage derived class (" + std::string(typeid(T).name()) + ")";
+				throw EngineException(message.c_str());
 
-				return result;
+				return NULL;
 			}
 
 			template<class T>
@@ -61,6 +64,7 @@ namespace RenderLib
 					T * castTest = dynamic_cast<T*>((*it).get());
 					if (castTest != NULL)
 					{
+						(*it).reset();
 						stages.erase(it);
 						found = true;
 					}
@@ -68,7 +72,7 @@ namespace RenderLib
 				}
 			}
 
-			const std::vector<std::unique_ptr<PipelineStage>> & getAllStages();
+			std::vector<std::unique_ptr<PipelineStage>> & getAllStages();
 			void execute();
 		};
 	}

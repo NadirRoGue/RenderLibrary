@@ -13,12 +13,19 @@
 
 #include "Component.h"
 
+#include "Scene.h"
+
 namespace RenderLib
 {
 	namespace Pipeline
 	{
+		class PipelineManager;
+
 		class PipelineStage
 		{
+		public:
+			Scene * scene;
+			PipelineManager * pipelineManager;
 		public:
 			PipelineStage();
 			~PipelineStage();
@@ -60,7 +67,7 @@ namespace RenderLib
 
 			virtual void preRunStage()
 			{
-				if (elements.size() > 0)
+				if (elements.size() > 1)
 				{
 					Component * comp = elements[0];
 					// Check whether the type of elements we are storing
@@ -87,7 +94,6 @@ namespace RenderLib
 
 			void runStage()
 			{
-				std::cout << "Element stage with " << elements.size() << " element(s)" << std::endl;
 				std::vector<Component*>::iterator it = elements.begin();
 				while (it != elements.end())
 				{

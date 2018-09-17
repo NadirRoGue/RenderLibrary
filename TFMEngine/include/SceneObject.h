@@ -43,6 +43,8 @@ namespace RenderLib
 		void addChildren(SceneObject * object);
 		void removeChildren(SceneObject * object);
 
+		ComponentList & getComponentList();
+
 		template<class T>
 		T * addComponent()
 		{

@@ -10,10 +10,9 @@ namespace RenderLib
 
 	class Component
 	{
-	protected:
-		SceneObject * object;
 	public:
 		bool enabled;
+		SceneObject * object;
 	public:
 		Component();
 		~Component();

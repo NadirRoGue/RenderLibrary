@@ -40,6 +40,8 @@ namespace RenderLib
 		VECTOR3 right = forward.cross(up).normalized();
 		up = right.cross(forward);
 
+		transform.translationV = eye;
+
 		viewMatrix << 
 			right.x(),		right.y(),		right.z(),		-right.dot(eye),
 			up.x(),				up.y(),				up.z(),				-up.dot(eye),
@@ -49,17 +51,29 @@ namespace RenderLib
 
 	void Camera::translateView(const VECTOR3 & translation)
 	{
+		FLOAT forwardDelta = translation.z();
+		FLOAT strafeDelta = translation.x();
+		FLOAT upDelta = translation.y();
 
+		VECTOR3 traslatedPosition = transform.forwardVector * forwardDelta + transform.rightVector * strafeDelta + transform.upVector * upDelta;
+
+		transform.translationV += traslatedPosition;
+		updateViewMatrix();
 	}
 
 	void Camera::rotateView(const VECTOR3 & angles)
 	{
+		transform.rotationV =
+			ANGLEAXIS(angles.z(), VECTOR3::UnitZ()) *
+			ANGLEAXIS(angles.x(), VECTOR3::UnitX()) *
+			ANGLEAXIS(angles.y(), VECTOR3::UnitY());
 
+		updateViewMatrix();
 	}
 
 	void Camera::updateViewMatrix()
 	{
-
+		transform.update();
 	}
 
 	void Camera::onWindowResize(const int & width, const int & height)

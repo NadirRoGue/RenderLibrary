@@ -6,6 +6,8 @@
 
 #include "Component.h"
 
+#include "Scene.h"
+
 namespace RenderLib
 {
 	namespace Pipeline
@@ -20,14 +22,15 @@ namespace RenderLib
 			PipelineManager();
 			~PipelineManager();
 
-			const Pipeline & getPipeline();
-			const PipelineBroker & getStageBroker();
+			Pipeline & getPipeline();
+			PipelineBroker & getStageBroker();
 
 			template<class T>
 			T * addPipelineStage()
 			{
 				T * result = pipeline.registerStage<T>();
 				PipelineStage * stage = dynamic_cast<PipelineStage*>(result);
+				stage->pipelineManager = this;
 				if (result && stage)
 				{
 					stageBroker.registerPipelineStage(result);
@@ -45,7 +48,7 @@ namespace RenderLib
 			void registerComponent(Component * component);
 			void removeComponent(Component * component);
 
-			void initializeStages();
+			void initializeStages(Scene * scene);
 
 			void finishStages();
 

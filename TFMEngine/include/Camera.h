@@ -10,8 +10,6 @@
 
 namespace RenderLib
 {
-	typedef std::unique_ptr<Camera> CameraPtr;
-
 	class Camera : public SceneObject, public Graphics::WindowResizeObserver
 	{
 	public:
@@ -40,6 +38,8 @@ namespace RenderLib
 		void initializeProjectionMatrix();
 		void initializeViewMatrix();
 	};
+
+	typedef std::unique_ptr<Camera> CameraPtr;
 }
 
 #endif

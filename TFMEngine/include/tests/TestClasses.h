@@ -6,6 +6,8 @@
 #include "pipeline/PipelineStage.h"
 #include "Component.h"
 
+#include "components/MeshFilter.h"
+
 namespace RenderLib
 {
 	namespace Test
@@ -42,10 +44,10 @@ namespace RenderLib
 			void runStage();
 		};
 
-		class TestElementStage : public Pipeline::ElementBasedStage<TestComponent>
+		class TestElementStage : public Pipeline::ElementBasedStage<Components::MeshFilter>
 		{
 		public:
-			void processElement(TestComponent * component);
+			void processElement(Components::MeshFilter * component);
 		};
 	}
 }

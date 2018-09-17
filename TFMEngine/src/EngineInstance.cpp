@@ -1,17 +1,28 @@
 #include "EngineInstance.h"
 
 #include "pipeline/PipelineManager.h"
-#include "SceneManager.h"
 
+#include "graphics/ContextManager.h"
+
+#include "SceneManager.h"
 #include "EngineException.h"
 
 namespace RenderLib
 {
-	EngineInstance::EngineInstance(const std::string & instanceName)
-		:instanceName(instanceName)
+	EngineInstance::EngineInstance(const unsigned int & ID, const std::string & instanceName, Graphics::WindowHandler * handler)
+		: instanceID(ID)
+		, instanceName(instanceName)
+		, window(handler)
+		, enableFlag(true)
 	{
+		if (!handler)
+		{
+			throw EngineException(("EngineInstance: Failed constructing instance " + instanceName + ", WindowHandler is NULL").c_str());
+		}
+
 		pipelineManager = std::make_unique<Pipeline::PipelineManager>();
 		sceneManager = std::make_unique<SceneManager>();
+		window->instance = this;
 	}
 
 	EngineInstance::~EngineInstance()
@@ -20,9 +31,50 @@ namespace RenderLib
 		sceneManager.reset();
 	}
 
+	const unsigned int & EngineInstance::getInstanceID()
+	{
+		return instanceID;
+	}
+
 	const std::string & EngineInstance::getInstanceName()
 	{
 		return instanceName;
+	}
+
+	Graphics::WindowHandler * EngineInstance::getWindow()
+	{
+		return window;
+	}
+
+	void EngineInstance::loadActiveScene()
+	{
+		Scene * scene = sceneManager.get()->getActiveScene();
+		pipelineManager.get()->initializeStages(scene);
+	}
+	
+	void EngineInstance::loadScene(const std::string & sceneName)
+	{
+		Scene * scene = sceneManager.get()->getScene(sceneName);
+		if (scene)
+		{
+			sceneManager.get()->setActiveScene(sceneName);
+			loadActiveScene();
+		}
+		else
+		{
+			std::string message = "EngineInstance [name=" + instanceName + ", ID=" + std::to_string(instanceID) + "]: Failed to load scene " + sceneName;
+			throw EngineException(message.c_str());
+		}
+	}
+
+	void EngineInstance::disable()
+	{
+		enableFlag = false;
+	}
+
+	bool EngineInstance::isEnabled()
+	{
+		return enableFlag;
 	}
 
 	Pipeline::PipelineManager & EngineInstance::getPipelineManager()
@@ -35,9 +87,20 @@ namespace RenderLib
 		return *(sceneManager.get());
 	}
 
-	void EngineInstance::launchExecution()
+	void EngineInstance::executeIteration()
 	{
+		// Execute pipeline stages
+		pipelineManager.get()->executePipeline();
 
+		// Swap buffers
+		Graphics::ContextManager::getInstance().aquireContext();
+		window->onRenderLoopIteration();
+		Graphics::ContextManager::getInstance().releaseContext();
+	}
+
+	void EngineInstance::cleanUp()
+	{
+		pipelineManager.get()->finishStages();
 	}
 
 	void EngineInstance::initialize()
@@ -48,46 +111,8 @@ namespace RenderLib
 		{
 			throw EngineException(("EngineInstance [" + instanceName + "]: no active scene was found. Aborting execution").c_str());
 		}
-
-		// Register all components in the appropiate place
-		auto objectList = activeScene->getSceneObjects();
-		for (auto & obj : objectList)
-		{
-			SceneObject * object = obj.get();
-			if (object)
-			{
-				for (auto & objComp : object->getAllComponents())
-				{
-					pipelineManager.get()->registerComponent(objComp.get());
-				}
-			}
-		}
-
-		// Do the same with cameras
-		auto cameraList = activeScene->getAllCameras();
-		for (auto & camPtr : cameraList)
-		{
-			Camera * cam = camPtr.get();
-			if (cam)
-			{
-				for (auto & objComp : cam->getAllComponents())
-				{
-					pipelineManager.get()->registerComponent(objComp.get());
-				}
-			}
-		}
-
+		
 		// Optimize stage execution
-		pipelineManager.get()->initializeStages();
-	}
-
-	void EngineInstance::execute()
-	{
-
-	}
-
-	void EngineInstance::finalize()
-	{
-		pipelineManager.get()->finishStages();
+		pipelineManager.get()->initializeStages(activeScene);
 	}
 }

@@ -57,62 +57,47 @@ namespace RenderLib
 				}
 			}
 
-			std::vector<AbstractLoadResult*> AssimpFileLoader::loadFile(const std::string & fileName, unsigned int options)
+			std::vector<AbstractLoadResultPtr> AssimpFileLoader::loadFile(const std::string & fileName, unsigned int options)
 			{
 				Assimp::Importer importer;
 
 				unsigned int assimpFlags = 0;
 
-				assimpFlags |= options & Mesh::MeshManager::OPTION_COMPUTE_NORMALS_IF_ABSENT ? aiProcess_GenNormals : 0;
+				assimpFlags |= aiPostProcessSteps::aiProcess_JoinIdenticalVertices;
+				assimpFlags |= aiPostProcessSteps::aiProcess_GenUVCoords;
+				assimpFlags |= (options & Mesh::MeshManager::OPTION_COMPUTE_NORMALS_IF_ABSENT) ? aiProcess_GenNormals : 0;
 				assimpFlags |= (options & Mesh::MeshManager::OPTION_COMPUTE_TANGENTS_IF_ABSENT
 					|| options & Mesh::MeshManager::OPTION_COMPUTE_BITANGENTS_IF_ABSENT) ? aiProcess_CalcTangentSpace : 0;
 				assimpFlags |= aiProcess_Triangulate;
 
 				const aiScene * scene = importer.ReadFile(fileName, assimpFlags);
 
-				if (scene == NULL)
+				if (scene == NULL || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE)
 				{
 					std::string importerError(importer.GetErrorString());
 					std::string errorMessage = "AssimpFileLoader: Error importing mesh " + fileName + ": " + importerError;
 					throw std::runtime_error(errorMessage);
 				}
 
-				std::vector<AbstractLoadResult*> result;
+				std::vector<AbstractLoadResultPtr> result;
 				size_t numMeshes = scene->mNumMeshes;
 				size_t i = 0;
 				while (i < numMeshes)
 				{
 					aiMesh * meshToProcess = scene->mMeshes[i];
-					Mesh::MeshLoadResult * engineMesh = processFileMesh(meshToProcess, options);
+					std::unique_ptr<Mesh::MeshLoadResult> engineMesh = processFileMesh(meshToProcess, options);
 
-					if (engineMesh != NULL)
-					{
-						result.push_back(engineMesh);
-					}
-					else
-					{
-						std::cerr << "AssimpFileLoader: Error while processing mesh " << i << " from file " << fileName << ". Skipping." << std::endl;
-					}
-
+					result.push_back(std::move(engineMesh));
 					i++;
 				}
 
 				return result;
 			}
 
-			Mesh::MeshLoadResult * AssimpFileLoader::processFileMesh(aiMesh * mesh, unsigned int options)
+			std::unique_ptr<Mesh::MeshLoadResult> AssimpFileLoader::processFileMesh(aiMesh * mesh, unsigned int options)
 			{
-				std::cout << "Num faces: " << mesh->mNumFaces << std::endl;
-				std::cout << "Num vertices: " << mesh->mNumVertices << std::endl;
-
-				std::cout << "Printing normals" << std::endl;
-				for (unsigned int i = 0; i < mesh->mNumVertices; i++)
-				{
-					aiVector3D normal = mesh->mNormals[i];
-					std::cout << normal.x << ", " << normal.y << ", " << normal.z << std::endl;
-				}
-
-				Mesh::MeshLoadResult * meshData = new Mesh::MeshLoadResult();
+				std::unique_ptr<Mesh::MeshLoadResult> meshDataPtr = std::make_unique<Mesh::MeshLoadResult>();// = new Mesh::MeshLoadResult();
+				Mesh::MeshLoadResult * meshData = meshDataPtr.get();
 
 				size_t i = 0;
 
@@ -204,7 +189,7 @@ namespace RenderLib
 					}
 				}
 
-				return meshData;
+				return meshDataPtr;
 			}
 		}
 	}

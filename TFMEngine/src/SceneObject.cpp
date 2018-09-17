@@ -39,6 +39,11 @@ namespace RenderLib
 
 	}
 
+	ComponentList & SceneObject::getComponentList()
+	{
+		return componentList;
+	}
+
 	void SceneObject::setParent(SceneObject * object)
 	{
 		if (this->parent != NULL)

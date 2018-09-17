@@ -103,6 +103,30 @@
     <Filter Include="Archivos de origen\inputhandlers">
       <UniqueIdentifier>{c863a3f7-5694-4d8e-9b14-ecc28733eeee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Archivos de encabezado\graphics\defaultwindowhandlers">
+      <UniqueIdentifier>{f64ed24f-8b60-4d1c-990e-53a4e02f01af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\graphics\defaultwindowhandlers">
+      <UniqueIdentifier>{19d542ed-d9f2-4718-9bac-96188788ddb3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\pipeline\defaultstages">
+      <UniqueIdentifier>{37f3de9a-402c-4b8b-99d8-28f8a01cfaa2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\pipeline\defaultstages">
+      <UniqueIdentifier>{03f7d267-6ff4-4551-bb44-21e20fa7ab91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\render">
+      <UniqueIdentifier>{7d8d32ca-6126-431d-9310-752551988a4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\render\renderstages">
+      <UniqueIdentifier>{09f2acb0-661e-4f78-b74b-d38a3b85919a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\render">
+      <UniqueIdentifier>{43ff6a1a-b883-4a69-989c-78dcc819d9ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\render\renderstages">
+      <UniqueIdentifier>{ffc090f8-7dc6-440f-8ca6-592ae146e76f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Component.h">
@@ -225,9 +249,6 @@
     <ClInclude Include="include\logger\Log.h">
       <Filter>Archivos de encabezado\logger</Filter>
     </ClInclude>
-    <ClInclude Include="include\graphics\Window.h">
-      <Filter>Archivos de encabezado\graphics</Filter>
-    </ClInclude>
     <ClInclude Include="include\EngineException.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
@@ -254,6 +275,33 @@
     </ClInclude>
     <ClInclude Include="include\graphics\WindowResizeObserver.h">
       <Filter>Archivos de encabezado\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\graphics\defaultwindowhandlers\GLFWWindowHandler.h">
+      <Filter>Archivos de encabezado\graphics\defaultwindowhandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\graphics\WindowHandler.h">
+      <Filter>Archivos de encabezado\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\InstanceManager.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Initialization.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="include\pipeline\defaultstages\ComponentRegisterStage.h">
+      <Filter>Archivos de encabezado\pipeline\defaultstages</Filter>
+    </ClInclude>
+    <ClInclude Include="include\render\RenderingPipeline.h">
+      <Filter>Archivos de encabezado\render</Filter>
+    </ClInclude>
+    <ClInclude Include="include\render\RenderStage.h">
+      <Filter>Archivos de encabezado\render</Filter>
+    </ClInclude>
+    <ClInclude Include="include\render\renderstages\ForwardRenderStage.h">
+      <Filter>Archivos de encabezado\render\renderstages</Filter>
+    </ClInclude>
+    <ClInclude Include="include\render\AbstractRenderingStage.h">
+      <Filter>Archivos de encabezado\render</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -365,9 +413,6 @@
     <ClCompile Include="src\logger\AbstractLogger.cpp">
       <Filter>Archivos de origen\logger</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\Window.cpp">
-      <Filter>Archivos de origen\graphics</Filter>
-    </ClCompile>
     <ClCompile Include="src\EngineException.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
@@ -379,6 +424,33 @@
     </ClCompile>
     <ClCompile Include="src\Camera.cpp">
       <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\defaultwindowhandlers\GLFWWindowHandler.cpp">
+      <Filter>Archivos de origen\graphics\defaultwindowhandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\WindowHandler.cpp">
+      <Filter>Archivos de origen\graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\InstanceManager.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Initialization.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\pipeline\defaultstages\ComponentRegisterStage.cpp">
+      <Filter>Archivos de origen\pipeline\defaultstages</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\AbstractRenderingStage.cpp">
+      <Filter>Archivos de origen\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\RenderingPipeline.cpp">
+      <Filter>Archivos de origen\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\RenderStage.cpp">
+      <Filter>Archivos de origen\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\renderstages\ForwardRenderStage.cpp">
+      <Filter>Archivos de origen\render\renderstages</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

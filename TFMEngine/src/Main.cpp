@@ -1,40 +1,59 @@
+#include "Initialization.h"
+#include "InstanceManager.h"
 
-#include <iostream>
-
-#include "Defines.h"
-
-#include "EngineInstance.h"
-#include "Transform.h"
-
-#include "pipeline/PipelineManager.h"
-
-#include "CPU/memory/MemoryManager.h"
+#include "graphics/ContextManager.h"
+#include "graphics/defaultwindowhandlers/GLFWWindowHandler.h"
 
 #include "CPU/mesh/MeshManager.h"
-#include "CPU/mesh/meshattributebuilders/InterleavedMeshBuilder.h"
 
-#include "CPU/io/FileManager.h"
-#include "CPU/io/defaultloaders/AssimpFileLoader.h"
+#include "tests/TestClasses.h"
 
-#include "Scene.h"
-#include "SceneManager.h"
+#include "components/MeshFilter.h"
+#include "components/MeshRenderer.h"
 
-#include <functional>
+#include "logger/Log.h"
 
 using namespace RenderLib;
+using namespace RenderLib::CPU;
+using namespace RenderLib::Logger;
 
 int main(int argc, void ** arg)
 {
-	// Engine Instance
-	RenderLib::EngineInstance instance ("TestInstance");
+	/*** INSTANCE SET UP ***/
+	// Default initialization (registers components for asset loading, memory building, synchronization, etc.)
+	DefaultEngineInitialization();
+
+	// Asset load
+	std::vector<Mesh::Mesh *> meshes = Mesh::MeshManager::getInstance().loadMeshFromFile("./assets/cube.obj", 0);
+	if (meshes.size() == 0)
+	{
+		Log::getInstance().logError("No meshes were found in the given file");
+		return -1;
+	}
+	Mesh::Mesh * mesh = meshes[0];
+
+	// Window creation
+	Graphics::WindowConfiguration config;
+	config.openGLContextProfile = GLFW_OPENGL_CORE_PROFILE;
+	config.openGLMajorVersion = 4;
+	config.openGLMinorVersion = 1;
+	config.windowHeight = 512;
+	config.windowWidth = 512;
+	config.windowTitle = "Test Instance";
+	config.windowPosX = 50;
+	config.windowPosY = 50;
+	Graphics::GLFWWindowHandler * window = Graphics::ContextManager::getInstance().createWindow<Graphics::GLFWWindowHandler>(config);
+
+	// Engine Instance creation
+	EngineInstance * instance = InstanceManager::getInstance().createInstance("TestInstance", window);
 
 	// Pipeline set up
-	//instance.getPipelineManager().addPipelineStage<RenderLib::Test::TestGlobalStage>();
-	//instance.getPipelineManager().addPipelineStage<RenderLib::Test::TestElementStage>();
+	instance->getPipelineManager().addPipelineStage<Test::TestGlobalStage>();
+	instance->getPipelineManager().addPipelineStage<Test::TestElementStage>();
 
 	// Scene set up
-	RenderLib::Scene * scene = instance.getSceneManager().createScene("TestScene");
-	instance.getSceneManager().setActiveScene("TestScene");
+	RenderLib::Scene * scene = instance->getSceneManager().createScene("TestScene");
+	instance->getSceneManager().setActiveScene("TestScene");
 
 	if (scene == NULL)
 	{
@@ -42,40 +61,27 @@ int main(int argc, void ** arg)
 		return -1;
 	}
 
+	// Camera set up
+	CameraPtr camera = std::make_unique<Camera>(0.5, 1000.0, 45.0);
+	scene->addCamera(camera);
+
 	// Object set up
 	RenderLib::SceneObjectPtr object = SceneObject::createObject("TestObject");
+	RenderLib::SceneObject * obj = object.get();
 	scene->addObject(object);
-	
 
+	// Set position
+	obj->transform.translate(VECTOR3(0, 0, 5));
+	
+	// Object component set up
+	Components::MeshFilter * meshFilter = obj->addComponent<Components::MeshFilter>();
+	meshFilter->mesh = mesh;
+
+	Components::MeshRenderer * meshRenderer = obj->addComponent<Components::MeshRenderer>();
+
+	/*** EXECUTION (BLOCKING UNTIL ALL INSTANCES ARE DONE) ***/
 	// Run pipeline
-	instance.getPipelineManager().executePipeline();
+	InstanceManager::getInstance().launchInstances(ExecutionMode::EXECUTION_PARALLEL);
 	
-	CPU::Memory::MemoryManager::getInstance().setAttributeBuilderForClass<CPU::Mesh::Mesh>(new CPU::Mesh::InterleavedMeshBuilder());
-	CPU::IO::FileManager::registerFileLoader(new CPU::IO::AssimpFileLoader());
-
-	std::cout << "Configured!" << std::endl;
-
-	std::vector<CPU::Mesh::Mesh*> loaded = CPU::Mesh::MeshManager::getInstance().loadMeshFromFile("./assets/cube.obj", 0);
-
-	std::cout << "Mesh loaded!" << std::endl;
-
-	if (loaded.size() > 0)
-	{
-		CPU::Mesh::Mesh * singleMesh = loaded[0];
-		std::cout << "Num faces: " << singleMesh->faces.size() << std::endl;
-		std::cout << "Num vertices: " << singleMesh->vertices.size() << std::endl;
-
-		std::cout << "Printing normals" << std::endl;
-		for (int i = 0; i < singleMesh->normals.size(); i++)
-		{
-			VECTOR3 normal = singleMesh->normals[i];
-			std::cout << normal.x() << ", " << normal.y() << ", " << normal.z() << std::endl;
-		}
-	}
-	else
-	{
-		std::cout << "0 meshes loaded from ./assets/cube.obj" << std::endl;
-	}
-
 	return 0;
 }

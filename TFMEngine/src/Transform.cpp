@@ -6,9 +6,10 @@ namespace RenderLib
 {
 	Transform::Transform()
 	{
-		transform = TRANSFORM::Identity();
 		translationV = VECTOR3(0, 0, 0);
 		scaleV = VECTOR3(1, 1, 1);
+		rotationV = QUATERNION::Identity();
+		needsUpdate = false;
 	}
 
 	Transform::~Transform()
@@ -40,7 +41,7 @@ namespace RenderLib
 		QUATERNION add; 
 		add = Eigen::AngleAxis<FLOAT>(angle, axis.normalized());
 
-		this->rotationV = add;
+		this->rotationV *= add;
 	}
 
 	void Transform::setRotation(QUATERNION rotation)
@@ -50,13 +51,15 @@ namespace RenderLib
 
 	void Transform::update()
 	{
-		transform = TRANSFORM::Identity();
-		//transform.linear() = (rotationV.toRotationMatrix());
-		//transform = rotationV;// transform.rotate<QUATERNION>(rotationV);
+		TRANSFORM transform = TRANSFORM::Identity();
 		transform.scale(scaleV);
 		transform.rotate<QUATERNION>(rotationV);
 		transform.translate(translationV);
 
 		modelMatrix = transform.matrix();
+
+		forwardVector = VECTOR3(modelMatrix(0, 2), modelMatrix(1, 2), modelMatrix(2, 2));
+		upVector = VECTOR3(modelMatrix(0, 1), modelMatrix(1, 1), modelMatrix(2, 1));
+		rightVector = VECTOR3(modelMatrix(0, 0), modelMatrix(1, 0), modelMatrix(2, 0));
 	}
 }

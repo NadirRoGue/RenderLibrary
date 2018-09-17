@@ -75,15 +75,23 @@ namespace RenderLib
 
 		void TestGlobalStage::runStage()
 		{
-			std::cout << "Executing global stage" << std::endl;
+			//std::cout << "Executing global stage" << std::endl;
 		}
 
 		// =================================================================================
 		// Element based pipeline stage test class
 
-		void TestElementStage::processElement(TestComponent * component)
+		void TestElementStage::processElement(Components::MeshFilter * component)
 		{
-			std::cout << "Processing element: anIntVar=" << component->anIntVar << ", aStringVar=" << component->aStringVar << std::endl;
+			CPU::Mesh::Mesh * mesh = component->mesh;
+			//std::cout << "Num faces: " << mesh->faces.size() << std::endl;
+			//std::cout << "Num vertices: " << mesh->vertices.size() << std::endl;
+			/*std::cout << "Printing normals" << std::endl;
+			for (int i = 0; i < mesh->getNumVertices(); i++)
+			{
+				VECTOR3 normal = mesh->normals[i];
+				std::cout << normal.x() << ", " << normal.y() << ", " << normal.z() << std::endl;
+			}*/
 		}
 	}
 }

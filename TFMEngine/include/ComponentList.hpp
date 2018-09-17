@@ -11,6 +11,7 @@ namespace RenderLib
 	class ComponentList
 	{
 	private:
+		std::vector<std::unique_ptr<Component>> unregistedComponents;
 		std::vector<std::unique_ptr<Component>> componentList;
 	public:
 		ComponentList()
@@ -35,7 +36,7 @@ namespace RenderLib
 			{
 				component->initialize();
 				T * result = comp.get();
-				componentList.push_back(std::move(comp));
+				unregistedComponents.push_back(std::move(comp));
 
 				return result;
 			}
@@ -110,6 +111,16 @@ namespace RenderLib
 		const std::vector<std::unique_ptr<Component>> & getAllComponents()
 		{
 			return componentList;
+		}
+
+		std::vector<std::unique_ptr<Component>> & getUnregisteredComponents()
+		{
+			return unregistedComponents;
+		}
+
+		void registerComponent(std::unique_ptr<Component> & comp)
+		{
+			componentList.push_back(std::move(comp));
 		}
 
 	private:

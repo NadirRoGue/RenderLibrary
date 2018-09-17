@@ -7,6 +7,8 @@
 #include "SceneManager.h"
 #include "pipeline/PipelineManager.h"
 
+#include "graphics/WindowHandler.h"
+
 namespace RenderLib
 {
 	class EngineInstance
@@ -14,22 +16,35 @@ namespace RenderLib
 	private:
 		std::string instanceName;
 
+		unsigned int instanceID;
+
 		std::unique_ptr<Pipeline::PipelineManager> pipelineManager;
 		std::unique_ptr<SceneManager> sceneManager;
+
+		Graphics::WindowHandler * window;
+
+		bool enableFlag;
 	public:
-		EngineInstance(const std::string & instanceName);
+		EngineInstance(const unsigned int & ID, const std::string & instanceName, Graphics::WindowHandler * windowHandler);
 		~EngineInstance();
 
 		const std::string & getInstanceName();
+		const unsigned int & getInstanceID();
 
+		void loadActiveScene();
+		void loadScene(const std::string & name);
+		
+		Graphics::WindowHandler * getWindow();
 		Pipeline::PipelineManager & getPipelineManager();
 		SceneManager & getSceneManager();
 
-		void launchExecution();
+		void disable();
+		bool isEnabled();
+
+		void executeIteration();
+		void cleanUp();
 	private:
 		void initialize();
-		void execute();
-		void finalize();
 	};
 }
 

@@ -16,9 +16,9 @@ namespace RenderLib
 			{
 			public:
 				AssimpFileLoader();
-				std::vector<AbstractLoadResult*> loadFile(const std::string & fileName, unsigned int options);
+				std::vector<AbstractLoadResultPtr> loadFile(const std::string & fileName, unsigned int options);
 			private:
-				Mesh::MeshLoadResult * processFileMesh(aiMesh * assimpMesh, unsigned int options);
+				std::unique_ptr<Mesh::MeshLoadResult> processFileMesh(aiMesh * assimpMesh, unsigned int options);
 			};
 		}
 	}

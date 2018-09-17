@@ -30,15 +30,17 @@ namespace RenderLib
 
 	void Scene::addCamera(CameraPtr & camera)
 	{
-		cameras.push_back(std::move(camera));
+		Camera * cam = camera.get();
+		sceneObjects.push_back(std::move(camera));
+		cameras.push_back(cam);
 	}
 
-	const std::vector<SceneObjectPtr> & Scene::getSceneObjects()
+	std::vector<SceneObjectPtr> & Scene::getSceneObjects()
 	{
 		return sceneObjects;
 	}
 
-	const std::vector<CameraPtr> & Scene::getAllCameras()
+	std::vector<Camera*> & Scene::getAllCameras()
 	{
 		return cameras;
 	}

@@ -14,8 +14,6 @@ namespace RenderLib
 		}
 
 		ContextManager::ContextManager()
-			: activeInstance(NULL)
-			, windowFocusedInstance(NULL)
 		{
 		}
 
@@ -23,75 +21,25 @@ namespace RenderLib
 		{
 		}
 
-		EngineInstance * ContextManager::createNewEngineInstance(const std::string & instanceName)
-		{
-			std::unique_ptr<EngineInstance> newInstance = std::make_unique<EngineInstance>(instanceName);
-			EngineInstance * result = newInstance.get();
-
-			instances.push_back(std::move(newInstance));
-
-			return result;
-		}
-
-		void ContextManager::start(const ExecutionMode & mode)
-		{
-			switch (mode)
-			{
-			case ExecutionMode::EXECUTION_SEQUENTIAL:
-				startSecuentialExecution();
-				break;
-			case ExecutionMode::EXECUTION_PARALLEL:
-				startParallelExecution();
-				break;
-			}
-		}
-
-		void ContextManager::setActiveFocusedEngineInstace(EngineInstance * instance)
-		{
-			windowFocusedInstance = instance;
-		}
-
-		EngineInstance * ContextManager::getFocusedEngineInstance()
-		{
-			return windowFocusedInstance;
-		}
-
-		void ContextManager::aquireContext(EngineInstance * instance)
+		void ContextManager::aquireContext()
 		{
 			std::unique_lock<std::mutex> lock(mutex);
-			while (activeInstance != NULL)
+			while (contextTaken)
 			{
 				monitor.wait(lock);
 			}
 
-			activeInstance = instance;
+			contextTaken = true;
+
+			lock.unlock();
 		}
 
 		void ContextManager::releaseContext()
 		{
 			std::unique_lock<std::mutex> lock(mutex);
-			activeInstance = NULL;
-		}
-
-		EngineInstance * ContextManager::getActiveContext()
-		{
-			return activeInstance;
-		}
-
-		void ContextManager::startSecuentialExecution()
-		{
-			while (instances.size() > 0)
-			{
-				for (auto & instance : instances)
-				{
-					//instance.get()->getPipelineManager()->executePipeline();
-				}
-			}
-		}
-
-		void ContextManager::startParallelExecution()
-		{
-
+			contextTaken = false;
+			lock.unlock();
+			monitor.notify_one();
 		}
 	}
 }

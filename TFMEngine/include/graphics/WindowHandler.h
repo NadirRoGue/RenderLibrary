@@ -6,8 +6,6 @@
 
 #include <GL/glew.h>
 
-#include <GLFW/glfw3.h>
-
 namespace RenderLib
 {
 	class EngineInstance;
@@ -33,19 +31,27 @@ namespace RenderLib
 
 		} WindowConfiguration;
 
-		class Window
+		class WindowHandler
 		{
-		private:
-			EngineInstance * instance;
-			GLFWwindow * window;
 		public:
-			Window(const WindowConfiguration & windowConfig);
-			~Window();
+			EngineInstance * instance;
+		protected:
+			WindowConfiguration config;
+		public:
+			WindowHandler(WindowConfiguration windowConfig);
+			~WindowHandler();
 
-			void setEngineInstance(EngineInstance * instance);
+			const std::string & getTitle();
 
-			void initialize(const WindowConfiguration & winConfig);
-		private:
+			virtual void initialize() = 0;
+
+			virtual bool isActive() = 0;
+
+			virtual void onRenderLoopIteration() = 0;
+
+			virtual void cleanUp() = 0;
+
+		protected:
 			void defaultOpenGLConfiguration();
 		};
 	}

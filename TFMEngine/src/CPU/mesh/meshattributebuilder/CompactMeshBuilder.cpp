@@ -68,8 +68,6 @@ namespace RenderLib
 						offset += meshConfig->numVertices * sizeof(VECTOR4);
 					}
 				}
-
-				std::cout << offset << " : " << memBlock->length << std::endl;
 			}
 		}
 	}

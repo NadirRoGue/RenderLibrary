@@ -21,9 +21,8 @@ namespace RenderLib
 		VECTOR3 upVector;
 
 		SceneObject * object;
-
-		TRANSFORM transform;
-
+	private:
+		bool needsUpdate;
 	public:
 		Transform();
 		~Transform();

@@ -14,6 +14,121 @@ namespace RenderLib
 	{
 		namespace Mesh
 		{
+			bool compare(std::vector<IVECTOR3> & a, std::vector<IVECTOR3> & b)
+			{
+				if (a.size() != b.size())
+				{
+					return false;
+				}
+
+				for (size_t i = 0; i < a.size(); i++)
+				{
+					if (a[i] != b[i])
+						return false;
+				}
+
+				return true;
+			}
+
+			bool compare(std::vector<VECTOR3> & a, std::vector<VECTOR3> & b)
+			{
+				if (a.size() != b.size())
+				{
+					return false;
+				}
+
+				for (size_t i = 0; i < a.size(); i++)
+				{
+					if (a[i] != b[i])
+						return false;
+				}
+
+				return true;
+			}
+
+			bool compare(std::vector<VECTOR2> & a, std::vector<VECTOR2> & b)
+			{
+				if (a.size() != b.size())
+				{
+					return false;
+				}
+
+				for (size_t i = 0; i < a.size(); i++)
+				{
+					if (a[i] != b[i])
+						return false;
+				}
+
+				return true;
+			}
+
+			bool compare(std::vector<VECTOR4> & a, std::vector<VECTOR4> & b)
+			{
+				if (a.size() != b.size())
+				{
+					return false;
+				}
+
+				for (size_t i = 0; i < a.size(); i++)
+				{
+					if (a[i] != b[i])
+						return false;
+				}
+
+				return true;
+			}
+
+			void compare(MeshLoadResult * fromAssimp, Mesh * inMemory)
+			{
+				std::vector<IVECTOR3> faces;
+				std::vector<VECTOR3> vertices, normals, tangents, bitangents;
+				std::vector<std::vector<VECTOR2>> uv;
+				std::vector<std::vector<VECTOR4>> colors;
+
+				inMemory->faces.dumpAttributes(faces);
+				inMemory->vertices.dumpAttributes(vertices);
+				inMemory->normals.dumpAttributes(normals);
+				inMemory->tangents.dumpAttributes(tangents);
+				inMemory->bitangents.dumpAttributes(bitangents);
+
+				uv.resize(inMemory->uvs.size());
+				for (size_t i = 0; i < inMemory->uvs.size(); i++)
+				{
+					inMemory->uvs[i].dumpAttributes(uv[i]);
+				}
+
+				colors.resize(inMemory->colors.size());
+				for (size_t i = 0; i < inMemory->colors.size(); i++)
+				{
+					inMemory->colors[i].dumpAttributes(colors[i]);
+				}
+
+				if (!compare(fromAssimp->faces, faces))
+					std::cout << "Faces missmatch" << std::endl;
+
+				if (!compare(fromAssimp->vertices, vertices))
+					std::cout << "Vertices missmatch" << std::endl;
+
+				if (!compare(fromAssimp->normals, normals))
+					std::cout << "Normals missmatch" << std::endl;
+
+				if (!compare(fromAssimp->tangents, tangents))
+					std::cout << "Tangents missmatch" << std::endl;
+
+				for (size_t i = 0; i < fromAssimp->numUVMaps; i++)
+				{
+					if (!compare(fromAssimp->uvs[i], uv[i]))
+						std::cout << "UVs " << i << " missmatchs" << std::endl;
+				}
+
+				for (size_t i = 0; i < fromAssimp->numColorLayers; i++)
+				{
+					if (!compare(fromAssimp->colors[i], colors[i]))
+						std::cout << "Colors " << i << " missmatch" << std::endl;
+				}
+
+			}
+
 			MeshManager * MeshManager::INSTANCE = new MeshManager();
 
 			unsigned int MeshManager::OPTION_COMPUTE_NORMALS_IF_ABSENT = 0x01;
@@ -45,15 +160,15 @@ namespace RenderLib
 				}
 
 				// Import meshes from file
-				std::vector<IO::AbstractLoadResult *> loadedMeshes = IO::FileManager::loadFile(fileName, optionsFlag);
+				std::vector<IO::AbstractLoadResultPtr> loadedMeshes = IO::FileManager::loadFile(fileName, optionsFlag);
 				std::vector<Mesh*> result;
 				result.reserve(loadedMeshes.size());
 
 				// Return a list of pointers to them
 				size_t i = 0;
-				for (auto meshData : loadedMeshes)
+				for (auto & meshData : loadedMeshes)
 				{
-					MeshLoadResult * meshLoadResult = dynamic_cast<MeshLoadResult*>(meshData);
+					MeshLoadResult * meshLoadResult = dynamic_cast<MeshLoadResult*>(meshData.get());
 					if (meshLoadResult)
 					{
 						std::unique_ptr<Mesh> newMesh = buildMeshFromData(meshLoadResult, optionsFlag);
@@ -61,6 +176,8 @@ namespace RenderLib
 						result.push_back(newMesh.get());
 						meshes[fileName].push_back(std::move(newMesh));
 					}
+
+					meshData.reset();
 				}
 
 				return result;
@@ -85,25 +202,27 @@ namespace RenderLib
 
 				// Copy data to pool
 				meshPtr->faces.setAttributes(data->faces);
-				std::cout << "Copied faces" << std::endl;
+				//std::cout << "Copied faces" << std::endl;
 				meshPtr->vertices.setAttributes(data->vertices);
-				std::cout << "Copied vertices" << std::endl;
+				//std::cout << "Copied vertices" << std::endl;
 				meshPtr->normals.setAttributes(data->normals);
-				std::cout << "Copied normals" << std::endl;
+				//std::cout << "Copied normals" << std::endl;
 				meshPtr->tangents.setAttributes(data->tangents);
-				std::cout << "Copied tangents" << std::endl;
+				//std::cout << "Copied tangents" << std::endl;
 				meshPtr->bitangents.setAttributes(data->bitangents);
-				std::cout << "Copied bitangents" << std::endl;
+				//std::cout << "Copied bitangents" << std::endl;
 
-				for (int i = 0; i < data->numUVMaps; i++)
+				for (size_t i = 0; i < data->numUVMaps; i++)
 				{
 					meshPtr->uvs[i].setAttributes(data->uvs[i]);
 				}
 
-				for (int i = 0; i < data->numColorLayers; i++)
+				for (size_t i = 0; i < data->numColorLayers; i++)
 				{
 					meshPtr->colors[i].setAttributes(data->colors[i]);
 				}
+
+				compare(data, meshPtr);
 
 				return newMesh;
 			}

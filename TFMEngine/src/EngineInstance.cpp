@@ -102,17 +102,4 @@ namespace RenderLib
 	{
 		pipelineManager.get()->finishStages();
 	}
-
-	void EngineInstance::initialize()
-	{
-		Scene * activeScene = getSceneManager().getActiveScene();
-
-		if (!activeScene)
-		{
-			throw EngineException(("EngineInstance [" + instanceName + "]: no active scene was found. Aborting execution").c_str());
-		}
-		
-		// Optimize stage execution
-		pipelineManager.get()->initializeStages(activeScene);
-	}
 }

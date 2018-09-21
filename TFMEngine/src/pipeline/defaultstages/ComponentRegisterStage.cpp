@@ -8,7 +8,7 @@ namespace RenderLib
 {
 	namespace Pipeline
 	{
-		void ComponentRegisterStage::runStage()
+		void ComponentRegisterStage::preRunStage()
 		{
 			PipelineBroker & stageBroker = pipelineManager->getStageBroker();
 
@@ -28,6 +28,11 @@ namespace RenderLib
 					unregisterComps.clear();
 				}
 			}
+		}
+
+		void ComponentRegisterStage::runStage()
+		{
+
 		}
 	}
 }

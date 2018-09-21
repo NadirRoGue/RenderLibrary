@@ -4,6 +4,8 @@
 #include <vector>
 #include <memory>
 
+#include "components/MeshRenderer.h"
+
 #include "render/AbstractRenderingStage.h"
 
 #include "EngineException.h"
@@ -20,7 +22,11 @@ namespace RenderLib
 			RenderingPipeline();
 			~RenderingPipeline();
 
+			void initializeStages();
 			void executePipelineIteration();
+			void finalizeStages();
+
+			void registerRenderable(Components::MeshRenderer * renderable);
 
 			template<class T>
 			T * addRenderStage()

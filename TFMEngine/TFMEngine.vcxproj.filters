@@ -303,6 +303,12 @@
     <ClInclude Include="include\render\AbstractRenderingStage.h">
       <Filter>Archivos de encabezado\render</Filter>
     </ClInclude>
+    <ClInclude Include="include\pipeline\defaultstages\CPUToGPUMeshSyncStage.h">
+      <Filter>Archivos de encabezado\pipeline\defaultstages</Filter>
+    </ClInclude>
+    <ClInclude Include="include\pipeline\defaultstages\GPUToCPUMeshSyncStage.h">
+      <Filter>Archivos de encabezado\pipeline\defaultstages</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Component.cpp">
@@ -451,6 +457,12 @@
     </ClCompile>
     <ClCompile Include="src\render\renderstages\ForwardRenderStage.cpp">
       <Filter>Archivos de origen\render\renderstages</Filter>
+    </ClCompile>
+    <ClCompile Include="src\pipeline\defaultstages\CPUToGPUMeshSyncStage.cpp">
+      <Filter>Archivos de origen\pipeline\defaultstages</Filter>
+    </ClCompile>
+    <ClCompile Include="src\pipeline\defaultstages\GPUToCPUMeshSyncStage.cpp">
+      <Filter>Archivos de origen\pipeline\defaultstages</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

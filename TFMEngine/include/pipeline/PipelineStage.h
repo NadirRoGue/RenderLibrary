@@ -42,7 +42,7 @@ namespace RenderLib
 			AbstractElementBasedStage();
 			~AbstractElementBasedStage();
 
-			void registerElement(Component * comp);
+			virtual void registerElement(Component * comp);
 
 			virtual std::type_index getAssociatedElementType() = 0;
 		};
@@ -69,10 +69,11 @@ namespace RenderLib
 			{
 				if (elements.size() > 1)
 				{
-					Component * comp = elements[0];
 					// Check whether the type of elements we are storing
 					// can be sorted to access memory more eficiently
-					if (dynamic_cast<CPU::Memory::SortablePoolElement*>(comp) != NULL)
+					//Component * comp = elements[0];
+					//if (dynamic_cast<CPU::Memory::SortablePoolElement*>(comp) != NULL)
+					if(std::is_base_of<CPU::Memory::SortablePoolElement, T>::value)
 					{
 						std::sort(elements.begin(), elements.end(),
 						[](Component * a, Component * b) -> bool
@@ -92,7 +93,7 @@ namespace RenderLib
 				}
 			}
 
-			void runStage()
+			virtual void runStage()
 			{
 				std::vector<Component*>::iterator it = elements.begin();
 				while (it != elements.end())
@@ -113,7 +114,10 @@ namespace RenderLib
 				}
 			}
 
-			virtual void processElement(T * element) = 0;
+			virtual void processElement(T * element)
+			{
+
+			}
 		};
 	}
 }

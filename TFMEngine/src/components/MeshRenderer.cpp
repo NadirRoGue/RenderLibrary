@@ -10,6 +10,13 @@ namespace RenderLib
 {
 	namespace Components
 	{
+		MeshRenderer::MeshRenderer()
+			: cpuToGpuSync(CPUToGPUSyncPolicy::SYNC_ONCE_AT_BEGINNING)
+			, gpuToCpuSync(GPUToCPUSyncPolicy::DO_NOT_SYNC)
+		{
+
+		}
+
 		void MeshRenderer::start()
 		{
 			MeshFilter * meshFilter = object->getComponent<MeshFilter>();

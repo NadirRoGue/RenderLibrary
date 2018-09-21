@@ -10,6 +10,7 @@ namespace RenderLib
 		class ComponentRegisterStage : public PipelineStage
 		{
 		public:
+			void preRunStage();
 			void runStage();
 		};
 	}

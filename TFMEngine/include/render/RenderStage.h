@@ -16,7 +16,10 @@ namespace RenderLib
 		private:
 			RenderingPipeline renderPipeline;
 		public:
-			void processElement(Components::MeshRenderer * meshRenderer);
+			void registerElement(Component * component);
+			void preRunStage();
+			void runStage();
+			void postRunStage();
 
 			template<class T>
 			T * addRenderStage()

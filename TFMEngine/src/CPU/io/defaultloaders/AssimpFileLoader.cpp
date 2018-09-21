@@ -85,6 +85,7 @@ namespace RenderLib
 				while (i < numMeshes)
 				{
 					aiMesh * meshToProcess = scene->mMeshes[i];
+					
 					std::unique_ptr<Mesh::MeshLoadResult> engineMesh = processFileMesh(meshToProcess, options);
 
 					result.push_back(std::move(engineMesh));

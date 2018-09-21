@@ -43,8 +43,6 @@ namespace RenderLib
 
 		void executeIteration();
 		void cleanUp();
-	private:
-		void initialize();
 	};
 }
 

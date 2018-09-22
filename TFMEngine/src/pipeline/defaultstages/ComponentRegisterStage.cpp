@@ -28,6 +28,23 @@ namespace RenderLib
 					unregisterComps.clear();
 				}
 			}
+
+			std::vector<CameraPtr> & cameras = scene->getAllCameras();
+			for (auto & objPtr : cameras)
+			{
+				Camera * obj = objPtr.get();
+
+				std::vector<std::unique_ptr<Component>> & unregisterComps = obj->getComponentList().getUnregisteredComponents();
+				if (unregisterComps.size() > 0)
+				{
+					for (auto & unregisteredComp : unregisterComps)
+					{
+						stageBroker.registerElement(unregisteredComp.get());
+						obj->getComponentList().registerComponent(unregisteredComp);
+					}
+					unregisterComps.clear();
+				}
+			}
 		}
 
 		void ComponentRegisterStage::runStage()

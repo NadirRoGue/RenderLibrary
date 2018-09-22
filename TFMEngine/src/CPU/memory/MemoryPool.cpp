@@ -173,14 +173,14 @@ namespace RenderLib
 				realloc(allocatedMemory, sizeBytes);
 			}
 
-			const void * MemoryPool::getData() const
+			void * MemoryPool::getData()
 			{
 				return allocatedMemory;
 			}
 
-			const char * MemoryPool::getDataAsBytes() const
+			char * MemoryPool::getDataAsBytes()
 			{
-				return static_cast<char*>(allocatedMemory);
+				return reinterpret_cast<char*>(allocatedMemory);
 			}
 
 			void MemoryPool::destroyBlock(std::unique_ptr<MemoryBlock> block)

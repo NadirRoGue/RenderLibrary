@@ -19,7 +19,7 @@ namespace RenderLib
 	private:
 		std::string name;
 		std::vector<SceneObjectPtr> sceneObjects;
-		std::vector<Camera*> cameras;
+		std::vector<CameraPtr> cameras;
 
 		InputHandlers::InputManager inputManager;
 	public:
@@ -35,7 +35,7 @@ namespace RenderLib
 
 		std::vector<SceneObjectPtr> & getSceneObjects();
 
-		std::vector<Camera*> & getAllCameras();
+		std::vector<CameraPtr> & getAllCameras();
 
 		InputHandlers::InputManager & getInputManager();
 

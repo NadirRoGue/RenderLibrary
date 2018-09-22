@@ -36,7 +36,7 @@ int main(int argc, void ** arg)
 	Graphics::WindowConfiguration config;
 	config.openGLContextProfile = GLFW_OPENGL_CORE_PROFILE;
 	config.openGLMajorVersion = 4;
-	config.openGLMinorVersion = 1;
+	config.openGLMinorVersion = 5;
 	config.windowHeight = 512;
 	config.windowWidth = 512;
 	config.windowTitle = "Test Instance";
@@ -62,7 +62,7 @@ int main(int argc, void ** arg)
 	}
 
 	// Camera set up
-	CameraPtr camera = std::make_unique<Camera>(0.5, 1000.0, 45.0);
+	RenderLib::CameraPtr camera = Camera::createCamera(0.5, 1000.0, 45.0);
 	scene->addCamera(camera);
 
 	// Object set up
@@ -78,6 +78,14 @@ int main(int argc, void ** arg)
 	meshFilter->mesh = mesh;
 
 	Components::MeshRenderer * meshRenderer = obj->addComponent<Components::MeshRenderer>();
+
+	char * rawData = mesh->memoryBlock->pool->getDataAsBytes();
+	IVECTOR3 firstFace = mesh->faces[0];
+	std::cout << "As IVECTOR3: " << firstFace.x() << ", " << firstFace.y() << ", " << firstFace.z() << std::endl;
+	int * x = reinterpret_cast<int*>(rawData);
+	int * y = reinterpret_cast<int*>(rawData + sizeof(int));
+	int * z = reinterpret_cast<int*>(rawData + sizeof(int) * 2);
+	std::cout << "As raw: " << *x << ", " << *y << ", " << *z << std::endl;
 
 	/*** EXECUTION (BLOCKING UNTIL ALL INSTANCES ARE DONE) ***/
 	// Run pipeline

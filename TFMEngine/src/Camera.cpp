@@ -5,8 +5,20 @@
 
 namespace RenderLib
 {
+	std::unique_ptr<Camera> Camera::createCamera(FLOAT near, FLOAT far, FLOAT fov)
+	{
+		return std::make_unique<Camera>(near, far, fov);
+	}
+
+	Camera::Camera()
+		: Camera(0.0, 0.0, 0.0)
+	{
+
+	}
+
 	Camera::Camera(FLOAT near, FLOAT far, FLOAT FOV)
-		: nearPlane(near)
+		: SceneObject()
+		, nearPlane(near)
 		, farPlane(far)
 		, fov(FOV)
 	{

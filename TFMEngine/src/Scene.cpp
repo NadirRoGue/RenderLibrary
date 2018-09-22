@@ -15,7 +15,6 @@ namespace RenderLib
 
 	Scene::~Scene()
 	{
-
 	}
 
 	const std::string & Scene::getSceneName()
@@ -30,9 +29,7 @@ namespace RenderLib
 
 	void Scene::addCamera(CameraPtr & camera)
 	{
-		Camera * cam = camera.get();
-		sceneObjects.push_back(std::move(camera));
-		cameras.push_back(cam);
+		cameras.push_back(std::move(camera));
 	}
 
 	std::vector<SceneObjectPtr> & Scene::getSceneObjects()
@@ -40,7 +37,7 @@ namespace RenderLib
 		return sceneObjects;
 	}
 
-	std::vector<Camera*> & Scene::getAllCameras()
+	std::vector<CameraPtr> & Scene::getAllCameras()
 	{
 		return cameras;
 	}
@@ -52,11 +49,13 @@ namespace RenderLib
 
 	void Scene::destroyScene()
 	{
+		/*
 		for (auto & so : sceneObjects)
 		{
 			so.reset();
 		}
 
 		sceneObjects.clear();
+		*/
 	}
 }

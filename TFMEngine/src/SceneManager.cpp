@@ -38,7 +38,6 @@ namespace RenderLib
 		std::map<std::string, std::unique_ptr<Scene>>::iterator it = sceneCache.find(sceneName);
 		if (it != sceneCache.end())
 		{
-			it->second.get()->destroyScene();
 			it->second.reset();
 
 			sceneCache.erase(it);

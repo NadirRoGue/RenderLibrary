@@ -63,6 +63,16 @@ namespace RenderLib
 					return elementCount;
 				}
 
+				const size_t & getOffset()
+				{
+					return offset;
+				}
+
+				const size_t & getStride()
+				{
+					return stride;
+				}
+
 				const T & at(size_t index)
 				{
 					size_t start, end;

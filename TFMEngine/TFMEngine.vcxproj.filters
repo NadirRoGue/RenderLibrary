@@ -180,9 +180,6 @@
     <ClInclude Include="include\tests\TestClasses.h">
       <Filter>Archivos de encabezado\tests</Filter>
     </ClInclude>
-    <ClInclude Include="include\CPU\mesh\Mesh.h">
-      <Filter>Archivos de encabezado\CPU\mesh</Filter>
-    </ClInclude>
     <ClInclude Include="include\CPU\mesh\MeshManager.h">
       <Filter>Archivos de encabezado\CPU\mesh</Filter>
     </ClInclude>
@@ -308,6 +305,9 @@
     </ClInclude>
     <ClInclude Include="include\pipeline\defaultstages\GPUToCPUMeshSyncStage.h">
       <Filter>Archivos de encabezado\pipeline\defaultstages</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CPU\mesh\Mesh.h">
+      <Filter>Archivos de encabezado\CPU\mesh</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

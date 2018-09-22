@@ -10,8 +10,14 @@
 
 namespace RenderLib
 {
+	class Camera;
+
+	typedef std::unique_ptr<Camera> CameraPtr;
+
 	class Camera : public SceneObject, public Graphics::WindowResizeObserver
 	{
+	public:
+		static CameraPtr createCamera(FLOAT near, FLOAT far, FLOAT fov);
 	public:
 		MATRIX4 projectionMatrix;
 		MATRIX4 viewMatrix;
@@ -21,6 +27,7 @@ namespace RenderLib
 		FLOAT fov;
 
 	public:
+		Camera();
 		Camera(FLOAT near, FLOAT far, FLOAT FOV);
 		~Camera();
 
@@ -38,8 +45,6 @@ namespace RenderLib
 		void initializeProjectionMatrix();
 		void initializeViewMatrix();
 	};
-
-	typedef std::unique_ptr<Camera> CameraPtr;
 }
 
 #endif

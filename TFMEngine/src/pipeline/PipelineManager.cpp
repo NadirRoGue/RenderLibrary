@@ -1,6 +1,7 @@
 #include "pipeline/PipelineManager.h"
 
 #include "pipeline/defaultstages/ComponentRegisterStage.h"
+#include "pipeline/defaultstages/CPUToGPUMeshSyncStage.h"
 
 namespace RenderLib
 {
@@ -9,6 +10,7 @@ namespace RenderLib
 		PipelineManager::PipelineManager()
 		{
 			addPipelineStage<ComponentRegisterStage>();
+			addPipelineStage<CPUToGPUMeshSyncStage>();
 		}
 
 		PipelineManager::~PipelineManager()

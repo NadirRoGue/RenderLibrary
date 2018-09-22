@@ -5,6 +5,8 @@
 
 #include "inputhandlers/InputManager.h"
 
+#include <iostream>
+
 #include "Camera.h"
 
 namespace RenderLib
@@ -111,9 +113,9 @@ namespace RenderLib
 			Scene * activeScene = instance->getSceneManager().getActiveScene();
 			if (activeScene)
 			{
-				for (auto cam : activeScene->getAllCameras())
+				for (auto & cam : activeScene->getAllCameras())
 				{
-					cam->onWindowResize(width, height);
+					cam.get()->onWindowResize(width, height);
 				}
 			}
 		}
@@ -203,6 +205,11 @@ namespace RenderLib
 			if (config.openGLConfigurationCallback)
 			{
 				config.openGLConfigurationCallback();
+			}
+
+			if (glewIsSupported("ARB_direct_state_access"))
+			{
+				std::cout << "is supported" << std::endl;
 			}
 		}
 

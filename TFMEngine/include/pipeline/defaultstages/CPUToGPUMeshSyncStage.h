@@ -7,6 +7,8 @@
 
 #include "pipeline/PipelineStage.h"
 
+#include "GPU/mesh/GPUMesh.h"
+
 namespace RenderLib
 {
 	namespace Pipeline
@@ -21,6 +23,8 @@ namespace RenderLib
 
 			void preRunStage();
 			void runStage();
+		private:
+			GPU::Mesh::GPUMesh * buildGPUMeshFromCPUMesh(CPU::Mesh::Mesh * cpuMesh, size_t offset, bool staticMesh);
 		};
 	}
 }

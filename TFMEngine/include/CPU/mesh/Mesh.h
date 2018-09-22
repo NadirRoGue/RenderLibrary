@@ -26,6 +26,8 @@ namespace RenderLib
 				std::vector<Memory::Vector4Attribute> colors;
 
 				size_t index;
+
+				Memory::MemoryBlock * memoryBlock;
 			public:
 				Mesh();
 				Mesh(const Mesh & other);

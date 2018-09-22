@@ -19,9 +19,9 @@ namespace RenderLib
 				size_t offset;
 				size_t length;
 				size_t sizeUsedBlock;
-				const MemoryPool * pool;
+				MemoryPool * pool;
 
-				MemoryBlock(size_t offset, size_t lenght, const MemoryPool * pool)
+				MemoryBlock(size_t offset, size_t lenght, MemoryPool * pool)
 					: offset(offset)
 					, length(lenght)
 					, pool(pool)
@@ -59,8 +59,8 @@ namespace RenderLib
 				void allocate(size_t newSizeBytes);
 				void release();
 
-				const void * getData() const;
-				const char * getDataAsBytes() const;
+				void * getData();
+				char * getDataAsBytes();
 
 			private:
 				void destroyBlock(std::unique_ptr<MemoryBlock> block); // Pass-by-value unique_ptr http://www.codingstandard.com/rule/8-2-4-do-not-pass-stdunique_ptr-by-const-reference/

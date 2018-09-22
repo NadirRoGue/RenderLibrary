@@ -11,8 +11,8 @@ namespace RenderLib
 	namespace Components
 	{
 		MeshRenderer::MeshRenderer()
-			: cpuToGpuSync(CPUToGPUSyncPolicy::SYNC_ONCE_AT_BEGINNING)
-			, gpuToCpuSync(GPUToCPUSyncPolicy::DO_NOT_SYNC)
+			: cpuToGpuSync(CPUToGPUSyncPolicy::CPU_SYNC_ONCE_AT_BEGINNING)
+			, gpuToCpuSync(GPUToCPUSyncPolicy::GPU_DO_NOT_SYNC)
 		{
 
 		}
@@ -26,6 +26,18 @@ namespace RenderLib
 
 				Logger::Log::getInstance().logWarning("MeshRenderer: Object " + object->objectName + " has no MeshFilter component attached, MeshRenderer component is disabled");
 			}
+		}
+
+		CPU::Mesh::Mesh * MeshRenderer::getCPUMesh()
+		{
+			MeshFilter * meshFilter = object->getComponent<MeshFilter>();
+			if (meshFilter == NULL)
+			{
+				enabled = false;
+				return NULL;
+			}
+
+			return meshFilter->mesh;
 		}
 	}
 }

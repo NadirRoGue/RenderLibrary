@@ -3,22 +3,25 @@
 
 #include "Component.h"
 
+#include "CPU/mesh/Mesh.h"
+#include "GPU/mesh/GPUMesh.h"
+
 namespace RenderLib
 {
 	namespace Components
 	{
 		enum CPUToGPUSyncPolicy
 		{
-			SYNC_ONCE_AT_BEGINNING,
-			SYNC_CONTINOUSLY,
-			DO_NOT_SYNC
+			CPU_SYNC_ONCE_AT_BEGINNING,
+			CPU_SYNC_CONTINOUSLY,
+			CPU_DO_NOT_SYNC
 		};
 
 		enum GPUToCPUSyncPolicy
 		{
-			SYNC_ONCE_AT_END,
-			SYNC_CONTINOUSLY,
-			DO_NOT_SYNC
+			GPU_SYNC_ONCE_AT_END,
+			GPU_SYNC_CONTINOUSLY,
+			GPU_DO_NOT_SYNC
 		};
 
 		class MeshRenderer : public Component
@@ -26,9 +29,12 @@ namespace RenderLib
 		public:
 			CPUToGPUSyncPolicy cpuToGpuSync;
 			GPUToCPUSyncPolicy gpuToCpuSync;
+			GPU::Mesh::GPUMesh * gpuMesh;
 		public:
 			MeshRenderer();
 			void start();
+
+			CPU::Mesh::Mesh * getCPUMesh();
 		};
 	}
 }

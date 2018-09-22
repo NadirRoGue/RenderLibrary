@@ -18,6 +18,7 @@ namespace RenderLib
 				}
 
 				mesh->index = memBlock->index;
+				mesh->memoryBlock = memBlock;
 
 				// Faces are not interleaved, but stored as a contiguous block at the beginning of the mesh allocated memory
 				mesh->faces.setAttributeSource(memBlock, 0, 0, meshConfig->numFaces);

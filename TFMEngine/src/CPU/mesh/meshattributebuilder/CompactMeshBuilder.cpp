@@ -20,6 +20,7 @@ namespace RenderLib
 					throw std::runtime_error("CompactMeshBuilder: Wrong BlockConfiguration object passed to configure mesh attributes");
 				}
 
+				dst->memoryBlock = memBlock;
 				dst->index = memBlock->index;
 
 				dst->faces.setAttributeSource(memBlock, offset, 0, meshConfig->numFaces);

@@ -9,7 +9,11 @@ namespace RenderLib
 		void RenderStage::registerElement(Component * comp)
 		{
 			Components::MeshRenderer * meshRenderer = static_cast<Components::MeshRenderer*>(comp);
-			renderPipeline.registerRenderable(meshRenderer);
+
+			if (meshRenderer->cpuToGpuSync != Components::CPUToGPUSyncPolicy::CPU_DO_NOT_SYNC)
+			{
+				renderPipeline.registerRenderable(meshRenderer);
+			}
 		}
 
 		void RenderStage::preRunStage()

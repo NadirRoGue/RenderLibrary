@@ -5,8 +5,10 @@
 
 #define USE_DOUBLE_PRECISSION__
 
+
 #ifdef USE_DOUBLE_PRECISSION__
 #define FLOAT double
+#define USE_DOUBLE_PRECISSION_ON_SHADERS__
 #else
 #define FLOAT float
 #endif

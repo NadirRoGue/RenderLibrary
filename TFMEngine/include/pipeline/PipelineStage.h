@@ -1,3 +1,4 @@
+
 #ifndef __CPU_PIPELINE_STAGE_H__
 #define __CPU_PIPELINE_STAGE_H__
 
@@ -17,6 +18,8 @@
 
 namespace RenderLib
 {
+	class EngineInstance;
+
 	namespace Pipeline
 	{
 		class PipelineManager;
@@ -24,8 +27,7 @@ namespace RenderLib
 		class PipelineStage
 		{
 		public:
-			Scene * scene;
-			PipelineManager * pipelineManager;
+			EngineInstance * engineInstance;
 		public:
 			PipelineStage();
 			~PipelineStage();

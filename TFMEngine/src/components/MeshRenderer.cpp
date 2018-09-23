@@ -28,6 +28,17 @@ namespace RenderLib
 			}
 		}
 
+		size_t MeshRenderer::getIndex()
+		{
+			CPU::Mesh::Mesh * cpuMesh = getCPUMesh();
+			if (cpuMesh != NULL)
+			{
+				return cpuMesh->index;
+			}
+
+			return 0;
+		}
+
 		CPU::Mesh::Mesh * MeshRenderer::getCPUMesh()
 		{
 			MeshFilter * meshFilter = object->getComponent<MeshFilter>();

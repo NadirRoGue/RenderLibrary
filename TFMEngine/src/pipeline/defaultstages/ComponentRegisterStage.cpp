@@ -2,7 +2,7 @@
 
 #include "pipeline/PipelineManager.h"
 
-#include <iostream>
+#include "EngineInstance.h"
 
 namespace RenderLib
 {
@@ -10,7 +10,9 @@ namespace RenderLib
 	{
 		void ComponentRegisterStage::preRunStage()
 		{
-			PipelineBroker & stageBroker = pipelineManager->getStageBroker();
+			
+			PipelineBroker & stageBroker = engineInstance->getPipelineManager().getStageBroker();
+			Scene * scene = engineInstance->getSceneManager().getActiveScene();
 
 			std::vector<SceneObjectPtr> & objects = scene->getSceneObjects();
 			for (auto & objPtr : objects)

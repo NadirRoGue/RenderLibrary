@@ -160,8 +160,12 @@
     <ClInclude Include="include\Defines.h" />
     <ClInclude Include="include\EngineException.h" />
     <ClInclude Include="include\EngineInstance.h" />
+    <ClInclude Include="include\GPU\mesh\GPUBuffer.h" />
     <ClInclude Include="include\GPU\mesh\GPUMesh.h" />
     <ClInclude Include="include\GPU\mesh\GPUMeshManager.h" />
+    <ClInclude Include="include\GPU\program\defaultprograms\StandardProgram.h" />
+    <ClInclude Include="include\GPU\program\Program.h" />
+    <ClInclude Include="include\GPU\program\ProgramManager.h" />
     <ClInclude Include="include\graphics\ContextManager.h" />
     <ClInclude Include="include\graphics\defaultwindowhandlers\GLFWWindowHandler.h" />
     <ClInclude Include="include\graphics\WindowHandler.h" />
@@ -184,7 +188,6 @@
     <ClInclude Include="include\pipeline\PipelineBroker.h" />
     <ClInclude Include="include\pipeline\PipelineManager.h" />
     <ClInclude Include="include\pipeline\PipelineStage.h" />
-    <ClInclude Include="include\Program.h" />
     <ClInclude Include="include\render\RenderingPipeline.h" />
     <ClInclude Include="include\render\AbstractRenderingStage.h" />
     <ClInclude Include="include\render\RenderStage.h" />
@@ -216,8 +219,12 @@
     <ClCompile Include="src\CPU\mesh\MeshUtil.cpp" />
     <ClCompile Include="src\EngineException.cpp" />
     <ClCompile Include="src\EngineInstance.cpp" />
+    <ClCompile Include="src\GPU\mesh\GPUBuffer.cpp" />
     <ClCompile Include="src\GPU\mesh\GPUMesh.cpp" />
     <ClCompile Include="src\GPU\mesh\GPUMeshManager.cpp" />
+    <ClCompile Include="src\GPU\program\defaultprograms\StandardProgram.cpp" />
+    <ClCompile Include="src\GPU\program\Program.cpp" />
+    <ClCompile Include="src\GPU\program\ProgramManager.cpp" />
     <ClCompile Include="src\graphics\ContextManager.cpp" />
     <ClCompile Include="src\graphics\defaultwindowhandlers\GLFWWindowHandler.cpp" />
     <ClCompile Include="src\graphics\WindowHandler.cpp" />
@@ -237,7 +244,6 @@
     <ClCompile Include="src\pipeline\PipelineBroker.cpp" />
     <ClCompile Include="src\pipeline\PipelineManager.cpp" />
     <ClCompile Include="src\pipeline\PipelineStage.cpp" />
-    <ClCompile Include="src\Program.cpp" />
     <ClCompile Include="src\render\AbstractRenderingStage.cpp" />
     <ClCompile Include="src\render\RenderingPipeline.cpp" />
     <ClCompile Include="src\render\RenderStage.cpp" />

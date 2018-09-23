@@ -6,7 +6,6 @@
 #include <typeinfo>
 #include <memory>
 
-#include "Program.h"
 #include "SceneObject.h"
 #include "Camera.h"
 

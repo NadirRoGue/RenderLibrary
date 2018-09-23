@@ -9,6 +9,8 @@
 
 #include "graphics/WindowHandler.h"
 
+#include "GPU/mesh/GPUMeshManager.h"
+
 namespace RenderLib
 {
 	class EngineInstance
@@ -20,6 +22,7 @@ namespace RenderLib
 
 		std::unique_ptr<Pipeline::PipelineManager> pipelineManager;
 		std::unique_ptr<SceneManager> sceneManager;
+		std::unique_ptr<GPU::Mesh::GPUMeshManager> gpuMeshManager;
 
 		Graphics::WindowHandler * window;
 
@@ -37,6 +40,10 @@ namespace RenderLib
 		Graphics::WindowHandler * getWindow();
 		Pipeline::PipelineManager & getPipelineManager();
 		SceneManager & getSceneManager();
+		GPU::Mesh::GPUMeshManager & getGPUMeshManager();
+
+		void acquireContext();
+		void releaseContext();
 
 		void disable();
 		bool isEnabled();

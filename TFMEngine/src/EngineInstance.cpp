@@ -20,8 +20,9 @@ namespace RenderLib
 			throw EngineException(("EngineInstance: Failed constructing instance " + instanceName + ", WindowHandler is NULL").c_str());
 		}
 
-		pipelineManager = std::make_unique<Pipeline::PipelineManager>();
+		pipelineManager = std::make_unique<Pipeline::PipelineManager>(this);
 		sceneManager = std::make_unique<SceneManager>();
+		gpuMeshManager = std::make_unique<GPU::Mesh::GPUMeshManager>();
 		window->instance = this;
 	}
 
@@ -46,10 +47,15 @@ namespace RenderLib
 		return window;
 	}
 
+	GPU::Mesh::GPUMeshManager & EngineInstance::getGPUMeshManager()
+	{
+		return *(gpuMeshManager.get());
+	}
+
 	void EngineInstance::loadActiveScene()
 	{
 		Scene * scene = sceneManager.get()->getActiveScene();
-		pipelineManager.get()->initializeStages(scene);
+		pipelineManager.get()->initializeStages();
 	}
 	
 	void EngineInstance::loadScene(const std::string & sceneName)
@@ -93,8 +99,19 @@ namespace RenderLib
 		pipelineManager.get()->executePipeline();
 
 		// Swap buffers
-		Graphics::ContextManager::getInstance().aquireContext();
+		acquireContext();
 		window->onRenderLoopIteration();
+		releaseContext();
+	}
+
+	void EngineInstance::acquireContext()
+	{
+		Graphics::ContextManager().getInstance().aquireContext();
+		window->activateContext();
+	}
+
+	void EngineInstance::releaseContext()
+	{
 		Graphics::ContextManager::getInstance().releaseContext();
 	}
 

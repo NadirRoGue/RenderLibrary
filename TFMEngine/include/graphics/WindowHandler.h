@@ -43,9 +43,13 @@ namespace RenderLib
 
 			const std::string & getTitle();
 
-			virtual void initialize() = 0;
+			virtual void initialize();
+
+			virtual void initializeWindowContext() = 0;
 
 			virtual bool isActive() = 0;
+
+			virtual void activateContext() = 0;
 
 			virtual void onRenderLoopIteration() = 0;
 

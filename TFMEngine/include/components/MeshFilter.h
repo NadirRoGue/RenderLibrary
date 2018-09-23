@@ -11,7 +11,7 @@ namespace RenderLib
 {
 	namespace Components
 	{
-		class MeshFilter : public Component
+		class MeshFilter : public Component, public CPU::Memory::SortablePoolElement
 		{
 		public:
 			CPU::Mesh::Mesh * mesh;

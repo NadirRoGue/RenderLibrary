@@ -17,6 +17,7 @@ using namespace RenderLib;
 using namespace RenderLib::CPU;
 using namespace RenderLib::Logger;
 
+
 int main(int argc, void ** arg)
 {
 	/*** INSTANCE SET UP ***/

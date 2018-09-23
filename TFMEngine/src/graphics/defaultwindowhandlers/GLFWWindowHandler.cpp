@@ -124,6 +124,7 @@ namespace RenderLib
 
 		void GLFWWindowErrorCallback(int errorCode, const char * message)
 		{
+			//std::cout << errorCode << " " << message << std::endl;
 			throw new EngineException(("GLFW Error (" + std::to_string(errorCode) + ": " + std::string(message)).c_str());
 		}
 
@@ -152,10 +153,11 @@ namespace RenderLib
 			}
 		}
 
-		void GLFWWindowHandler::initialize()
+		void GLFWWindowHandler::initializeWindowContext()
 		{
 			if (!glfwInit())
 			{
+				std::cout << "GLFW Not initialized" << std::endl;
 				return;
 			}
 
@@ -198,24 +200,16 @@ namespace RenderLib
 			glfwSetWindowPos(window, config.windowPosX, config.windowPosY);
 
 			glfwSwapInterval(2);
-
-			// Call a default OpenGL config (may be overwritten by the passed callback)
-			defaultOpenGLConfiguration();
-
-			if (config.openGLConfigurationCallback)
-			{
-				config.openGLConfigurationCallback();
-			}
-
-			if (glewIsSupported("ARB_direct_state_access"))
-			{
-				std::cout << "is supported" << std::endl;
-			}
 		}
 
 		bool GLFWWindowHandler::isActive()
 		{
 			return !glfwWindowShouldClose(window);
+		}
+
+		void GLFWWindowHandler::activateContext()
+		{
+			glfwMakeContextCurrent(window);
 		}
 
 		void GLFWWindowHandler::onRenderLoopIteration()

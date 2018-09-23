@@ -4,6 +4,8 @@
 #include <memory>
 #include <vector>
 
+#include "GPU/mesh/GPUBuffer.h"
+
 namespace RenderLib
 {
 	namespace GPU
@@ -38,9 +40,10 @@ namespace RenderLib
 			class GPUMesh
 			{
 			public:
-				unsigned int vao;
+				GPUBuffer * gpuBuffer;
 				
 				size_t faceIndexOffset;
+				size_t dataIndexOffset;
 
 				GPUAttribute faces;
 				GPUAttribute vertices;

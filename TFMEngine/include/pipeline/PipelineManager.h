@@ -10,16 +10,19 @@
 
 namespace RenderLib
 {
+	class EngineInstance;
+
 	namespace Pipeline
 	{
 		class PipelineManager
 		{
 		private:
+			EngineInstance * engineInstance;
 			Pipeline pipeline;
 			PipelineBroker stageBroker;
 
 		public:
-			PipelineManager();
+			PipelineManager(EngineInstance * engInstance);
 			~PipelineManager();
 
 			Pipeline & getPipeline();
@@ -30,7 +33,7 @@ namespace RenderLib
 			{
 				T * result = pipeline.registerStage<T>();
 				PipelineStage * stage = dynamic_cast<PipelineStage*>(result);
-				stage->pipelineManager = this;
+				stage->engineInstance = engineInstance;
 				if (result && stage)
 				{
 					stageBroker.registerPipelineStage(result);
@@ -48,7 +51,7 @@ namespace RenderLib
 			void registerComponent(Component * component);
 			void removeComponent(Component * component);
 
-			void initializeStages(Scene * scene);
+			void initializeStages();
 
 			void finishStages();
 

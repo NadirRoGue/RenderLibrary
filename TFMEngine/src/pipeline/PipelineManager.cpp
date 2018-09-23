@@ -3,12 +3,15 @@
 #include "pipeline/defaultstages/ComponentRegisterStage.h"
 #include "pipeline/defaultstages/CPUToGPUMeshSyncStage.h"
 
+#include "EngineInstance.h"
+
 namespace RenderLib
 {
 	namespace Pipeline
 	{
-		PipelineManager::PipelineManager()
+		PipelineManager::PipelineManager(EngineInstance * engInstance)
 		{
+			engineInstance = engInstance;
 			addPipelineStage<ComponentRegisterStage>();
 			addPipelineStage<CPUToGPUMeshSyncStage>();
 		}
@@ -38,14 +41,13 @@ namespace RenderLib
 
 		}
 
-		void PipelineManager::initializeStages(Scene * scene)
+		void PipelineManager::initializeStages()
 		{
 			for (auto & stagePtr : pipeline.getAllStages())
 			{
 				PipelineStage * stage = stagePtr.get();
 				if (stage)
 				{
-					stage->scene = scene;
 					stage->preRunStage();
 				}
 			}

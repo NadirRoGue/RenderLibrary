@@ -22,9 +22,11 @@ namespace RenderLib
 			GLFWWindowHandler(WindowConfiguration config);
 			~GLFWWindowHandler();
 
-			virtual void initialize();
+			virtual void initializeWindowContext();
 
 			bool isActive();
+
+			void activateContext();
 
 			void onRenderLoopIteration();
 

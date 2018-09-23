@@ -19,6 +19,21 @@ namespace RenderLib
 			return config.windowTitle;
 		}
 
+		void WindowHandler::initialize()
+		{
+			initializeWindowContext();
+
+			glewInit();
+
+			// Call a default OpenGL config (may be overwritten by the passed callback)
+			defaultOpenGLConfiguration();
+
+			if (config.openGLConfigurationCallback)
+			{
+				config.openGLConfigurationCallback();
+			}
+		}
+
 		void WindowHandler::defaultOpenGLConfiguration()
 		{
 			// Basic OPENGL Context configuration

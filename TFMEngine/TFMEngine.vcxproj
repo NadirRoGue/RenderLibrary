@@ -141,6 +141,8 @@
     <ClInclude Include="include\components\MeshFilter.h" />
     <ClInclude Include="include\components\MeshRenderer.h" />
     <ClInclude Include="include\CPU\io\defaultloaders\AssimpFileLoader.h" />
+    <ClInclude Include="include\CPU\io\defaultloaders\TextFileLoader.h" />
+    <ClInclude Include="include\CPU\io\defaultloadresults\TextFileLoadResult.h" />
     <ClInclude Include="include\CPU\io\FileLoader.h" />
     <ClInclude Include="include\CPU\io\FileLoadResult.h" />
     <ClInclude Include="include\CPU\io\FileManager.h" />
@@ -205,6 +207,8 @@
     <ClCompile Include="src\components\MeshFilter.cpp" />
     <ClCompile Include="src\components\MeshRenderer.cpp" />
     <ClCompile Include="src\CPU\io\defaultloaders\AssimpFileLoader.cpp" />
+    <ClCompile Include="src\CPU\io\defaultloaders\TextFileLoader.cpp" />
+    <ClCompile Include="src\CPU\io\defaultloadresults\TextFileLoadResult.cpp" />
     <ClCompile Include="src\CPU\io\FileLoader.cpp" />
     <ClCompile Include="src\CPU\io\FileManager.cpp" />
     <ClCompile Include="src\CPU\memory\MemoryPool.cpp" />

@@ -1,5 +1,5 @@
-#ifndef __RENDERLIB_CPU_ASSIMPFILELOADER_H__
-#define __RENDERLIB_CPU_ASSIMPFILELOADER_H__
+#ifndef __RENDERLIB_CPU_IO_ASSIMPFILELOADER_H__
+#define __RENDERLIB_CPU_IO_ASSIMPFILELOADER_H__
 
 #include "CPU/io/FileLoader.h"
 #include "CPU/mesh/MeshLoadResult.h"

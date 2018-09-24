@@ -139,6 +139,12 @@
     <Filter Include="Archivos de origen\GPU\program\defaultprograms">
       <UniqueIdentifier>{f2a474bc-5f3b-4dd7-b861-d5d1e2d1c65b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Archivos de encabezado\CPU\io\defaultloadresults">
+      <UniqueIdentifier>{3ad65903-a112-4c08-bdc3-e47879e5c16b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\CPU\io\defaultloadresults">
+      <UniqueIdentifier>{57ebd423-60b2-4a79-8349-7c3e48ad5f09}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Component.h">
@@ -330,6 +336,12 @@
     <ClInclude Include="include\GPU\program\defaultprograms\StandardProgram.h">
       <Filter>Archivos de encabezado\GPU\program\defaultprograms</Filter>
     </ClInclude>
+    <ClInclude Include="include\CPU\io\defaultloaders\TextFileLoader.h">
+      <Filter>Archivos de encabezado\CPU\io\defaultloaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CPU\io\defaultloadresults\TextFileLoadResult.h">
+      <Filter>Archivos de encabezado\CPU\io\defaultloadresults</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Component.cpp">
@@ -493,6 +505,12 @@
     </ClCompile>
     <ClCompile Include="src\GPU\program\defaultprograms\StandardProgram.cpp">
       <Filter>Archivos de origen\GPU\program\defaultprograms</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CPU\io\defaultloaders\TextFileLoader.cpp">
+      <Filter>Archivos de origen\CPU\io\defaultloaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CPU\io\defaultloadresults\TextFileLoadResult.cpp">
+      <Filter>Archivos de origen\CPU\io\defaultloadresults</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

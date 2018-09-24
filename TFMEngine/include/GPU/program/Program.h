@@ -60,12 +60,6 @@ namespace RenderLib
 				void setUniformMatrix4(const unsigned int & id, const unsigned int & count, const bool & transpose, const FLOAT * val);
 			};
 
-			class AbstractProgramFactory
-			{
-			public:
-				virtual Program * createProgram(UberParamMask mask) = 0;
-			};
-
 			class ProgramFactory
 			{
 			private:
@@ -79,6 +73,7 @@ namespace RenderLib
 				{
 				}
 
+				template<class T>
 				T * createProgram(UberParamMask mask)
 				{
 					auto it = shaderCache.find(mask);
@@ -87,9 +82,11 @@ namespace RenderLib
 						return it->second.get();
 					}
 
-					std::unique_ptr<T> newProgram = std::make_unique<T>(mask);
-					T * result = newProgram.get();
+					std::unique_ptr<Program> newProgram = std::make_unique<T>(mask);
+					T * result = dynamic_cast<T*>(newProgram.get());
 					shaderCache[mask] = std::move(newProgram);
+
+					return result;
 				}
 			};
 		}

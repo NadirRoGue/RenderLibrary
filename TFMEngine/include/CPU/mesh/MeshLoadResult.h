@@ -28,7 +28,7 @@ namespace RenderLib
 				std::vector<VECTOR3> bitangents;
 				std::vector<std::vector<VECTOR2>> uvs;
 				std::vector<std::vector<VECTOR4>> colors;
-
+			public:
 				size_t getResultSizeBytes();
 			};
 		}

@@ -1,7 +1,7 @@
 #ifndef __RENDERLIB_INSTANCEMANAGER_H__
 #define __RENDERLIB_INSTANCEMANAGER_H__
 
-#include <map>
+#include <unordered_map>
 
 #include <memory>
 
@@ -27,7 +27,7 @@ namespace RenderLib
 	public:
 		static InstanceManager & getInstance();
 	private:
-		std::map<unsigned int, EngineInstancePtr> instances;
+		std::unordered_map<unsigned int, EngineInstancePtr> instances;
 		std::mutex aquireIDMtx;
 		unsigned int instanceIDSeed;
 	private:

@@ -11,9 +11,11 @@ namespace RenderLib
 	{
 		namespace IO
 		{
-			class TextFileLoadResult : public AbstractLoadResult
+			class ShaderLoadResult : public AbstractLoadResult
 			{
 			public:
+				std::string header;
+				std::string body;
 				std::vector<char> text;
 			public:
 				size_t getResultSizeBytes();

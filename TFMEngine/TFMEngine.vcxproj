@@ -141,8 +141,8 @@
     <ClInclude Include="include\components\MeshFilter.h" />
     <ClInclude Include="include\components\MeshRenderer.h" />
     <ClInclude Include="include\CPU\io\defaultloaders\AssimpFileLoader.h" />
-    <ClInclude Include="include\CPU\io\defaultloaders\TextFileLoader.h" />
-    <ClInclude Include="include\CPU\io\defaultloadresults\TextFileLoadResult.h" />
+    <ClInclude Include="include\CPU\io\defaultloaders\ShaderLoader.h" />
+    <ClInclude Include="include\CPU\io\defaultloadresults\ShaderLoadResult.h" />
     <ClInclude Include="include\CPU\io\FileLoader.h" />
     <ClInclude Include="include\CPU\io\FileLoadResult.h" />
     <ClInclude Include="include\CPU\io\FileManager.h" />
@@ -165,9 +165,11 @@
     <ClInclude Include="include\GPU\mesh\GPUBuffer.h" />
     <ClInclude Include="include\GPU\mesh\GPUMesh.h" />
     <ClInclude Include="include\GPU\mesh\GPUMeshManager.h" />
+    <ClInclude Include="include\GPU\program\ComputeProgram.h" />
     <ClInclude Include="include\GPU\program\defaultprograms\StandardProgram.h" />
     <ClInclude Include="include\GPU\program\Program.h" />
     <ClInclude Include="include\GPU\program\ProgramManager.h" />
+    <ClInclude Include="include\GPU\program\ShaderProgram.h" />
     <ClInclude Include="include\graphics\ContextManager.h" />
     <ClInclude Include="include\graphics\defaultwindowhandlers\GLFWWindowHandler.h" />
     <ClInclude Include="include\graphics\WindowHandler.h" />
@@ -207,8 +209,8 @@
     <ClCompile Include="src\components\MeshFilter.cpp" />
     <ClCompile Include="src\components\MeshRenderer.cpp" />
     <ClCompile Include="src\CPU\io\defaultloaders\AssimpFileLoader.cpp" />
-    <ClCompile Include="src\CPU\io\defaultloaders\TextFileLoader.cpp" />
-    <ClCompile Include="src\CPU\io\defaultloadresults\TextFileLoadResult.cpp" />
+    <ClCompile Include="src\CPU\io\defaultloaders\ShaderLoader.cpp" />
+    <ClCompile Include="src\CPU\io\defaultloadresults\ShaderLoadResult.cpp" />
     <ClCompile Include="src\CPU\io\FileLoader.cpp" />
     <ClCompile Include="src\CPU\io\FileManager.cpp" />
     <ClCompile Include="src\CPU\memory\MemoryPool.cpp" />
@@ -226,9 +228,11 @@
     <ClCompile Include="src\GPU\mesh\GPUBuffer.cpp" />
     <ClCompile Include="src\GPU\mesh\GPUMesh.cpp" />
     <ClCompile Include="src\GPU\mesh\GPUMeshManager.cpp" />
+    <ClCompile Include="src\GPU\program\ComputeProgram.cpp" />
     <ClCompile Include="src\GPU\program\defaultprograms\StandardProgram.cpp" />
     <ClCompile Include="src\GPU\program\Program.cpp" />
     <ClCompile Include="src\GPU\program\ProgramManager.cpp" />
+    <ClCompile Include="src\GPU\program\ShaderProgram.cpp" />
     <ClCompile Include="src\graphics\ContextManager.cpp" />
     <ClCompile Include="src\graphics\defaultwindowhandlers\GLFWWindowHandler.cpp" />
     <ClCompile Include="src\graphics\WindowHandler.cpp" />

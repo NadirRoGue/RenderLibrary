@@ -1,5 +1,5 @@
-#ifndef __RENDERLIB_CPU_IO_TEXTFILELOADER_H__
-#define __RENDERLIB_CPU_IO_TEXTFILELOADER_H__
+#ifndef __RENDERLIB_CPU_IO_SHADERLOADER_H__
+#define __RENDERLIB_CPU_IO_SHADERLOADER_H__
 
 #include <vector>
 
@@ -11,10 +11,10 @@ namespace RenderLib
 	{
 		namespace IO
 		{
-			class TextFileLoader : public FileLoader
+			class ShaderLoader : public FileLoader
 			{
 			public:
-				TextFileLoader();
+				ShaderLoader();
 				std::vector<AbstractLoadResultPtr> loadFile(const std::string & filePath, unsigned int options);
 			};
 		}

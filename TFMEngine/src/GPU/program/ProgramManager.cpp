@@ -3,7 +3,7 @@
 #include <GL/glew.h>
 
 #include "CPU/io/FileManager.h"
-#include "CPU/io/defaultloadresults/TextFileLoadResult.h"
+#include "CPU/io/defaultloadresults/ShaderLoadResult.h"
 
 #define VERSION_HEADER_LENGHT 17
 
@@ -38,7 +38,7 @@ namespace RenderLib
 			unsigned int ProgramManager::loadShaderFromFile(GLenum shaderType, const std::string & filePath, std::vector<std::string> & configStrings)
 			{
 				std::vector<CPU::IO::AbstractLoadResultPtr> fileloadResultVector = CPU::IO::FileManager::loadFile(filePath, 0);
-				CPU::IO::TextFileLoadResult * loadResult = dynamic_cast<CPU::IO::TextFileLoadResult*>(fileloadResultVector[0].get());
+				CPU::IO::ShaderLoadResult * loadResult = dynamic_cast<CPU::IO::ShaderLoadResult*>(fileloadResultVector[0].get());
 
 				size_t fileLen = loadResult->getResultSizeBytes() - 1;
 
@@ -46,15 +46,15 @@ namespace RenderLib
 
 				if (!configStrings.empty())
 				{
-					std::string header = result.substr(0, VERSION_HEADER_LENGHT);
-					std::string body = result.substr(VERSION_HEADER_LENGHT, result.size() - VERSION_HEADER_LENGHT);
+					//std::string header = result.substr(0, VERSION_HEADER_LENGHT);
+					//std::string body = result.substr(VERSION_HEADER_LENGHT, result.size() - VERSION_HEADER_LENGHT);
 					std::string defines;
 
 					for (auto & cnfgStr : configStrings)
 					{
 						defines += "#define " + cnfgStr + "\n";
 					}
-					result = header + "\n" + defines + "\n" + body;
+					result = loadResult->header + "\n" + defines + "\n" + loadResult->body;
 				}
 
 				char * finalSourceCStr = new char[result.size()];

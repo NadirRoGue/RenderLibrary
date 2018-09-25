@@ -8,38 +8,7 @@ namespace RenderLib
 	{
 		namespace IO
 		{
-			std::map <std::string, FileLoader*> FileManager::fileLoaders;
-
-			void FileManager::registerFileLoader(FileLoader * loaderInstance)
-			{
-				if (!loaderInstance)
-				{
-					std::cerr << "FileManager: NULL FileLoader instance passed to registration" << std::endl;
-					return;
-				}
-
-				for (auto & extension : loaderInstance->getSupportedExtensions())
-				{
-					auto it = fileLoaders.find(extension);
-					if (it != fileLoaders.end() && it->second != NULL)
-					{
-						std::cerr << "FileManager: [Warning] Overwritted file loader "
-							<< typeid(it->second).name()
-							<< " for "
-							<< typeid(loaderInstance).name()
-							<< " for extension \""
-							<< extension << "\""
-							<< std::endl;
-
-						delete it->second;
-						it->second = loaderInstance;
-					}
-					else
-					{
-						fileLoaders[extension] = loaderInstance;
-					}
-				}
-			}
+			std::unordered_map <std::string, std::shared_ptr<FileLoader>> FileManager::fileLoaders;
 
 			std::vector<AbstractLoadResultPtr> FileManager::loadFile(const std::string & path, unsigned int options)
 			{
@@ -61,7 +30,7 @@ namespace RenderLib
 					throw std::runtime_error("FileManager::loadFile unsupported file extendion: " + extension);
 				}
 
-				FileLoader * loader = it->second;
+				FileLoader * loader = it->second.get();
 
 				if (loader)
 				{

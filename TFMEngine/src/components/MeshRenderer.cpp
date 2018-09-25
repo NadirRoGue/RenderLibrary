@@ -13,6 +13,7 @@ namespace RenderLib
 		MeshRenderer::MeshRenderer()
 			: cpuToGpuSync(CPUToGPUSyncPolicy::CPU_SYNC_ONCE_AT_BEGINNING)
 			, gpuToCpuSync(GPUToCPUSyncPolicy::GPU_DO_NOT_SYNC)
+			, preferredRender(PreferredRenderer::AUTO_SELECT)
 		{
 
 		}

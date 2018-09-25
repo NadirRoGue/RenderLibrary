@@ -7,6 +7,8 @@
 
 #include "Defines.h"
 
+#include "EngineInstance.h"
+
 namespace RenderLib
 {
 	namespace GPU
@@ -15,24 +17,41 @@ namespace RenderLib
 		{
 			typedef unsigned long long UberParamMask;
 
+			typedef struct ProgramParams
+			{
+				UberParamMask mask;
+
+				/* 
+				 * Optional callback to be executed once every render loop iteration.
+				 * Can be used to set up common global uniforms across all objects
+				 */
+				std::function<void(const EngineInstance & instance)> renderIterationInit;
+
+				ProgramParams()
+					: mask(0)
+				{
+
+				}
+
+			} ProgramParams;
+
 			class Program
 			{
 			private:
 				UberParamMask configMask;
+				std::function<void(const EngineInstance & instance)> renderInitCallback;
 			public:
 				unsigned int programId;
-
-				unsigned int vertexShaderId;
-				unsigned int fragmentShaderId;
-
 			public:
-				Program(UberParamMask parameterMask);
+				Program(const ProgramParams & config);
 				~Program();
 
 				virtual void getUberShaderDefines(std::vector<std::string> & definesBuffer);
 
 				void bind();
 				void unBind();
+
+				void executePreRenderCallback(const EngineInstance & instance);
 
 				void setUniformI (const unsigned int & id, const int & val);
 				void setUniformI2(const unsigned int & id, const int & v1, const int & v2);
@@ -58,6 +77,8 @@ namespace RenderLib
 				void setUniformMatrix2(const unsigned int & id, const unsigned int & count, const bool & transpose, const FLOAT * val);
 				void setUniformMatrix3(const unsigned int & id, const unsigned int & count, const bool & transpose, const FLOAT * val);
 				void setUniformMatrix4(const unsigned int & id, const unsigned int & count, const bool & transpose, const FLOAT * val);
+				
+				
 			};
 
 			class ProgramFactory

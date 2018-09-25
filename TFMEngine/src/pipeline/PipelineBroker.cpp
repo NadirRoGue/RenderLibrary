@@ -28,7 +28,7 @@ namespace RenderLib
 		{
 			std::type_index type = component->getComponentType();
 
-			std::map<std::type_index, std::vector<AbstractElementBasedStage*>>::iterator it = elementStages.find(type);
+			auto it = elementStages.find(type);
 			if (it != elementStages.end())
 			{
 				for (auto stage : it->second)
@@ -38,7 +38,7 @@ namespace RenderLib
 			}
 		}
 
-		const std::map<std::type_index, std::vector<AbstractElementBasedStage*>> & PipelineBroker::getElementStages()
+		const std::unordered_map<std::type_index, std::vector<AbstractElementBasedStage*>> & PipelineBroker::getElementStages()
 		{
 			return elementStages;
 		}

@@ -16,7 +16,7 @@ namespace RenderLib
 
 	Scene * SceneManager::createScene(const std::string & sceneName)
 	{
-		std::map<std::string, std::unique_ptr<Scene>>::iterator it = sceneCache.find(sceneName);
+		auto it = sceneCache.find(sceneName);
 
 		Scene * scene = NULL;
 
@@ -35,7 +35,7 @@ namespace RenderLib
 
 	void SceneManager::deleteScene(const std::string & sceneName)
 	{
-		std::map<std::string, std::unique_ptr<Scene>>::iterator it = sceneCache.find(sceneName);
+		auto it = sceneCache.find(sceneName);
 		if (it != sceneCache.end())
 		{
 			it->second.reset();
@@ -46,7 +46,7 @@ namespace RenderLib
 
 	Scene * SceneManager::getScene(const std::string & sceneName)
 	{
-		std::map<std::string, std::unique_ptr<Scene>>::iterator it = sceneCache.find(sceneName);
+		auto it = sceneCache.find(sceneName);
 		if (it == sceneCache.end())
 		{
 			return NULL;
@@ -62,7 +62,7 @@ namespace RenderLib
 
 	void SceneManager::setActiveScene(std::string sceneName)
 	{
-		std::map<std::string, std::unique_ptr<Scene>>::iterator it = sceneCache.find(sceneName);
+		auto it = sceneCache.find(sceneName);
 		if (it != sceneCache.end())
 		{
 			activeScene = it->second.get();

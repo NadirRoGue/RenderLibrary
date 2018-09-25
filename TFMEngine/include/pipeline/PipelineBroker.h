@@ -1,7 +1,7 @@
 #ifndef __RENDER_LIB_PIPELINEBROKER_H__
 #define __RENDER_LIB_PIPELINEBROKER_H__
 
-#include <map>
+#include <unordered_map>
 #include <vector>
 
 #include <typeinfo>
@@ -18,7 +18,7 @@ namespace RenderLib
 		class PipelineBroker
 		{
 		private:
-			std::map<std::type_index, std::vector<AbstractElementBasedStage*>> elementStages;
+			std::unordered_map<std::type_index, std::vector<AbstractElementBasedStage*>> elementStages;
 		public:
 			PipelineBroker();
 			~PipelineBroker();
@@ -27,7 +27,7 @@ namespace RenderLib
 
 			void registerElement(Component * component);
 
-			const std::map<std::type_index, std::vector<AbstractElementBasedStage*>> & getElementStages();
+			const std::unordered_map<std::type_index, std::vector<AbstractElementBasedStage*>> & getElementStages();
 		};
 	}
 }

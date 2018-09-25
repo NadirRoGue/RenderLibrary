@@ -1,8 +1,6 @@
 #ifndef __CPU_PIPELINE_H__
 #define __CPU_PIPELINE_H__
 
-#include <iostream>
-
 #include <vector>
 #include <memory>
 

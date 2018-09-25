@@ -1,7 +1,7 @@
 #ifndef __RENDERLIB_CPU_MESHMANAGER__
 #define __RENDERLIB_CPU_MESHMANAGER__
 
-#include <map>
+#include <unordered_map>
 #include <memory>
 #include <vector>
 
@@ -21,7 +21,7 @@ namespace RenderLib
 			private:
 				static MeshManager * INSTANCE;
 			private:
-				std::map<std::string, std::vector<std::unique_ptr<Mesh>>> meshes;
+				std::unordered_map<std::string, std::vector<std::unique_ptr<Mesh>>> meshes;
 			public:
 				static unsigned int OPTION_COMPUTE_NORMALS_IF_ABSENT;
 				static unsigned int OPTION_COMPUTE_TANGENTS_IF_ABSENT;

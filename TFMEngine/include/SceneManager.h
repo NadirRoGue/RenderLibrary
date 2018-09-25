@@ -1,7 +1,7 @@
 #ifndef __RENDERLIB_SCENEMANAGER_H__
 #define __RENDERLIB_SCENEMANAGER_H__
 
-#include <map>
+#include <unordered_map>
 #include <memory>
 
 #include "Scene.h"
@@ -11,7 +11,7 @@ namespace RenderLib
 	class SceneManager
 	{
 	private:
-		std::map<std::string, std::unique_ptr<Scene>> sceneCache;
+		std::unordered_map<std::string, std::unique_ptr<Scene>> sceneCache;
 
 		Scene * activeScene;
 

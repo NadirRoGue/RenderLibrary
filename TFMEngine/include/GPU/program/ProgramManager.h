@@ -2,7 +2,7 @@
 #define __RENDERLIB_GPU_PROGRAM_PROGRAMMANAGER_H__
 
 #include <memory>
-#include <map>
+#include <unordered_map>
 #include <vector>
 
 #include <typeindex>
@@ -27,7 +27,7 @@ namespace RenderLib
 			public:
 				static ProgramManager & getInstance();
 			private:
-				std::map<std::type_index, std::unique_ptr<ProgramFactory>> factories;
+				std::unordered_map<std::type_index, std::unique_ptr<ProgramFactory>> factories;
 			public:
 				ProgramManager();
 				~ProgramManager();

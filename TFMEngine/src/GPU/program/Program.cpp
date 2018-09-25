@@ -8,8 +8,9 @@ namespace RenderLib
 	{
 		namespace Program
 		{
-			Program::Program(UberParamMask configMask)
-				: configMask(configMask)
+			Program::Program(const ProgramParams & config)
+				: configMask(config.mask)
+				, renderInitCallback(config.renderIterationInit)
 			{
 
 			}
@@ -22,6 +23,14 @@ namespace RenderLib
 			void Program::getUberShaderDefines(std::vector<std::string> & definesBuffer)
 			{
 
+			}
+
+			void Program::executePreRenderCallback(const EngineInstance & instance)
+			{
+				if (renderInitCallback)
+				{
+					renderInitCallback(instance);
+				}
 			}
 
 			void Program::bind()

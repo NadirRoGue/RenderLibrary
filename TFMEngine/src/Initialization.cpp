@@ -8,7 +8,7 @@
 
 #include "CPU/io/FileManager.h"
 #include "CPU/io/defaultloaders/AssimpFileLoader.h"
-#include "CPU/io/defaultloaders/TextFileLoader.h"
+#include "CPU/io/defaultloaders/ShaderLoader.h"
 
 namespace RenderLib
 {
@@ -16,7 +16,7 @@ namespace RenderLib
 	{
 		CPU::Memory::MemoryManager::getInstance().setAttributeBuilderForClass<CPU::Mesh::Mesh>(new CPU::Mesh::InterleavedMeshBuilder());
 
-		CPU::IO::FileManager::registerFileLoader(new CPU::IO::AssimpFileLoader());
-		CPU::IO::FileManager::registerFileLoader(new CPU::IO::TextFileLoader());
+		CPU::IO::FileManager::registerFileLoader<CPU::IO::AssimpFileLoader>();
+		CPU::IO::FileManager::registerFileLoader<CPU::IO::ShaderLoader>();
 	}
 }

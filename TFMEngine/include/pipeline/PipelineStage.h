@@ -14,8 +14,6 @@
 
 #include "Component.h"
 
-#include "Scene.h"
-
 namespace RenderLib
 {
 	class EngineInstance;

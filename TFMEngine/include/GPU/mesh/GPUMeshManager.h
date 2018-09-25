@@ -2,7 +2,7 @@
 #define __RENDERLIB_GPU_MESH_GPUMESHMANAGER_H__
 
 #include <memory>
-#include <map>
+#include <unordered_map>
 
 #include "GPU/mesh/GPUMesh.h"
 #include "GPU/mesh/GPUBuffer.h"
@@ -16,8 +16,8 @@ namespace RenderLib
 			class GPUMeshManager
 			{
 			private:
-				std::map<size_t, GPUMeshPtr> staticMeshes;
-				std::map<size_t, GPUMeshPtr> dynamicMeshes;
+				std::unordered_map<size_t, GPUMeshPtr> staticMeshes;
+				std::unordered_map<size_t, GPUMeshPtr> dynamicMeshes;
 
 				GPUBufferPtr staticBuffer;
 

@@ -1,9 +1,7 @@
 #ifndef __CPU_SCENE_H__
 #define __CPU_SCENE_H__
 
-#include <map>
 #include <vector>
-#include <typeinfo>
 #include <memory>
 
 #include "SceneObject.h"

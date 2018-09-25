@@ -336,11 +336,17 @@
     <ClInclude Include="include\GPU\program\defaultprograms\StandardProgram.h">
       <Filter>Archivos de encabezado\GPU\program\defaultprograms</Filter>
     </ClInclude>
-    <ClInclude Include="include\CPU\io\defaultloaders\TextFileLoader.h">
+    <ClInclude Include="include\CPU\io\defaultloaders\ShaderLoader.h">
       <Filter>Archivos de encabezado\CPU\io\defaultloaders</Filter>
     </ClInclude>
-    <ClInclude Include="include\CPU\io\defaultloadresults\TextFileLoadResult.h">
+    <ClInclude Include="include\CPU\io\defaultloadresults\ShaderLoadResult.h">
       <Filter>Archivos de encabezado\CPU\io\defaultloadresults</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\program\ComputeProgram.h">
+      <Filter>Archivos de encabezado\GPU\program</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\program\ShaderProgram.h">
+      <Filter>Archivos de encabezado\GPU\program</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -506,11 +512,17 @@
     <ClCompile Include="src\GPU\program\defaultprograms\StandardProgram.cpp">
       <Filter>Archivos de origen\GPU\program\defaultprograms</Filter>
     </ClCompile>
-    <ClCompile Include="src\CPU\io\defaultloaders\TextFileLoader.cpp">
+    <ClCompile Include="src\CPU\io\defaultloaders\ShaderLoader.cpp">
       <Filter>Archivos de origen\CPU\io\defaultloaders</Filter>
     </ClCompile>
-    <ClCompile Include="src\CPU\io\defaultloadresults\TextFileLoadResult.cpp">
+    <ClCompile Include="src\CPU\io\defaultloadresults\ShaderLoadResult.cpp">
       <Filter>Archivos de origen\CPU\io\defaultloadresults</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GPU\program\ComputeProgram.cpp">
+      <Filter>Archivos de origen\GPU\program</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GPU\program\ShaderProgram.cpp">
+      <Filter>Archivos de origen\GPU\program</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,7 +1,7 @@
 #ifndef __CPU_MEMORY_MEMORYPOOLMANAGER__
 #define __CPU_MEMORY_MEMORYPOOLMANAGER__
 
-#include <map>
+#include <unordered_map>
 #include <string>
 #include <typeinfo>
 #include <typeindex>
@@ -22,8 +22,8 @@ namespace RenderLib
 			private:
 				static MemoryManager INSTANCE;
 			private:
-				std::map<std::type_index, std::unique_ptr<MemoryPool>> memoryPool;
-				std::map<std::type_index, AbstractPoolObjectBuilder*> attributeBuilders;
+				std::unordered_map<std::type_index, std::unique_ptr<MemoryPool>> memoryPool;
+				std::unordered_map<std::type_index, AbstractPoolObjectBuilder*> attributeBuilders;
 			private:
 				MemoryManager();
 			public:

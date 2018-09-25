@@ -27,11 +27,19 @@ namespace RenderLib
 			GPU_DO_NOT_SYNC
 		};
 
+		enum PreferredRenderer
+		{
+			AUTO_SELECT,
+			FORWARD_RENDER,
+			DEFERRED_RENDER
+		};
+
 		class MeshRenderer : public Component, public CPU::Memory::SortablePoolElement
 		{
 		public:
 			CPUToGPUSyncPolicy cpuToGpuSync;
 			GPUToCPUSyncPolicy gpuToCpuSync;
+			PreferredRenderer preferredRender;
 			GPU::Mesh::GPUMesh * gpuMesh;
 		public:
 			MeshRenderer();

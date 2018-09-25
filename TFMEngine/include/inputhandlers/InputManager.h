@@ -1,7 +1,7 @@
 #ifndef __RENDERLIB_INPUTHANDLERS_INPUTMANAGER_H__
 #define __RENDERLIB_INPUTHANDLERS_INPUTMANAGER_H__
 
-#include <map>
+#include <unordered_map>
 #include <vector>
 #include <memory>
 
@@ -22,8 +22,8 @@ namespace RenderLib
 		class InputManager
 		{
 		private:
-			std::map<char, std::vector<KeyboardHandlerPtr>> keyboardHandlers;
-			std::map<int, std::vector<MouseHandlerPtr>> mouseInputHandlers;
+			std::unordered_map<char, std::vector<KeyboardHandlerPtr>> keyboardHandlers;
+			std::unordered_map<int, std::vector<MouseHandlerPtr>> mouseInputHandlers;
 			std::vector<MouseMotionHandlerPtr> mouseMotionHandlers;
 
 			char lastKeyPressed;

@@ -6,14 +6,8 @@ namespace RenderLib
 	{
 		namespace Program
 		{
-			ShaderProgram::ShaderProgram(const ShaderProgramParams & params)
+			ShaderProgram::ShaderProgram(const UberParamMask & params)
 				: Program(params)
-				, vShaderF(params.vertShaderFile)
-				, tcShaderF(params.tesCntrlShaderFile)
-				, teShaderF(params.tesEvalShaderFile)
-				, geomShaderF(params.geomShaderFile)
-				, fShaderF(params.fragmentShaderFile)
-				, renderCallback(params.renderCallback)
 			{
 			}
 

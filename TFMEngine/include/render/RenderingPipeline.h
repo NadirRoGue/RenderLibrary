@@ -22,7 +22,7 @@ namespace RenderLib
 			RenderingPipeline();
 			~RenderingPipeline();
 
-			void initializeStages();
+			void initializeStages(GPU::Mesh::GPUMeshManager * meshBufferManager);
 			void executePipelineIteration();
 			void finalizeStages();
 

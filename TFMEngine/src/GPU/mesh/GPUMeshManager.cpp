@@ -62,6 +62,21 @@ namespace RenderLib
 				return buf;
 			}
 
+			GPUBuffer * GPUMeshManager::getStaticMeshBuffer()
+			{
+				return staticBuffer.get();
+			}
+
+			GPUBuffer * GPUMeshManager::getDynamicMeshBuffer()
+			{
+				return dynamicFrontBuffer.get();
+			}
+
+			void GPUMeshManager::swapDynamicBuffers()
+			{
+				dynamicFrontBuffer.swap(dynamicBackBuffer);
+			}
+
 			bool GPUMeshManager::meshAlreadyExists(size_t index, bool staticMesh)
 			{
 				return getGPUMesh(index, staticMesh) != NULL;

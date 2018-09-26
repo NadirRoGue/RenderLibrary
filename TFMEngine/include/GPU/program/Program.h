@@ -24,24 +24,6 @@ namespace RenderLib
 				GLenum type;
 			} ShaderInput;
 
-			typedef struct ProgramParams
-			{
-				UberParamMask mask;
-
-				/* 
-				 * Optional callback to be executed once every render loop iteration.
-				 * Can be used to set up common global uniforms across all objects
-				 */
-				std::function<void(const EngineInstance & instance)> renderIterationInit;
-
-				ProgramParams()
-					: mask(0)
-				{
-
-				}
-
-			} ProgramParams;
-
 			class Program
 			{
 			private:
@@ -53,7 +35,7 @@ namespace RenderLib
 			public:
 				unsigned int programId;
 			public:
-				Program(const ProgramParams & config);
+				Program(const UberParamMask & config);
 				~Program();
 
 				virtual void getUberShaderDefines(std::vector<std::string> & definesBuffer);
@@ -61,7 +43,7 @@ namespace RenderLib
 				void bind();
 				void unBind();
 
-				void initialize();
+				void gatherInputs();
 
 				void executePreRenderCallback(const EngineInstance & instance);
 
@@ -89,6 +71,9 @@ namespace RenderLib
 				void setUniformMatrix2(const std::string & name, const unsigned int & count, const bool & transpose, const FLOAT * val);
 				void setUniformMatrix3(const std::string & name, const unsigned int & count, const bool & transpose, const FLOAT * val);
 				void setUniformMatrix4(const std::string & name, const unsigned int & count, const bool & transpose, const FLOAT * val);
+			protected:
+				virtual unsigned int loadShaderFromFile(GLenum shaderType, const std::string & filePath, std::vector<std::string> & configStrings);
+				virtual void initialize() = 0;
 			};
 
 			class ProgramFactory
@@ -105,7 +90,7 @@ namespace RenderLib
 				}
 
 				template<class T>
-				T * createProgram(UberParamMask mask)
+				T * createProgram(const UberParamMask & mask)
 				{
 					auto it = shaderCache.find(mask);
 					if (it != shaderCache.end())
@@ -115,6 +100,7 @@ namespace RenderLib
 
 					std::unique_ptr<Program> newProgram = std::make_unique<T>(mask);
 					T * result = dynamic_cast<T*>(newProgram.get());
+					
 					shaderCache[mask] = std::move(newProgram);
 
 					return result;

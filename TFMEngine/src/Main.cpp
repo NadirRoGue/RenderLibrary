@@ -11,6 +11,8 @@
 #include "components/MeshFilter.h"
 #include "components/MeshRenderer.h"
 
+#include "render/RenderStage.h"
+
 #include "logger/Log.h"
 
 using namespace RenderLib;
@@ -48,9 +50,8 @@ int main(int argc, void ** arg)
 	EngineInstance * instance = InstanceManager::getInstance().createInstance("TestInstance", window);
 
 	// Pipeline set up
-	instance->getPipelineManager().addPipelineStage<Test::TestGlobalStage>();
-	instance->getPipelineManager().addPipelineStage<Test::TestElementStage>();
-
+	instance->getPipelineManager().addPipelineStage<Render::RenderStage>();
+	
 	// Scene set up
 	RenderLib::Scene * scene = instance->getSceneManager().createScene("TestScene");
 	instance->getSceneManager().setActiveScene("TestScene");

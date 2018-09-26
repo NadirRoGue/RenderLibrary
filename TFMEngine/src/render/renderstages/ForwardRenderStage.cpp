@@ -11,7 +11,15 @@ namespace RenderLib
 
 		void ForwardRenderStage::runStage()
 		{
-
+			GPU::Mesh::GPUBuffer * buffer = gpuMeshManager->getStaticMeshBuffer();
+			buffer->bind();
+			for (auto r : renderables)
+			{
+				GPU::Mesh::GPUMesh * mesh = r->gpuMesh;
+				
+				glDrawElementsBaseVertex(GL_TRIANGLES, mesh->getNumFaces() * 3, GL_UNSIGNED_INT, (void*)0, 0);
+			}
+			buffer->unBind();
 		}
 	}
 }

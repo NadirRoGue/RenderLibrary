@@ -2,6 +2,8 @@
 
 #include "components/MeshRenderer.h"
 
+#include "EngineInstance.h"
+
 namespace RenderLib
 {
 	namespace Render
@@ -21,7 +23,10 @@ namespace RenderLib
 			// Sort all elements
 			Pipeline::ElementBasedStage<Components::MeshRenderer>::preRunStage();
 			// Add them sorted to the correspondent places
-			renderPipeline.initializeStages();
+			
+			GPU::Mesh::GPUMeshManager & gpuMeshManager = engineInstance->getGPUMeshManager();
+
+			renderPipeline.initializeStages(&gpuMeshManager);
 		}
 
 		void RenderStage::runStage()

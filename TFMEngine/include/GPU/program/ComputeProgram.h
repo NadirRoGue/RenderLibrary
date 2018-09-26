@@ -9,18 +9,12 @@ namespace RenderLib
 	{
 		namespace Program
 		{
-			typedef struct ComputeProgramParams : public ProgramParams
-			{
-				std::string compShaderFile;
-
-			} ComputeProgramParams;
-
 			class ComputeProgram : public Program
 			{
 			public:
 				std::string compShaderFile;
 			public:
-				ComputeProgram(const ComputeProgramParams & params);
+				ComputeProgram(const UberParamMask & params);
 				~ComputeProgram();
 
 				void execute(unsigned int xSize, unsigned int ySize, unsigned int zSize);

@@ -1,12 +1,14 @@
 #include "render/RenderingPipeline.h"
 
+#include "render/renderstages/ForwardRenderStage.h"
+
 namespace RenderLib
 {
 	namespace Render
 	{
 		RenderingPipeline::RenderingPipeline()
 		{
-
+			addRenderStage<ForwardRenderStage>();
 		}
 
 		RenderingPipeline::~RenderingPipeline()
@@ -22,10 +24,11 @@ namespace RenderLib
 			}
 		}
 
-		void RenderingPipeline::initializeStages()
+		void RenderingPipeline::initializeStages(GPU::Mesh::GPUMeshManager * meshBufferManager)
 		{
 			for (auto & stages : renderStages)
 			{
+				stages.get()->gpuMeshManager = meshBufferManager;
 				stages.get()->initialize();
 			}
 		}

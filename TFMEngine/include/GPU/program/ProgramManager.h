@@ -33,7 +33,7 @@ namespace RenderLib
 				~ProgramManager();
 
 				template<class T>
-				T * getProgram(const UberParamMask & parameters)
+				void registerProgram()
 				{
 					std::type_index id = typeid(T);
 
@@ -44,24 +44,18 @@ namespace RenderLib
 					}
 
 					auto it = factories.find(id);
-					ProgramFactory * factory;
 					if (it == factories.end())
 					{
 						std::unique_ptr<ProgramFactory> newFactory = std::make_unique<ProgramFactory>();
-						factory = newFactory.get();
 						factories[id] = std::move(newFactory);
 					}
-					else
-					{
-						factory = it->second.get();
-					}
-
-					return factory->createProgram<T>(parameters);
 				}
 
-			private:
-				void initializeShader(Program * program);
-				unsigned int loadShaderFromFile(GLenum shaderType, const std::string & filePath, std::vector<std::string> & configStrings);
+				template<class T>
+				T * createOrGetProgram()
+				{
+					return NULL;
+				}
 			};
 		}
 	}

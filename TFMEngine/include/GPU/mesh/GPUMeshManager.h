@@ -30,6 +30,9 @@ namespace RenderLib
 				GPUBuffer * initializeStaticBuffer();
 				GPUBuffer * initializeDynamicBuffer();
 
+				GPUBuffer * getStaticMeshBuffer();
+				GPUBuffer * getDynamicMeshBuffer();
+
 				void swapDynamicBuffers();
 
 				bool meshAlreadyExists(size_t index, bool staticMesh);

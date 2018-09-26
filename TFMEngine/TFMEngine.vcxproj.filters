@@ -145,6 +145,9 @@
     <Filter Include="Archivos de origen\CPU\io\defaultloadresults">
       <UniqueIdentifier>{57ebd423-60b2-4a79-8349-7c3e48ad5f09}</UniqueIdentifier>
     </Filter>
+    <Filter Include="shaders">
+      <UniqueIdentifier>{be3b22e7-964e-4829-8150-20f32d27fdec}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Component.h">
@@ -530,5 +533,13 @@
     <ClCompile Include="src\Material.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\test.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\test.vert">
+      <Filter>shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

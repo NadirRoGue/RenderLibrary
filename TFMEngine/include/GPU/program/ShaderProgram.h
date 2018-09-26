@@ -12,23 +12,6 @@ namespace RenderLib
 	{
 		namespace Program
 		{
-			typedef struct ShaderProgramParams : public ProgramParams
-			{
-				std::string vertShaderFile;
-				std::string tesCntrlShaderFile;
-				std::string tesEvalShaderFile;
-				std::string geomShaderFile;
-				std::string fragmentShaderFile;
-
-				std::function<void(const SceneObject & obj, const Camera & cam)> renderCallback;
-
-				ShaderProgramParams()
-					: ProgramParams()
-				{
-				}
-
-			}ShaderProgramParams;
-
 			class ShaderProgram : public Program
 			{
 			public:
@@ -40,7 +23,7 @@ namespace RenderLib
 			private:
 				std::function<void(const SceneObject & obj, const Camera & cam)> renderCallback;
 			public:
-				ShaderProgram(const ShaderProgramParams & params);
+				ShaderProgram(const UberParamMask & params);
 				~ShaderProgram();
 
 				virtual void onRender(const SceneObject & object, const Camera & camera);

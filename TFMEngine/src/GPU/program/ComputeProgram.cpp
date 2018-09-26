@@ -6,9 +6,8 @@ namespace RenderLib
 	{
 		namespace Program
 		{
-			ComputeProgram::ComputeProgram(const ComputeProgramParams & params)
+			ComputeProgram::ComputeProgram(const UberParamMask & params)
 				: Program(params)
-				, compShaderFile(params.compShaderFile)
 			{
 			}
 

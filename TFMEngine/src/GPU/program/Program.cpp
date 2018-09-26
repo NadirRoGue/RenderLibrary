@@ -8,6 +8,17 @@ namespace RenderLib
 	{
 		namespace Program
 		{
+			inline void castDoubleToFloatArray(const size_t & count, const double * array, std::vector<float> & buffer)
+			{
+				buffer.resize(count);
+				size_t i = 0;
+				while (i < count)
+				{
+					buffer[i] = static_cast<float>(array[i]);
+					i++;
+				}
+			}
+
 			Program::Program(const ProgramParams & config)
 				: configMask(config.mask)
 				, renderInitCallback(config.renderIterationInit)
@@ -18,6 +29,47 @@ namespace RenderLib
 			Program::~Program()
 			{
 
+			}
+
+			void Program::initialize()
+			{
+				GLint i = 0;
+				char nameBuffer[0xff];
+				GLsizei nameLen = 0;
+				GLint size = 0;
+				GLenum type;
+
+				GLint activeUniforms = 0;
+				glGetProgramiv(programId, GL_ACTIVE_UNIFORMS, &activeUniforms);
+				while (i < activeUniforms)
+				{
+					glGetActiveUniform(programId, i, 0xff, &nameLen, &size, &type, nameBuffer);
+
+					std::string nameStr(nameBuffer);
+					ShaderInput input;
+					input.id = i;
+					input.size = size;
+					input.type = type;
+
+					shaderUniforms[nameStr] = input;
+				}
+
+				GLint activeAttributes = 0;
+				glGetProgramiv(programId, GL_ACTIVE_ATTRIBUTES, &activeAttributes);
+
+				i = 0;
+				while (i < activeAttributes)
+				{
+					glGetActiveAttrib(programId, i, 0xff, &nameLen, &size, &type, nameBuffer);
+
+					std::string nameStr(nameBuffer);
+					ShaderInput input;
+					input.id = i;
+					input.size = size;
+					input.type = type;
+
+					shaderAttributes[nameStr] = input;
+				}
 			}
 
 			void Program::getUberShaderDefines(std::vector<std::string> & definesBuffer)
@@ -43,163 +95,383 @@ namespace RenderLib
 				glUseProgram(0);
 			}
 
-			void Program::setUniformI(const unsigned int & id, const int & val)
+			void Program::setUniformI(const std::string & name, const int & val)
 			{
+				auto it = shaderUniforms.find(name);
+				if (it == shaderUniforms.end())
+				{
+					return;
+				}
+				unsigned int id = it->second.id;
+
 				glUniform1i(id, val);
 			}
 
-			void Program::setUniformI2(const unsigned int & id, const int & v1, const int & v2)
+			void Program::setUniformI2(const std::string & name, const int & v1, const int & v2)
 			{
+				auto it = shaderUniforms.find(name);
+				if (it == shaderUniforms.end())
+				{
+					return;
+				}
+				unsigned int id = it->second.id;
+
 				glUniform2i(id, v1, v2);
 			}
 
-			void Program::setUniformI3(const unsigned int & id, const int & v1, const int & v2, const int & v3)
+			void Program::setUniformI3(const std::string & name, const int & v1, const int & v2, const int & v3)
 			{
+				auto it = shaderUniforms.find(name);
+				if (it == shaderUniforms.end())
+				{
+					return;
+				}
+				unsigned int id = it->second.id;
+
 				glUniform3i(id, v1, v2, v3);
 			}
 
-			void Program::setUniformI4(const unsigned int & id, const int & v1, const int & v2, const int & v3, const int & v4)
+			void Program::setUniformI4(const std::string & name, const int & v1, const int & v2, const int & v3, const int & v4)
 			{
+				auto it = shaderUniforms.find(name);
+				if (it == shaderUniforms.end())
+				{
+					return;
+				}
+				unsigned int id = it->second.id;
+
 				glUniform4i(id, v1, v2, v3, v4);
 			}
 
-			void Program::setUniformI2V(const unsigned int & id, const unsigned int & count, const int * val)
+			void Program::setUniformI2V(const std::string & name, const unsigned int & count, const int * val)
 			{
+				auto it = shaderUniforms.find(name);
+				if (it == shaderUniforms.end())
+				{
+					return;
+				}
+				unsigned int id = it->second.id;
+
 				glUniform2iv(id, count, val);
 			}
 
-			void Program::setUniformI3V(const unsigned int & id, const unsigned int & count, const int * val)
+			void Program::setUniformI3V(const std::string & name, const unsigned int & count, const int * val)
 			{
+				auto it = shaderUniforms.find(name);
+				if (it == shaderUniforms.end())
+				{
+					return;
+				}
+				unsigned int id = it->second.id;
+
 				glUniform3iv(id, count, val);
 			}
 
-			void Program::setUniformI4V(const unsigned int & id, const unsigned int & count, const int * val)
+			void Program::setUniformI4V(const std::string & name, const unsigned int & count, const int * val)
 			{
+				auto it = shaderUniforms.find(name);
+				if (it == shaderUniforms.end())
+				{
+					return;
+				}
+				unsigned int id = it->second.id;
+
 				glUniform4iv(id, count, val);
 			}
 
-			void Program::setUniformF(const unsigned int & id, const FLOAT & val)
+			void Program::setUniformF(const std::string & name, const FLOAT & val)
 			{
+				auto it = shaderUniforms.find(name);
+				if (it == shaderUniforms.end())
+				{
+					return;
+				}
+				unsigned int id = it->second.id;
+
 #ifdef USE_DOUBLE_PRECISSION_ON_SHADERS__
 				glUniform1d(id, val);
 #else
+#ifdef USE_DOUBLE_PRECISSION__
+				glUniform1f(id, static_cast<float>(val));
+#else
 				glUniform1f(id, val);
+#endif
 #endif
 			}
 
-			void Program::setUniform2F(const unsigned int & id, const FLOAT & v1, const FLOAT & v2)
+			void Program::setUniform2F(const std::string & name, const FLOAT & v1, const FLOAT & v2)
 			{
+				auto it = shaderUniforms.find(name);
+				if (it == shaderUniforms.end())
+				{
+					return;
+				}
+				unsigned int id = it->second.id;
+
 #ifdef USE_DOUBLE_PRECISSION_ON_SHADERS__
 				glUniform2d(id, v1, v2);
 #else
+#ifdef USE_DOUBLE_PRECISSION__
+				glUniform2f(id, static_cast<float>(v1), static_cast<float>(v2));
+#else
 				glUniform2f(id, v1, v2);
+#endif
 #endif
 			}
 
-			void Program::setUniform3F(const unsigned int & id, const FLOAT & v1, const FLOAT & v2, const FLOAT & v3)
+			void Program::setUniform3F(const std::string & name, const FLOAT & v1, const FLOAT & v2, const FLOAT & v3)
 			{
+				auto it = shaderUniforms.find(name);
+				if (it == shaderUniforms.end())
+				{
+					return;
+				}
+				unsigned int id = it->second.id;
+
 #ifdef USE_DOUBLE_PRECISSION_ON_SHADERS__
 				glUniform3d(id, v1, v2, v3);
 #else
+#ifdef USE_DOUBLE_PRECISSION__
+				glUniform3f(id, static_cast<float>(v1), static_cast<float>(v2), static_cast<float>(v3));
+#else
 				glUniform3f(id, v1, v2, v3);
+#endif
 #endif
 			}
 
-			void Program::setUniform4F(const unsigned int & id, const FLOAT & v1, const FLOAT & v2, const FLOAT & v3, const FLOAT & v4)
+			void Program::setUniform4F(const std::string & name, const FLOAT & v1, const FLOAT & v2, const FLOAT & v3, const FLOAT & v4)
 			{
+				auto it = shaderUniforms.find(name);
+				if (it == shaderUniforms.end())
+				{
+					return;
+				}
+				unsigned int id = it->second.id;
+
 #ifdef USE_DOUBLE_PRECISSION_ON_SHADERS__
 				glUniform4d(id, v1, v2, v3, v4);
 #else
+#ifdef USE_DOUBLE_PRECISSION__
+				glUniform4f(id, static_cast<float>(v1), static_cast<float>(v2), static_cast<float>(v3), static_cast<float>(v4));
+#else
 				glUniform4f(id, v1, v2, v3, v4);
+#endif
 #endif
 			}
 
-			void Program::setUniform2FV(const unsigned int & id, const unsigned int & count, const FLOAT * val)
+			void Program::setUniform2FV(const std::string & name, const unsigned int & count, const FLOAT * val)
 			{
-#ifdef USE_DOUBLE_PRECISSION_ON_SHADERS__
+				auto it = shaderUniforms.find(name);
+				if (it == shaderUniforms.end())
+				{
+					return;
+				}
+				unsigned int id = it->second.id;
+				
+#if defined USE_DOUBLE_PRECISSION__ && defined USE_DOUBLE_PRECISSION_ON_SHADERS__
 				glUniform2dv(id, count, val);
+#else
+#ifdef USE_DOUBLE_PRECISSION__
+				std::vector<float> buffer;
+				castDoubleToFloatArray(count * 2, val, buffer);
+				glUniform2fv(id, count, &buffer[0]);
 #else
 				glUniform2fv(id, count, val);
 #endif
+#endif
 			}
 
-			void Program::setUniform3FV(const unsigned int & id, const unsigned int & count, const FLOAT * val)
+			void Program::setUniform3FV(const std::string & name, const unsigned int & count, const FLOAT * val)
 			{
-#ifdef USE_DOUBLE_PRECISSION_ON_SHADERS__
+				auto it = shaderUniforms.find(name);
+				if (it == shaderUniforms.end())
+				{
+					return;
+				}
+				unsigned int id = it->second.id;
+
+#if defined USE_DOUBLE_PRECISSION__ && defined USE_DOUBLE_PRECISSION_ON_SHADERS__
 				glUniform3dv(id, count, val);
+#else
+#ifdef USE_DOUBLE_PRECISSION__
+				std::vector<float> buffer;
+				castDoubleToFloatArray(count * 3, val, buffer);
+				glUniform3fv(id, count, &buffer[0]);
 #else
 				glUniform3fv(id, count, val);
 #endif
+#endif
 			}
 
-			void Program::setUniform4FV(const unsigned int & id, const unsigned int & count, const FLOAT * val)
+			void Program::setUniform4FV(const std::string & name, const unsigned int & count, const FLOAT * val)
 			{
-#ifdef USE_DOUBLE_PRECISSION_ON_SHADERS__
+				auto it = shaderUniforms.find(name);
+				if (it == shaderUniforms.end())
+				{
+					return;
+				}
+				unsigned int id = it->second.id;
+
+#if defined USE_DOUBLE_PRECISSION__ && defined USE_DOUBLE_PRECISSION_ON_SHADERS__
 				glUniform4dv(id, count, val);
+#else
+#ifdef USE_DOUBLE_PRECISSION__
+				std::vector<float> buffer;
+				castDoubleToFloatArray(count * 4, val, buffer);
+				glUniform4fv(id, count, &buffer[0]);
 #else
 				glUniform4fv(id, count, val);
 #endif
+#endif
 			}
 
-			void Program::setUniformUI(const unsigned int & id, const unsigned int & val)
+			void Program::setUniformUI(const std::string & name, const unsigned int & val)
 			{
+				auto it = shaderUniforms.find(name);
+				if (it == shaderUniforms.end())
+				{
+					return;
+				}
+				unsigned int id = it->second.id;
+
 				glUniform1ui(id, val);
 			}
 
-			void Program::setUniformUI2(const unsigned int & id, const unsigned int & v1, const unsigned int & v2)
+			void Program::setUniformUI2(const std::string & name, const unsigned int & v1, const unsigned int & v2)
 			{
+				auto it = shaderUniforms.find(name);
+				if (it == shaderUniforms.end())
+				{
+					return;
+				}
+				unsigned int id = it->second.id;
+
 				glUniform2ui(id, v1, v2);
 			}
 
-			void Program::setUniformUI3(const unsigned int & id, const unsigned int & v1, const unsigned int & v2, const unsigned int & v3)
+			void Program::setUniformUI3(const std::string & name, const unsigned int & v1, const unsigned int & v2, const unsigned int & v3)
 			{
+				auto it = shaderUniforms.find(name);
+				if (it == shaderUniforms.end())
+				{
+					return;
+				}
+				unsigned int id = it->second.id;
+
 				glUniform3ui(id, v1, v2, v3);
 			}
 
-			void Program::setUniformUI4(const unsigned int & id, const unsigned int & v1, const unsigned int & v2, const unsigned int & v3, const unsigned int & v4)
+			void Program::setUniformUI4(const std::string & name, const unsigned int & v1, const unsigned int & v2, const unsigned int & v3, const unsigned int & v4)
 			{
+				auto it = shaderUniforms.find(name);
+				if (it == shaderUniforms.end())
+				{
+					return;
+				}
+				unsigned int id = it->second.id;
+
 				glUniform4ui(id, v1, v2, v3, v4);
 			}
 
-			void Program::setUniformUI2V(const unsigned int & id, const unsigned int & count, const unsigned int * val)
+			void Program::setUniformUI2V(const std::string & name, const unsigned int & count, const unsigned int * val)
 			{
+				auto it = shaderUniforms.find(name);
+				if (it == shaderUniforms.end())
+				{
+					return;
+				}
+				unsigned int id = it->second.id;
+
 				glUniform2uiv(id, count, val);
 			}
 
-			void Program::setUniformUI3V(const unsigned int & id, const unsigned int & count, const unsigned int * val)
+			void Program::setUniformUI3V(const std::string & name, const unsigned int & count, const unsigned int * val)
 			{
+				auto it = shaderUniforms.find(name);
+				if (it == shaderUniforms.end())
+				{
+					return;
+				}
+				unsigned int id = it->second.id;
+
 				glUniform3uiv(id, count, val);
 			}
 
-			void Program::setUniformUI4V(const unsigned int & id, const unsigned int & count, const unsigned int * val)
+			void Program::setUniformUI4V(const std::string & name, const unsigned int & count, const unsigned int * val)
 			{
+				auto it = shaderUniforms.find(name);
+				if (it == shaderUniforms.end())
+				{
+					return;
+				}
+				unsigned int id = it->second.id;
+
 				glUniform4uiv(id, count, val);
 			}
 
-			void Program::setUniformMatrix2(const unsigned int & id, const unsigned int & count, const bool & transpose, const FLOAT * val)
+			void Program::setUniformMatrix2(const std::string & name, const unsigned int & count, const bool & transpose, const FLOAT * val)
 			{
-#ifdef USE_DOUBLE_PRECISSION_ON_SHADERS__
+				auto it = shaderUniforms.find(name);
+				if (it == shaderUniforms.end())
+				{
+					return;
+				}
+				unsigned int id = it->second.id;
+
+#if defined USE_DOUBLE_PRECISSION__ && defined USE_DOUBLE_PRECISSION_ON_SHADERS__
 				glUniformMatrix2dv(id, count, transpose, val);
+#else
+#ifdef USE_DOUBLE_PRECISSION__
+				std::vector<float> buffer;
+				castDoubleToFloatArray(count * 2 * 2, val, buffer);
+				glUniformMatrix2fv(id, count, transpose, &buffer[0]);
 #else
 				glUniformMatrix2fv(id, count, transpose, val);
 #endif
-			}
-
-			void Program::setUniformMatrix3(const unsigned int & id, const unsigned int & count, const bool & transpose, const FLOAT * val)
-			{
-#ifdef USE_DOUBLE_PRECISSION_ON_SHADERS__
-				glUniformMatrix3dv(id, count, transpose, val);
-#else
-				glUniformMatrix3fv(id, count, transpose, val);
 #endif
 			}
 
-			void Program::setUniformMatrix4(const unsigned int & id, const unsigned int & count, const bool & transpose, const FLOAT * val)
+			void Program::setUniformMatrix3(const std::string & name, const unsigned int & count, const bool & transpose, const FLOAT * val)
 			{
-#ifdef USE_DOUBLE_PRECISSION_ON_SHADERS__
+				auto it = shaderUniforms.find(name);
+				if (it == shaderUniforms.end())
+				{
+					return;
+				}
+				unsigned int id = it->second.id;
+
+#if defined USE_DOUBLE_PRECISSION__ && defined USE_DOUBLE_PRECISSION_ON_SHADERS__
+				glUniformMatrix3dv(id, count, transpose, val);
+#else
+#ifdef USE_DOUBLE_PRECISSION__
+				std::vector<float> buffer;
+				castDoubleToFloatArray(count * 3 * 3, val, buffer);
+				glUniformMatrix3fv(id, count, transpose, &buffer[0]);
+#else
+				glUniformMatrix3fv(id, count, transpose, val);
+#endif
+#endif
+			}
+
+			void Program::setUniformMatrix4(const std::string & name, const unsigned int & count, const bool & transpose, const FLOAT * val)
+			{
+				auto it = shaderUniforms.find(name);
+				if (it == shaderUniforms.end())
+				{
+					return;
+				}
+				unsigned int id = it->second.id;
+
+#if defined USE_DOUBLE_PRECISSION__ && defined USE_DOUBLE_PRECISSION_ON_SHADERS__
 				glUniformMatrix4dv(id, count, transpose, val);
 #else
+#ifdef USE_DOUBLE_PRECISSION__
+				std::vector<float> buffer;
+				castDoubleToFloatArray(count * 4 * 4, val, buffer);
+				glUniformMatrix4fv(id, count, transpose, &buffer[0]);
+#else
 				glUniformMatrix4fv(id, count, transpose, val);
+#endif
 #endif
 			}
 		}

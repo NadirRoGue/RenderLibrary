@@ -348,6 +348,9 @@
     <ClInclude Include="include\GPU\program\ShaderProgram.h">
       <Filter>Archivos de encabezado\GPU\program</Filter>
     </ClInclude>
+    <ClInclude Include="include\Material.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Component.cpp">
@@ -523,6 +526,9 @@
     </ClCompile>
     <ClCompile Include="src\GPU\program\ShaderProgram.cpp">
       <Filter>Archivos de origen\GPU\program</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Material.cpp">
+      <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

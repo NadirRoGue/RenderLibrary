@@ -23,7 +23,7 @@ namespace RenderLib
 				ComputeProgram(const ComputeProgramParams & params);
 				~ComputeProgram();
 
-				void execute(unsigned int xSize, unsigned int )
+				void execute(unsigned int xSize, unsigned int ySize, unsigned int zSize);
 			};
 		}
 	}

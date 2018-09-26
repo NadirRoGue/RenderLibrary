@@ -185,6 +185,7 @@
     <ClInclude Include="include\logger\ConsoleLogger.h" />
     <ClInclude Include="include\logger\FileLogger.h" />
     <ClInclude Include="include\logger\Log.h" />
+    <ClInclude Include="include\Material.h" />
     <ClInclude Include="include\pipeline\defaultstages\ComponentRegisterStage.h" />
     <ClInclude Include="include\pipeline\defaultstages\CPUToGPUMeshSyncStage.h" />
     <ClInclude Include="include\pipeline\defaultstages\GPUToCPUMeshSyncStage.h" />
@@ -245,6 +246,7 @@
     <ClCompile Include="src\logger\FileLogger.cpp" />
     <ClCompile Include="src\logger\Log.cpp" />
     <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\Material.cpp" />
     <ClCompile Include="src\pipeline\defaultstages\ComponentRegisterStage.cpp" />
     <ClCompile Include="src\pipeline\defaultstages\CPUToGPUMeshSyncStage.cpp" />
     <ClCompile Include="src\pipeline\defaultstages\GPUToCPUMeshSyncStage.cpp" />

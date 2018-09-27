@@ -3,6 +3,8 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
+#include <iostream>
+
 namespace RenderLib
 {
 	std::unique_ptr<Camera> Camera::createCamera(FLOAT near, FLOAT far, FLOAT fov)
@@ -68,8 +70,9 @@ namespace RenderLib
 		FLOAT upDelta = translation.y();
 
 		VECTOR3 traslatedPosition = transform.forwardVector * forwardDelta + transform.rightVector * strafeDelta + transform.upVector * upDelta;
-
-		transform.translationV += traslatedPosition;
+		
+		transform.translationV += translation;// traslatedPosition;
+		std::cout << translation << std::endl;
 		updateViewMatrix();
 	}
 
@@ -90,8 +93,8 @@ namespace RenderLib
 
 	void Camera::onWindowResize(const int & width, const int & height)
 	{
-		float fWidth = (float)width;
-		float fHeight = (float)height;
+		FLOAT fWidth = (FLOAT)width;
+		FLOAT fHeight = (FLOAT)height;
 
 		projectionMatrix.fill(0.0);
 		projectionMatrix(0, 0) = FLOAT(1.0) / (tan(fov*M_PI / FLOAT(180.0)) * (fWidth / fHeight));

@@ -1,5 +1,7 @@
 #include "graphics/WindowHandler.h"
 
+#include "logger/Log.h"
+
 namespace RenderLib
 {
 	namespace Graphics
@@ -32,6 +34,9 @@ namespace RenderLib
 			{
 				config.openGLConfigurationCallback();
 			}
+
+			const GLubyte *oglVersion = glGetString(GL_VERSION);
+		  Logger::Log::getInstance().logInfo("This system supports OpenGL Version: " + std::string((const char*)oglVersion));
 		}
 
 		void WindowHandler::defaultOpenGLConfiguration()

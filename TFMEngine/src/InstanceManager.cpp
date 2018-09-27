@@ -169,7 +169,7 @@ namespace RenderLib
 	{
 		for (auto it = instances.begin(); it != instances.end(); it++)
 		{
-			createdThreads.push_back(std::thread(ThreadedInstanceExecution, it->second.get()));
+			createdThreads.emplace_back(std::thread(ThreadedInstanceExecution, it->second.get()));
 		}
 	}
 

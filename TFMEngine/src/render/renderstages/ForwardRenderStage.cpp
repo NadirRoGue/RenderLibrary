@@ -43,7 +43,7 @@ namespace RenderLib
 		void ForwardRenderStage::initialize()
 		{
 			const char *vertexShader =
-				"#version 420\n"\
+				"#version 430 core\n"\
 				"layout (location=0) in vec3 aPos;\n"\
 				"uniform mat4 modelViewProj;\n"\
 				"void main() {\n"\
@@ -51,7 +51,7 @@ namespace RenderLib
 				"}\n\0";
 
 			const char *fragShader =
-				"#version 420\n"\
+				"#version 430 core\n"\
 				"layout (location=0) out vec4 fragColor;\n"\
 				"void main() {\n"\
 				" fragColor=vec4(1.0,0.0,0.0,1.0);\n"\
@@ -82,6 +82,12 @@ namespace RenderLib
 
 			mvp = glGetUniformLocation(programId, "modelViewProj");
 			apos = glGetAttribLocation(programId, "aPos");
+
+			GPU::Mesh::GPUBuffer * buffer = engineInstance->getGPUMeshManager().getStaticMeshBuffer();
+			buffer->bind();
+			buffer->bindDataBuffer();
+			glVertexAttribPointer(apos, 3, GL_FLOAT, GL_FALSE, 0, 0);
+			glEnableVertexAttribArray(apos);
 		}
 
 		void ForwardRenderStage::runStage()
@@ -90,31 +96,22 @@ namespace RenderLib
 			
 			Camera * cam = engineInstance->getSceneManager().getActiveScene()->getAllCameras()[0].get();
 			cam->updateViewMatrix();
+
+			glDisable(GL_CULL_FACE);
+			
+			glUseProgram(programId);
 			buffer->bind();
 			for (auto r : renderables)
 			{
 				GPU::Mesh::GPUMesh * mesh = r->gpuMesh;
 
-				if (mesh == NULL)
-				{
-					std::cout << "Mesh null" << std::endl;
-				}
-
-				glBindBuffer(GL_ARRAY_BUFFER, buffer->dataBuffer);
-				glVertexAttribPointer(apos, 3, GL_FLOAT, GL_FALSE, mesh->vertices.stride, 0);
-				glEnableVertexAttribArray(apos);
-
-				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer->indexBuffer);
-				
-				r->object->transform.scale(VECTOR3(0.5, 0.5, 0.5));
 				r->object->transform.update();
 				MATRIX4 modelViewProj = cam->projectionMatrix * cam->transform.modelMatrix * r->object->transform.modelMatrix;
 
 				glUniformMatrix4fv(mvp, 1, GL_FALSE, modelViewProj.data());
 
-				glDrawElementsBaseVertex(GL_TRIANGLES, mesh->getNumFaces() * 3, GL_UNSIGNED_INT, (void*)0, 0);
+				glDrawElementsBaseVertex(GL_TRIANGLES, 12 * 3, GL_UNSIGNED_INT, (void*)0, 0);
 			}
-			buffer->unBind();
 		}
 	}
 }

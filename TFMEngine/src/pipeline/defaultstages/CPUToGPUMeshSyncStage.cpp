@@ -29,9 +29,6 @@ namespace RenderLib
 			GPUMeshList syncContResult;
 			createGPUMeshes(syncContinously, syncContResult, faceSizeCont, dataSizeCont, false);
 
-			// Aquire gpu context
-			engineInstance->acquireContext();
-
 			// Create static buffer
 			GPU::Mesh::GPUBuffer * staticBuffer = engineInstance->getGPUMeshManager().initializeStaticBuffer();
 			// Synchronize CPU -> GPU data
@@ -40,9 +37,7 @@ namespace RenderLib
 			// Create dynamic buffer(s)
 			// Creates both, returns front buffer
 			GPU::Mesh::GPUBuffer * dynamicBuffer = engineInstance->getGPUMeshManager().initializeDynamicBuffer();
-			synchronizeData(dynamicBuffer, syncContResult, faceSizeCont, dataSizeCont);
-
-			engineInstance->releaseContext();
+			//synchronizeData(dynamicBuffer, syncContResult, faceSizeCont, dataSizeCont);
 		}
 
 		void CPUToGPUMeshSyncStage::runStage()
@@ -111,11 +106,12 @@ namespace RenderLib
 		{
 			GPU::Mesh::GPUMesh * gpuMesh = engineInstance->getGPUMeshManager().createGPUMesh(cpuMesh->index, staticMesh);
 
+			size_t vOffset = cpuMesh->vertices.getOffset();
 			gpuMesh->faces = GPU::Mesh::GPUAttribute(sizeof(unsigned int) * 3, cpuMesh->faces.size(), cpuMesh->faces.getOffset(), cpuMesh->faces.getStride());
-			gpuMesh->vertices = GPU::Mesh::GPUAttribute(sizeof(FLOAT) * 3, cpuMesh->vertices.size(), cpuMesh->vertices.getOffset(), cpuMesh->vertices.getStride());
-			gpuMesh->normals = GPU::Mesh::GPUAttribute(sizeof(FLOAT) * 3, cpuMesh->normals.size(), cpuMesh->normals.getOffset(), cpuMesh->normals.getStride());
-			gpuMesh->tangents = GPU::Mesh::GPUAttribute(sizeof(FLOAT) * 3, cpuMesh->tangents.size(), cpuMesh->tangents.getOffset(), cpuMesh->tangents.getStride());
-			gpuMesh->bitangents = GPU::Mesh::GPUAttribute(sizeof(FLOAT) * 3, cpuMesh->bitangents.size(), cpuMesh->bitangents.getOffset(), cpuMesh->bitangents.getStride());
+			gpuMesh->vertices = GPU::Mesh::GPUAttribute(sizeof(FLOAT) * 3, cpuMesh->vertices.size(), vOffset - cpuMesh->vertices.getOffset(), cpuMesh->vertices.getStride());
+			gpuMesh->normals = GPU::Mesh::GPUAttribute(sizeof(FLOAT) * 3, cpuMesh->normals.size(), vOffset - cpuMesh->normals.getOffset(), cpuMesh->normals.getStride());
+			gpuMesh->tangents = GPU::Mesh::GPUAttribute(sizeof(FLOAT) * 3, cpuMesh->tangents.size(), vOffset - cpuMesh->tangents.getOffset(), cpuMesh->tangents.getStride());
+			gpuMesh->bitangents = GPU::Mesh::GPUAttribute(sizeof(FLOAT) * 3, cpuMesh->bitangents.size(), vOffset - cpuMesh->bitangents.getOffset(), cpuMesh->bitangents.getStride());
 
 			gpuMesh->uvs.resize(cpuMesh->uvs.size());
 			size_t i = 0;
@@ -138,6 +134,11 @@ namespace RenderLib
 
 		void CPUToGPUMeshSyncStage::synchronizeData(GPU::Mesh::GPUBuffer * buffer, GPUMeshList & sourceMeshes, const size_t & faceSize, const size_t & dataSize)
 		{
+			if (sourceMeshes.size() == 0)
+			{
+				return;
+			}
+
 			char * faceBuffer = new char[faceSize];
 			char * dataBuffer = new char[dataSize];
 
@@ -170,6 +171,9 @@ namespace RenderLib
 			{
 
 			}
+
+			delete[] faceBuffer;
+			delete[] dataBuffer;
 		}
 	}
 }

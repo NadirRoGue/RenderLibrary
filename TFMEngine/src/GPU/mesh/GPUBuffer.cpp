@@ -2,6 +2,8 @@
 
 #include <gl/glew.h>
 
+#include <iostream>
+
 namespace RenderLib
 {
 	namespace GPU
@@ -51,19 +53,52 @@ namespace RenderLib
 
 			void GPUBuffer::updateData(char * faceData, const size_t & faceSize, char * vertexData, const size_t & vertexSize)
 			{
+				
+				size_t numFaces = (faceSize / sizeof(unsigned int));
+				std::cout << "Faces size " << faceSize << ", vertex size " << vertexSize << std::endl;
+				/*
+				unsigned int * castedFaces = reinterpret_cast<unsigned int*>(faceData);
+				for (int i = 0; i < numFaces; i=i+3)
+				{
+					std::cout << castedFaces[i] << ", " << castedFaces[i + 1] << ", " << castedFaces[i + 2] << std::endl;
+				}
+				size_t numVertices = (vertexSize / sizeof(float));
+				float * castedVertices = reinterpret_cast<float*>(vertexData);
+				for (int i = 0; i < numVertices; i = i + 3)
+				{
+					std::cout << castedVertices[i] << ", " << castedVertices[i + 1] << ", " << castedVertices[i + 2] << std::endl;
+				}
+				*/
+
+				if (vao == -1)
+				{
+					glGenVertexArrays(1, &vao);
+				}
+
 				bind();
 
-				bindIndexBuffer();
-				glBufferData(GL_ELEMENT_ARRAY_BUFFER, faceSize, NULL, usage);
-				glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, faceSize, faceData);
-				unBindIndexBuffer();
+				if (dataBuffer == -1)
+				{
+					glGenBuffers(1, &dataBuffer);
+				}
 
 				bindDataBuffer();
-				glBufferData(GL_ARRAY_BUFFER, vertexSize, NULL, usage);
-				glBufferSubData(GL_ARRAY_BUFFER, 0, vertexSize, vertexData);
-				unBindDataBuffer();
+				glBufferData(GL_ARRAY_BUFFER, vertexSize, vertexData, usage);
 
-				unBind();
+				if (indexBuffer == -1)
+				{
+					glGenBuffers(1, &indexBuffer);
+				}
+
+				bindIndexBuffer();
+				glBufferData(GL_ELEMENT_ARRAY_BUFFER, faceSize, faceData, usage);
+				//glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, faceSize, faceData);
+				//unBindIndexBuffer();
+				
+				//glBufferSubData(GL_ARRAY_BUFFER, 0, vertexSize, vertexData);
+				//unBindDataBuffer();
+				
+				//unBind();
 			}
 		}
 	}

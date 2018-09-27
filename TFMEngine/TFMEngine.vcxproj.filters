@@ -121,12 +121,6 @@
     <Filter Include="Archivos de encabezado\render\renderstages">
       <UniqueIdentifier>{09f2acb0-661e-4f78-b74b-d38a3b85919a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Archivos de origen\render">
-      <UniqueIdentifier>{43ff6a1a-b883-4a69-989c-78dcc819d9ad}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Archivos de origen\render\renderstages">
-      <UniqueIdentifier>{ffc090f8-7dc6-440f-8ca6-592ae146e76f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Archivos de encabezado\GPU\program">
       <UniqueIdentifier>{87c0b589-cc08-4eee-bd24-d85dfb8a34df}</UniqueIdentifier>
     </Filter>
@@ -147,6 +141,12 @@
     </Filter>
     <Filter Include="shaders">
       <UniqueIdentifier>{be3b22e7-964e-4829-8150-20f32d27fdec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\render">
+      <UniqueIdentifier>{43ff6a1a-b883-4a69-989c-78dcc819d9ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\render\renderstages">
+      <UniqueIdentifier>{ffc090f8-7dc6-440f-8ca6-592ae146e76f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -24,6 +24,7 @@ namespace RenderLib
 				GPUBuffer * buf = staticBuffer.get();
 				buf->usage = GL_STATIC_DRAW;
 
+				/*
 				glGenVertexArrays(1, &buf->vao);
 				buf->bind();
 				
@@ -31,14 +32,14 @@ namespace RenderLib
 				glGenBuffers(1, &buf->dataBuffer);
 
 				buf->unBind();
-
+				*/
 				return buf;
 			}
 
 			GPUBuffer * GPUMeshManager::initializeDynamicBuffer()
 			{
 				dynamicFrontBuffer = std::make_unique<GPUBuffer>();
-				GPUBuffer * buf = staticBuffer.get();
+				GPUBuffer * buf = dynamicFrontBuffer.get();
 				buf->usage = GL_DYNAMIC_DRAW;
 
 				glGenVertexArrays(1, &buf->vao);

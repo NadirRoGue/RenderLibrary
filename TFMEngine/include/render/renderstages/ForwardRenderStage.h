@@ -13,7 +13,12 @@ namespace RenderLib
 		{
 		private:
 			std::vector<Components::MeshRenderer*> renderables;
+
+			unsigned int programId;
+			unsigned int mvp;
+			unsigned int apos;
 		public:
+			void initialize();
 			void tryRegisterElement(Components::MeshRenderer * renderable);
 			void runStage();
 		};

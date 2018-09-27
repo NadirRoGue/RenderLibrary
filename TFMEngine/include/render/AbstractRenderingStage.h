@@ -5,16 +5,16 @@
 
 #include "components/MeshRenderer.h"
 
-#include "GPU/mesh/GPUMeshManager.h"
-
 namespace RenderLib
 {
+	class EngineInstance;
+
 	namespace Render
 	{
 		class AbstractRenderingStage
 		{
 		public:
-			GPU::Mesh::GPUMeshManager * gpuMeshManager;
+			EngineInstance * engineInstance;
 		public:
 			virtual void initialize();
 			virtual void runStage() = 0;

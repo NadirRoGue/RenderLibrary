@@ -64,6 +64,7 @@ int main(int argc, void ** arg)
 
 	// Camera set up
 	RenderLib::CameraPtr camera = Camera::createCamera(0.5, 1000.0, 45.0);
+	camera.get()->translateView(VECTOR3(0.0, 0.0, -5.0));
 	scene->addCamera(camera);
 
 	// Object set up

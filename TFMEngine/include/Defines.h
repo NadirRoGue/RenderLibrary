@@ -3,7 +3,7 @@
 
 #include <Eigen/Eigen>
 
-#define USE_DOUBLE_PRECISSION__
+//#define USE_DOUBLE_PRECISSION__
 
 #ifdef USE_DOUBLE_PRECISSION__
 #define FLOAT double

@@ -12,6 +12,8 @@
 
 namespace RenderLib
 {
+	class EngineInstance;
+
 	namespace Render
 	{
 		class RenderingPipeline
@@ -22,7 +24,7 @@ namespace RenderLib
 			RenderingPipeline();
 			~RenderingPipeline();
 
-			void initializeStages(GPU::Mesh::GPUMeshManager * meshBufferManager);
+			void initializeStages(EngineInstance * engineInstance);
 			void executePipelineIteration();
 			void finalizeStages();
 

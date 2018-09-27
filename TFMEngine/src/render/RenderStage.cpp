@@ -20,23 +20,33 @@ namespace RenderLib
 
 		void RenderStage::preRunStage()
 		{
+			engineInstance->acquireContext();
+
 			// Sort all elements
 			Pipeline::ElementBasedStage<Components::MeshRenderer>::preRunStage();
 			// Add them sorted to the correspondent places
 			
-			GPU::Mesh::GPUMeshManager & gpuMeshManager = engineInstance->getGPUMeshManager();
+			renderPipeline.initializeStages(engineInstance);
 
-			renderPipeline.initializeStages(&gpuMeshManager);
+			engineInstance->releaseContext();
 		}
 
 		void RenderStage::runStage()
 		{
+			engineInstance->acquireContext();
+
 			renderPipeline.executePipelineIteration();
+
+			engineInstance->releaseContext();
 		}
 
 		void RenderStage::postRunStage()
 		{
+			engineInstance->acquireContext();
+
 			renderPipeline.finalizeStages();
+
+			engineInstance->releaseContext();
 		}
 	}
 }

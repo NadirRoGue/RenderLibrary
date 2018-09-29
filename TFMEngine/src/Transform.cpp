@@ -2,6 +2,8 @@
 
 #include <Eigen/Geometry>
 
+#include <iostream>
+
 namespace RenderLib
 {
 	Transform::Transform()

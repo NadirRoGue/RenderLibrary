@@ -18,7 +18,7 @@ namespace RenderLib
 
 		}
 
-		void RenderingPipeline::registerRenderable(Components::MeshRenderer * renderable)
+		void RenderingPipeline::registerRenderable(DefaultImpl::MeshRenderer * renderable)
 		{
 			for (auto & stages : renderStages)
 			{

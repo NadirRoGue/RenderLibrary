@@ -3,7 +3,7 @@
 #include <GL/glew.h>
 
 #include "CPU/io/FileManager.h"
-#include "CPU/io/defaultloadresults/ShaderLoadResult.h"
+#include "GPU/program/ShaderLoadResult.h"
 
 namespace RenderLib
 {
@@ -22,20 +22,74 @@ namespace RenderLib
 				}
 			}
 
-			Program::Program(const UberParamMask & mask)
-				: configMask(mask)
+			Program::Program()
 			{
 			}
 
 			Program::~Program()
 			{
+				destroyShaders();
+				glDeleteProgram(programId);
+			}
 
+			void Program::destroyShaders()
+			{
+			}
+
+			void Program::init(const UberParamMask & mask)
+			{
+				configMask = mask;
+
+				std::vector<std::string> defineParams;
+				getUberShaderDefines(defineParams);
+
+				programId = glCreateProgram();
+
+				initialize(defineParams);
+
+				gatherInputs();
+			}
+
+			void Program::attachShader(unsigned int shaderId)
+			{
+				if (shaderId != -1)
+				{
+					glAttachShader(programId, shaderId);
+				}
+			}
+
+			void Program::detachShader(unsigned int shaderId, bool deleteShader)
+			{
+				if (shaderId != -1)
+				{
+					glDetachShader(programId, shaderId);
+					if (deleteShader)
+					{
+						glDeleteShader(shaderId);
+					}
+				}
+			}
+
+			void Program::link()
+			{
+				glLinkProgram(programId);
+
+				int linked;
+				glGetProgramiv(programId, GL_LINK_STATUS, &linked);
+				if (!linked)
+				{
+					GLint logLen;
+					glGetProgramiv(programId, GL_INFO_LOG_LENGTH, &logLen);
+					std::vector<char> logString(logLen);
+					glGetProgramInfoLog(programId, logLen, NULL, &logString[0]);
+					throw EngineException(&logString[0]);
+				}
 			}
 
 			unsigned int Program::loadShaderFromFile(GLenum shaderType, const std::string & filePath, std::vector<std::string> & configStrings)
 			{
 				std::vector<CPU::IO::AbstractLoadResultPtr> fileloadResultVector = CPU::IO::FileManager::loadFile(filePath, 0);
-				CPU::IO::ShaderLoadResult * loadResult = dynamic_cast<CPU::IO::ShaderLoadResult*>(fileloadResultVector[0].get());
+				GPU::Program::ShaderLoadResult * loadResult = dynamic_cast<GPU::Program::ShaderLoadResult*>(fileloadResultVector[0].get());
 
 				size_t fileLen = loadResult->getResultSizeBytes() - 1;
 
@@ -71,12 +125,10 @@ namespace RenderLib
 				{
 					GLint logLen;
 					glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLen);
-					char *logString = new char[logLen];
-					glGetShaderInfoLog(shader, logLen, NULL, logString);
-					std::string message = "ProgramManager: Error while loading shader " + filePath + ": " + std::string(logString);
-					delete[] logString;
+					std::vector<char> logString(logLen);
+					glGetShaderInfoLog(shader, logLen, NULL, &logString[0]);
 					glDeleteShader(shader);
-					throw EngineException(message.c_str());
+					throw EngineException(&logString[0]);
 				}
 
 				return shader;
@@ -126,14 +178,6 @@ namespace RenderLib
 			void Program::getUberShaderDefines(std::vector<std::string> & definesBuffer)
 			{
 
-			}
-
-			void Program::executePreRenderCallback(const EngineInstance & instance)
-			{
-				if (renderInitCallback)
-				{
-					renderInitCallback(instance);
-				}
 			}
 
 			void Program::bind()

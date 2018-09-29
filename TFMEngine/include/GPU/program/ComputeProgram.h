@@ -11,11 +11,17 @@ namespace RenderLib
 		{
 			class ComputeProgram : public Program
 			{
-			public:
+			protected:
 				std::string compShaderFile;
+			private:
+				unsigned int compShader;
 			public:
-				ComputeProgram(const UberParamMask & params);
+				ComputeProgram();
 				~ComputeProgram();
+
+				void initialize(std::vector<std::string> & definesBuffer);
+
+				void destroyShaders();
 
 				void execute(unsigned int xSize, unsigned int ySize, unsigned int zSize);
 			};

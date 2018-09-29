@@ -17,8 +17,6 @@ namespace RenderLib
 	class Camera : public SceneObject, public Graphics::WindowResizeObserver
 	{
 	public:
-		static CameraPtr createCamera(FLOAT near, FLOAT far, FLOAT fov);
-	public:
 		MATRIX4 projectionMatrix;
 		MATRIX4 viewMatrix;
 
@@ -28,9 +26,11 @@ namespace RenderLib
 
 	public:
 		Camera();
-		Camera(FLOAT near, FLOAT far, FLOAT FOV);
 		~Camera();
 
+		virtual void initialize();
+
+		void setProjectionParams(const FLOAT & nearPlane, const FLOAT & farPlane, const FLOAT & FOV);
 
 		void lookAt(const VECTOR3 & eye, const VECTOR3 & target, const VECTOR3 & up);
 

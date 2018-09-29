@@ -6,8 +6,13 @@ namespace RenderLib
 	{
 		namespace Program
 		{
-			ShaderProgram::ShaderProgram(const UberParamMask & params)
-				: Program(params)
+			ShaderProgram::ShaderProgram()
+				: Program()
+				, vShader(-1)
+				, tcShader(-1)
+				, teShader(-1)
+				, geomShader(-1)
+				, fShader(-1)
 			{
 			}
 
@@ -15,12 +20,58 @@ namespace RenderLib
 			{
 			}
 
-			void ShaderProgram::onRender(const SceneObject & object, const Camera & camera)
+			void ShaderProgram::initialize(std::vector<std::string> & definesBuffer)
 			{
-				if (renderCallback)
+				if (vShaderF.empty() || fShaderF.empty())
 				{
-					renderCallback(object, camera);
+					throw EngineException("ShaderProgram: A minimun of a vertex shader and a fragment shader are required to create a ShaderProgram");
 				}
+
+				if (tcShaderF.empty() != teShaderF.empty())
+				{
+					throw EngineException("ShaderProgram: Tesselation stage requires both shaders files(control and evaluation)");
+				}
+
+				vShader = loadShaderFromFile(GL_VERTEX_SHADER, vShaderF, definesBuffer);
+				fShader = loadShaderFromFile(GL_FRAGMENT_SHADER, fShaderF, definesBuffer);
+
+				if (!tcShaderF.empty() && !teShaderF.empty())
+				{
+					tcShader = loadShaderFromFile(GL_TESS_CONTROL_SHADER, tcShaderF, definesBuffer);
+					teShader = loadShaderFromFile(GL_TESS_EVALUATION_SHADER, teShaderF, definesBuffer);
+				}
+
+				if (!geomShaderF.empty())
+				{
+					geomShader = loadShaderFromFile(GL_GEOMETRY_SHADER, geomShaderF, definesBuffer);
+				}
+
+				attachShader(vShader);
+				attachShader(tcShader);
+				attachShader(teShader);
+				attachShader(geomShader);
+				attachShader(fShader);
+
+				link();
+			}
+
+			void ShaderProgram::destroyShaders()
+			{
+				detachShader(vShader);
+				detachShader(tcShader);
+				detachShader(teShader);
+				detachShader(geomShader);
+				detachShader(fShader);
+			}
+
+			void ShaderProgram::onFrameBegin()
+			{
+
+			}
+
+			void ShaderProgram::onRenderObject(const SceneObject & object, const Camera & camera)
+			{
+				
 			}
 		}
 	}

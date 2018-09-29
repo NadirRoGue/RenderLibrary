@@ -21,7 +21,20 @@ namespace RenderLib
 		public:
 			static Log & getInstance();
 		public:
-			void setLogger(std::unique_ptr<AbstractLogger> && newLogger);
+			template<class T>
+			void setLogger()
+			{
+				if (std::is_base_of<AbstractLogger, T>::value)
+				{
+					logger.reset();
+					logger = std::make_unique<T>();
+				}
+				else
+				{
+					logError("Log: Attempted to change logger with a non AbstractLogger derived class");
+				}
+			}
+
 			void log(const std::string & text, const LogLevel & level);
 			void logInfo(const std::string & text);
 			void logWarning(const std::string & text);

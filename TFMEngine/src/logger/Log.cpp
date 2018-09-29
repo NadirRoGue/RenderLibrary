@@ -1,7 +1,5 @@
 #include "logger/Log.h"
 
-#include "logger/ConsoleLogger.h"
-
 namespace RenderLib
 {
 	namespace Logger
@@ -12,12 +10,6 @@ namespace RenderLib
 		Log & Log::getInstance()
 		{
 			return *(INSTANCE.get());
-		}
-
-		void Log::setLogger(std::unique_ptr<AbstractLogger> && newLogger)
-		{
-			logger.reset();
-			logger = std::move(newLogger);
 		}
 
 		void Log::log(const std::string & message, const LogLevel & level)
@@ -54,7 +46,6 @@ namespace RenderLib
 
 		Log::Log()
 		{
-			setLogger(std::make_unique<ConsoleLogger>());
 		}
 
 		Log::~Log()

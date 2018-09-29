@@ -37,12 +37,6 @@
     <Filter Include="Archivos de origen\CPU\memory">
       <UniqueIdentifier>{56ae5d15-9ead-405c-9e70-49a8d27ee78c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Archivos de encabezado\tests">
-      <UniqueIdentifier>{49fca1cb-09e8-4fe2-91f2-76176276c316}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Archivos de origen\tests">
-      <UniqueIdentifier>{0290d527-2cab-49ef-b6af-616bed3df723}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Archivos de encabezado\CPU\mesh">
       <UniqueIdentifier>{c812926f-c358-441a-9beb-624f93a22629}</UniqueIdentifier>
     </Filter>
@@ -55,18 +49,6 @@
     <Filter Include="Archivos de origen\CPU\io">
       <UniqueIdentifier>{c9f63ebd-62d6-403f-8688-1f42ebeb6257}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Archivos de encabezado\CPU\io\defaultloaders">
-      <UniqueIdentifier>{9ce7d3b7-ba2a-43f4-8a56-c68f4f3d739b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Archivos de origen\CPU\io\defaultloaders">
-      <UniqueIdentifier>{bf6fc789-5490-4290-abe2-e7e09a0b7390}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Archivos de encabezado\CPU\mesh\meshattributebuilders">
-      <UniqueIdentifier>{8b28e0c7-da0a-4a79-a626-52babbf528fd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Archivos de origen\CPU\mesh\meshattributebuilders">
-      <UniqueIdentifier>{ab16763a-e75e-4537-8d05-8baed8d66a22}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Archivos de encabezado\util">
       <UniqueIdentifier>{a58f5707-5cb2-4490-b2ae-d3e1faeb572f}</UniqueIdentifier>
     </Filter>
@@ -78,12 +60,6 @@
     </Filter>
     <Filter Include="Archivos de origen\GPU\mesh">
       <UniqueIdentifier>{3892f729-d88a-4765-97d4-b609267e1909}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Archivos de encabezado\components">
-      <UniqueIdentifier>{31c855f4-117e-44ab-8202-97eec677c5ba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Archivos de origen\components">
-      <UniqueIdentifier>{c97bc8d3-ab75-4727-8c88-8c807dc07a1f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Archivos de encabezado\logger">
       <UniqueIdentifier>{c411e377-3f53-48c5-85c6-d0d03bcc3fe0}</UniqueIdentifier>
@@ -103,17 +79,8 @@
     <Filter Include="Archivos de origen\inputhandlers">
       <UniqueIdentifier>{c863a3f7-5694-4d8e-9b14-ecc28733eeee}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Archivos de encabezado\graphics\defaultwindowhandlers">
-      <UniqueIdentifier>{f64ed24f-8b60-4d1c-990e-53a4e02f01af}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Archivos de origen\graphics\defaultwindowhandlers">
-      <UniqueIdentifier>{19d542ed-d9f2-4718-9bac-96188788ddb3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Archivos de encabezado\pipeline\defaultstages">
       <UniqueIdentifier>{37f3de9a-402c-4b8b-99d8-28f8a01cfaa2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Archivos de origen\pipeline\defaultstages">
-      <UniqueIdentifier>{03f7d267-6ff4-4551-bb44-21e20fa7ab91}</UniqueIdentifier>
     </Filter>
     <Filter Include="Archivos de encabezado\render">
       <UniqueIdentifier>{7d8d32ca-6126-431d-9310-752551988a4b}</UniqueIdentifier>
@@ -124,20 +91,8 @@
     <Filter Include="Archivos de encabezado\GPU\program">
       <UniqueIdentifier>{87c0b589-cc08-4eee-bd24-d85dfb8a34df}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Archivos de encabezado\GPU\program\defaultprograms">
-      <UniqueIdentifier>{30841065-97ad-4b96-8541-fcc550b4a47e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Archivos de origen\GPU\program">
       <UniqueIdentifier>{c4b5697c-c144-44e9-93b9-f7ec98e4ff19}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Archivos de origen\GPU\program\defaultprograms">
-      <UniqueIdentifier>{f2a474bc-5f3b-4dd7-b861-d5d1e2d1c65b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Archivos de encabezado\CPU\io\defaultloadresults">
-      <UniqueIdentifier>{3ad65903-a112-4c08-bdc3-e47879e5c16b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Archivos de origen\CPU\io\defaultloadresults">
-      <UniqueIdentifier>{57ebd423-60b2-4a79-8349-7c3e48ad5f09}</UniqueIdentifier>
     </Filter>
     <Filter Include="shaders">
       <UniqueIdentifier>{be3b22e7-964e-4829-8150-20f32d27fdec}</UniqueIdentifier>
@@ -147,6 +102,54 @@
     </Filter>
     <Filter Include="Archivos de origen\render\renderstages">
       <UniqueIdentifier>{ffc090f8-7dc6-440f-8ca6-592ae146e76f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\defaultimpl">
+      <UniqueIdentifier>{8724e62e-b509-4f27-9cc7-c8cda1f2573a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\defaultimpl\components">
+      <UniqueIdentifier>{538ef97f-28f4-44e4-81ed-79aa2e2fd876}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\defaultimpl\loggers">
+      <UniqueIdentifier>{365c8896-d5e5-4ccd-a2da-7b98737d96c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\defaultimpl\pipelinestages">
+      <UniqueIdentifier>{79e39bfa-a1d0-46b8-936d-7d38835f8394}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\defaultimpl\fileloaders">
+      <UniqueIdentifier>{2f312587-f25a-43be-839d-208a74e1877b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\defaultimpl\windowhandlers">
+      <UniqueIdentifier>{300bfcfd-09d9-4a88-8893-064703a93743}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\defaultimpl\meshblockconfigurators">
+      <UniqueIdentifier>{b2f507aa-ad4c-4dac-8719-2d5c586d447f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\defaultimpl\shaders">
+      <UniqueIdentifier>{8dd2a33e-5ee4-493e-bf24-6862fd5bcf79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\defaultimpl">
+      <UniqueIdentifier>{288f7e76-8b21-423b-b4bd-1692eb607b75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\defaultimpl\components">
+      <UniqueIdentifier>{e234e63d-47c3-4216-b96b-960036eb2393}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\defaultimpl\loggers">
+      <UniqueIdentifier>{dc1b3257-4584-47e2-b819-9c5aa1c7dfb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\defaultimpl\fileloaders">
+      <UniqueIdentifier>{5c6f3ffb-ecea-4345-8c8a-ab8017ccbc76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\defaultimpl\shaders">
+      <UniqueIdentifier>{144beb2b-1df4-4dc6-adaa-a7a23966272d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\defaultimpl\meshblockconfigurators">
+      <UniqueIdentifier>{92fbf8c8-a1eb-4ea4-a88a-e39cf0a9f309}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\defaultimpl\pipelinestages">
+      <UniqueIdentifier>{ba953bba-dc93-4dd2-89f2-948507b7bea6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\defaultimpl\windowhandlers">
+      <UniqueIdentifier>{905613b2-59cd-48a0-a20f-bbea457578e4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -195,9 +198,6 @@
     <ClInclude Include="include\SceneManager.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="include\tests\TestClasses.h">
-      <Filter>Archivos de encabezado\tests</Filter>
-    </ClInclude>
     <ClInclude Include="include\CPU\mesh\MeshManager.h">
       <Filter>Archivos de encabezado\CPU\mesh</Filter>
     </ClInclude>
@@ -222,15 +222,6 @@
     <ClInclude Include="include\CPU\mesh\MeshLoadResult.h">
       <Filter>Archivos de encabezado\CPU\mesh</Filter>
     </ClInclude>
-    <ClInclude Include="include\CPU\io\defaultloaders\AssimpFileLoader.h">
-      <Filter>Archivos de encabezado\CPU\io\defaultloaders</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CPU\mesh\meshattributebuilders\CompactMeshBuilder.h">
-      <Filter>Archivos de encabezado\CPU\mesh\meshattributebuilders</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CPU\mesh\meshattributebuilders\InterleavedMeshBuilder.h">
-      <Filter>Archivos de encabezado\CPU\mesh\meshattributebuilders</Filter>
-    </ClInclude>
     <ClInclude Include="include\util\StringUtils.h">
       <Filter>Archivos de encabezado\util</Filter>
     </ClInclude>
@@ -243,22 +234,7 @@
     <ClInclude Include="include\GPU\mesh\GPUMeshManager.h">
       <Filter>Archivos de encabezado\GPU\mesh</Filter>
     </ClInclude>
-    <ClInclude Include="include\components\MeshFilter.h">
-      <Filter>Archivos de encabezado\components</Filter>
-    </ClInclude>
-    <ClInclude Include="include\components\MeshRenderer.h">
-      <Filter>Archivos de encabezado\components</Filter>
-    </ClInclude>
     <ClInclude Include="include\logger\AbstractLogger.h">
-      <Filter>Archivos de encabezado\logger</Filter>
-    </ClInclude>
-    <ClInclude Include="include\logger\BufferedFileLogger.h">
-      <Filter>Archivos de encabezado\logger</Filter>
-    </ClInclude>
-    <ClInclude Include="include\logger\ConsoleLogger.h">
-      <Filter>Archivos de encabezado\logger</Filter>
-    </ClInclude>
-    <ClInclude Include="include\logger\FileLogger.h">
       <Filter>Archivos de encabezado\logger</Filter>
     </ClInclude>
     <ClInclude Include="include\logger\Log.h">
@@ -291,9 +267,6 @@
     <ClInclude Include="include\graphics\WindowResizeObserver.h">
       <Filter>Archivos de encabezado\graphics</Filter>
     </ClInclude>
-    <ClInclude Include="include\graphics\defaultwindowhandlers\GLFWWindowHandler.h">
-      <Filter>Archivos de encabezado\graphics\defaultwindowhandlers</Filter>
-    </ClInclude>
     <ClInclude Include="include\graphics\WindowHandler.h">
       <Filter>Archivos de encabezado\graphics</Filter>
     </ClInclude>
@@ -303,13 +276,7 @@
     <ClInclude Include="include\Initialization.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="include\pipeline\defaultstages\ComponentRegisterStage.h">
-      <Filter>Archivos de encabezado\pipeline\defaultstages</Filter>
-    </ClInclude>
     <ClInclude Include="include\render\RenderingPipeline.h">
-      <Filter>Archivos de encabezado\render</Filter>
-    </ClInclude>
-    <ClInclude Include="include\render\RenderStage.h">
       <Filter>Archivos de encabezado\render</Filter>
     </ClInclude>
     <ClInclude Include="include\render\renderstages\ForwardRenderStage.h">
@@ -317,12 +284,6 @@
     </ClInclude>
     <ClInclude Include="include\render\AbstractRenderingStage.h">
       <Filter>Archivos de encabezado\render</Filter>
-    </ClInclude>
-    <ClInclude Include="include\pipeline\defaultstages\CPUToGPUMeshSyncStage.h">
-      <Filter>Archivos de encabezado\pipeline\defaultstages</Filter>
-    </ClInclude>
-    <ClInclude Include="include\pipeline\defaultstages\GPUToCPUMeshSyncStage.h">
-      <Filter>Archivos de encabezado\pipeline\defaultstages</Filter>
     </ClInclude>
     <ClInclude Include="include\CPU\mesh\Mesh.h">
       <Filter>Archivos de encabezado\CPU\mesh</Filter>
@@ -336,15 +297,6 @@
     <ClInclude Include="include\GPU\program\ProgramManager.h">
       <Filter>Archivos de encabezado\GPU\program</Filter>
     </ClInclude>
-    <ClInclude Include="include\GPU\program\defaultprograms\StandardProgram.h">
-      <Filter>Archivos de encabezado\GPU\program\defaultprograms</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CPU\io\defaultloaders\ShaderLoader.h">
-      <Filter>Archivos de encabezado\CPU\io\defaultloaders</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CPU\io\defaultloadresults\ShaderLoadResult.h">
-      <Filter>Archivos de encabezado\CPU\io\defaultloadresults</Filter>
-    </ClInclude>
     <ClInclude Include="include\GPU\program\ComputeProgram.h">
       <Filter>Archivos de encabezado\GPU\program</Filter>
     </ClInclude>
@@ -353,6 +305,60 @@
     </ClInclude>
     <ClInclude Include="include\Material.h">
       <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Threadpool.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="include\defaultimpl\components\MeshFilter.h">
+      <Filter>Archivos de encabezado\defaultimpl\components</Filter>
+    </ClInclude>
+    <ClInclude Include="include\defaultimpl\components\MeshRenderer.h">
+      <Filter>Archivos de encabezado\defaultimpl\components</Filter>
+    </ClInclude>
+    <ClInclude Include="include\defaultimpl\loggers\BufferedFileLogger.h">
+      <Filter>Archivos de encabezado\defaultimpl\loggers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\defaultimpl\loggers\ConsoleLogger.h">
+      <Filter>Archivos de encabezado\defaultimpl\loggers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\defaultimpl\loggers\FileLogger.h">
+      <Filter>Archivos de encabezado\defaultimpl\loggers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\defaultimpl\fileloaders\AssimpFileLoader.h">
+      <Filter>Archivos de encabezado\defaultimpl\fileloaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\defaultimpl\fileloaders\ShaderLoader.h">
+      <Filter>Archivos de encabezado\defaultimpl\fileloaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\defaultimpl\meshblockconfigurators\CompactMeshBuilder.h">
+      <Filter>Archivos de encabezado\defaultimpl\meshblockconfigurators</Filter>
+    </ClInclude>
+    <ClInclude Include="include\defaultimpl\meshblockconfigurators\InterleavedMeshBuilder.h">
+      <Filter>Archivos de encabezado\defaultimpl\meshblockconfigurators</Filter>
+    </ClInclude>
+    <ClInclude Include="include\defaultimpl\windowhandlers\GLFWWindowHandler.h">
+      <Filter>Archivos de encabezado\defaultimpl\windowhandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="include\defaultimpl\pipelinestages\ComponentRegisterStage.h">
+      <Filter>Archivos de encabezado\defaultimpl\pipelinestages</Filter>
+    </ClInclude>
+    <ClInclude Include="include\defaultimpl\pipelinestages\CPUToGPUMeshSyncStage.h">
+      <Filter>Archivos de encabezado\defaultimpl\pipelinestages</Filter>
+    </ClInclude>
+    <ClInclude Include="include\defaultimpl\pipelinestages\GPUToCPUMeshSyncStage.h">
+      <Filter>Archivos de encabezado\defaultimpl\pipelinestages</Filter>
+    </ClInclude>
+    <ClInclude Include="include\defaultimpl\pipelinestages\RenderStage.h">
+      <Filter>Archivos de encabezado\defaultimpl\pipelinestages</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\program\ShaderLoadResult.h">
+      <Filter>Archivos de encabezado\GPU\program</Filter>
+    </ClInclude>
+    <ClInclude Include="include\defaultimpl\pipelinestages\IterationEndStage.h">
+      <Filter>Archivos de encabezado\defaultimpl\pipelinestages</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\program\PostProcessProgram.h">
+      <Filter>Archivos de encabezado\GPU\program</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -395,9 +401,6 @@
     <ClCompile Include="src\SceneManager.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="src\tests\TestClasses.cpp">
-      <Filter>Archivos de origen\tests</Filter>
-    </ClCompile>
     <ClCompile Include="src\CPU\mesh\Mesh.cpp">
       <Filter>Archivos de origen\CPU\mesh</Filter>
     </ClCompile>
@@ -419,15 +422,6 @@
     <ClCompile Include="src\CPU\mesh\MeshLoadResult.cpp">
       <Filter>Archivos de origen\CPU\mesh</Filter>
     </ClCompile>
-    <ClCompile Include="src\CPU\io\defaultloaders\AssimpFileLoader.cpp">
-      <Filter>Archivos de origen\CPU\io\defaultloaders</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CPU\mesh\meshattributebuilder\CompactMeshBuilder.cpp">
-      <Filter>Archivos de origen\CPU\mesh\meshattributebuilders</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CPU\mesh\meshattributebuilder\InterleavedMeshBuilder.cpp">
-      <Filter>Archivos de origen\CPU\mesh\meshattributebuilders</Filter>
-    </ClCompile>
     <ClCompile Include="src\util\StringUtils.cpp">
       <Filter>Archivos de origen\util</Filter>
     </ClCompile>
@@ -439,21 +433,6 @@
     </ClCompile>
     <ClCompile Include="src\GPU\mesh\GPUMeshManager.cpp">
       <Filter>Archivos de origen\GPU\mesh</Filter>
-    </ClCompile>
-    <ClCompile Include="src\components\MeshFilter.cpp">
-      <Filter>Archivos de origen\components</Filter>
-    </ClCompile>
-    <ClCompile Include="src\components\MeshRenderer.cpp">
-      <Filter>Archivos de origen\components</Filter>
-    </ClCompile>
-    <ClCompile Include="src\logger\BufferedFileLogger.cpp">
-      <Filter>Archivos de origen\logger</Filter>
-    </ClCompile>
-    <ClCompile Include="src\logger\ConsoleLogger.cpp">
-      <Filter>Archivos de origen\logger</Filter>
-    </ClCompile>
-    <ClCompile Include="src\logger\FileLogger.cpp">
-      <Filter>Archivos de origen\logger</Filter>
     </ClCompile>
     <ClCompile Include="src\logger\Log.cpp">
       <Filter>Archivos de origen\logger</Filter>
@@ -473,9 +452,6 @@
     <ClCompile Include="src\Camera.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphics\defaultwindowhandlers\GLFWWindowHandler.cpp">
-      <Filter>Archivos de origen\graphics\defaultwindowhandlers</Filter>
-    </ClCompile>
     <ClCompile Include="src\graphics\WindowHandler.cpp">
       <Filter>Archivos de origen\graphics</Filter>
     </ClCompile>
@@ -485,26 +461,14 @@
     <ClCompile Include="src\Initialization.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="src\pipeline\defaultstages\ComponentRegisterStage.cpp">
-      <Filter>Archivos de origen\pipeline\defaultstages</Filter>
-    </ClCompile>
     <ClCompile Include="src\render\AbstractRenderingStage.cpp">
       <Filter>Archivos de origen\render</Filter>
     </ClCompile>
     <ClCompile Include="src\render\RenderingPipeline.cpp">
       <Filter>Archivos de origen\render</Filter>
     </ClCompile>
-    <ClCompile Include="src\render\RenderStage.cpp">
-      <Filter>Archivos de origen\render</Filter>
-    </ClCompile>
     <ClCompile Include="src\render\renderstages\ForwardRenderStage.cpp">
       <Filter>Archivos de origen\render\renderstages</Filter>
-    </ClCompile>
-    <ClCompile Include="src\pipeline\defaultstages\CPUToGPUMeshSyncStage.cpp">
-      <Filter>Archivos de origen\pipeline\defaultstages</Filter>
-    </ClCompile>
-    <ClCompile Include="src\pipeline\defaultstages\GPUToCPUMeshSyncStage.cpp">
-      <Filter>Archivos de origen\pipeline\defaultstages</Filter>
     </ClCompile>
     <ClCompile Include="src\GPU\mesh\GPUBuffer.cpp">
       <Filter>Archivos de origen\GPU\mesh</Filter>
@@ -515,15 +479,6 @@
     <ClCompile Include="src\GPU\program\ProgramManager.cpp">
       <Filter>Archivos de origen\GPU\program</Filter>
     </ClCompile>
-    <ClCompile Include="src\GPU\program\defaultprograms\StandardProgram.cpp">
-      <Filter>Archivos de origen\GPU\program\defaultprograms</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CPU\io\defaultloaders\ShaderLoader.cpp">
-      <Filter>Archivos de origen\CPU\io\defaultloaders</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CPU\io\defaultloadresults\ShaderLoadResult.cpp">
-      <Filter>Archivos de origen\CPU\io\defaultloadresults</Filter>
-    </ClCompile>
     <ClCompile Include="src\GPU\program\ComputeProgram.cpp">
       <Filter>Archivos de origen\GPU\program</Filter>
     </ClCompile>
@@ -532,6 +487,60 @@
     </ClCompile>
     <ClCompile Include="src\Material.cpp">
       <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Threadpool.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\defaultimpl\components\MeshFilter.cpp">
+      <Filter>Archivos de origen\defaultimpl\components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\defaultimpl\components\MeshRenderer.cpp">
+      <Filter>Archivos de origen\defaultimpl\components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\defaultimpl\fileloaders\AssimpFileLoader.cpp">
+      <Filter>Archivos de origen\defaultimpl\fileloaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\defaultimpl\fileloaders\ShaderLoader.cpp">
+      <Filter>Archivos de origen\defaultimpl\fileloaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\defaultimpl\loggers\BufferedFileLogger.cpp">
+      <Filter>Archivos de origen\defaultimpl\loggers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\defaultimpl\loggers\ConsoleLogger.cpp">
+      <Filter>Archivos de origen\defaultimpl\loggers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\defaultimpl\loggers\FileLogger.cpp">
+      <Filter>Archivos de origen\defaultimpl\loggers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\defaultimpl\meshblockconfigurators\CompactMeshBuilder.cpp">
+      <Filter>Archivos de origen\defaultimpl\meshblockconfigurators</Filter>
+    </ClCompile>
+    <ClCompile Include="src\defaultimpl\meshblockconfigurators\InterleavedMeshBuilder.cpp">
+      <Filter>Archivos de origen\defaultimpl\meshblockconfigurators</Filter>
+    </ClCompile>
+    <ClCompile Include="src\defaultimpl\pipelinestages\ComponentRegisterStage.cpp">
+      <Filter>Archivos de origen\defaultimpl\pipelinestages</Filter>
+    </ClCompile>
+    <ClCompile Include="src\defaultimpl\pipelinestages\CPUToGPUMeshSyncStage.cpp">
+      <Filter>Archivos de origen\defaultimpl\pipelinestages</Filter>
+    </ClCompile>
+    <ClCompile Include="src\defaultimpl\pipelinestages\GPUToCPUMeshSyncStage.cpp">
+      <Filter>Archivos de origen\defaultimpl\pipelinestages</Filter>
+    </ClCompile>
+    <ClCompile Include="src\defaultimpl\windowhandlers\GLFWWindowHandler.cpp">
+      <Filter>Archivos de origen\defaultimpl\windowhandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\defaultimpl\pipelinestages\RenderStage.cpp">
+      <Filter>Archivos de origen\defaultimpl\pipelinestages</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GPU\program\ShaderLoadResult.cpp">
+      <Filter>Archivos de origen\GPU\program</Filter>
+    </ClCompile>
+    <ClCompile Include="src\defaultimpl\pipelinestages\IterationEndStage.cpp">
+      <Filter>Archivos de origen\defaultimpl\pipelinestages</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GPU\program\PostProcessProgram.cpp">
+      <Filter>Archivos de origen\GPU\program</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

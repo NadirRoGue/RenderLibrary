@@ -3,20 +3,26 @@
 #include "CPU/memory/MemoryManager.h"
 
 #include "CPU/mesh/Mesh.h"
-#include "CPU/mesh/meshattributebuilders/InterleavedMeshBuilder.h"
-#include "CPU/mesh/meshattributebuilders/CompactMeshBuilder.h"
+#include "defaultimpl/meshblockconfigurators/InterleavedMeshBuilder.h"
+#include "defaultimpl/meshblockconfigurators/CompactMeshBuilder.h"
 
 #include "CPU/io/FileManager.h"
-#include "CPU/io/defaultloaders/AssimpFileLoader.h"
-#include "CPU/io/defaultloaders/ShaderLoader.h"
+#include "defaultimpl/fileloaders/AssimpFileLoader.h"
+#include "defaultimpl/fileloaders/ShaderLoader.h"
+
+#include "logger/Log.h"
+#include "defaultimpl/loggers/ConsoleLogger.h"
 
 namespace RenderLib
 {
 	void DefaultEngineInitialization()
 	{
-		CPU::Memory::MemoryManager::getInstance().setAttributeBuilderForClass<CPU::Mesh::Mesh>(new CPU::Mesh::InterleavedMeshBuilder());
+		// Set default mesh memory layout configurator: Interleaved (FFFF)(VNTB[UV][COLOR]VNTB[UV][COLOR]...)
+		CPU::Memory::MemoryManager::getInstance().setAttributeBuilderForClass<CPU::Mesh::Mesh>(new DefaultImpl::InterleavedMeshBuilder());
 
-		CPU::IO::FileManager::registerFileLoader<CPU::IO::AssimpFileLoader>();
-		CPU::IO::FileManager::registerFileLoader<CPU::IO::ShaderLoader>();
+		CPU::IO::FileManager::registerFileLoader<DefaultImpl::AssimpFileLoader>();
+		CPU::IO::FileManager::registerFileLoader<DefaultImpl::ShaderLoader>();
+
+		Logger::Log::getInstance().setLogger<DefaultImpl::ConsoleLogger>();
 	}
 }

@@ -5,38 +5,21 @@
 
 namespace RenderLib
 {
-	SceneObjectPtr SceneObject::createObject(const std::string & name, SceneObject * parent)
-	{
-		return std::make_unique<SceneObject>(name, parent);
-	}
-
 	SceneObject::SceneObject()
-		: SceneObject("", NULL)
+		: initialized(false)
+		, parent(NULL)
 	{
-
-	}
-
-	SceneObject::SceneObject(const std::string & name)
-		:SceneObject(name, NULL)
-	{
-
-	}
-
-	SceneObject::SceneObject(const std::string & name, SceneObject * parent)
-		: objectName(name)
-	{
-		transform.object = this;
-
-		// Avoid circular dependency
-		if (parent != NULL && parent->parent != this)
-		{
-			this->parent = parent;
-		}
+		transform.update();
 	}
 
 	SceneObject::~SceneObject()
 	{
 
+	}
+
+	void SceneObject::initialize()
+	{
+		initialized = true;
 	}
 
 	ComponentList & SceneObject::getComponentList()
@@ -71,6 +54,16 @@ namespace RenderLib
 			object->parent = this;
 			object->children.push_back(object);
 		}
+	}
+	
+	SceneObject * SceneObject::getParent()
+	{
+		return parent;
+	}
+
+	std::vector<SceneObject*> & SceneObject::getChildren()
+	{
+		return children;
 	}
 
 	void SceneObject::removeChildren(SceneObject * object)

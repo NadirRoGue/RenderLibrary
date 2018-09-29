@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "components/MeshRenderer.h"
+#include "defaultimpl/components/MeshRenderer.h"
 
 namespace RenderLib
 {
@@ -19,7 +19,7 @@ namespace RenderLib
 			virtual void initialize();
 			virtual void runStage() = 0;
 			virtual void finalize();
-			virtual void tryRegisterElement(Components::MeshRenderer * renderable);
+			virtual void tryRegisterElement(DefaultImpl::MeshRenderer * renderable);
 		};
 
 		typedef std::unique_ptr<AbstractRenderingStage> AbstractRenderingStagePtr;

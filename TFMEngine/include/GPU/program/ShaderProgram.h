@@ -14,19 +14,30 @@ namespace RenderLib
 		{
 			class ShaderProgram : public Program
 			{
-			public:
+			protected:
 				std::string vShaderF;
 				std::string tcShaderF;
 				std::string teShaderF;
 				std::string geomShaderF;
 				std::string fShaderF;
 			private:
+				unsigned int vShader;
+				unsigned int tcShader;
+				unsigned int teShader;
+				unsigned int geomShader;
+				unsigned int fShader;
+			
 				std::function<void(const SceneObject & obj, const Camera & cam)> renderCallback;
 			public:
-				ShaderProgram(const UberParamMask & params);
+				ShaderProgram();
 				~ShaderProgram();
 
-				virtual void onRender(const SceneObject & object, const Camera & camera);
+				virtual void initialize(std::vector<std::string> & definesBuffer);
+				
+				void destroyShaders();
+
+				virtual void onFrameBegin();
+				virtual void onRenderObject(const SceneObject & object, const Camera & camera);
 			};
 		}
 	}

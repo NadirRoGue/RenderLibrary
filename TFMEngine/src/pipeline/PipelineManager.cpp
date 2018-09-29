@@ -1,8 +1,5 @@
 #include "pipeline/PipelineManager.h"
 
-#include "pipeline/defaultstages/ComponentRegisterStage.h"
-#include "pipeline/defaultstages/CPUToGPUMeshSyncStage.h"
-
 #include "EngineInstance.h"
 
 namespace RenderLib
@@ -12,8 +9,6 @@ namespace RenderLib
 		PipelineManager::PipelineManager(EngineInstance * engInstance)
 		{
 			engineInstance = engInstance;
-			addPipelineStage<ComponentRegisterStage>();
-			addPipelineStage<CPUToGPUMeshSyncStage>();
 		}
 
 		PipelineManager::~PipelineManager()

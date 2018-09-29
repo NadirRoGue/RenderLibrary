@@ -15,14 +15,14 @@ namespace RenderLib
 	class SceneObject
 	{
 	public:
-		static SceneObjectPtr createObject(const std::string & name = "", SceneObject * parent = NULL);
-	public:
 		// Transformation state for this object
 		Transform transform;
 		// Wether this object is enabled for processing
 		bool active;
 		// Object name
 		std::string objectName;
+		// Wether this object has called its initialization method
+		bool initialized;
 	private:
 		// List with all the components attached to this object
 		ComponentList componentList;
@@ -32,16 +32,18 @@ namespace RenderLib
 		
 		// Child objects
 		std::vector<SceneObject *> children;
-	
 	public:
 		SceneObject();
-		SceneObject(const std::string & name);
-		SceneObject(const std::string & name, SceneObject * parent = NULL);
 		~SceneObject();
+
+		virtual void initialize();
 
 		void setParent(SceneObject * object);
 		void addChildren(SceneObject * object);
 		void removeChildren(SceneObject * object);
+
+		SceneObject * getParent();
+		std::vector<SceneObject*> & getChildren();
 
 		ComponentList & getComponentList();
 

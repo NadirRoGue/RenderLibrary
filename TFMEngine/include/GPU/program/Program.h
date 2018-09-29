@@ -28,24 +28,19 @@ namespace RenderLib
 			{
 			private:
 				UberParamMask configMask;
-				std::function<void(const EngineInstance & instance)> renderInitCallback;
 			protected:
 				std::unordered_map<std::string, ShaderInput> shaderUniforms;
 				std::unordered_map<std::string, ShaderInput> shaderAttributes;
 			public:
 				unsigned int programId;
 			public:
-				Program(const UberParamMask & config);
+				Program();
 				~Program();
-
-				virtual void getUberShaderDefines(std::vector<std::string> & definesBuffer);
 
 				void bind();
 				void unBind();
 
-				void gatherInputs();
-
-				void executePreRenderCallback(const EngineInstance & instance);
+				void init(const UberParamMask & mask);
 
 				void setUniformI (const std::string & name, const int & val);
 				void setUniformI2(const std::string & name, const int & v1, const int & v2);
@@ -72,39 +67,17 @@ namespace RenderLib
 				void setUniformMatrix3(const std::string & name, const unsigned int & count, const bool & transpose, const FLOAT * val);
 				void setUniformMatrix4(const std::string & name, const unsigned int & count, const bool & transpose, const FLOAT * val);
 			protected:
+				virtual void getUberShaderDefines(std::vector<std::string> & definesBuffer);
 				virtual unsigned int loadShaderFromFile(GLenum shaderType, const std::string & filePath, std::vector<std::string> & configStrings);
-				virtual void initialize() = 0;
-			};
 
-			class ProgramFactory
-			{
+				virtual void initialize(std::vector<std::string> & definesBuffer) = 0;
+				virtual void destroyShaders();
+
+				void attachShader(unsigned int shaderId);
+				void detachShader(unsigned int shaderId, bool deleteShader = true);
+				void link();
 			private:
-				std::map<UberParamMask, std::unique_ptr<Program>> shaderCache;
-			public:
-				ProgramFactory()
-				{
-				}
-
-				~ProgramFactory()
-				{
-				}
-
-				template<class T>
-				T * createProgram(const UberParamMask & mask)
-				{
-					auto it = shaderCache.find(mask);
-					if (it != shaderCache.end())
-					{
-						return it->second.get();
-					}
-
-					std::unique_ptr<Program> newProgram = std::make_unique<T>(mask);
-					T * result = dynamic_cast<T*>(newProgram.get());
-					
-					shaderCache[mask] = std::move(newProgram);
-
-					return result;
-				}
+				void gatherInputs();
 			};
 		}
 	}

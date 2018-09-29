@@ -4,7 +4,7 @@
 #include <vector>
 #include <memory>
 
-#include "components/MeshRenderer.h"
+#include "defaultimpl/components/MeshRenderer.h"
 
 #include "render/AbstractRenderingStage.h"
 
@@ -28,7 +28,7 @@ namespace RenderLib
 			void executePipelineIteration();
 			void finalizeStages();
 
-			void registerRenderable(Components::MeshRenderer * renderable);
+			void registerRenderable(DefaultImpl::MeshRenderer * renderable);
 
 			template<class T>
 			T * addRenderStage()
@@ -43,6 +43,8 @@ namespace RenderLib
 				T * result = newStage.get();
 
 				renderStages.push_back(std::move(newStage));
+
+				return result;
 			}
 
 			template<class T>

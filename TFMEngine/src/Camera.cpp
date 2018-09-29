@@ -7,24 +7,9 @@
 
 namespace RenderLib
 {
-	std::unique_ptr<Camera> Camera::createCamera(FLOAT near, FLOAT far, FLOAT fov)
-	{
-		return std::make_unique<Camera>(near, far, fov);
-	}
-
 	Camera::Camera()
-		: Camera(0.0, 0.0, 0.0)
 	{
-
-	}
-
-	Camera::Camera(FLOAT near, FLOAT far, FLOAT FOV)
-		: SceneObject()
-		, nearPlane(near)
-		, farPlane(far)
-		, fov(FOV)
-	{
-		initializeProjectionMatrix();
+		
 	}
 
 	Camera::~Camera()
@@ -32,11 +17,24 @@ namespace RenderLib
 
 	}
 
+	void Camera::initialize()
+	{
+		SceneObject::initialize();
+		initializeProjectionMatrix();
+	}
+
+	void Camera::setProjectionParams(const FLOAT & nearPlane, const FLOAT & farPlane, const FLOAT & FOV)
+	{
+		this->nearPlane = nearPlane;
+		this->farPlane = farPlane;
+		this->fov = FOV;
+	}
+
 	void Camera::initializeProjectionMatrix()
 	{
 		projectionMatrix.fill(0.0);
-		projectionMatrix(0, 0) = FLOAT(1.0) / tan(fov*M_PI / FLOAT(180.0));
-		projectionMatrix(1, 1) = FLOAT(1.0) / tan(fov*M_PI / FLOAT(180.0));
+		projectionMatrix(0, 0) = FLOAT(1.0) / tan(fov*static_cast<FLOAT>(M_PI) / FLOAT(180.0));
+		projectionMatrix(1, 1) = FLOAT(1.0) / tan(fov*static_cast<FLOAT>(M_PI) / FLOAT(180.0));
 		projectionMatrix(2, 2) = -(farPlane + nearPlane) / (farPlane - nearPlane);
 		projectionMatrix(3, 2) = FLOAT(-2.0) * nearPlane * farPlane / (farPlane - nearPlane);
 		projectionMatrix(2, 3) = FLOAT(-1.0);
@@ -54,13 +52,23 @@ namespace RenderLib
 		VECTOR3 right = forward.cross(up).normalized();
 		up = right.cross(forward);
 
+		// Update rotation
+		transform.rotationV.setFromTwoVectors(transform.forwardVector, forward);
+		// Update translation
 		transform.translationV = eye;
+		// Update main vectors
+		transform.forwardVector = forward;
+		transform.rightVector = right;
+		transform.upVector = up;
 
 		viewMatrix << 
 			right.x(),		right.y(),		right.z(),		-right.dot(eye),
 			up.x(),				up.y(),				up.z(),				-up.dot(eye),
 			-forward.x(), -forward.y(), -forward.z(), forward.dot(eye),
 			0,						0,						0,						1;
+
+		// Update matrix
+		transform.modelMatrix = viewMatrix;
 	}
 
 	void Camera::translateView(const VECTOR3 & translation)
@@ -71,8 +79,7 @@ namespace RenderLib
 
 		VECTOR3 traslatedPosition = transform.forwardVector * forwardDelta + transform.rightVector * strafeDelta + transform.upVector * upDelta;
 		
-		transform.translationV += translation;// traslatedPosition;
-		std::cout << translation << std::endl;
+		transform.translationV += traslatedPosition;
 		updateViewMatrix();
 	}
 
@@ -89,6 +96,7 @@ namespace RenderLib
 	void Camera::updateViewMatrix()
 	{
 		transform.update();
+		viewMatrix = transform.modelMatrix;
 	}
 
 	void Camera::onWindowResize(const int & width, const int & height)
@@ -97,10 +105,10 @@ namespace RenderLib
 		FLOAT fHeight = (FLOAT)height;
 
 		projectionMatrix.fill(0.0);
-		projectionMatrix(0, 0) = FLOAT(1.0) / (tan(fov*M_PI / FLOAT(180.0)) * (fWidth / fHeight));
-		projectionMatrix(1, 1) = FLOAT(1.0) / tan(fov*M_PI / FLOAT(180.0));
-		projectionMatrix(2, 2) = -(farPlane + nearPlane) / (farPlane - nearPlane);
-		projectionMatrix(3, 2) = FLOAT(-2.0) * nearPlane * farPlane / (farPlane - nearPlane);
+		projectionMatrix(0, 0) = FLOAT(1.0) / (tan(fov*static_cast<FLOAT>(M_PI) / FLOAT(180.0)) * (fWidth / fHeight));
+		projectionMatrix(1, 1) = FLOAT(1.0) / tan(fov*static_cast<FLOAT>(M_PI) / FLOAT(180.0));
+		projectionMatrix(2, 2) = (farPlane + nearPlane) / (nearPlane - farPlane);
+		projectionMatrix(3, 2) = FLOAT(2.0) * nearPlane * farPlane / (nearPlane - farPlane);
 		projectionMatrix(2, 3) = FLOAT(-1.0);
 	}
 }

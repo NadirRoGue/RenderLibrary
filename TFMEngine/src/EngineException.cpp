@@ -4,6 +4,12 @@
 
 namespace RenderLib
 {
+	EngineException::EngineException(const std::string & message) throw()
+		: EngineException(message.c_str())
+	{
+
+	}
+
 	EngineException::EngineException(const char * const message) throw()
 		: std::runtime_error(message)
 	{

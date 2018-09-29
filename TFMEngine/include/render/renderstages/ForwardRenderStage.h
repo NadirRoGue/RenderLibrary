@@ -3,6 +3,8 @@
 
 #include "render/AbstractRenderingStage.h"
 
+#include "GPU/mesh/GPUBuffer.h"
+
 #include <vector>
 
 namespace RenderLib
@@ -12,15 +14,18 @@ namespace RenderLib
 		class ForwardRenderStage : public AbstractRenderingStage
 		{
 		private:
-			std::vector<Components::MeshRenderer*> renderables;
+			std::vector<DefaultImpl::MeshRenderer*> staticRenderables;
+			std::vector<DefaultImpl::MeshRenderer*> dynamicRenderables;
 
 			unsigned int programId;
 			unsigned int mvp;
 			unsigned int apos;
 		public:
 			void initialize();
-			void tryRegisterElement(Components::MeshRenderer * renderable);
+			void tryRegisterElement(DefaultImpl::MeshRenderer * renderable);
 			void runStage();
+		private:
+			void doRender(std::vector<DefaultImpl::MeshRenderer*> & renderables, GPU::Mesh::GPUBuffer * meshBuffer);
 		};
 	}
 }

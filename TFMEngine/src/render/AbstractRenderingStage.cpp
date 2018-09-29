@@ -14,7 +14,7 @@ namespace RenderLib
 
 		}
 
-		void AbstractRenderingStage::tryRegisterElement(Components::MeshRenderer * renderable)
+		void AbstractRenderingStage::tryRegisterElement(DefaultImpl::MeshRenderer * renderable)
 		{
 
 		}

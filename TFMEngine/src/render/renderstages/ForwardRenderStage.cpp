@@ -35,9 +35,17 @@ namespace RenderLib
 		}
 
 
-		void ForwardRenderStage::tryRegisterElement(Components::MeshRenderer * renderable)
+		void ForwardRenderStage::tryRegisterElement(DefaultImpl::MeshRenderer * renderable)
 		{
-			renderables.push_back(renderable);
+			switch (renderable->cpuToGpuSync)
+			{
+			case DefaultImpl::CPUToGPUSyncPolicy::CPU_SYNC_ONCE_AT_BEGINNING:
+				staticRenderables.push_back(renderable);
+				break;
+			case DefaultImpl::CPUToGPUSyncPolicy::CPU_SYNC_CONTINOUSLY:
+				dynamicRenderables.push_back(renderable);
+				break;
+			}
 		}
 
 		void ForwardRenderStage::initialize()
@@ -92,15 +100,22 @@ namespace RenderLib
 
 		void ForwardRenderStage::runStage()
 		{
-			GPU::Mesh::GPUBuffer * buffer = engineInstance->getGPUMeshManager().getStaticMeshBuffer();
-			
-			Camera * cam = engineInstance->getSceneManager().getActiveScene()->getAllCameras()[0].get();
-			cam->updateViewMatrix();
+			glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
-			glDisable(GL_CULL_FACE);
-			
+			GPU::Mesh::GPUBuffer * staticBuf = engineInstance->getGPUMeshManager().getStaticMeshBuffer();
+			doRender(staticRenderables, staticBuf);
+
+			GPU::Mesh::GPUBuffer * dynamicBuf = engineInstance->getGPUMeshManager().getDynamicMeshBuffer();
+			doRender(dynamicRenderables, dynamicBuf);
+		}
+
+		void ForwardRenderStage::doRender(std::vector<DefaultImpl::MeshRenderer *> & renderables, GPU::Mesh::GPUBuffer * meshBuffer)
+		{
+			Camera * cam = engineInstance->getSceneManager().getActiveScene()->getActiveCamera();
+
 			glUseProgram(programId);
-			buffer->bind();
+			meshBuffer->bind();
+
 			for (auto r : renderables)
 			{
 				GPU::Mesh::GPUMesh * mesh = r->gpuMesh;

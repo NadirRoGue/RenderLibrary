@@ -2,16 +2,18 @@
 #include "InstanceManager.h"
 
 #include "graphics/ContextManager.h"
-#include "graphics/defaultwindowhandlers/GLFWWindowHandler.h"
+#include "defaultimpl/windowhandlers/GLFWWindowHandler.h"
 
 #include "CPU/mesh/MeshManager.h"
 
-#include "tests/TestClasses.h"
+#include "defaultimpl/components/MeshFilter.h"
+#include "defaultimpl/components/MeshRenderer.h"
 
-#include "components/MeshFilter.h"
-#include "components/MeshRenderer.h"
-
-#include "render/RenderStage.h"
+#include "defaultimpl/pipelinestages/ComponentRegisterStage.h"
+#include "defaultimpl/pipelinestages/CPUToGPUMeshSyncStage.h"
+#include "defaultimpl/pipelinestages/GPUToCPUMeshSyncStage.h"
+#include "defaultimpl/pipelinestages/RenderStage.h"
+#include "defaultimpl/pipelinestages/IterationEndStage.h"
 
 #include "logger/Log.h"
 
@@ -44,13 +46,16 @@ int main(int argc, void ** arg)
 	config.windowTitle = "Test Instance";
 	config.windowPosX = 50;
 	config.windowPosY = 50;
-	Graphics::GLFWWindowHandler * window = Graphics::ContextManager::getInstance().createWindow<Graphics::GLFWWindowHandler>(config);
+	DefaultImpl::GLFWWindowHandler * window = Graphics::ContextManager::getInstance().createWindow<DefaultImpl::GLFWWindowHandler>(config);
 
 	// Engine Instance creation
 	EngineInstance * instance = InstanceManager::getInstance().createInstance("TestInstance", window);
 
 	// Pipeline set up
-	instance->getPipelineManager().addPipelineStage<Render::RenderStage>();
+	instance->getPipelineManager().addPipelineStage<DefaultImpl::ComponentRegisterStage>();
+	instance->getPipelineManager().addPipelineStage<DefaultImpl::CPUToGPUMeshSyncStage>();
+	instance->getPipelineManager().addPipelineStage<DefaultImpl::RenderStage>();
+	instance->getPipelineManager().addPipelineStage<DefaultImpl::IterationEndStage>();
 	
 	// Scene set up
 	RenderLib::Scene * scene = instance->getSceneManager().createScene("TestScene");
@@ -63,23 +68,21 @@ int main(int argc, void ** arg)
 	}
 
 	// Camera set up
-	RenderLib::CameraPtr camera = Camera::createCamera(0.5, 1000.0, 45.0);
-	camera.get()->translateView(VECTOR3(0.0, 0.0, -3.0));
-	scene->addCamera(camera);
+	RenderLib::Camera * cam = scene->addCamera<RenderLib::Camera>("Main_Camera");
+	cam->setProjectionParams((FLOAT)0.5, (FLOAT)75.0, (FLOAT)45.0);
+	cam->translateView(VECTOR3(0.0, 0.0, -5.0));
 
 	// Object set up
-	RenderLib::SceneObjectPtr object = SceneObject::createObject("TestObject");
-	RenderLib::SceneObject * obj = object.get();
-	scene->addObject(object);
+	RenderLib::SceneObject * obj = scene->addObject<SceneObject>();
 
 	// Set position
 	//obj->transform.translate(VECTOR3(0, 0, 5));
 	
 	// Object component set up
-	Components::MeshFilter * meshFilter = obj->addComponent<Components::MeshFilter>();
+	DefaultImpl::MeshFilter * meshFilter = obj->addComponent<DefaultImpl::MeshFilter>();
 	meshFilter->mesh = mesh;
 
-	Components::MeshRenderer * meshRenderer = obj->addComponent<Components::MeshRenderer>();
+	DefaultImpl::MeshRenderer * meshRenderer = obj->addComponent<DefaultImpl::MeshRenderer>();
 
 	/*** EXECUTION (BLOCKING UNTIL ALL INSTANCES ARE DONE) ***/
 	// Run pipeline

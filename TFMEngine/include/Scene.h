@@ -2,10 +2,13 @@
 #define __CPU_SCENE_H__
 
 #include <vector>
+#include <unordered_map>
 #include <memory>
 
 #include "SceneObject.h"
 #include "Camera.h"
+
+#include "EngineException.h"
 
 #include "inputhandlers/InputManager.h"
 
@@ -15,10 +18,18 @@ namespace RenderLib
 	{
 	private:
 		std::string name;
+
 		std::vector<SceneObjectPtr> sceneObjects;
-		std::vector<CameraPtr> cameras;
+
+		std::unordered_map<std::string, Camera *> sceneCameras;
+
+		std::vector<Graphics::WindowResizeObserver *> windowResizables;
 
 		InputHandlers::InputManager inputManager;
+
+		Camera * activeCamera;
+
+		SceneObject * sceneRoot;
 	public:
 		Scene();
 		Scene(std::string name);
@@ -26,17 +37,60 @@ namespace RenderLib
 
 		const std::string & getSceneName();
 
-		void addObject(SceneObjectPtr & object);
+		void makeCameraActive(const std::string & name);
+		void makeCameraActive(Camera * cam);
+		Camera * getActiveCamera();
 
-		void addCamera(CameraPtr & camera);
+		SceneObject * getSceneRoot();
 
 		std::vector<SceneObjectPtr> & getSceneObjects();
-
-		std::vector<CameraPtr> & getAllCameras();
-
+		std::vector<Graphics::WindowResizeObserver*> & getWindowResizableObservers();
 		InputHandlers::InputManager & getInputManager();
 
-		void destroyScene();
+		template<class T>
+		T * addObject()
+		{
+			if (std::is_base_of<SceneObject, T>::value)
+			{
+				std::unique_ptr<SceneObject> newObject = std::make_unique<T>();
+				T * result = newObject.get();
+				sceneObjects.push_back(std::move(newObject));
+				return result;
+			}
+
+			throw EngineException("Scene: Attempted to add a non-derived SceneObject element");
+			return NULL;
+		}
+
+		template<class T>
+		T * addCamera(const std::string & name)
+		{
+			auto alreadyExist = sceneCameras.find(name);
+			if (alreadyExist != sceneCameras.end())
+			{
+				throw EngineException("Scene: Attempted to create a camera with a name already present in the scene: " + name);
+				return NULL;
+			}
+
+			if (std::is_base_of<Camera, T>::value)
+			{
+				std::unique_ptr<SceneObject> newCamPtr = std::make_unique<T>();
+				
+				T * result = static_cast<T*>(newCamPtr.get());
+
+				if (activeCamera == NULL)
+				{
+					activeCamera = result;
+				}
+
+				sceneObjects.push_back(std::move(newCamPtr));
+				sceneCameras[name] = result;
+			  return result;
+			}
+
+			throw EngineException("Scene: Attempted to add a non-derived Camera camera");
+			return NULL;
+		}
 	};
 }
 

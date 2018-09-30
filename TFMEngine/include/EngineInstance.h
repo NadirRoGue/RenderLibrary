@@ -10,6 +10,7 @@
 #include "graphics/WindowHandler.h"
 
 #include "GPU/mesh/GPUMeshManager.h"
+#include "GPU/program/ProgramManager.h"
 
 namespace RenderLib
 {
@@ -21,8 +22,12 @@ namespace RenderLib
 		unsigned int instanceID;
 
 		std::unique_ptr<Pipeline::PipelineManager> pipelineManager;
-		std::unique_ptr<SceneManager> sceneManager;
-		std::unique_ptr<GPU::Mesh::GPUMeshManager> gpuMeshManager;
+		//std::unique_ptr<SceneManager> sceneManager;
+		//std::unique_ptr<GPU::Mesh::GPUMeshManager> gpuMeshManager;
+		//std::unique_ptr<GPU::
+		SceneManager sceneManager;
+		GPU::Mesh::GPUMeshManager gpuMeshManager;
+		GPU::Program::ProgramManager gpuProgramManager;
 
 		Graphics::WindowHandler * window;
 
@@ -41,6 +46,7 @@ namespace RenderLib
 		Pipeline::PipelineManager & getPipelineManager();
 		SceneManager & getSceneManager();
 		GPU::Mesh::GPUMeshManager & getGPUMeshManager();
+		GPU::Program::ProgramManager & getProgramManager();
 
 		void acquireContext();
 		void releaseContext();

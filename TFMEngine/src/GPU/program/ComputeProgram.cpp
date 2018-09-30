@@ -1,5 +1,7 @@
 #include "GPU/program/ComputeProgram.h"
 
+#include "EngineException.h"
+
 namespace RenderLib
 {
 	namespace GPU

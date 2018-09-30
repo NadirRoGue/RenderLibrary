@@ -2,6 +2,8 @@
 
 #include "defaultimpl/components/MeshRenderer.h"
 
+#include "GPU/program/ProgramManager.h"
+
 #include "EngineInstance.h"
 
 namespace RenderLib
@@ -47,6 +49,8 @@ namespace RenderLib
 			renderPipeline.finalizeStages();
 
 			engineInstance->releaseContext();
+
+			//GPU::Program::ProgramManager::getInstance().clear();
 		}
 	}
 }

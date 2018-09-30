@@ -6,6 +6,8 @@
 
 #include "GPU/program/ShaderLoadResult.h"
 
+#include <iostream>
+
 namespace RenderLib
 {
 	namespace DefaultImpl
@@ -57,7 +59,7 @@ namespace RenderLib
 					file.getline(buf, 1024);
 					size_t rawStrLen = strlen(buf);
 					fileLen += rawStrLen;
-					loadResult->body += std::string(buf);
+					loadResult->body += std::string(buf) + "\n";
 				}
 			}
 

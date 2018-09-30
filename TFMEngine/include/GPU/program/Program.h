@@ -1,13 +1,13 @@
 #ifndef __RENDERLIB_GPU_PROGRAM_PROGRAM_H__
 #define __RENDERLIB_GPU_PROGRAM_PROGRAM_H__
 
+#include <GL/glew.h>
+
 #include <memory>
 #include <unordered_map>
 #include <vector>
 
 #include "Defines.h"
-
-#include "EngineInstance.h"
 
 namespace RenderLib
 {
@@ -41,6 +41,8 @@ namespace RenderLib
 				void unBind();
 
 				void init(const UberParamMask & mask);
+
+				void destroy();
 
 				void setUniformI (const std::string & name, const int & val);
 				void setUniformI2(const std::string & name, const int & v1, const int & v2);

@@ -14,22 +14,25 @@ namespace RenderLib
 		{
 			typedef struct GPUAttribute
 			{
-				size_t elementSize;
+				size_t elementTypeSize;
 				size_t elementCount;
+				size_t numElements;
 				size_t offset;
 				size_t stride;
 
 				GPUAttribute()
-					: elementSize(0)
+					: elementTypeSize(0)
 					, elementCount(0)
+					, numElements(0)
 					, offset(0)
 					, stride(0)
 				{
 				}
 
-				GPUAttribute(size_t elemSize, size_t elemCount, size_t offset, size_t stride)
-					: elementSize(elemSize)
+				GPUAttribute(size_t elementTypeSize, size_t elemCount, size_t numElements, size_t offset, size_t stride)
+					: elementTypeSize(elementTypeSize)
 					, elementCount(elemCount)
+					, numElements(numElements)
 					, offset(offset)
 					, stride(stride)
 				{

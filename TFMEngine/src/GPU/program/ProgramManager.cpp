@@ -6,13 +6,6 @@ namespace RenderLib
 	{
 		namespace Program
 		{
-			std::unique_ptr<ProgramManager> ProgramManager::INSTANCE = std::make_unique<ProgramManager>();
-
-			ProgramManager & ProgramManager::getInstance()
-			{
-				return *(INSTANCE.get());
-			}
-
 			ProgramManager::ProgramManager()
 			{
 
@@ -21,6 +14,21 @@ namespace RenderLib
 			ProgramManager::~ProgramManager()
 			{
 
+			}
+
+			void ProgramManager::clear()
+			{
+				auto it = programList.begin();
+				while (it != programList.end())
+				{
+					auto innerIt = it->second.begin();
+					while (innerIt != it->second.end())
+					{
+						innerIt->second.get()->destroy();
+						innerIt++;
+					}
+					it++;
+				}
 			}
 		}
 	}

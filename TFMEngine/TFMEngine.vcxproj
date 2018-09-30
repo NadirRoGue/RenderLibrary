@@ -166,6 +166,7 @@
     <ClInclude Include="include\defaultimpl\pipelinestages\GPUToCPUMeshSyncStage.h" />
     <ClInclude Include="include\defaultimpl\pipelinestages\IterationEndStage.h" />
     <ClInclude Include="include\defaultimpl\pipelinestages\RenderStage.h" />
+    <ClInclude Include="include\defaultimpl\shaders\StandardProgram.h" />
     <ClInclude Include="include\defaultimpl\windowhandlers\GLFWWindowHandler.h" />
     <ClInclude Include="include\Defines.h" />
     <ClInclude Include="include\EngineException.h" />
@@ -232,6 +233,7 @@
     <ClCompile Include="src\defaultimpl\pipelinestages\GPUToCPUMeshSyncStage.cpp" />
     <ClCompile Include="src\defaultimpl\pipelinestages\IterationEndStage.cpp" />
     <ClCompile Include="src\defaultimpl\pipelinestages\RenderStage.cpp" />
+    <ClCompile Include="src\defaultimpl\shaders\StandardProgram.cpp" />
     <ClCompile Include="src\defaultimpl\windowhandlers\GLFWWindowHandler.cpp" />
     <ClCompile Include="src\EngineException.cpp" />
     <ClCompile Include="src\EngineInstance.cpp" />
@@ -268,6 +270,8 @@
     <ClCompile Include="src\util\StringUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="shaders\default\standardprogram.frag" />
+    <None Include="shaders\default\standardprogram.vert" />
     <None Include="shaders\test.frag" />
     <None Include="shaders\test.vert" />
   </ItemGroup>

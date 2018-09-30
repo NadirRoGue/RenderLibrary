@@ -10,5 +10,10 @@ namespace RenderLib
 		{
 			engineInstance->getGPUMeshManager().swapDynamicBuffers();
 		}
+
+		void IterationEndStage::postRunStage()
+		{
+			engineInstance->getProgramManager().clear();
+		}
 	}
 }

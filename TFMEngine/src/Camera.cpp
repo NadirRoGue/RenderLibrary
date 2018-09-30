@@ -35,8 +35,8 @@ namespace RenderLib
 		projectionMatrix.fill(0.0);
 		projectionMatrix(0, 0) = FLOAT(1.0) / tan(fov*static_cast<FLOAT>(M_PI) / FLOAT(180.0));
 		projectionMatrix(1, 1) = FLOAT(1.0) / tan(fov*static_cast<FLOAT>(M_PI) / FLOAT(180.0));
-		projectionMatrix(2, 2) = -(farPlane + nearPlane) / (farPlane - nearPlane);
-		projectionMatrix(3, 2) = FLOAT(-2.0) * nearPlane * farPlane / (farPlane - nearPlane);
+		projectionMatrix(2, 2) = (farPlane + nearPlane) / (nearPlane - farPlane);
+		projectionMatrix(3, 2) = FLOAT(2.0) * nearPlane * farPlane / (nearPlane - farPlane);
 		projectionMatrix(2, 3) = FLOAT(-1.0);
 	}
 

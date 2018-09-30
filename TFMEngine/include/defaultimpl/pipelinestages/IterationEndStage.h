@@ -11,6 +11,7 @@ namespace RenderLib
 		{
 		public:
 			void runStage();
+			void postRunStage();
 		};
 	}
 }

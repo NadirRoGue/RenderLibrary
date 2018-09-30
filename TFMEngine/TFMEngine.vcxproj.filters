@@ -151,6 +151,9 @@
     <Filter Include="Archivos de origen\defaultimpl\windowhandlers">
       <UniqueIdentifier>{905613b2-59cd-48a0-a20f-bbea457578e4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="shaders\default">
+      <UniqueIdentifier>{45b42444-0f82-43e7-acf7-092d0d9e72ae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Component.h">
@@ -360,6 +363,9 @@
     <ClInclude Include="include\GPU\program\PostProcessProgram.h">
       <Filter>Archivos de encabezado\GPU\program</Filter>
     </ClInclude>
+    <ClInclude Include="include\defaultimpl\shaders\StandardProgram.h">
+      <Filter>Archivos de encabezado\defaultimpl\shaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Component.cpp">
@@ -542,6 +548,9 @@
     <ClCompile Include="src\GPU\program\PostProcessProgram.cpp">
       <Filter>Archivos de origen\GPU\program</Filter>
     </ClCompile>
+    <ClCompile Include="src\defaultimpl\shaders\StandardProgram.cpp">
+      <Filter>Archivos de origen\defaultimpl\shaders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\test.frag">
@@ -549,6 +558,12 @@
     </None>
     <None Include="shaders\test.vert">
       <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\default\standardprogram.frag">
+      <Filter>shaders\default</Filter>
+    </None>
+    <None Include="shaders\default\standardprogram.vert">
+      <Filter>shaders\default</Filter>
     </None>
   </ItemGroup>
 </Project>

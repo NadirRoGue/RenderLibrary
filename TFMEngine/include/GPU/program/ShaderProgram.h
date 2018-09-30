@@ -1,6 +1,7 @@
 #ifndef __RENDERLIB_GPU_PROGRAM_SHADERPROGRAM_H__
 #define __RENDERLIB_GPU_PROGRAM_SHADERPROGRAM_H__
 
+#include "GPU/mesh/GPUMesh.h"
 #include "GPU/program/Program.h"
 
 #include "SceneObject.h"
@@ -33,11 +34,15 @@ namespace RenderLib
 				~ShaderProgram();
 
 				virtual void initialize(std::vector<std::string> & definesBuffer);
+
+				virtual void configureShaderAttributes(Mesh::GPUMesh * targetMesh) = 0;
 				
 				void destroyShaders();
 
 				virtual void onFrameBegin();
 				virtual void onRenderObject(const SceneObject & object, const Camera & camera);
+			protected:
+				void configureShaderAttribute(const std::string & shaderAttribute, Mesh::GPUAttribute & meshAttribute);
 			};
 		}
 	}

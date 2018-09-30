@@ -1,5 +1,7 @@
 #include "GPU/program/ShaderProgram.h"
 
+#include "EngineException.h"
+
 namespace RenderLib
 {
 	namespace GPU
@@ -72,6 +74,20 @@ namespace RenderLib
 			void ShaderProgram::onRenderObject(const SceneObject & object, const Camera & camera)
 			{
 				
+			}
+
+			void ShaderProgram::configureShaderAttribute(const std::string & shaderAttribute, Mesh::GPUAttribute & meshAttribute)
+			{
+				if (meshAttribute.numElements > 0)
+				{
+					auto it = shaderAttributes.find(shaderAttribute);
+					if (it != shaderAttributes.end())
+					{
+						ShaderInput input = it->second;
+						glVertexAttribPointer(input.id, (GLsizei)meshAttribute.elementCount, GL_FLOAT, GL_FALSE, (GLsizei)meshAttribute.stride, (void*)(meshAttribute.offset));
+						glEnableVertexAttribArray(input.id);
+					}
+				}
 			}
 		}
 	}

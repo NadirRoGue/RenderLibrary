@@ -21,15 +21,15 @@ namespace RenderLib
 		}
 
 		pipelineManager = std::make_unique<Pipeline::PipelineManager>(this);
-		sceneManager = std::make_unique<SceneManager>();
-		gpuMeshManager = std::make_unique<GPU::Mesh::GPUMeshManager>();
+		//sceneManager = std::make_unique<SceneManager>();
+		//gpuMeshManager = std::make_unique<GPU::Mesh::GPUMeshManager>();
 		window->instance = this;
 	}
 
 	EngineInstance::~EngineInstance()
 	{
 		pipelineManager.reset();
-		sceneManager.reset();
+		//sceneManager.reset();
 	}
 
 	const unsigned int & EngineInstance::getInstanceID()
@@ -49,21 +49,21 @@ namespace RenderLib
 
 	GPU::Mesh::GPUMeshManager & EngineInstance::getGPUMeshManager()
 	{
-		return *(gpuMeshManager.get());
+		return gpuMeshManager;// *(gpuMeshManager.get());
 	}
 
 	void EngineInstance::loadActiveScene()
 	{
-		Scene * scene = sceneManager.get()->getActiveScene();
+		Scene * scene = sceneManager.getActiveScene();// sceneManager.get()->getActiveScene();
 		pipelineManager.get()->initializeStages();
 	}
 	
 	void EngineInstance::loadScene(const std::string & sceneName)
 	{
-		Scene * scene = sceneManager.get()->getScene(sceneName);
+		Scene * scene = sceneManager.getScene(sceneName);// sceneManager.get()->getScene(sceneName);
 		if (scene)
 		{
-			sceneManager.get()->setActiveScene(sceneName);
+			sceneManager.setActiveScene(sceneName);//sceneManager.get()->setActiveScene(sceneName);
 			loadActiveScene();
 		}
 		else
@@ -90,7 +90,12 @@ namespace RenderLib
 
 	SceneManager & EngineInstance::getSceneManager()
 	{
-		return *(sceneManager.get());
+		return sceneManager;// *(sceneManager.get());
+	}
+
+	GPU::Program::ProgramManager & EngineInstance::getProgramManager()
+	{
+		return gpuProgramManager;
 	}
 
 	void EngineInstance::executeIteration()
@@ -118,5 +123,6 @@ namespace RenderLib
 	void EngineInstance::cleanUp()
 	{
 		pipelineManager.get()->finishStages();
+		window->cleanUp();
 	}
 }

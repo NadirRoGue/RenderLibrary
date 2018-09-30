@@ -147,6 +147,7 @@ namespace RenderLib
 
 		GLFWWindowHandler::~GLFWWindowHandler()
 		{
+			std::cout << "Called dstrcutur" << std::endl;
 			if (window)
 			{
 				glfwDestroyWindow(window);
@@ -209,7 +210,10 @@ namespace RenderLib
 
 		void GLFWWindowHandler::activateContext()
 		{
-			glfwMakeContextCurrent(window);
+			if (glfwGetCurrentContext() != window)
+			{
+				glfwMakeContextCurrent(window);
+			}
 		}
 
 		void GLFWWindowHandler::onRenderLoopIteration()

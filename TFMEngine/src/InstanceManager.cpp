@@ -8,6 +8,8 @@
 
 #include "graphics/ContextManager.h"
 
+#include "GPU/program/ProgramManager.h"
+
 #include <iostream>
 
 namespace RenderLib

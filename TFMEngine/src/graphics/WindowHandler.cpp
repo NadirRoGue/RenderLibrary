@@ -2,6 +2,8 @@
 
 #include "logger/Log.h"
 
+#include "EngineException.h"
+
 namespace RenderLib
 {
 	namespace Graphics
@@ -25,7 +27,10 @@ namespace RenderLib
 		{
 			initializeWindowContext();
 
-			glewInit();
+			if (glewInit() != GLEW_OK)
+			{
+				throw EngineException("WindowHandler: Error while initializing GLEW");
+			}
 
 			// Call a default OpenGL config (may be overwritten by the passed callback)
 			defaultOpenGLConfiguration();

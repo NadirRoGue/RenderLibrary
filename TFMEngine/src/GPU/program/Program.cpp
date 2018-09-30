@@ -28,12 +28,18 @@ namespace RenderLib
 
 			Program::~Program()
 			{
-				destroyShaders();
-				glDeleteProgram(programId);
+				
 			}
 
 			void Program::destroyShaders()
 			{
+			}
+
+			void Program::destroy()
+			{
+				destroyShaders();
+				glDeleteProgram(programId);
+				programId = -1;
 			}
 
 			void Program::init(const UberParamMask & mask)
@@ -93,10 +99,10 @@ namespace RenderLib
 
 				size_t fileLen = loadResult->getResultSizeBytes() - 1;
 
-				std::string result(&loadResult->text[0]);
+				//std::string result;
 
-				if (!configStrings.empty())
-				{
+				//if (!configStrings.empty())
+				//{
 					//std::string header = result.substr(0, VERSION_HEADER_LENGHT);
 					//std::string body = result.substr(VERSION_HEADER_LENGHT, result.size() - VERSION_HEADER_LENGHT);
 					std::string defines;
@@ -105,8 +111,8 @@ namespace RenderLib
 					{
 						defines += "#define " + cnfgStr + "\n";
 					}
-					result = loadResult->header + "\n" + defines + "\n" + loadResult->body;
-				}
+					std::string result = loadResult->header + "\n" + defines + "\n" + loadResult->body;
+				//}
 
 				char * finalSourceCStr = new char[result.size()];
 				memcpy(finalSourceCStr, result.c_str(), result.size() * sizeof(char));
@@ -155,6 +161,7 @@ namespace RenderLib
 					input.type = type;
 
 					shaderUniforms[nameStr] = input;
+					i++;
 				}
 
 				GLint activeAttributes = 0;
@@ -172,6 +179,7 @@ namespace RenderLib
 					input.type = type;
 
 					shaderAttributes[nameStr] = input;
+					i++;
 				}
 			}
 

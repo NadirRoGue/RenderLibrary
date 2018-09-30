@@ -4,6 +4,9 @@
 
 #include <iostream>
 
+#include "GPU/program/ProgramManager.h"
+#include "defaultimpl/shaders/StandardProgram.h"
+
 #include "EngineInstance.h"
 
 namespace RenderLib
@@ -50,6 +53,7 @@ namespace RenderLib
 
 		void ForwardRenderStage::initialize()
 		{
+			/*
 			const char *vertexShader =
 				"#version 430 core\n"\
 				"layout (location=0) in vec3 aPos;\n"\
@@ -96,6 +100,16 @@ namespace RenderLib
 			buffer->bindDataBuffer();
 			glVertexAttribPointer(apos, 3, GL_FLOAT, GL_FALSE, 0, 0);
 			glEnableVertexAttribArray(apos);
+			*/
+			DefaultImpl::StandardProgram * standard = engineInstance->getProgramManager().getProgram<DefaultImpl::StandardProgram>(0);
+			GPU::Mesh::GPUBuffer * buffer = engineInstance->getGPUMeshManager().getStaticMeshBuffer();
+			buffer->bind();
+			buffer->bindDataBuffer();
+			standard->bind();
+			for (auto renderables : staticRenderables)
+			{
+				standard->configureShaderAttributes(renderables->gpuMesh);
+			}
 		}
 
 		void ForwardRenderStage::runStage()
@@ -113,7 +127,9 @@ namespace RenderLib
 		{
 			Camera * cam = engineInstance->getSceneManager().getActiveScene()->getActiveCamera();
 
-			glUseProgram(programId);
+			//glUseProgram(programId);
+			DefaultImpl::StandardProgram * standard = engineInstance->getProgramManager().getProgram<DefaultImpl::StandardProgram>(0);
+			standard->bind();
 			meshBuffer->bind();
 
 			for (auto r : renderables)
@@ -121,11 +137,9 @@ namespace RenderLib
 				GPU::Mesh::GPUMesh * mesh = r->gpuMesh;
 
 				r->object->transform.update();
-				MATRIX4 modelViewProj = cam->projectionMatrix * cam->transform.modelMatrix * r->object->transform.modelMatrix;
+				standard->onRenderObject(*(r->object), *cam);
 
-				glUniformMatrix4fv(mvp, 1, GL_FALSE, modelViewProj.data());
-
-				glDrawElementsBaseVertex(GL_TRIANGLES, 12 * 3, GL_UNSIGNED_INT, (void*)0, 0);
+				glDrawElementsBaseVertex(GL_TRIANGLES, (GLsizei)(mesh->faces.numElements * mesh->vertices.elementCount), GL_UNSIGNED_INT, (void*)0, 0);
 			}
 		}
 	}

@@ -23,14 +23,12 @@ namespace RenderLib
 			class ProgramManager
 			{
 			private:
-				static std::unique_ptr<ProgramManager> INSTANCE;
-			public:
-				static ProgramManager & getInstance();
-			private:
 				std::unordered_map<std::type_index, ProgramMap> programList;
 			public:
 				ProgramManager();
 				~ProgramManager();
+
+				void clear();
 
 				template<class T>
 				T * getProgram(const UberParamMask & configMask)
@@ -44,13 +42,13 @@ namespace RenderLib
 
 					T * result = NULL;
 
-					ProgramMap progMap = programList[id];
+					ProgramMap & progMap = programList[id];
 					auto it = progMap.find(configMask);
 					if (it == progMap.end())
 					{
 						std::unique_ptr<Program> newProgram = std::make_unique<T>();
 						newProgram.get()->init(configMask);
-						result = static_cast<T>(newProgram.get());
+						result = static_cast<T*>(newProgram.get());
 						progMap[configMask] = std::move(newProgram);
 					}
 					else

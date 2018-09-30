@@ -5,6 +5,8 @@
 #include "CPU/io/FileManager.h"
 #include "GPU/program/ShaderLoadResult.h"
 
+#include <iostream>
+
 namespace RenderLib
 {
 	namespace GPU
@@ -174,7 +176,8 @@ namespace RenderLib
 
 					std::string nameStr(nameBuffer);
 					ShaderInput input;
-					input.id = i;
+					// A WHOLE F*CKING AFTERNOON LOST BECAUSE THE REAL BINDING IS NOT THE QUERIED ON glGetActiveAttrib
+					input.id = glGetAttribLocation(programId, nameBuffer);
 					input.size = size;
 					input.type = type;
 

@@ -46,7 +46,7 @@ namespace RenderLib
 				GPUBuffer * gpuBuffer;
 				
 				size_t faceIndexOffset;
-				size_t dataIndexOffset;
+				size_t verticesBaseOffset;
 
 				GPUAttribute faces;
 				GPUAttribute vertices;

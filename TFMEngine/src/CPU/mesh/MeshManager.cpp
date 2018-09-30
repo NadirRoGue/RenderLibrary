@@ -103,27 +103,27 @@ namespace RenderLib
 					inMemory->colors[i].dumpAttributes(colors[i]);
 				}
 
-				if (!compare(fromAssimp->faces, faces))
+				if (!compare(fromAssimp->loadedFaces, faces))
 					std::cout << "Faces missmatch" << std::endl;
 
-				if (!compare(fromAssimp->vertices, vertices))
+				if (!compare(fromAssimp->loadedVertices, vertices))
 					std::cout << "Vertices missmatch" << std::endl;
 
-				if (!compare(fromAssimp->normals, normals))
+				if (!compare(fromAssimp->loadedNormals, normals))
 					std::cout << "Normals missmatch" << std::endl;
 
-				if (!compare(fromAssimp->tangents, tangents))
+				if (!compare(fromAssimp->loadedTangents, tangents))
 					std::cout << "Tangents missmatch" << std::endl;
 
 				for (size_t i = 0; i < fromAssimp->numUVMaps; i++)
 				{
-					if (!compare(fromAssimp->uvs[i], uv[i]))
+					if (!compare(fromAssimp->loadedUvs[i], uv[i]))
 						std::cout << "UVs " << i << " missmatchs" << std::endl;
 				}
 
 				for (size_t i = 0; i < fromAssimp->numColorLayers; i++)
 				{
-					if (!compare(fromAssimp->colors[i], colors[i]))
+					if (!compare(fromAssimp->loadedColors[i], colors[i]))
 						std::cout << "Colors " << i << " missmatch" << std::endl;
 				}
 
@@ -192,37 +192,32 @@ namespace RenderLib
 				MeshBlockConfiguration memConfig;
 				memConfig.numFaces = data->numFaces;
 				memConfig.numVertices = data->numVertices;
-				memConfig.hasNormals = data->normals.size() == data->numVertices;
-				memConfig.hasTangents = data->tangents.size() == data->numVertices;
-				memConfig.hasBiTangents = data->bitangents.size() == data->numVertices;
-				memConfig.numUVChannels = data->uvs.size();
-				memConfig.numColorChannels = data->colors.size();
+				memConfig.hasNormals = data->loadedNormals.size() == data->numVertices;
+				memConfig.hasTangents = data->loadedTangents.size() == data->numVertices;
+				memConfig.hasBiTangents = data->loadedBitangents.size() == data->numVertices;
+				memConfig.numUVChannels = data->loadedUvs.size();
+				memConfig.numColorChannels = data->loadedColors.size();
 				// Configure memory pool attributes
 				Memory::MemoryManager::getInstance().configureObject<Mesh>(newMesh.get(), &memConfig);
 
 				// Copy data to pool
-				meshPtr->faces.setAttributes(data->faces);
-				//std::cout << "Copied faces" << std::endl;
-				meshPtr->vertices.setAttributes(data->vertices);
-				//std::cout << "Copied vertices" << std::endl;
-				meshPtr->normals.setAttributes(data->normals);
-				//std::cout << "Copied normals" << std::endl;
-				meshPtr->tangents.setAttributes(data->tangents);
-				//std::cout << "Copied tangents" << std::endl;
-				meshPtr->bitangents.setAttributes(data->bitangents);
-				//std::cout << "Copied bitangents" << std::endl;
-
+				meshPtr->faces.setAttributes(data->loadedFaces);
+				meshPtr->vertices.setAttributes(data->loadedVertices);
+				meshPtr->normals.setAttributes(data->loadedNormals);
+				meshPtr->tangents.setAttributes(data->loadedTangents);
+				meshPtr->bitangents.setAttributes(data->loadedBitangents);
+				
 				for (size_t i = 0; i < data->numUVMaps; i++)
 				{
-					meshPtr->uvs[i].setAttributes(data->uvs[i]);
+					meshPtr->uvs[i].setAttributes(data->loadedUvs[i]);
 				}
 
 				for (size_t i = 0; i < data->numColorLayers; i++)
 				{
-					meshPtr->colors[i].setAttributes(data->colors[i]);
+					meshPtr->colors[i].setAttributes(data->loadedColors[i]);
 				}
 
-				compare(data, meshPtr);
+				//compare(data, meshPtr);
 
 				return newMesh;
 			}

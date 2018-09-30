@@ -53,54 +53,6 @@ namespace RenderLib
 
 		void ForwardRenderStage::initialize()
 		{
-			/*
-			const char *vertexShader =
-				"#version 430 core\n"\
-				"layout (location=0) in vec3 aPos;\n"\
-				"uniform mat4 modelViewProj;\n"\
-				"void main() {\n"\
-				" gl_Position = modelViewProj * vec4(aPos, 1.0);\n"\
-				"}\n\0";
-
-			const char *fragShader =
-				"#version 430 core\n"\
-				"layout (location=0) out vec4 fragColor;\n"\
-				"void main() {\n"\
-				" fragColor=vec4(1.0,0.0,0.0,1.0);\n"\
-				"}\n\0";
-
-			unsigned int vShader = loadShader(vertexShader, GL_VERTEX_SHADER);
-			unsigned int fShader = loadShader(fragShader, GL_FRAGMENT_SHADER);
-
-			programId = glCreateProgram();
-
-			glAttachShader(programId, vShader);
-			glAttachShader(programId, fShader);
-
-			glLinkProgram(programId);
-
-			int linked;
-			glGetProgramiv(programId, GL_LINK_STATUS, &linked);
-			if (!linked)
-			{
-				GLint logLen;
-				glGetProgramiv(programId, GL_INFO_LOG_LENGTH, &logLen);
-				char *logString = new char[logLen];
-				glGetProgramInfoLog(programId, logLen, NULL, logString);
-				std::cout << "Error: " << logString << std::endl;
-				delete[] logString;
-				exit(-1);
-			}
-
-			mvp = glGetUniformLocation(programId, "modelViewProj");
-			apos = glGetAttribLocation(programId, "aPos");
-
-			GPU::Mesh::GPUBuffer * buffer = engineInstance->getGPUMeshManager().getStaticMeshBuffer();
-			buffer->bind();
-			buffer->bindDataBuffer();
-			glVertexAttribPointer(apos, 3, GL_FLOAT, GL_FALSE, 0, 0);
-			glEnableVertexAttribArray(apos);
-			*/
 			DefaultImpl::StandardProgram * standard = engineInstance->getProgramManager().getProgram<DefaultImpl::StandardProgram>(0);
 			GPU::Mesh::GPUBuffer * buffer = engineInstance->getGPUMeshManager().getStaticMeshBuffer();
 			buffer->bind();
@@ -115,7 +67,7 @@ namespace RenderLib
 		void ForwardRenderStage::runStage()
 		{
 			glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-
+			
 			GPU::Mesh::GPUBuffer * staticBuf = engineInstance->getGPUMeshManager().getStaticMeshBuffer();
 			doRender(staticRenderables, staticBuf);
 
@@ -126,20 +78,21 @@ namespace RenderLib
 		void ForwardRenderStage::doRender(std::vector<DefaultImpl::MeshRenderer *> & renderables, GPU::Mesh::GPUBuffer * meshBuffer)
 		{
 			Camera * cam = engineInstance->getSceneManager().getActiveScene()->getActiveCamera();
-
+			
 			//glUseProgram(programId);
 			DefaultImpl::StandardProgram * standard = engineInstance->getProgramManager().getProgram<DefaultImpl::StandardProgram>(0);
 			standard->bind();
 			meshBuffer->bind();
-
+			
 			for (auto r : renderables)
 			{
 				GPU::Mesh::GPUMesh * mesh = r->gpuMesh;
 
+				r->object->transform.rotate(VECTOR3(0, 1, 0), 0.01f);
 				r->object->transform.update();
 				standard->onRenderObject(*(r->object), *cam);
-
 				glDrawElementsBaseVertex(GL_TRIANGLES, (GLsizei)(mesh->faces.numElements * mesh->vertices.elementCount), GL_UNSIGNED_INT, (void*)0, 0);
+				
 			}
 		}
 	}

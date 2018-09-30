@@ -21,13 +21,13 @@ namespace RenderLib
 				size_t numUVMaps;
 				size_t numColorLayers;
 
-				std::vector<IVECTOR3> faces;
-				std::vector<VECTOR3> vertices;
-				std::vector<VECTOR3> normals;
-				std::vector<VECTOR3> tangents;
-				std::vector<VECTOR3> bitangents;
-				std::vector<std::vector<VECTOR2>> uvs;
-				std::vector<std::vector<VECTOR4>> colors;
+				std::vector<IVECTOR3> loadedFaces;
+				std::vector<VECTOR3> loadedVertices;
+				std::vector<VECTOR3> loadedNormals;
+				std::vector<VECTOR3> loadedTangents;
+				std::vector<VECTOR3> loadedBitangents;
+				std::vector<std::vector<VECTOR2>> loadedUvs;
+				std::vector<std::vector<VECTOR4>> loadedColors;
 			public:
 				size_t getResultSizeBytes();
 			};

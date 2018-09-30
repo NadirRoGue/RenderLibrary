@@ -29,15 +29,15 @@ namespace RenderLib
 		class CPUToGPUMeshSyncStage : public Pipeline::ElementBasedStage<DefaultImpl::MeshRenderer>
 		{
 		private:
-			SourceMeshList syncOnce;
-			SourceMeshList syncContinously;
+			GPUMeshList syncOnceData;
+			GPUMeshList syncContinouslyData;
 		public:
 			void preRunStage();
 			void runStage();
 		private:
-			void registerMeshes();
-			void createGPUMeshes(SourceMeshList & src, GPUMeshList & dst, size_t & faceSizeBytes, size_t & dataSizeBytes, bool staticMeshes);
-			void synchronizeData(GPU::Mesh::GPUBuffer * buffer, GPUMeshList & sourceMeshes, const size_t & faceSize, const size_t & dataSize);
+			void registerMeshes(SourceMeshList & staticMeshes, SourceMeshList & dynamicMeshes);
+			void createGPUMeshes(SourceMeshList & src, GPUMeshList & dst, bool staticMeshes);
+			void synchronizeData(GPU::Mesh::GPUBuffer * buffer, GPUMeshList & sourceMeshes);
 			GPU::Mesh::GPUMesh * buildGPUMeshFromCPUMesh(CPU::Mesh::Mesh * cpuMesh, bool staticMesh);
 		};
 	}

@@ -14,11 +14,10 @@ namespace RenderLib
 
 				result += numFaces * sizeof(IVECTOR3);
 				result += numVertices * sizeof(VECTOR3);
-
+				
 				result += numVertices * sizeof(VECTOR3) * (hasNormals ? 1 : 0);
 				result += numVertices * sizeof(VECTOR3) * (hasTangents ? 1 : 0);
 				result += numVertices * sizeof(VECTOR3) * (hasBiTangents ? 1 : 0);
-
 				result += numUVChannels * numVertices * sizeof(VECTOR2);
 				result += numColorChannels * numVertices * sizeof(VECTOR4);
 

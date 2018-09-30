@@ -6,10 +6,9 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-#include <stdexcept>
-#include <iostream>
-
 #include "CPU/mesh/MeshManager.h"
+
+#include "EngineException.h"
 
 #include "util/StringUtils.h"
 
@@ -62,8 +61,7 @@ namespace RenderLib
 			unsigned int assimpFlags = 0;
 
 			assimpFlags |= aiPostProcessSteps::aiProcess_JoinIdenticalVertices;
-			assimpFlags |= aiPostProcessSteps::aiProcess_GenUVCoords;
-			assimpFlags |= (options & CPU::Mesh::MeshManager::OPTION_COMPUTE_NORMALS_IF_ABSENT) ? aiProcess_GenNormals : 0;
+			assimpFlags |= (options & CPU::Mesh::MeshManager::OPTION_COMPUTE_NORMALS_IF_ABSENT) ? aiProcess_GenSmoothNormals : 0;
 			assimpFlags |= (options & CPU::Mesh::MeshManager::OPTION_COMPUTE_TANGENTS_IF_ABSENT
 				|| options & CPU::Mesh::MeshManager::OPTION_COMPUTE_BITANGENTS_IF_ABSENT) ? aiProcess_CalcTangentSpace : 0;
 			assimpFlags |= aiProcess_Triangulate;
@@ -73,8 +71,7 @@ namespace RenderLib
 			if (scene == NULL || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE)
 			{
 				std::string importerError(importer.GetErrorString());
-				std::string errorMessage = "AssimpFileLoader: Error importing mesh " + fileName + ": " + importerError;
-				throw std::runtime_error(errorMessage);
+				throw EngineException("AssimpFileLoader: Error importing mesh " + fileName + ": " + importerError);
 			}
 
 			std::vector<CPU::IO::AbstractLoadResultPtr> result;
@@ -95,17 +92,17 @@ namespace RenderLib
 
 		std::unique_ptr<CPU::Mesh::MeshLoadResult> AssimpFileLoader::processFileMesh(aiMesh * mesh, unsigned int options)
 		{
-			std::unique_ptr<CPU::Mesh::MeshLoadResult> meshDataPtr = std::make_unique<CPU::Mesh::MeshLoadResult>();// = new Mesh::MeshLoadResult();
+			std::unique_ptr<CPU::Mesh::MeshLoadResult> meshDataPtr = std::make_unique<CPU::Mesh::MeshLoadResult>();
 			CPU::Mesh::MeshLoadResult * meshData = meshDataPtr.get();
 
 			size_t i = 0;
 
 			meshData->numFaces = mesh->mNumFaces;
-			meshData->faces.reserve(meshData->numFaces);
+			meshData->loadedFaces.reserve(meshData->numFaces);
 			while (i < meshData->numFaces)
 			{
 				aiFace & face = mesh->mFaces[i++];
-				meshData->faces.push_back(assimpToEigen3I(face));
+				meshData->loadedFaces.push_back(assimpToEigen3I(face));
 			}
 
 			i = 0;
@@ -113,39 +110,39 @@ namespace RenderLib
 			if (mesh->mNumVertices > 0)
 			{
 				meshData->numVertices = mesh->mNumVertices;
-				meshData->vertices.reserve(meshData->numVertices);
+				meshData->loadedVertices.reserve(meshData->numVertices);
 				while (i < meshData->numVertices)
 				{
-					meshData->vertices.push_back(assimpToEigen3F(mesh->mVertices[i++]));
+					meshData->loadedVertices.push_back(assimpToEigen3F(mesh->mVertices[i++]));
 				}
 
 				if (mesh->mNormals != NULL)
 				{
 					i = 0;
-					meshData->normals.reserve(meshData->numVertices);
+					meshData->loadedNormals.reserve(meshData->numVertices);
 					while (i < meshData->numVertices)
 					{
-						meshData->normals.push_back(assimpToEigen3F(mesh->mNormals[i++]));
+						meshData->loadedNormals.push_back(assimpToEigen3F(mesh->mNormals[i++]));
 					}
 				}
 
 				if (mesh->mTangents != NULL)
 				{
-					meshData->tangents.reserve(meshData->numVertices);
+					meshData->loadedTangents.reserve(meshData->numVertices);
 					i = 0;
 					while (i < meshData->numVertices)
 					{
-						meshData->tangents.push_back(assimpToEigen3F(mesh->mTangents[i++]));
+						meshData->loadedTangents.push_back(assimpToEigen3F(mesh->mTangents[i++]));
 					}
 				}
 
 				if (mesh->mBitangents != NULL)
 				{
-					meshData->bitangents.reserve(meshData->numVertices);
+					meshData->loadedBitangents.reserve(meshData->numVertices);
 					i = 0;
 					while (i < meshData->numVertices)
 					{
-						meshData->bitangents.push_back(assimpToEigen3F(mesh->mBitangents[i++]));
+						meshData->loadedBitangents.push_back(assimpToEigen3F(mesh->mBitangents[i++]));
 					}
 				}
 
@@ -154,14 +151,14 @@ namespace RenderLib
 					meshData->numColorLayers = mesh->GetNumColorChannels();
 					size_t j = 0;
 					i = 0;
-					meshData->colors.resize(meshData->numColorLayers);
+					meshData->loadedColors.resize(meshData->numColorLayers);
 					while (i < meshData->numColorLayers)
 					{
-						meshData->colors[i].reserve(meshData->numVertices);
+						meshData->loadedColors[i].reserve(meshData->numVertices);
 						j = 0;
 						while (j < meshData->numVertices)
 						{
-							meshData->colors[i].push_back(assimpToEigen4F(mesh->mColors[i][j++]));
+							meshData->loadedColors[i].push_back(assimpToEigen4F(mesh->mColors[i][j++]));
 						}
 						i++;
 					}
@@ -172,16 +169,16 @@ namespace RenderLib
 					meshData->numUVMaps = mesh->GetNumUVChannels();
 					size_t j = 0;
 					i = 0;
-					meshData->uvs.resize(meshData->numUVMaps);
+					meshData->loadedUvs.resize(meshData->numUVMaps);
 					while (i < meshData->numUVMaps)
 					{
-						meshData->uvs[i].reserve(meshData->numVertices);
+						meshData->loadedUvs[i].reserve(meshData->numVertices);
 						j = 0;
 						while (j < meshData->numVertices)
 						{
 							// FIXME: Assimp returns 3D uv coordinates (UVW). Working for 2D coords right now
 							aiVector3D uvCoord = mesh->mTextureCoords[i][j++];
-							meshData->uvs[i].push_back(VECTOR2(uvCoord.x, uvCoord.y));
+							meshData->loadedUvs[i].push_back(VECTOR2(uvCoord.x, uvCoord.y));
 						}
 						i++;
 					}

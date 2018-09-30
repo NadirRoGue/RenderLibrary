@@ -1,5 +1,7 @@
 #include "defaultimpl/shaders/StandardProgram.h"
 
+#include <iostream>
+
 namespace RenderLib
 {
 	namespace DefaultImpl

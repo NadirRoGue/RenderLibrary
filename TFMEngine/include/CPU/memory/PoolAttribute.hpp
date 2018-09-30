@@ -151,7 +151,7 @@ namespace RenderLib
 					}
 
 					const size_t typeSize = sizeof(T) * numElements;
-					start = offset + (typeSize + stride) * index;
+					start = offset + (stride) * index;
 					end = start + typeSize;
 
 					if (start < srcBlock->offset || end > srcBlock->offset + srcBlock->length)

@@ -6,6 +6,8 @@
 
 #include "EngineInstance.h"
 
+#include <iostream>
+
 namespace RenderLib
 {
 	namespace DefaultImpl
@@ -15,39 +17,46 @@ namespace RenderLib
 			// Let superclass to sort elements based on cpu memory position
 			ElementBasedStage<MeshRenderer>::preRunStage();
 
+			SourceMeshList syncOnce;
+			SourceMeshList syncContinously;
 			// Register to internal pools
-			registerMeshes();
+			registerMeshes(syncOnce, syncContinously);
 
-			// Create the GPU meshes
+			// Create the GPU meshes. Gather unique meshes for synchroniztion
 			// STATIC MESHES
-			size_t faceSizeOnce, dataSizeOnce;
-			GPUMeshList syncOnceResult;
-			createGPUMeshes(syncOnce, syncOnceResult, faceSizeOnce, dataSizeOnce, true);
-
+			createGPUMeshes(syncOnce, syncOnceData, true);
 			// DYNAMIC MESHES
-			size_t faceSizeCont, dataSizeCont;
-			GPUMeshList syncContResult;
-			createGPUMeshes(syncContinously, syncContResult, faceSizeCont, dataSizeCont, false);
+			createGPUMeshes(syncContinously, syncContinouslyData, false);
 
 			// Create static buffer
 			GPU::Mesh::GPUBuffer * staticBuffer = engineInstance->getGPUMeshManager().initializeStaticBuffer();
 			// Synchronize CPU -> GPU data
-			synchronizeData(staticBuffer, syncOnceResult, faceSizeOnce, dataSizeOnce);
+			synchronizeData(staticBuffer, syncOnceData);
 			
 			// Create dynamic buffer(s)
 			// Creates both, returns front buffer
 			GPU::Mesh::GPUBuffer * dynamicBuffer = engineInstance->getGPUMeshManager().initializeDynamicBuffer();
-			//synchronizeData(dynamicBuffer, syncContResult, faceSizeCont, dataSizeCont);
+			synchronizeData(dynamicBuffer, syncContinouslyData);
 		}
 
 		void CPUToGPUMeshSyncStage::runStage()
 		{
 			// Sync-continously mesh synchroniztion
+			// Register new meshes
+			if (elements.size() > 0)
+			{
+				SourceMeshList dummy, newDynamic;
+				registerMeshes(dummy, newDynamic);
+				createGPUMeshes(newDynamic, syncContinouslyData, false);
+			}
+
+			GPU::Mesh::GPUBuffer * dynamicBuffer = engineInstance->getGPUMeshManager().getDynamicMeshBuffer();
+			synchronizeData(dynamicBuffer, syncContinouslyData);
 		}
 
 		// ==============================================================================================
 
-		void CPUToGPUMeshSyncStage::registerMeshes()
+		void CPUToGPUMeshSyncStage::registerMeshes(SourceMeshList & syncOnce ,SourceMeshList & syncContinously)
 		{
 			if (elements.size() > 0)
 			{
@@ -70,10 +79,8 @@ namespace RenderLib
 			}
 		}
 
-		void CPUToGPUMeshSyncStage::createGPUMeshes(SourceMeshList & src, GPUMeshList & dst, size_t & faceSizeBytes, size_t & dataSizeBytes, bool staticMeshes)
+		void CPUToGPUMeshSyncStage::createGPUMeshes(SourceMeshList & src, GPUMeshList & dst, bool staticMeshes)
 		{
-			faceSizeBytes = dataSizeBytes = 0;
-
 			for (auto mesh : src)
 			{
 				CPU::Mesh::Mesh * cpuMesh = mesh->getCPUMesh();
@@ -82,18 +89,14 @@ namespace RenderLib
 				GPU::Mesh::GPUMesh * gpuMesh = engineInstance->getGPUMeshManager().getGPUMesh(cpuMesh->index, staticMeshes);
 				if (gpuMesh == NULL)
 				{
-					gpuMesh = buildGPUMeshFromCPUMesh(cpuMesh, true);
-					gpuMesh->faceIndexOffset = faceSizeBytes;
-					gpuMesh->dataIndexOffset = dataSizeBytes;
+					gpuMesh = buildGPUMeshFromCPUMesh(cpuMesh, staticMeshes);
+
 					// Add each gpu mesh just once to the result, so we do not upload duplicated data to the video memory
 					SyncData data;
 					data.cpuMesh = cpuMesh;
 					data.gpuMesh = gpuMesh;
 					data.facesSize = gpuMesh->faces.elementTypeSize * gpuMesh->faces.elementCount * gpuMesh->faces.numElements;
 					data.dataSize = (block->length - data.facesSize);
-
-					dataSizeBytes += data.dataSize;
-					faceSizeBytes += data.facesSize;
 
 					dst.push_back(data);
 				}
@@ -108,16 +111,16 @@ namespace RenderLib
 
 			size_t vOffset = cpuMesh->vertices.getOffset();
 			gpuMesh->faces = GPU::Mesh::GPUAttribute(sizeof(unsigned int), 3, cpuMesh->faces.size(), cpuMesh->faces.getOffset(), cpuMesh->faces.getStride());
-			gpuMesh->vertices = GPU::Mesh::GPUAttribute(sizeof(FLOAT), 3, cpuMesh->vertices.size(), vOffset - cpuMesh->vertices.getOffset(), cpuMesh->vertices.getStride());
-			gpuMesh->normals = GPU::Mesh::GPUAttribute(sizeof(FLOAT), 3, cpuMesh->normals.size(), vOffset - cpuMesh->normals.getOffset(), cpuMesh->normals.getStride());
-			gpuMesh->tangents = GPU::Mesh::GPUAttribute(sizeof(FLOAT), 3, cpuMesh->tangents.size(), vOffset - cpuMesh->tangents.getOffset(), cpuMesh->tangents.getStride());
-			gpuMesh->bitangents = GPU::Mesh::GPUAttribute(sizeof(FLOAT), 3, cpuMesh->bitangents.size(), vOffset - cpuMesh->bitangents.getOffset(), cpuMesh->bitangents.getStride());
+			gpuMesh->vertices = GPU::Mesh::GPUAttribute(sizeof(FLOAT), 3, cpuMesh->vertices.size(), cpuMesh->vertices.getOffset() - vOffset, cpuMesh->vertices.getStride());
+			gpuMesh->normals = GPU::Mesh::GPUAttribute(sizeof(FLOAT), 3, cpuMesh->normals.size(), cpuMesh->normals.getOffset() - vOffset, cpuMesh->normals.getStride());
+			gpuMesh->tangents = GPU::Mesh::GPUAttribute(sizeof(FLOAT), 3, cpuMesh->tangents.size(), cpuMesh->tangents.getOffset() - vOffset, cpuMesh->tangents.getStride());
+			gpuMesh->bitangents = GPU::Mesh::GPUAttribute(sizeof(FLOAT), 3, cpuMesh->bitangents.size(), cpuMesh->bitangents.getOffset() - vOffset, cpuMesh->bitangents.getStride());
 
 			gpuMesh->uvs.resize(cpuMesh->uvs.size());
 			size_t i = 0;
 			for (auto & uvAttrib : cpuMesh->uvs)
 			{
-				gpuMesh->uvs[i] = GPU::Mesh::GPUAttribute(sizeof(FLOAT), 2, uvAttrib.size(), uvAttrib.getOffset(), uvAttrib.getStride());
+				gpuMesh->uvs[i] = GPU::Mesh::GPUAttribute(sizeof(FLOAT), 2, uvAttrib.size(), uvAttrib.getOffset() - vOffset, uvAttrib.getStride());
 				i++;
 			}
 
@@ -125,18 +128,32 @@ namespace RenderLib
 			i = 0;
 			for (auto & colorAttrib : cpuMesh->colors)
 			{
-				gpuMesh->colors[i] = GPU::Mesh::GPUAttribute(sizeof(FLOAT), 4, colorAttrib.size(), colorAttrib.getOffset(), colorAttrib.getStride());
+				gpuMesh->colors[i] = GPU::Mesh::GPUAttribute(sizeof(FLOAT), 4, colorAttrib.size(), colorAttrib.getOffset() - vOffset, colorAttrib.getStride());
 				i++;
 			}
 
 			return gpuMesh;
 		}
 
-		void CPUToGPUMeshSyncStage::synchronizeData(GPU::Mesh::GPUBuffer * buffer, GPUMeshList & sourceMeshes, const size_t & faceSize, const size_t & dataSize)
+		void CPUToGPUMeshSyncStage::synchronizeData(GPU::Mesh::GPUBuffer * buffer, GPUMeshList & sourceMeshes)
 		{
 			if (sourceMeshes.size() == 0)
 			{
 				return;
+			}
+
+			// Adjust meshes
+			size_t faceSize = 0, dataSize = 0, baseVertexOffset = 0;
+			for (auto syncData : sourceMeshes)
+			{
+				// Adjust current gpu mesh params
+				syncData.gpuMesh->faceIndexOffset = faceSize;
+				syncData.gpuMesh->verticesBaseOffset = baseVertexOffset;
+
+				// Increase global offsets
+				faceSize += syncData.facesSize;
+				dataSize += syncData.dataSize;
+				baseVertexOffset += syncData.cpuMesh->vertices.size();
 			}
 
 			char * faceBuffer = new char[faceSize];

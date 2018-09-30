@@ -47,11 +47,11 @@ namespace RenderLib
 		void WindowHandler::defaultOpenGLConfiguration()
 		{
 			// Basic OPENGL Context configuration
-			glEnable(GL_DEPTH_TEST);
-			glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+			glClearColor(0.7f, 0.7f, 0.7f, 0.0f);
 			glFrontFace(GL_CCW);
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 			glEnable(GL_CULL_FACE);
+			glEnable(GL_DEPTH_TEST);
 		}
 	}
 }

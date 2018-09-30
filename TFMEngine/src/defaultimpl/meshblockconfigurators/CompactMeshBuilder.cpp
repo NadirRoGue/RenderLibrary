@@ -21,30 +21,30 @@ namespace RenderLib
 			dst->memoryBlock = memBlock;
 			dst->index = memBlock->index;
 
-			dst->faces.setAttributeSource(memBlock, offset, 0, meshConfig->numFaces);
+			dst->faces.setAttributeSource(memBlock, offset, sizeof(IVECTOR3), meshConfig->numFaces);
 			offset += meshConfig->numFaces * sizeof(IVECTOR3);
 
 			const size_t verticesOffset = meshConfig->numVertices * sizeof(VECTOR3);
 
-			dst->vertices.setAttributeSource(memBlock, offset, 0, meshConfig->numVertices);
+			dst->vertices.setAttributeSource(memBlock, offset, sizeof(VECTOR3), meshConfig->numVertices);
 			offset += verticesOffset;
 
 			if (meshConfig->hasNormals)
 			{
-				dst->normals.setAttributeSource(memBlock, offset, 0, meshConfig->numVertices);
+				dst->normals.setAttributeSource(memBlock, offset, sizeof(VECTOR3), meshConfig->numVertices);
 				offset += verticesOffset;
 				std::cout << "normals configured" << std::endl;
 			}
 
 			if (meshConfig->hasTangents)
 			{
-				dst->tangents.setAttributeSource(memBlock, offset, 0, meshConfig->numVertices);
+				dst->tangents.setAttributeSource(memBlock, offset, sizeof(VECTOR3), meshConfig->numVertices);
 				offset += verticesOffset;
 			}
 
 			if (meshConfig->hasBiTangents)
 			{
-				dst->bitangents.setAttributeSource(memBlock, offset, 0, meshConfig->numVertices);
+				dst->bitangents.setAttributeSource(memBlock, offset, sizeof(VECTOR3), meshConfig->numVertices);
 				offset += verticesOffset;
 			}
 
@@ -53,7 +53,7 @@ namespace RenderLib
 				dst->uvs.resize(meshConfig->numUVChannels);
 				for (auto & uvMap : dst->uvs)
 				{
-					uvMap.setAttributeSource(memBlock, offset, 0, meshConfig->numVertices);
+					uvMap.setAttributeSource(memBlock, offset, sizeof(VECTOR2), meshConfig->numVertices);
 					offset += meshConfig->numVertices * sizeof(VECTOR2);
 				}
 			}
@@ -63,7 +63,7 @@ namespace RenderLib
 				dst->colors.resize(meshConfig->numColorChannels);
 				for (auto & colorMap : dst->colors)
 				{
-					colorMap.setAttributeSource(memBlock, offset, 0, meshConfig->numVertices);
+					colorMap.setAttributeSource(memBlock, offset, sizeof(VECTOR4), meshConfig->numVertices);
 					offset += meshConfig->numVertices * sizeof(VECTOR4);
 				}
 			}

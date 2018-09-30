@@ -17,8 +17,7 @@ namespace RenderLib
 {
 	void DefaultEngineInitialization()
 	{
-		// Set default mesh memory layout configurator: Interleaved (FFFF)(VNTB[UV][COLOR]VNTB[UV][COLOR]...)
-		CPU::Memory::MemoryManager::getInstance().setAttributeBuilderForClass<CPU::Mesh::Mesh>(new DefaultImpl::InterleavedMeshBuilder());
+		CPU::Memory::MemoryManager::getInstance().setAttributeBuilderForClass<CPU::Mesh::Mesh>(new DefaultImpl::CompactMeshBuilder());
 
 		CPU::IO::FileManager::registerFileLoader<DefaultImpl::AssimpFileLoader>();
 		CPU::IO::FileManager::registerFileLoader<DefaultImpl::ShaderLoader>();

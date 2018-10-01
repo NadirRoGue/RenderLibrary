@@ -21,6 +21,24 @@ namespace RenderLib
 			{
 			}
 
+			void GPUBuffer::generate()
+			{
+				glGenVertexArrays(1, &vao);
+				
+				bind();
+
+				GLuint result[2];
+				glGenBuffers(2, &result[0]);
+				indexBuffer = result[0];
+				dataBuffer = result[1];
+				bindIndexBuffer();
+				bindDataBuffer();
+
+				unBind();
+				unBindIndexBuffer();
+				unBindDataBuffer();
+			}
+
 			void GPUBuffer::bind()
 			{
 				glBindVertexArray(vao);
@@ -53,7 +71,7 @@ namespace RenderLib
 
 			void GPUBuffer::updateData(char * faceData, const size_t & faceSize, char * vertexData, const size_t & vertexSize)
 			{
-				bind();
+				//bind();
 				
 				bindDataBuffer();
 				glBufferData(GL_ARRAY_BUFFER, vertexSize, NULL, usage);

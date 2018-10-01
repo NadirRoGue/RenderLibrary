@@ -23,6 +23,16 @@ namespace RenderLib
 			return config.windowTitle;
 		}
 
+		unsigned int WindowHandler::getWidth()
+		{
+			return config.windowWidth;
+		}
+
+		unsigned int WindowHandler::getHeight()
+		{
+			return config.windowHeight;
+		}
+
 		void WindowHandler::initialize()
 		{
 			initializeWindowContext();

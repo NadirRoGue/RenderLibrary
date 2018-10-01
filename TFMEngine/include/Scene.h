@@ -1,5 +1,5 @@
-#ifndef __CPU_SCENE_H__
-#define __CPU_SCENE_H__
+#ifndef __RENDERLIB_SCENE_H__
+#define __RENDERLIB_SCENE_H__
 
 #include <vector>
 #include <unordered_map>
@@ -85,7 +85,9 @@ namespace RenderLib
 
 				sceneObjects.push_back(std::move(newCamPtr));
 				sceneCameras[name] = result;
-			  return result;
+				windowResizables.push_back(static_cast<Graphics::WindowResizeObserver*>(result));
+				//std::cout << windowResizables << " resizables" << std::endl;
+			    return result;
 			}
 
 			throw EngineException("Scene: Attempted to add a non-derived Camera camera");

@@ -18,6 +18,11 @@ namespace RenderLib
 
 		}
 
+		void StandardProgram::getUberShaderDefines(std::vector<std::string> & definesBuffer)
+		{
+			
+		}
+
 		void StandardProgram::configureShaderAttributes(GPU::Mesh::GPUMesh * targetMesh)
 		{
 			configureShaderAttribute("inPos", targetMesh->vertices);

@@ -96,8 +96,8 @@ namespace RenderLib
 
 			unsigned int Program::loadShaderFromFile(GLenum shaderType, const std::string & filePath, std::vector<std::string> & configStrings)
 			{
-				std::vector<CPU::IO::AbstractLoadResultPtr> fileloadResultVector = CPU::IO::FileManager::loadFile(filePath, 0);
-				GPU::Program::ShaderLoadResult * loadResult = dynamic_cast<GPU::Program::ShaderLoadResult*>(fileloadResultVector[0].get());
+				CPU::IO::AbstractLoadResultPtr fileloadResult = CPU::IO::FileManager::loadFile(filePath, 0);
+				GPU::Program::ShaderLoadResult * loadResult = dynamic_cast<GPU::Program::ShaderLoadResult*>(fileloadResult.get());
 
 				size_t fileLen = loadResult->getResultSizeBytes() - 1;
 

@@ -9,6 +9,35 @@ namespace RenderLib
 	{
 		namespace IO
 		{
+			template<class T>
+			class LoadedParameter
+			{
+			private:
+				T value;
+				bool exists;
+			public:
+				LoadedParameter()
+					: exists(false)
+				{
+				}
+
+				void set(const T & newVal)
+				{
+					value = newVal;
+					exists = true;
+				}
+
+				const T & get()
+				{
+					return value;
+				}
+
+				const T & operator()()
+				{
+					return value;
+				}
+			};
+
 			class AbstractLoadResult
 			{
 			public:

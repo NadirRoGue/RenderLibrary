@@ -8,6 +8,7 @@ namespace RenderLib
 		class WindowResizeObserver
 		{
 		public:
+			virtual void setWindowSize(int width, int height) = 0;
 			virtual void onWindowResize(const int & width, const int & height) = 0;
 		};
 	}

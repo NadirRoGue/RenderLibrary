@@ -39,7 +39,9 @@ namespace RenderLib
 				void destroyMesh(std::vector<std::unique_ptr<Mesh>> && meshToDestroy);
 				void destroy();
 			private:
-				std::unique_ptr<Mesh> buildMeshFromData(MeshLoadResult * data, unsigned int optionsFlag);
+				std::vector<Mesh *> processLoadedMeshes(const std::string & filename, std::vector<MeshLoadedData> & loadedMeshes);
+				std::unique_ptr<Mesh> buildMeshFromData(MeshLoadedData & data, unsigned int optionsFlag);
+				
 			};
 		}
 	}

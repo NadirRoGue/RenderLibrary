@@ -13,6 +13,8 @@ namespace RenderLib
 			StandardProgram();
 			~StandardProgram();
 
+			void getUberShaderDefines(std::vector<std::string> & definesBuffer);
+
 			void configureShaderAttributes(GPU::Mesh::GPUMesh * targetMesh);
 			void onRenderObject(const SceneObject & object, const Camera & camera);
 		};

@@ -10,9 +10,9 @@ namespace RenderLib
 		{
 			std::unordered_map <std::string, std::shared_ptr<FileLoader>> FileManager::fileLoaders;
 
-			std::vector<AbstractLoadResultPtr> FileManager::loadFile(const std::string & path, unsigned int options)
+			AbstractLoadResultPtr FileManager::loadFile(const std::string & path, unsigned int options)
 			{
-				std::vector<AbstractLoadResultPtr> result;
+				AbstractLoadResultPtr result;
 
 				if (path.empty())
 				{
@@ -41,7 +41,7 @@ namespace RenderLib
 					throw std::runtime_error("FileManager: NULL FileLoader registered for file extension " + extension);
 				}
 
-				return std::move(result);
+				return result;
 			}
 		}
 	}

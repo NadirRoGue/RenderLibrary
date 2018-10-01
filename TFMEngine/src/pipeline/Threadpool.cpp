@@ -1,10 +1,10 @@
-#include "Threadpool.h"
+#include "pipeline/Threadpool.h"
 
 #include "logger/Log.h"
 
 namespace RenderLib
 {
-	namespace Concurrent
+	namespace Pipeline
 	{
 		ThreadPool * ThreadPool::INSTANCE = new ThreadPool();
 
@@ -59,11 +59,17 @@ namespace RenderLib
 
 		void ThreadPool::pollTask()
 		{
+			bool checkReleaseCallingThread = false;
 			while (active)
 			{
 				std::unique_lock<std::mutex> lock(globalLock);
 				while (tasks.empty() && active)
 				{
+					if (blockingStage && checkReleaseCallingThread)
+					{
+						callingThreadMonitor.notify_all();
+					}
+
 					monitor.wait(lock);
 				}
 
@@ -72,6 +78,7 @@ namespace RenderLib
 					std::unique_ptr<Runnable> task = std::move(tasks.front());
 					tasks.pop();
 					lock.unlock();
+					checkReleaseCallingThread = true;
 
 					task->run();
 				}

@@ -11,13 +11,16 @@ namespace RenderLib
 			size_t MeshLoadResult::getResultSizeBytes()
 			{
 				size_t size = 0;
-				size += numFaces * sizeof(IVECTOR3);									// Face size
-				size += numVertices * sizeof(VECTOR3);								// Vertex Size
-				size += loadedNormals.size() * sizeof(VECTOR3);							// Normal size
-				size += loadedTangents.size() * sizeof(VECTOR3);						// Tangent size
-				size += loadedBitangents.size() * sizeof(VECTOR3);					// Bitangent size
-				size += loadedUvs.size() * numVertices * sizeof(VECTOR2);		// UV Size
-				size += loadedColors.size() * numVertices * sizeof(VECTOR4);// Colors size
+				for (auto data : loadedData)
+				{
+					size += data.numFaces * sizeof(IVECTOR3);								// Face size
+					size += data.numVertices * sizeof(VECTOR3);								// Vertex Size
+					size += data.loadedNormals.size() * sizeof(VECTOR3);					// Normal size
+					size += data.loadedTangents.size() * sizeof(VECTOR3);					// Tangent size
+					size += data.loadedBitangents.size() * sizeof(VECTOR3);					// Bitangent size
+					size += data.loadedUvs.size() * data.numVertices * sizeof(VECTOR2);		// UV Size
+					size += data.loadedColors.size() * data.numVertices * sizeof(VECTOR4);	// Colors size
+				}
 
 				return size;
 			}

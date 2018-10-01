@@ -19,7 +19,7 @@ namespace RenderLib
 			public:
 				void registerFileExtension(const std::string & fileExtension);
 				const std::vector<std::string> & getSupportedExtensions();
-				virtual std::vector<AbstractLoadResultPtr> loadFile(const std::string & filePath, unsigned int options) = 0;
+				virtual AbstractLoadResultPtr loadFile(const std::string & filePath, unsigned int options) = 0;
 			};
 		}
 	}

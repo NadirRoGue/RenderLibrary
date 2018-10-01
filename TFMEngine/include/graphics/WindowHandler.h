@@ -41,6 +41,9 @@ namespace RenderLib
 			WindowHandler(WindowConfiguration windowConfig);
 			~WindowHandler();
 
+			unsigned int getWidth();
+			unsigned int getHeight();
+
 			const std::string & getTitle();
 
 			virtual void initialize();

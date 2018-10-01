@@ -4,6 +4,7 @@
 #include "CPU/io/FileLoader.h"
 #include "CPU/mesh/MeshLoadResult.h"
 
+#include <assimp/scene.h>
 #include <assimp/mesh.h>
 
 namespace RenderLib
@@ -14,9 +15,13 @@ namespace RenderLib
 		{
 		public:
 			AssimpFileLoader();
-			std::vector<CPU::IO::AbstractLoadResultPtr> loadFile(const std::string & fileName, unsigned int options);
+			CPU::IO::AbstractLoadResultPtr loadFile(const std::string & fileName, unsigned int options);
 		private:
-			std::unique_ptr<CPU::Mesh::MeshLoadResult> processFileMesh(aiMesh * assimpMesh, unsigned int options);
+			void processSceneMaterials(const aiScene * scene, CPU::Mesh::MeshLoadResult * dst, const std::string & rootPath);
+			void processSceneMeshes(const aiScene * scene, CPU::Mesh::MeshLoadResult * dst);
+
+			void processFileMaterial(aiMaterial * material, CPU::Mesh::MaterialLoadedData & dst, const std::string & roothPath);
+			void processFileMesh(aiMesh * assimpMesh, CPU::Mesh::MeshLoadedData & dst);
 		};
 	}
 }

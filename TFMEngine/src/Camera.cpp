@@ -5,9 +5,13 @@
 
 #include <iostream>
 
+#define degreesToRadians(angleDegrees) ((angleDegrees) * M_PI / 180.0)
+
 namespace RenderLib
 {
 	Camera::Camera()
+		: initWidth(-1)
+		, initHeight(-1)
 	{
 		
 	}
@@ -15,6 +19,20 @@ namespace RenderLib
 	Camera::~Camera()
 	{
 
+	}
+
+	void Camera::setWindowSize(int width, int height)
+	{
+		if (initWidth < 0)
+		{
+			initWidth = static_cast<FLOAT>(width);
+		}
+
+		if (initHeight < 0)
+		{
+			initHeight = static_cast<FLOAT>(height);
+		}
+		onWindowResize(width, height);
 	}
 
 	void Camera::initialize()
@@ -33,8 +51,9 @@ namespace RenderLib
 	void Camera::initializeProjectionMatrix()
 	{
 		projectionMatrix.fill(0.0);
-		projectionMatrix(0, 0) = FLOAT(1.0) / tan(fov*static_cast<FLOAT>(M_PI) / FLOAT(180.0));
-		projectionMatrix(1, 1) = FLOAT(1.0) / tan(fov*static_cast<FLOAT>(M_PI) / FLOAT(180.0));
+		FLOAT rads = (FLOAT)degreesToRadians(fov);
+		projectionMatrix(0, 0) = FLOAT(1.0) / tan(rads);
+		projectionMatrix(1, 1) = FLOAT(1.0) / tan(rads);
 		projectionMatrix(2, 2) = (farPlane + nearPlane) / (nearPlane - farPlane);
 		projectionMatrix(3, 2) = FLOAT(2.0) * nearPlane * farPlane / (nearPlane - farPlane);
 		projectionMatrix(2, 3) = FLOAT(-1.0);
@@ -104,11 +123,15 @@ namespace RenderLib
 		FLOAT fWidth = (FLOAT)width;
 		FLOAT fHeight = (FLOAT)height;
 
+		FLOAT ratio = fWidth / fHeight;
+		
+		FLOAT rads = (FLOAT)degreesToRadians(fov);
+
 		projectionMatrix.fill(0.0);
-		projectionMatrix(0, 0) = FLOAT(1.0) / (tan(fov*static_cast<FLOAT>(M_PI) / FLOAT(180.0)) * (fWidth / fHeight));
-		projectionMatrix(1, 1) = FLOAT(1.0) / tan(fov*static_cast<FLOAT>(M_PI) / FLOAT(180.0));
-		projectionMatrix(2, 2) = (farPlane + nearPlane) / (nearPlane - farPlane);
-		projectionMatrix(3, 2) = FLOAT(2.0) * nearPlane * farPlane / (nearPlane - farPlane);
+		projectionMatrix(0, 0) = FLOAT(1.0) / (ratio * tan(rads));
+		projectionMatrix(1, 1) = FLOAT(1.0) / tan(rads);
+		projectionMatrix(2, 2) = -(farPlane + nearPlane) / (farPlane - nearPlane);
+		projectionMatrix(3, 2) = (FLOAT(-2.0) * nearPlane * farPlane) / (farPlane - nearPlane);
 		projectionMatrix(2, 3) = FLOAT(-1.0);
 	}
 }

@@ -59,7 +59,7 @@ namespace RenderLib
 					}
 				}
 
-				static std::vector<AbstractLoadResultPtr> loadFile(const std::string & filePath, unsigned int options);
+				static AbstractLoadResultPtr loadFile(const std::string & filePath, unsigned int options);
 			};
 		}
 	}

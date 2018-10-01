@@ -78,55 +78,57 @@ namespace RenderLib
 				return true;
 			}
 
-			void compare(MeshLoadResult * fromAssimp, Mesh * inMemory)
+			void compare(MeshLoadResult * allLoaded, Mesh * inMemory)
 			{
-				std::vector<IVECTOR3> faces;
-				std::vector<VECTOR3> vertices, normals, tangents, bitangents;
-				std::vector<std::vector<VECTOR2>> uv;
-				std::vector<std::vector<VECTOR4>> colors;
-
-				inMemory->faces.dumpAttributes(faces);
-				inMemory->vertices.dumpAttributes(vertices);
-				inMemory->normals.dumpAttributes(normals);
-				inMemory->tangents.dumpAttributes(tangents);
-				inMemory->bitangents.dumpAttributes(bitangents);
-
-				uv.resize(inMemory->uvs.size());
-				for (size_t i = 0; i < inMemory->uvs.size(); i++)
+				for (auto & fromAssimp : allLoaded->loadedData)
 				{
-					inMemory->uvs[i].dumpAttributes(uv[i]);
+					std::vector<IVECTOR3> faces;
+					std::vector<VECTOR3> vertices, normals, tangents, bitangents;
+					std::vector<std::vector<VECTOR2>> uv;
+					std::vector<std::vector<VECTOR4>> colors;
+
+					inMemory->faces.dumpAttributes(faces);
+					inMemory->vertices.dumpAttributes(vertices);
+					inMemory->normals.dumpAttributes(normals);
+					inMemory->tangents.dumpAttributes(tangents);
+					inMemory->bitangents.dumpAttributes(bitangents);
+
+					uv.resize(inMemory->uvs.size());
+					for (size_t i = 0; i < inMemory->uvs.size(); i++)
+					{
+						inMemory->uvs[i].dumpAttributes(uv[i]);
+					}
+
+					colors.resize(inMemory->colors.size());
+					for (size_t i = 0; i < inMemory->colors.size(); i++)
+					{
+						inMemory->colors[i].dumpAttributes(colors[i]);
+					}
+
+					if (!compare(fromAssimp.loadedFaces, faces))
+						std::cout << "Faces missmatch" << std::endl;
+
+					if (!compare(fromAssimp.loadedVertices, vertices))
+						std::cout << "Vertices missmatch" << std::endl;
+
+					if (!compare(fromAssimp.loadedNormals, normals))
+						std::cout << "Normals missmatch" << std::endl;
+
+					if (!compare(fromAssimp.loadedTangents, tangents))
+						std::cout << "Tangents missmatch" << std::endl;
+
+					for (size_t i = 0; i < fromAssimp.numUVMaps; i++)
+					{
+						if (!compare(fromAssimp.loadedUvs[i], uv[i]))
+							std::cout << "UVs " << i << " missmatchs" << std::endl;
+					}
+
+					for (size_t i = 0; i < fromAssimp.numColorLayers; i++)
+					{
+						if (!compare(fromAssimp.loadedColors[i], colors[i]))
+							std::cout << "Colors " << i << " missmatch" << std::endl;
+					}
 				}
-
-				colors.resize(inMemory->colors.size());
-				for (size_t i = 0; i < inMemory->colors.size(); i++)
-				{
-					inMemory->colors[i].dumpAttributes(colors[i]);
-				}
-
-				if (!compare(fromAssimp->loadedFaces, faces))
-					std::cout << "Faces missmatch" << std::endl;
-
-				if (!compare(fromAssimp->loadedVertices, vertices))
-					std::cout << "Vertices missmatch" << std::endl;
-
-				if (!compare(fromAssimp->loadedNormals, normals))
-					std::cout << "Normals missmatch" << std::endl;
-
-				if (!compare(fromAssimp->loadedTangents, tangents))
-					std::cout << "Tangents missmatch" << std::endl;
-
-				for (size_t i = 0; i < fromAssimp->numUVMaps; i++)
-				{
-					if (!compare(fromAssimp->loadedUvs[i], uv[i]))
-						std::cout << "UVs " << i << " missmatchs" << std::endl;
-				}
-
-				for (size_t i = 0; i < fromAssimp->numColorLayers; i++)
-				{
-					if (!compare(fromAssimp->loadedColors[i], colors[i]))
-						std::cout << "Colors " << i << " missmatch" << std::endl;
-				}
-
 			}
 
 			MeshManager * MeshManager::INSTANCE = new MeshManager();
@@ -151,6 +153,21 @@ namespace RenderLib
 
 			std::vector<Mesh *> MeshManager::loadMeshFromFile(const std::string & fileName, unsigned int optionsFlag)
 			{
+				// Import data from file
+				IO::AbstractLoadResultPtr loadedMeshes = IO::FileManager::loadFile(fileName, optionsFlag);
+				MeshLoadResult * result = static_cast<MeshLoadResult*>(loadedMeshes.get());
+
+				// Process meshes
+				std::vector<Mesh*> meshList = processLoadedMeshes(fileName, result->loadedData);
+
+				// Process materials
+				
+
+				return meshList;
+			}
+
+			std::vector<Mesh *> MeshManager::processLoadedMeshes(const std::string & fileName, std::vector<MeshLoadedData> & loadedData)
+			{
 				// Check for duplicates
 				auto it = meshes.find(fileName);
 				if (it != meshes.end())
@@ -159,62 +176,55 @@ namespace RenderLib
 					destroyMesh(std::move(it->second));
 				}
 
-				// Import meshes from file
-				std::vector<IO::AbstractLoadResultPtr> loadedMeshes = IO::FileManager::loadFile(fileName, optionsFlag);
-				std::vector<Mesh*> result;
-				result.reserve(loadedMeshes.size());
+				std::vector<std::unique_ptr<Mesh>> storageResult;
+				storageResult.reserve(loadedData.size());
+				std::vector<Mesh *> result;
+				result.reserve(loadedData.size());
 
-				// Return a list of pointers to them
-				size_t i = 0;
-				for (auto & meshData : loadedMeshes)
+				for (auto & meshData : loadedData)
 				{
-					MeshLoadResult * meshLoadResult = dynamic_cast<MeshLoadResult*>(meshData.get());
-					if (meshLoadResult)
-					{
-						std::unique_ptr<Mesh> newMesh = buildMeshFromData(meshLoadResult, optionsFlag);
-
-						result.push_back(newMesh.get());
-						meshes[fileName].push_back(std::move(newMesh));
-					}
-
-					meshData.reset();
+					std::unique_ptr<Mesh> newMesh = buildMeshFromData(meshData, 0);
+					result.push_back(newMesh.get());
+					storageResult.push_back(std::move(newMesh));
 				}
+
+				meshes[fileName] = std::move(storageResult);
 
 				return result;
 			}
 
-			std::unique_ptr<Mesh> MeshManager::buildMeshFromData(MeshLoadResult * data, unsigned int optionsFlag)
+			std::unique_ptr<Mesh> MeshManager::buildMeshFromData(MeshLoadedData & data, unsigned int optionsFlag)
 			{
 				// Create new object
 				std::unique_ptr<Mesh> newMesh = std::make_unique<Mesh>();
 				Mesh * meshPtr = newMesh.get();
 
 				MeshBlockConfiguration memConfig;
-				memConfig.numFaces = data->numFaces;
-				memConfig.numVertices = data->numVertices;
-				memConfig.hasNormals = data->loadedNormals.size() == data->numVertices;
-				memConfig.hasTangents = data->loadedTangents.size() == data->numVertices;
-				memConfig.hasBiTangents = data->loadedBitangents.size() == data->numVertices;
-				memConfig.numUVChannels = data->loadedUvs.size();
-				memConfig.numColorChannels = data->loadedColors.size();
+				memConfig.numFaces = data.numFaces;
+				memConfig.numVertices = data.numVertices;
+				memConfig.hasNormals = data.loadedNormals.size() == data.numVertices;
+				memConfig.hasTangents = data.loadedTangents.size() == data.numVertices;
+				memConfig.hasBiTangents = data.loadedBitangents.size() == data.numVertices;
+				memConfig.numUVChannels = data.loadedUvs.size();
+				memConfig.numColorChannels = data.loadedColors.size();
 				// Configure memory pool attributes
 				Memory::MemoryManager::getInstance().configureObject<Mesh>(newMesh.get(), &memConfig);
 
 				// Copy data to pool
-				meshPtr->faces.setAttributes(data->loadedFaces);
-				meshPtr->vertices.setAttributes(data->loadedVertices);
-				meshPtr->normals.setAttributes(data->loadedNormals);
-				meshPtr->tangents.setAttributes(data->loadedTangents);
-				meshPtr->bitangents.setAttributes(data->loadedBitangents);
+				meshPtr->faces.setAttributes(data.loadedFaces);
+				meshPtr->vertices.setAttributes(data.loadedVertices);
+				meshPtr->normals.setAttributes(data.loadedNormals);
+				meshPtr->tangents.setAttributes(data.loadedTangents);
+				meshPtr->bitangents.setAttributes(data.loadedBitangents);
 				
-				for (size_t i = 0; i < data->numUVMaps; i++)
+				for (size_t i = 0; i < data.numUVMaps; i++)
 				{
-					meshPtr->uvs[i].setAttributes(data->loadedUvs[i]);
+					meshPtr->uvs[i].setAttributes(data.loadedUvs[i]);
 				}
 
-				for (size_t i = 0; i < data->numColorLayers; i++)
+				for (size_t i = 0; i < data.numColorLayers; i++)
 				{
-					meshPtr->colors[i].setAttributes(data->loadedColors[i]);
+					meshPtr->colors[i].setAttributes(data.loadedColors[i]);
 				}
 
 				//compare(data, meshPtr);

@@ -3,7 +3,6 @@
 #include "Defines.h"
 
 #include <assimp/Importer.hpp>
-#include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
 #include "CPU/mesh/MeshManager.h"
@@ -12,10 +11,25 @@
 
 #include "util/StringUtils.h"
 
+#include <iostream>
+
 namespace RenderLib
 {
 	namespace DefaultImpl
 	{
+		// ===========================================================================
+		// Assimp to Eigen data structures utility functions
+		template<typename T>
+		inline T dummyFunc(const T & val)
+		{
+			return val;
+		}
+
+		inline std::string assimpToString(const aiString & source)
+		{
+			return std::string(source.C_Str());
+		}
+
 		inline VECTOR2 assimpToEigen2F(const aiVector2D & source)
 		{
 			return (VECTOR2(source.x, source.y));
@@ -36,6 +50,32 @@ namespace RenderLib
 			return (IVECTOR3(face.mIndices[0], face.mIndices[1], face.mIndices[2]));
 		}
 
+		template<class SRC, class DST, typename CONVFUNC>
+		inline void gatherMaterialValue(aiMaterial * mat, const char * pkey, unsigned int type, unsigned int idx, CPU::IO::LoadedParameter<DST> &dst, CONVFUNC func)
+		{
+			SRC storage;
+			if (mat->Get(pkey, type, idx, storage) == AI_SUCCESS)
+			{
+				dst.set(func(storage));
+			}
+		}
+
+		inline void gatherMaterialTexturesOfType(aiMaterial * mat, const aiTextureType & textureType, std::vector<CPU::IO::LoadedParameter<std::string>> & dst, const std::string & rootPath)
+		{
+			unsigned int numTexturesInStack = mat->GetTextureCount(textureType);
+			dst.resize(numTexturesInStack);
+			for (unsigned int i = 0; i < numTexturesInStack; i++)
+			{
+				gatherMaterialValue<aiString, std::string>(mat, AI_MATKEY_TEXTURE(textureType, i), dst[i], assimpToString);
+				std::string relativePath = dst[i].get();
+				dst[i].set(rootPath + "/" + relativePath);
+			}
+		}
+
+		//void gatherMaterialTexture(aiMaterial * mat)
+
+		// ===========================================================================
+
 		AssimpFileLoader::AssimpFileLoader()
 		{
 			Assimp::Importer temp;
@@ -54,7 +94,7 @@ namespace RenderLib
 			}
 		}
 
-		std::vector<CPU::IO::AbstractLoadResultPtr> AssimpFileLoader::loadFile(const std::string & fileName, unsigned int options)
+		CPU::IO::AbstractLoadResultPtr AssimpFileLoader::loadFile(const std::string & fileName, unsigned int options)
 		{
 			Assimp::Importer importer;
 
@@ -74,91 +114,160 @@ namespace RenderLib
 				throw EngineException("AssimpFileLoader: Error importing mesh " + fileName + ": " + importerError);
 			}
 
-			std::vector<CPU::IO::AbstractLoadResultPtr> result;
+			std::unique_ptr<CPU::Mesh::MeshLoadResult> result = std::make_unique<CPU::Mesh::MeshLoadResult>();
+
+			size_t lastIndexSlash = fileName.find_last_of("/\\");
+			std::string rootPath = lastIndexSlash == std::string::npos? "." : fileName.substr(0, lastIndexSlash);
+			processSceneMaterials(scene, result.get(), rootPath);
+			processSceneMeshes(scene, result.get());
+
+			return result;
+		}
+
+		void AssimpFileLoader::processSceneMaterials(const aiScene * scene, CPU::Mesh::MeshLoadResult * dst, const std::string & rootPath)
+		{
+			if (!scene->HasMaterials())
+			{
+				return;
+			}
+		 
+			for (unsigned int i = 0; i < scene->mNumMaterials; i++)
+			{
+				aiMaterial * material = scene->mMaterials[i];
+				CPU::Mesh::MaterialLoadedData matData;
+				matData.index = i;
+				processFileMaterial(material, matData, rootPath);
+				dst->loadedMaterials.push_back(matData);
+			}
+		}
+
+		void AssimpFileLoader::processFileMaterial(aiMaterial * material, CPU::Mesh::MaterialLoadedData & matData, const std::string & rootPath)
+		{
+			gatherMaterialValue<aiString, std::string>(material, AI_MATKEY_NAME, matData.name, assimpToString);
+			gatherMaterialValue<aiVector3D, VECTOR3>(material, AI_MATKEY_COLOR_DIFFUSE, matData.diffuseColor, assimpToEigen3F);
+			gatherMaterialValue<aiVector3D, VECTOR3>(material, AI_MATKEY_COLOR_SPECULAR, matData.specularColor, assimpToEigen3F);
+			gatherMaterialValue<aiVector3D, VECTOR3>(material, AI_MATKEY_COLOR_AMBIENT, matData.ambientColor, assimpToEigen3F);
+			gatherMaterialValue<aiVector3D, VECTOR3>(material, AI_MATKEY_COLOR_EMISSIVE, matData.emissiveColor, assimpToEigen3F);
+			gatherMaterialValue<aiVector3D, VECTOR3>(material, AI_MATKEY_COLOR_TRANSPARENT, matData.transparentColor, assimpToEigen3F);
+			gatherMaterialValue<FLOAT, FLOAT>(material, AI_MATKEY_OPACITY, matData.opacity, dummyFunc<FLOAT>);
+			gatherMaterialValue<FLOAT, FLOAT>(material, AI_MATKEY_SHININESS, matData.shininess, dummyFunc<FLOAT>);
+			gatherMaterialValue<FLOAT, FLOAT>(material, AI_MATKEY_SHININESS_STRENGTH, matData.specularScale, dummyFunc<FLOAT>);
+			gatherMaterialValue<FLOAT, FLOAT>(material, AI_MATKEY_REFRACTI, matData.indexOfRefraction, dummyFunc<FLOAT>);
+			gatherMaterialTexturesOfType(material, aiTextureType_DIFFUSE, matData.diffuseTextures, rootPath);
+			gatherMaterialTexturesOfType(material, aiTextureType_SPECULAR, matData.specularTextures, rootPath);
+			gatherMaterialTexturesOfType(material, aiTextureType_SHININESS, matData.shininessTextures, rootPath);
+			gatherMaterialTexturesOfType(material, aiTextureType_EMISSIVE, matData.emissiveTextures, rootPath);
+			gatherMaterialTexturesOfType(material, aiTextureType_AMBIENT, matData.ambientTextures, rootPath);
+			gatherMaterialTexturesOfType(material, aiTextureType_OPACITY, matData.opacityTextures, rootPath);
+			gatherMaterialTexturesOfType(material, aiTextureType_NORMALS, matData.normalMapTextures, rootPath);
+			gatherMaterialTexturesOfType(material, aiTextureType_HEIGHT, matData.heightMapTextures, rootPath);
+			gatherMaterialTexturesOfType(material, aiTextureType_DISPLACEMENT, matData.displacementTextures, rootPath);
+			gatherMaterialTexturesOfType(material, aiTextureType_UNKNOWN, matData.otherTextures, rootPath);
+			// NOT DONE: aiTextureType_LIGHTMAP, aiTextureType_REFLECTION
+
+			bool renderMode = false;
+			if (material->Get(AI_MATKEY_ENABLE_WIREFRAME, renderMode) == AI_SUCCESS)
+			{
+				matData.wireFrameRender = renderMode;
+			}
+
+			bool twoSided = false;
+			if (material->Get(AI_MATKEY_TWOSIDED, twoSided) == AI_SUCCESS)
+			{
+				matData.twoSidedRender = twoSided;
+			}
+		}
+
+		void AssimpFileLoader::processSceneMeshes(const aiScene * scene, CPU::Mesh::MeshLoadResult * dst)
+		{
+			if (!scene->HasMeshes())
+			{
+				return;
+			}
+
 			size_t numMeshes = scene->mNumMeshes;
 			size_t i = 0;
 			while (i < numMeshes)
 			{
 				aiMesh * meshToProcess = scene->mMeshes[i];
 
-				std::unique_ptr<CPU::Mesh::MeshLoadResult> engineMesh = processFileMesh(meshToProcess, options);
+				CPU::Mesh::MeshLoadedData meshDst;
+				processFileMesh(meshToProcess, meshDst);
 
-				result.push_back(std::move(engineMesh));
+				dst->loadedData.push_back(meshDst);
 				i++;
 			}
-
-			return result;
 		}
 
-		std::unique_ptr<CPU::Mesh::MeshLoadResult> AssimpFileLoader::processFileMesh(aiMesh * mesh, unsigned int options)
+		void AssimpFileLoader::processFileMesh(aiMesh * mesh, CPU::Mesh::MeshLoadedData & dst)
 		{
 			std::unique_ptr<CPU::Mesh::MeshLoadResult> meshDataPtr = std::make_unique<CPU::Mesh::MeshLoadResult>();
 			CPU::Mesh::MeshLoadResult * meshData = meshDataPtr.get();
 
 			size_t i = 0;
 
-			meshData->numFaces = mesh->mNumFaces;
-			meshData->loadedFaces.reserve(meshData->numFaces);
-			while (i < meshData->numFaces)
+			dst.numFaces = mesh->mNumFaces;
+			dst.loadedFaces.reserve(dst.numFaces);
+			while (i < dst.numFaces)
 			{
 				aiFace & face = mesh->mFaces[i++];
-				meshData->loadedFaces.push_back(assimpToEigen3I(face));
+				dst.loadedFaces.push_back(assimpToEigen3I(face));
 			}
 
 			i = 0;
 
 			if (mesh->mNumVertices > 0)
 			{
-				meshData->numVertices = mesh->mNumVertices;
-				meshData->loadedVertices.reserve(meshData->numVertices);
-				while (i < meshData->numVertices)
+				dst.numVertices = mesh->mNumVertices;
+				dst.loadedVertices.reserve(dst.numVertices);
+				while (i < dst.numVertices)
 				{
-					meshData->loadedVertices.push_back(assimpToEigen3F(mesh->mVertices[i++]));
+					dst.loadedVertices.push_back(assimpToEigen3F(mesh->mVertices[i++]));
 				}
 
 				if (mesh->mNormals != NULL)
 				{
 					i = 0;
-					meshData->loadedNormals.reserve(meshData->numVertices);
-					while (i < meshData->numVertices)
+					dst.loadedNormals.reserve(dst.numVertices);
+					while (i < dst.numVertices)
 					{
-						meshData->loadedNormals.push_back(assimpToEigen3F(mesh->mNormals[i++]));
+						dst.loadedNormals.push_back(assimpToEigen3F(mesh->mNormals[i++]));
 					}
 				}
 
 				if (mesh->mTangents != NULL)
 				{
-					meshData->loadedTangents.reserve(meshData->numVertices);
+					dst.loadedTangents.reserve(dst.numVertices);
 					i = 0;
-					while (i < meshData->numVertices)
+					while (i < dst.numVertices)
 					{
-						meshData->loadedTangents.push_back(assimpToEigen3F(mesh->mTangents[i++]));
+						dst.loadedTangents.push_back(assimpToEigen3F(mesh->mTangents[i++]));
 					}
 				}
 
 				if (mesh->mBitangents != NULL)
 				{
-					meshData->loadedBitangents.reserve(meshData->numVertices);
+					dst.loadedBitangents.reserve(dst.numVertices);
 					i = 0;
-					while (i < meshData->numVertices)
+					while (i < dst.numVertices)
 					{
-						meshData->loadedBitangents.push_back(assimpToEigen3F(mesh->mBitangents[i++]));
+						dst.loadedBitangents.push_back(assimpToEigen3F(mesh->mBitangents[i++]));
 					}
 				}
 
 				if (mesh->mColors != NULL)
 				{
-					meshData->numColorLayers = mesh->GetNumColorChannels();
+					dst.numColorLayers = mesh->GetNumColorChannels();
 					size_t j = 0;
 					i = 0;
-					meshData->loadedColors.resize(meshData->numColorLayers);
-					while (i < meshData->numColorLayers)
+					dst.loadedColors.resize(dst.numColorLayers);
+					while (i < dst.numColorLayers)
 					{
-						meshData->loadedColors[i].reserve(meshData->numVertices);
+						dst.loadedColors[i].reserve(dst.numVertices);
 						j = 0;
-						while (j < meshData->numVertices)
+						while (j < dst.numVertices)
 						{
-							meshData->loadedColors[i].push_back(assimpToEigen4F(mesh->mColors[i][j++]));
+							dst.loadedColors[i].push_back(assimpToEigen4F(mesh->mColors[i][j++]));
 						}
 						i++;
 					}
@@ -166,26 +275,24 @@ namespace RenderLib
 
 				if (mesh->mTextureCoords != NULL)
 				{
-					meshData->numUVMaps = mesh->GetNumUVChannels();
+					dst.numUVMaps = mesh->GetNumUVChannels();
 					size_t j = 0;
 					i = 0;
-					meshData->loadedUvs.resize(meshData->numUVMaps);
-					while (i < meshData->numUVMaps)
+					dst.loadedUvs.resize(dst.numUVMaps);
+					while (i < dst.numUVMaps)
 					{
-						meshData->loadedUvs[i].reserve(meshData->numVertices);
+						dst.loadedUvs[i].reserve(dst.numVertices);
 						j = 0;
-						while (j < meshData->numVertices)
+						while (j < dst.numVertices)
 						{
 							// FIXME: Assimp returns 3D uv coordinates (UVW). Working for 2D coords right now
 							aiVector3D uvCoord = mesh->mTextureCoords[i][j++];
-							meshData->loadedUvs[i].push_back(VECTOR2(uvCoord.x, uvCoord.y));
+							dst.loadedUvs[i].push_back(VECTOR2(uvCoord.x, uvCoord.y));
 						}
 						i++;
 					}
 				}
 			}
-
-			return meshDataPtr;
 		}
 	}
 }

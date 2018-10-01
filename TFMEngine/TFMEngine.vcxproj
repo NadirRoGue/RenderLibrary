@@ -141,6 +141,8 @@
     <ClInclude Include="include\CPU\io\FileLoader.h" />
     <ClInclude Include="include\CPU\io\FileLoadResult.h" />
     <ClInclude Include="include\CPU\io\FileManager.h" />
+    <ClInclude Include="include\CPU\material\Material.h" />
+    <ClInclude Include="include\CPU\material\MaterialManager.h" />
     <ClInclude Include="include\CPU\memory\MemoryPool.h" />
     <ClInclude Include="include\CPU\memory\MemoryManager.h" />
     <ClInclude Include="include\CPU\memory\MemoryUtil.h" />
@@ -166,6 +168,7 @@
     <ClInclude Include="include\defaultimpl\pipelinestages\GPUToCPUMeshSyncStage.h" />
     <ClInclude Include="include\defaultimpl\pipelinestages\IterationEndStage.h" />
     <ClInclude Include="include\defaultimpl\pipelinestages\RenderStage.h" />
+    <ClInclude Include="include\defaultimpl\pipelinestages\TransformUpdateStage.h" />
     <ClInclude Include="include\defaultimpl\shaders\StandardProgram.h" />
     <ClInclude Include="include\defaultimpl\windowhandlers\GLFWWindowHandler.h" />
     <ClInclude Include="include\Defines.h" />
@@ -191,18 +194,17 @@
     <ClInclude Include="include\InstanceManager.h" />
     <ClInclude Include="include\logger\AbstractLogger.h" />
     <ClInclude Include="include\logger\Log.h" />
-    <ClInclude Include="include\Material.h" />
     <ClInclude Include="include\pipeline\Pipeline.h" />
     <ClInclude Include="include\pipeline\PipelineBroker.h" />
     <ClInclude Include="include\pipeline\PipelineManager.h" />
     <ClInclude Include="include\pipeline\PipelineStage.h" />
+    <ClInclude Include="include\pipeline\Threadpool.h" />
     <ClInclude Include="include\render\RenderingPipeline.h" />
     <ClInclude Include="include\render\AbstractRenderingStage.h" />
     <ClInclude Include="include\render\renderstages\ForwardRenderStage.h" />
     <ClInclude Include="include\Scene.h" />
     <ClInclude Include="include\SceneManager.h" />
     <ClInclude Include="include\SceneObject.h" />
-    <ClInclude Include="include\Threadpool.h" />
     <ClInclude Include="include\Transform.h" />
     <ClInclude Include="include\util\StringUtils.h" />
   </ItemGroup>
@@ -211,6 +213,8 @@
     <ClCompile Include="src\Component.cpp" />
     <ClCompile Include="src\CPU\io\FileLoader.cpp" />
     <ClCompile Include="src\CPU\io\FileManager.cpp" />
+    <ClCompile Include="src\CPU\material\Material.cpp" />
+    <ClCompile Include="src\CPU\material\MaterialManager.cpp" />
     <ClCompile Include="src\CPU\memory\MemoryPool.cpp" />
     <ClCompile Include="src\CPU\memory\MemoryManager.cpp" />
     <ClCompile Include="src\CPU\memory\MemoryUtil.cpp" />
@@ -233,6 +237,7 @@
     <ClCompile Include="src\defaultimpl\pipelinestages\GPUToCPUMeshSyncStage.cpp" />
     <ClCompile Include="src\defaultimpl\pipelinestages\IterationEndStage.cpp" />
     <ClCompile Include="src\defaultimpl\pipelinestages\RenderStage.cpp" />
+    <ClCompile Include="src\defaultimpl\pipelinestages\TransformUpdate.cpp" />
     <ClCompile Include="src\defaultimpl\shaders\StandardProgram.cpp" />
     <ClCompile Include="src\defaultimpl\windowhandlers\GLFWWindowHandler.cpp" />
     <ClCompile Include="src\EngineException.cpp" />
@@ -254,18 +259,17 @@
     <ClCompile Include="src\logger\AbstractLogger.cpp" />
     <ClCompile Include="src\logger\Log.cpp" />
     <ClCompile Include="src\Main.cpp" />
-    <ClCompile Include="src\Material.cpp" />
     <ClCompile Include="src\pipeline\Pipeline.cpp" />
     <ClCompile Include="src\pipeline\PipelineBroker.cpp" />
     <ClCompile Include="src\pipeline\PipelineManager.cpp" />
     <ClCompile Include="src\pipeline\PipelineStage.cpp" />
+    <ClCompile Include="src\pipeline\Threadpool.cpp" />
     <ClCompile Include="src\render\AbstractRenderingStage.cpp" />
     <ClCompile Include="src\render\RenderingPipeline.cpp" />
     <ClCompile Include="src\render\renderstages\ForwardRenderStage.cpp" />
     <ClCompile Include="src\Scene.cpp" />
     <ClCompile Include="src\SceneManager.cpp" />
     <ClCompile Include="src\SceneObject.cpp" />
-    <ClCompile Include="src\Threadpool.cpp" />
     <ClCompile Include="src\Transform.cpp" />
     <ClCompile Include="src\util\StringUtils.cpp" />
   </ItemGroup>

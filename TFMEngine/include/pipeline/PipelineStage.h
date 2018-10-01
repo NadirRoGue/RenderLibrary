@@ -14,6 +14,8 @@
 
 #include "Component.h"
 
+#include "pipeline/Threadpool.h"
+
 namespace RenderLib
 {
 	class EngineInstance;
@@ -95,6 +97,8 @@ namespace RenderLib
 
 			virtual void runStage()
 			{
+				ThreadPool::getInstance().processStage<T>(this, true);
+				/*
 				std::vector<Component*>::iterator it = elements.begin();
 				while (it != elements.end())
 				{
@@ -111,12 +115,12 @@ namespace RenderLib
 					}
 
 					it++;
-				}
+				}*/
 			}
 
 			virtual void processElement(T * element)
 			{
-
+				static_cast<Component*>(element)->update();
 			}
 		};
 	}

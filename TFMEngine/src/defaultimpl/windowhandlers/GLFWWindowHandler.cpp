@@ -103,7 +103,7 @@ namespace RenderLib
 			GLFWWindowHandler * handler = reinterpret_cast<GLFWWindowHandler*>(glfwGetWindowUserPointer(window));
 			if (!handler->instance)
 			{
-				//throw EngineException(("GLFWWindowHandler: NULL EngineInstance for window " + handler->getTitle()).c_str());
+				throw EngineException(("GLFWWindowHandler: NULL EngineInstance for window " + handler->getTitle()).c_str());
 				return;
 			}
 
@@ -118,6 +118,8 @@ namespace RenderLib
 					obs->onWindowResize(width, height);
 				}
 			}
+
+			glViewport(0, 0, width, height);
 		}
 
 		// =================================================================================================
@@ -190,6 +192,7 @@ namespace RenderLib
 			glfwSetKeyCallback(window, KeyboardCallbackFunc);
 			glfwSetCursorPosCallback(window, MouseMovementCallbackFunc);
 			glfwSetMouseButtonCallback(window, MouseInputCallbackFunc);
+			//glfwSetWindowSizeCallback(window, ResizeCallbackFunc);
 			glfwSetFramebufferSizeCallback(window, ResizeCallbackFunc);
 			glfwSetWindowFocusCallback(window, GLFWWindowFocusedCallback);
 			glfwSetErrorCallback(GLFWWindowErrorCallback);

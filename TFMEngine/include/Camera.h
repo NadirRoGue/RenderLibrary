@@ -24,11 +24,15 @@ namespace RenderLib
 		FLOAT nearPlane;
 		FLOAT fov;
 
+	private:
+		FLOAT initWidth, initHeight;
 	public:
 		Camera();
 		~Camera();
 
 		virtual void initialize();
+
+		void setWindowSize(int width, int hegiht);
 
 		void setProjectionParams(const FLOAT & nearPlane, const FLOAT & farPlane, const FLOAT & FOV);
 

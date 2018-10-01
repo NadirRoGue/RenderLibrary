@@ -2,6 +2,8 @@
 
 #include "pipeline/PipelineManager.h"
 
+#include "graphics/WindowHandler.h"
+
 #include "EngineInstance.h"
 
 namespace RenderLib
@@ -10,6 +12,13 @@ namespace RenderLib
 	{
 		void ComponentRegisterStage::preRunStage()
 		{
+			Scene * scene = engineInstance->getSceneManager().getActiveScene();
+			Graphics::WindowHandler * window = engineInstance->getWindow();
+			for (auto cam : scene->getWindowResizableObservers())
+			{
+				cam->setWindowSize(window->getWidth(), window->getHeight());
+			}
+
 			initAndRegister();
 		}
 

@@ -25,13 +25,7 @@ namespace RenderLib
 				buf->usage = GL_STATIC_DRAW;
 
 				
-				glGenVertexArrays(1, &buf->vao);
-				buf->bind();
-				
-				glGenBuffers(1, &buf->indexBuffer);
-				glGenBuffers(1, &buf->dataBuffer);
-
-				buf->unBind();
+				buf->generate();
 				
 				return buf;
 			}
@@ -42,23 +36,12 @@ namespace RenderLib
 				GPUBuffer * buf = dynamicFrontBuffer.get();
 				buf->usage = GL_DYNAMIC_DRAW;
 
-				glGenVertexArrays(1, &buf->vao);
-				buf->bind();
-
-				glGenBuffers(1, &buf->indexBuffer);
-				glGenBuffers(1, &buf->dataBuffer);
-
-				buf->unBind();
+				buf->generate();
 
 				dynamicBackBuffer = std::make_unique<GPUBuffer>();
 				dynamicBackBuffer.get()->usage = GL_DYNAMIC_DRAW;
-				glGenVertexArrays(1, &dynamicBackBuffer.get()->vao);
-				dynamicBackBuffer.get()->bind();
-
-				glGenBuffers(1, &dynamicBackBuffer.get()->indexBuffer);
-				glGenBuffers(1, &dynamicBackBuffer.get()->dataBuffer);
-
-				dynamicBackBuffer.get()->unBind();
+				
+				dynamicBackBuffer.get()->generate();
 
 				return buf;
 			}

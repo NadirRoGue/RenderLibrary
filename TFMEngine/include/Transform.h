@@ -11,6 +11,7 @@ namespace RenderLib
 	{
 	public:
 		MATRIX4 modelMatrix;
+		MATRIX4 worldModelMatrix;
 
 		VECTOR3 translationV;
 		VECTOR3 scaleV;
@@ -37,6 +38,7 @@ namespace RenderLib
 		void setRotation(QUATERNION rotation);
 
 		void update();
+		void updateGraph();
 	};
 }
 

@@ -24,7 +24,7 @@ namespace RenderLib
 			registerFileExtension("comp");
 		}
 
-		std::vector<CPU::IO::AbstractLoadResultPtr> ShaderLoader::loadFile(const std::string & filePath, unsigned int options)
+		CPU::IO::AbstractLoadResultPtr ShaderLoader::loadFile(const std::string & filePath, unsigned int options)
 		{
 			std::ifstream file;
 			file.open(filePath, std::ios::in);
@@ -34,7 +34,6 @@ namespace RenderLib
 				throw EngineException(message.c_str());
 			}
 
-			std::vector<CPU::IO::AbstractLoadResultPtr> result;
 			std::unique_ptr<GPU::Program::ShaderLoadResult> loadResultPtr = std::make_unique<GPU::Program::ShaderLoadResult>();
 			GPU::Program::ShaderLoadResult * loadResult = loadResultPtr.get();
 
@@ -80,9 +79,7 @@ namespace RenderLib
 			*/
 			file.close();
 
-			result.push_back(std::move(loadResultPtr));
-
-			return result;
+			return loadResultPtr;
 		}
 	}
 }

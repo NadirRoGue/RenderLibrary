@@ -23,6 +23,8 @@ namespace RenderLib
 				GPUBuffer();
 				~GPUBuffer();
 
+				void generate();
+
 				void bind();
 				void unBind();
 

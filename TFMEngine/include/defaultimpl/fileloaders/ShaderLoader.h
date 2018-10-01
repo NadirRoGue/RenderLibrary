@@ -13,7 +13,7 @@ namespace RenderLib
 		{
 		public:
 			ShaderLoader();
-			std::vector<CPU::IO::AbstractLoadResultPtr> loadFile(const std::string & filePath, unsigned int options);
+			CPU::IO::AbstractLoadResultPtr loadFile(const std::string & filePath, unsigned int options);
 		};
 	}
 }

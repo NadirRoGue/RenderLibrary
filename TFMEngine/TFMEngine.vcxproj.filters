@@ -79,9 +79,6 @@
     <Filter Include="Archivos de origen\inputhandlers">
       <UniqueIdentifier>{c863a3f7-5694-4d8e-9b14-ecc28733eeee}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Archivos de encabezado\pipeline\defaultstages">
-      <UniqueIdentifier>{37f3de9a-402c-4b8b-99d8-28f8a01cfaa2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Archivos de encabezado\render">
       <UniqueIdentifier>{7d8d32ca-6126-431d-9310-752551988a4b}</UniqueIdentifier>
     </Filter>
@@ -153,6 +150,12 @@
     </Filter>
     <Filter Include="shaders\default">
       <UniqueIdentifier>{45b42444-0f82-43e7-acf7-092d0d9e72ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\CPU\material">
+      <UniqueIdentifier>{e50c766e-d02a-4894-8da4-e2e5c884de1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\CPU\material">
+      <UniqueIdentifier>{639d2306-94ba-4b7e-83ce-875e6bb03806}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -306,12 +309,6 @@
     <ClInclude Include="include\GPU\program\ShaderProgram.h">
       <Filter>Archivos de encabezado\GPU\program</Filter>
     </ClInclude>
-    <ClInclude Include="include\Material.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Threadpool.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
     <ClInclude Include="include\defaultimpl\components\MeshFilter.h">
       <Filter>Archivos de encabezado\defaultimpl\components</Filter>
     </ClInclude>
@@ -365,6 +362,18 @@
     </ClInclude>
     <ClInclude Include="include\defaultimpl\shaders\StandardProgram.h">
       <Filter>Archivos de encabezado\defaultimpl\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CPU\material\Material.h">
+      <Filter>Archivos de encabezado\CPU\material</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CPU\material\MaterialManager.h">
+      <Filter>Archivos de encabezado\CPU\material</Filter>
+    </ClInclude>
+    <ClInclude Include="include\defaultimpl\pipelinestages\TransformUpdateStage.h">
+      <Filter>Archivos de encabezado\defaultimpl\pipelinestages</Filter>
+    </ClInclude>
+    <ClInclude Include="include\pipeline\Threadpool.h">
+      <Filter>Archivos de encabezado\pipeline</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -491,12 +500,6 @@
     <ClCompile Include="src\GPU\program\ShaderProgram.cpp">
       <Filter>Archivos de origen\GPU\program</Filter>
     </ClCompile>
-    <ClCompile Include="src\Material.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Threadpool.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
     <ClCompile Include="src\defaultimpl\components\MeshFilter.cpp">
       <Filter>Archivos de origen\defaultimpl\components</Filter>
     </ClCompile>
@@ -550,6 +553,18 @@
     </ClCompile>
     <ClCompile Include="src\defaultimpl\shaders\StandardProgram.cpp">
       <Filter>Archivos de origen\defaultimpl\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CPU\material\Material.cpp">
+      <Filter>Archivos de origen\CPU\material</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CPU\material\MaterialManager.cpp">
+      <Filter>Archivos de origen\CPU\material</Filter>
+    </ClCompile>
+    <ClCompile Include="src\defaultimpl\pipelinestages\TransformUpdate.cpp">
+      <Filter>Archivos de origen\defaultimpl\pipelinestages</Filter>
+    </ClCompile>
+    <ClCompile Include="src\pipeline\Threadpool.cpp">
+      <Filter>Archivos de origen\pipeline</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

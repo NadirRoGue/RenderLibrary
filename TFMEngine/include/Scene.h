@@ -30,8 +30,9 @@ namespace RenderLib
 		Camera * activeCamera;
 
 		SceneObject * sceneRoot;
+
+		bool sceneTreeUpdated;
 	public:
-		Scene();
 		Scene(std::string name);
 		~Scene();
 
@@ -42,6 +43,8 @@ namespace RenderLib
 		Camera * getActiveCamera();
 
 		SceneObject * getSceneRoot();
+		bool sceneTreeNeedsUpdate();
+		void setSceneTreeNeedsUpdate(const bool & val);
 
 		std::vector<SceneObjectPtr> & getSceneObjects();
 		std::vector<Graphics::WindowResizeObserver*> & getWindowResizableObservers();
@@ -55,6 +58,9 @@ namespace RenderLib
 				std::unique_ptr<SceneObject> newObject = std::make_unique<T>();
 				T * result = newObject.get();
 				sceneObjects.push_back(std::move(newObject));
+
+				sceneTreeUpdated = true;
+
 				return result;
 			}
 
@@ -83,11 +89,15 @@ namespace RenderLib
 					activeCamera = result;
 				}
 
+				newCamPtr.get()->objectName = name;
+
 				sceneObjects.push_back(std::move(newCamPtr));
 				sceneCameras[name] = result;
 				windowResizables.push_back(static_cast<Graphics::WindowResizeObserver*>(result));
-				//std::cout << windowResizables << " resizables" << std::endl;
-			    return result;
+				
+				sceneTreeUpdated = true;
+
+			  return result;
 			}
 
 			throw EngineException("Scene: Attempted to add a non-derived Camera camera");

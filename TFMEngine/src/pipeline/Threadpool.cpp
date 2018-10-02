@@ -99,7 +99,8 @@ namespace RenderLib
 
 		void ThreadPool::processStage(AbstractElementBasedStage & stage, bool blocking)
 		{
-			this->blockingStage = blockingStage;
+			this->blockingStage = blocking;
+
 			size_t elementsSize = stage.getRegisteredElements().size();
 			size_t perThreadAmount = elementsSize / poolSize;
 			perThreadAmount = std::max<size_t>(perThreadAmount, 1);
@@ -128,6 +129,7 @@ namespace RenderLib
 				}
 				lock.unlock();
 			}
+			
 		}
 	}
 }

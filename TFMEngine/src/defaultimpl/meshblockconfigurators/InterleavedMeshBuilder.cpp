@@ -20,16 +20,26 @@ namespace RenderLib
 			mesh->index = memBlock->index;
 			mesh->memoryBlock = memBlock;
 
+#ifdef USE_PACKED_ATTRIB_WHEN_POSSIBLE
+			size_t sizeV3 = sizeof(int);
+			size_t sizeV4 = sizeof(unsigned int);
+			size_t sizeV2 = sizeof(unsigned short);
+#else
+			size_t sizeV3 = sizeof(VECTOR3);
+			size_t sizeV4 = sizeof(VECTOR4);
+			size_t sizeV2 = sizeof(VECTOR2);
+#endif
+
 			// Faces are not interleaved, but stored as a contiguous block at the beginning of the mesh allocated memory
 			mesh->faces.setAttributeSource(memBlock, 0, sizeof(IVECTOR3), meshConfig->numFaces);
 			offset += meshConfig->numFaces * sizeof(IVECTOR3);
 
 			size_t lineSize = sizeof(VECTOR3);
-			lineSize += meshConfig->hasNormals ? sizeof(VECTOR3) : 0;
-			lineSize += meshConfig->hasTangents ? sizeof(VECTOR3) : 0;
-			lineSize += meshConfig->hasBiTangents ? sizeof(VECTOR3) : 0;
-			lineSize += meshConfig->numUVChannels * sizeof(VECTOR2);
-			lineSize += meshConfig->numColorChannels * sizeof(VECTOR4);
+			lineSize += meshConfig->hasNormals ? sizeV3 : 0;
+			lineSize += meshConfig->hasTangents ? sizeV3 : 0;
+			lineSize += meshConfig->hasBiTangents ? sizeV3 : 0;
+			lineSize += meshConfig->numUVChannels * sizeV2;
+			lineSize += meshConfig->numColorChannels * sizeV4;
 
 			mesh->vertices.setAttributeSource(memBlock, offset, lineSize, meshConfig->numVertices);
 			offset += sizeof(VECTOR3);
@@ -37,30 +47,27 @@ namespace RenderLib
 			if (meshConfig->hasNormals)
 			{
 				mesh->normals.setAttributeSource(memBlock, offset, lineSize, (meshConfig->hasNormals ? 1 : 0) * meshConfig->numVertices);
-				offset += sizeof(VECTOR3);
+				offset += sizeV3;
 			}
 
 			if (meshConfig->hasTangents)
 			{
-				std::cout << "Tangents" << std::endl;
 				mesh->tangents.setAttributeSource(memBlock, offset, lineSize, (meshConfig->hasTangents ? 1 : 0) * meshConfig->numVertices);
-				offset += sizeof(VECTOR3);
+				offset += sizeV3;
 			}
 
 			if (meshConfig->hasBiTangents)
 			{
-				std::cout << "Bitangents" << std::endl;
 				mesh->bitangents.setAttributeSource(memBlock, offset, lineSize, (meshConfig->hasBiTangents ? 1 : 0) * meshConfig->numVertices);
-				offset += sizeof(VECTOR3);
+				offset += sizeV3;
 			}
 
 			size_t i = 0;
 			mesh->uvs.resize(meshConfig->numUVChannels);
 			while (i < meshConfig->numUVChannels)
 			{
-				std::cout << "UVs" << std::endl;
 				mesh->uvs[i].setAttributeSource(memBlock, offset, lineSize, meshConfig->numVertices);
-				offset += sizeof(VECTOR2);
+				offset += sizeV2;
 				i++;
 			}
 
@@ -68,9 +75,8 @@ namespace RenderLib
 			mesh->colors.resize(meshConfig->numColorChannels);
 			while (i < meshConfig->numColorChannels)
 			{
-				std::cout << "Colors" << std::endl;
 				mesh->colors[i].setAttributeSource(memBlock, offset, lineSize, meshConfig->numVertices);
-				offset += sizeof(VECTOR4);
+				offset += sizeV4;
 				i++;
 			}
 		}

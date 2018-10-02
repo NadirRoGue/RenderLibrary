@@ -9,6 +9,7 @@ namespace RenderLib
 		: initialized(false)
 		, parent(NULL)
 	{
+		transform.object = this;
 		transform.update();
 	}
 
@@ -27,23 +28,33 @@ namespace RenderLib
 		return componentList;
 	}
 
-	void SceneObject::setParent(SceneObject * object)
+	void SceneObject::setParent(SceneObject * parentToBe)
 	{
+		if (parentToBe == this)
+		{
+			return;
+		}
+		
 		if (this->parent != NULL)
 		{
 			this->parent->removeChildren(this);
 		}
 
 		// Avoid circular dependency
-		if (object != NULL && object->parent != this)
+		if (parentToBe != NULL && parentToBe->parent != this)
 		{
-			this->parent = object;
-			object->children.push_back(this);
+			this->parent = parentToBe;
+			parentToBe->children.push_back(this);
 		}
 	}
 
 	void SceneObject::addChildren(SceneObject * object)
 	{
+		if (object == this)
+		{
+			return;
+		}
+
 		if (object != NULL)
 		{
 			if (object->parent != NULL && object->parent != this)

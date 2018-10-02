@@ -86,7 +86,13 @@ namespace RenderLib
 					if (it != shaderAttributes.end())
 					{
 						ShaderInput input = it->second;
-						glVertexAttribPointer(input.id, (GLsizei)meshAttribute.elementCount, GL_FLOAT, GL_FALSE, (GLsizei)(meshAttribute.stride), (GLvoid*)(meshAttribute.offset));
+						glVertexAttribPointer(input.id, 
+							(GLsizei)meshAttribute.elementCount, 
+							meshAttribute.dataType, 
+							meshAttribute.normalizeOnUpload, 
+							(GLsizei)(meshAttribute.stride), 
+							(GLvoid*)(meshAttribute.offset));
+
 						glEnableVertexAttribArray(input.id);
 					}
 				}

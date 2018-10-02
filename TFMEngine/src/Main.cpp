@@ -8,14 +8,18 @@
 
 #include "defaultimpl/components/MeshFilter.h"
 #include "defaultimpl/components/MeshRenderer.h"
+#include "defaultimpl/components/ObjectSpinner.h"
 
 #include "defaultimpl/pipelinestages/ComponentRegisterStage.h"
 #include "defaultimpl/pipelinestages/CPUToGPUMeshSyncStage.h"
 #include "defaultimpl/pipelinestages/GPUToCPUMeshSyncStage.h"
 #include "defaultimpl/pipelinestages/RenderStage.h"
 #include "defaultimpl/pipelinestages/IterationEndStage.h"
+#include "defaultimpl/pipelinestages/TransformUpdateStage.h"
 
 #include "logger/Log.h"
+
+#include <iostream>
 
 using namespace RenderLib;
 using namespace RenderLib::CPU;
@@ -54,6 +58,8 @@ int main(int argc, void ** arg)
 	// Pipeline set up
 	instance->getPipelineManager().addPipelineStage<DefaultImpl::ComponentRegisterStage>();
 	instance->getPipelineManager().addPipelineStage<DefaultImpl::CPUToGPUMeshSyncStage>();
+	instance->getPipelineManager().addPipelineStage<Pipeline::ElementBasedStage<DefaultImpl::ObjectSpinner>>();
+	instance->getPipelineManager().addPipelineStage<DefaultImpl::TransformUpdateStage>();
 	instance->getPipelineManager().addPipelineStage<DefaultImpl::RenderStage>();
 	instance->getPipelineManager().addPipelineStage<DefaultImpl::IterationEndStage>();
 	
@@ -74,15 +80,14 @@ int main(int argc, void ** arg)
 
 	// Object set up
 	RenderLib::SceneObject * obj = scene->addObject<SceneObject>();
-
+	obj->objectName = "testObject";
 	// Set position
 	//obj->transform.translate(VECTOR3(0, 0, 5));
 	
 	// Object component set up
-	DefaultImpl::MeshFilter * meshFilter = obj->addComponent<DefaultImpl::MeshFilter>();
-	meshFilter->mesh = mesh;
-
-	DefaultImpl::MeshRenderer * meshRenderer = obj->addComponent<DefaultImpl::MeshRenderer>();
+	obj->addComponent<DefaultImpl::MeshFilter>()->mesh = mesh;
+	obj->addComponent<DefaultImpl::MeshRenderer>();
+	obj->addComponent<DefaultImpl::ObjectSpinner>();
 
 	/*** EXECUTION (BLOCKING UNTIL ALL INSTANCES ARE DONE) ***/
 	// Run pipeline

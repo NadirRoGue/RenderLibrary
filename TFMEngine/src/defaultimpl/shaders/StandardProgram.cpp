@@ -31,7 +31,7 @@ namespace RenderLib
 
 		void StandardProgram::onRenderObject(const SceneObject & object, const Camera & camera)
 		{
-			MATRIX4 modelView = camera.viewMatrix * object.transform.modelMatrix;
+			MATRIX4 modelView = camera.viewMatrix * object.transform.worldModelMatrix;
 			MATRIX4 modelViewProj = camera.projectionMatrix * modelView;
 			MATRIX4 normalMat = modelView.inverse().transpose();
 

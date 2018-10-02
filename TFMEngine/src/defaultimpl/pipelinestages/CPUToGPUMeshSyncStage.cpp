@@ -95,8 +95,8 @@ namespace RenderLib
 					SyncData data;
 					data.cpuMesh = cpuMesh;
 					data.gpuMesh = gpuMesh;
-					data.facesSize = gpuMesh->faces.elementTypeSize * gpuMesh->faces.elementCount * gpuMesh->faces.numElements;
-					data.dataSize = (block->length - data.facesSize);
+					data.facesSize = gpuMesh->getFaceSizeGPU();//gpuMesh->faces.elementTypeSize * gpuMesh->faces.elementCount * gpuMesh->faces.numElements;
+					data.dataSize = gpuMesh->getDataSizeGPU();// (block->length - data.facesSize);
 
 					dst.push_back(data);
 				}
@@ -110,17 +110,75 @@ namespace RenderLib
 			GPU::Mesh::GPUMesh * gpuMesh = engineInstance->getGPUMeshManager().createGPUMesh(cpuMesh->index, staticMesh);
 
 			size_t vOffset = cpuMesh->vertices.getOffset();
-			gpuMesh->faces = GPU::Mesh::GPUAttribute(sizeof(unsigned int), 3, cpuMesh->faces.size(), cpuMesh->faces.getOffset(), cpuMesh->faces.getStride());
-			gpuMesh->vertices = GPU::Mesh::GPUAttribute(sizeof(FLOAT), 3, cpuMesh->vertices.size(), cpuMesh->vertices.getOffset() - vOffset, cpuMesh->vertices.getStride());
-			gpuMesh->normals = GPU::Mesh::GPUAttribute(sizeof(FLOAT), 3, cpuMesh->normals.size(), cpuMesh->normals.getOffset() - vOffset, cpuMesh->normals.getStride());
-			gpuMesh->tangents = GPU::Mesh::GPUAttribute(sizeof(FLOAT), 3, cpuMesh->tangents.size(), cpuMesh->tangents.getOffset() - vOffset, cpuMesh->tangents.getStride());
-			gpuMesh->bitangents = GPU::Mesh::GPUAttribute(sizeof(FLOAT), 3, cpuMesh->bitangents.size(), cpuMesh->bitangents.getOffset() - vOffset, cpuMesh->bitangents.getStride());
+
+#ifdef USE_PACKED_ATTRIB_WHEN_POSSIBLE
+			unsigned int v3NumElements = 4;
+			unsigned int v4NumElements = 4;
+			unsigned int v2NumElements = 2;
+			bool normalize = true;
+			unsigned int v34DataType = GL_INT_2_10_10_10_REV;
+			unsigned int v2DataType = GL_UNSIGNED_SHORT;
+
+#else
+			unsigned int v3NumElements = 3;
+			unsigned int v4NumElements = 4;
+			unsigned int v2NumElements = 2;
+			bool normalize = false;
+			unsigned int v34DataType = GL_FLOAT;
+			unsigned int v2DataType = GL_FLOAT;
+#endif
+
+			gpuMesh->faces = GPU::Mesh::GPUAttribute(cpuMesh->faces.getElementSize(),
+				3, 
+				cpuMesh->faces.size(), 
+				cpuMesh->faces.getOffset(), 
+				cpuMesh->faces.getStride(), 
+				GL_UNSIGNED_INT, 
+				false);
+
+			gpuMesh->vertices = GPU::Mesh::GPUAttribute(cpuMesh->vertices.getElementSize(),
+				3, 
+				cpuMesh->vertices.size(), 
+				cpuMesh->vertices.getOffset() - vOffset, 
+				cpuMesh->vertices.getStride(), 
+				GL_FLOAT, 
+				false);
+
+			gpuMesh->normals = GPU::Mesh::GPUAttribute(cpuMesh->normals.getElementSize(),
+				v3NumElements, 
+				cpuMesh->normals.size(), 
+				cpuMesh->normals.getOffset() - vOffset, 
+				cpuMesh->normals.getStride(), 
+				v34DataType, 
+				normalize);
+
+			gpuMesh->tangents = GPU::Mesh::GPUAttribute(cpuMesh->tangents.getElementSize(),
+				v3NumElements, 
+				cpuMesh->tangents.size(), 
+				cpuMesh->tangents.getOffset() - vOffset, 
+				cpuMesh->tangents.getStride(), 
+				v34DataType,
+				normalize);
+
+			gpuMesh->bitangents = GPU::Mesh::GPUAttribute(cpuMesh->bitangents.getElementSize(),
+				v3NumElements, 
+				cpuMesh->bitangents.size(), 
+				cpuMesh->bitangents.getOffset() - vOffset, 
+				cpuMesh->bitangents.getStride(), 
+				v34DataType,
+				normalize);
 
 			gpuMesh->uvs.resize(cpuMesh->uvs.size());
 			size_t i = 0;
 			for (auto & uvAttrib : cpuMesh->uvs)
 			{
-				gpuMesh->uvs[i] = GPU::Mesh::GPUAttribute(sizeof(FLOAT), 2, uvAttrib.size(), uvAttrib.getOffset() - vOffset, uvAttrib.getStride());
+				gpuMesh->uvs[i] = GPU::Mesh::GPUAttribute(uvAttrib.getElementSize(),  
+					v2NumElements, 
+					uvAttrib.size(), 
+					uvAttrib.getOffset() - vOffset, 
+					uvAttrib.getStride(), 
+					v2DataType, 
+					normalize);
 				i++;
 			}
 
@@ -128,7 +186,13 @@ namespace RenderLib
 			i = 0;
 			for (auto & colorAttrib : cpuMesh->colors)
 			{
-				gpuMesh->colors[i] = GPU::Mesh::GPUAttribute(sizeof(FLOAT), 4, colorAttrib.size(), colorAttrib.getOffset() - vOffset, colorAttrib.getStride());
+				gpuMesh->colors[i] = GPU::Mesh::GPUAttribute(colorAttrib.getElementSize(), 
+					v4NumElements, 
+					colorAttrib.size(), 
+					colorAttrib.getOffset() - vOffset, 
+					colorAttrib.getStride(), 
+					v34DataType,
+					normalize);
 				i++;
 			}
 

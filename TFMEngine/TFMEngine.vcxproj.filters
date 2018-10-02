@@ -375,6 +375,9 @@
     <ClInclude Include="include\pipeline\Threadpool.h">
       <Filter>Archivos de encabezado\pipeline</Filter>
     </ClInclude>
+    <ClInclude Include="include\defaultimpl\components\ObjectSpinner.h">
+      <Filter>Archivos de encabezado\defaultimpl\components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Component.cpp">
@@ -560,11 +563,14 @@
     <ClCompile Include="src\CPU\material\MaterialManager.cpp">
       <Filter>Archivos de origen\CPU\material</Filter>
     </ClCompile>
-    <ClCompile Include="src\defaultimpl\pipelinestages\TransformUpdate.cpp">
-      <Filter>Archivos de origen\defaultimpl\pipelinestages</Filter>
-    </ClCompile>
     <ClCompile Include="src\pipeline\Threadpool.cpp">
       <Filter>Archivos de origen\pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="src\defaultimpl\pipelinestages\TransformUpdateStage.cpp">
+      <Filter>Archivos de origen\defaultimpl\pipelinestages</Filter>
+    </ClCompile>
+    <ClCompile Include="src\defaultimpl\components\ObjectSpinner.cpp">
+      <Filter>Archivos de origen\defaultimpl\components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

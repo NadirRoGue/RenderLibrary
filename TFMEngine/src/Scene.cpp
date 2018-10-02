@@ -4,16 +4,13 @@
 
 namespace RenderLib
 {
-	Scene::Scene()
-		: activeCamera(NULL)
+	Scene::Scene(std::string sceneName)
+		: name(sceneName)
+		, activeCamera(NULL)
+		, sceneTreeUpdated(false)
 	{
 		sceneRoot = addObject<SceneObject>();
-	}
-
-	Scene::Scene(std::string sceneName)
-		:name(sceneName)
-	{
-
+		sceneRoot->objectName = "Root";
 	}
 
 	Scene::~Scene()
@@ -51,6 +48,16 @@ namespace RenderLib
 	SceneObject * Scene::getSceneRoot()
 	{
 		return sceneRoot;
+	}
+
+	bool Scene::sceneTreeNeedsUpdate()
+	{
+		return sceneTreeUpdated;
+	}
+
+	void Scene::setSceneTreeNeedsUpdate(const bool & val)
+	{
+		sceneTreeUpdated = val;
 	}
 
 	std::vector<SceneObjectPtr> & Scene::getSceneObjects()

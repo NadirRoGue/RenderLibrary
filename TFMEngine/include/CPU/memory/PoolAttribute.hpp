@@ -63,6 +63,11 @@ namespace RenderLib
 					return elementCount;
 				}
 
+				size_t getElementSize()
+				{
+					return sizeof(T) * numElements;
+				}
+
 				const size_t & getOffset()
 				{
 					return offset;

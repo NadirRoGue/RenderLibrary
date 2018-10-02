@@ -42,7 +42,7 @@ namespace RenderLib
 					obj->initialize();
 				}
 
-				if (obj->getParent() == NULL)
+				if (obj->getParent() == NULL && obj != scene->getSceneRoot())
 				{
 					obj->setParent(scene->getSceneRoot());
 				}

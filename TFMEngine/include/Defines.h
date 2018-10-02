@@ -32,4 +32,7 @@
 /** MEMORY **/
 #define NEW_MEMORY_POOL_DEFAULT_SIZE 20971520
 
+/** GLSL Optimization */
+//#define USE_PACKED_ATTRIB_WHEN_POSSIBLE
+
 #endif

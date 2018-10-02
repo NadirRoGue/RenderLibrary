@@ -14,124 +14,70 @@ namespace RenderLib
 	{
 		namespace Mesh
 		{
-			bool compare(std::vector<IVECTOR3> & a, std::vector<IVECTOR3> & b)
+			inline void packVector4ToUint(std::vector<VECTOR4> & src, std::vector<unsigned int> & dst)
 			{
-				if (a.size() != b.size())
+				dst.reserve(src.size());
+				for (auto & v : src)
 				{
-					return false;
-				}
+					VECTOR4 normalized = v;// .normalized();
+					unsigned int buf;
 
-				for (size_t i = 0; i < a.size(); i++)
-				{
-					if (a[i] != b[i])
-						return false;
-				}
+					const int16_t maxValue = static_cast<int16_t>(std::numeric_limits<uint8_t>::max());
+					const int16_t negativeValueScale = maxValue + 1;
 
-				return true;
-			}
-
-			bool compare(std::vector<VECTOR3> & a, std::vector<VECTOR3> & b)
-			{
-				if (a.size() != b.size())
-				{
-					return false;
-				}
-
-				for (size_t i = 0; i < a.size(); i++)
-				{
-					if (a[i] != b[i])
-						return false;
-				}
-
-				return true;
-			}
-
-			bool compare(std::vector<VECTOR2> & a, std::vector<VECTOR2> & b)
-			{
-				if (a.size() != b.size())
-				{
-					return false;
-				}
-
-				for (size_t i = 0; i < a.size(); i++)
-				{
-					if (a[i] != b[i])
-						return false;
-				}
-
-				return true;
-			}
-
-			bool compare(std::vector<VECTOR4> & a, std::vector<VECTOR4> & b)
-			{
-				if (a.size() != b.size())
-				{
-					return false;
-				}
-
-				for (size_t i = 0; i < a.size(); i++)
-				{
-					if (a[i] != b[i])
-						return false;
-				}
-
-				return true;
-			}
-
-			void compare(MeshLoadResult * allLoaded, Mesh * inMemory)
-			{
-				for (auto & fromAssimp : allLoaded->loadedData)
-				{
-					std::vector<IVECTOR3> faces;
-					std::vector<VECTOR3> vertices, normals, tangents, bitangents;
-					std::vector<std::vector<VECTOR2>> uv;
-					std::vector<std::vector<VECTOR4>> colors;
-
-					inMemory->faces.dumpAttributes(faces);
-					inMemory->vertices.dumpAttributes(vertices);
-					inMemory->normals.dumpAttributes(normals);
-					inMemory->tangents.dumpAttributes(tangents);
-					inMemory->bitangents.dumpAttributes(bitangents);
-
-					uv.resize(inMemory->uvs.size());
-					for (size_t i = 0; i < inMemory->uvs.size(); i++)
-					{
-						inMemory->uvs[i].dumpAttributes(uv[i]);
-					}
-
-					colors.resize(inMemory->colors.size());
-					for (size_t i = 0; i < inMemory->colors.size(); i++)
-					{
-						inMemory->colors[i].dumpAttributes(colors[i]);
-					}
-
-					if (!compare(fromAssimp.loadedFaces, faces))
-						std::cout << "Faces missmatch" << std::endl;
-
-					if (!compare(fromAssimp.loadedVertices, vertices))
-						std::cout << "Vertices missmatch" << std::endl;
-
-					if (!compare(fromAssimp.loadedNormals, normals))
-						std::cout << "Normals missmatch" << std::endl;
-
-					if (!compare(fromAssimp.loadedTangents, tangents))
-						std::cout << "Tangents missmatch" << std::endl;
-
-					for (size_t i = 0; i < fromAssimp.numUVMaps; i++)
-					{
-						if (!compare(fromAssimp.loadedUvs[i], uv[i]))
-							std::cout << "UVs " << i << " missmatchs" << std::endl;
-					}
-
-					for (size_t i = 0; i < fromAssimp.numColorLayers; i++)
-					{
-						if (!compare(fromAssimp.loadedColors[i], colors[i]))
-							std::cout << "Colors " << i << " missmatch" << std::endl;
-					}
+					buf |= static_cast<uint8_t>(normalized.x() < 0? normalized.x() * negativeValueScale : normalized.x() * maxValue);
+					buf |= static_cast<uint8_t>(normalized.y() < 0? normalized.y() * negativeValueScale : normalized.y() * maxValue) << 8;
+					buf |= static_cast<uint8_t>(normalized.z() < 0? normalized.z() * negativeValueScale : normalized.z() * maxValue) << 16;
+					buf |= static_cast<uint8_t>(normalized.w() < 0? normalized.w() * negativeValueScale : normalized.w() * maxValue) << 24;
+					dst.push_back(buf);
 				}
 			}
 
-			MeshManager * MeshManager::INSTANCE = new MeshManager();
+			inline void packVector3ToUInt(std::vector<VECTOR3> & src, std::vector<int> & dst)
+			{
+				int w = 0;
+				dst.reserve(src.size());
+				for (auto & v : src)
+				{
+					VECTOR3 normalized = v.normalized();
+					int buf = 0;
+
+					const int8_t maxValue = (std::numeric_limits<int8_t>::max());
+					const int8_t negativeValueScale = maxValue;
+
+					std::cout << maxValue << std::endl;
+
+					int a = static_cast<int>(normalized.x() * 127.0) & 0x000000ff;
+					int b = static_cast<int>(normalized.y() * 127.0) & 0x000000ff;
+					int c = static_cast<int>(normalized.z() * 127.0) & 0x000000ff;
+					int d = 0;
+
+					std::cout << "Vector: " << normalized.x() << ", " << normalized.y() << ", " << normalized.z() << std::endl;
+					std::cout << "Masks: " << a << ", " << b << ", " << c << std::endl << std::endl;
+						 
+					buf |= (d << 30);
+					buf |= (c << 20);
+					buf |= (b << 10);
+					buf |= a;
+
+					dst.push_back(buf);
+				}
+			}
+
+			inline void packVector2ToUShort(std::vector<VECTOR2> & src, std::vector<unsigned short> & dst)
+			{
+				dst.reserve(src.size());
+				for (auto & v : src)
+				{
+					VECTOR2 normalized = v.normalized();
+					unsigned short buf;
+					buf |= static_cast<int8_t>(normalized.x());
+					buf |= static_cast<int8_t>(normalized.y()) << 8;
+					dst.push_back(buf);
+				}
+			}
+
+			MeshManager MeshManager::INSTANCE;
 
 			unsigned int MeshManager::OPTION_COMPUTE_NORMALS_IF_ABSENT = 0x01;
 			unsigned int MeshManager::OPTION_COMPUTE_TANGENTS_IF_ABSENT = 0x02;
@@ -139,7 +85,7 @@ namespace RenderLib
 
 			MeshManager & MeshManager::getInstance()
 			{
-				return *INSTANCE;
+				return INSTANCE;
 			}
 
 			MeshManager::MeshManager()
@@ -213,6 +159,38 @@ namespace RenderLib
 				// Copy data to pool
 				meshPtr->faces.setAttributes(data.loadedFaces);
 				meshPtr->vertices.setAttributes(data.loadedVertices);
+#ifdef USE_PACKED_ATTRIB_WHEN_POSSIBLE
+				std::vector<int> packedNormals, packedTangents, packedBitangents;
+				std::vector<std::vector<unsigned int>> packedColors;
+				std::vector<std::vector<unsigned short>> packedUvs;
+
+				packVector3ToUInt(data.loadedNormals, packedNormals);
+				packVector3ToUInt(data.loadedTangents, packedTangents);
+				packVector3ToUInt(data.loadedBitangents, packedBitangents);
+
+				packedUvs.resize(data.numUVMaps);
+				for (size_t i = 0; i < data.numUVMaps; i++)
+				{
+					packVector2ToUShort(data.loadedUvs[i], packedUvs[i]);
+				}
+				packedColors.resize(data.numColorLayers);
+				for (size_t i = 0; i < data.numColorLayers; i++)
+				{
+					packVector4ToUint(data.loadedColors[i], packedColors[i]);
+				}
+
+				meshPtr->normals.setAttributes(packedNormals);
+				meshPtr->tangents.setAttributes(packedTangents);
+				meshPtr->bitangents.setAttributes(packedBitangents);
+				for (size_t i = 0; i < data.numUVMaps; i++)
+				{
+					meshPtr->uvs[i].setAttributes(packedUvs[i]);
+				}
+				for (size_t i = 0; i < data.numColorLayers; i++)
+				{
+					meshPtr->colors[i].setAttributes(packedColors[i]);
+				}
+#else
 				meshPtr->normals.setAttributes(data.loadedNormals);
 				meshPtr->tangents.setAttributes(data.loadedTangents);
 				meshPtr->bitangents.setAttributes(data.loadedBitangents);
@@ -226,7 +204,7 @@ namespace RenderLib
 				{
 					meshPtr->colors[i].setAttributes(data.loadedColors[i]);
 				}
-
+#endif
 				//compare(data, meshPtr);
 
 				return newMesh;

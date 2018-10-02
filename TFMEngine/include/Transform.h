@@ -2,12 +2,13 @@
 #define __CPU_TRANSFORM__
 
 #include "Defines.h"
+#include "Component.h"
 
 namespace RenderLib
 {
 	class SceneObject;
 
-	class Transform
+	class Transform : public Component
 	{
 	public:
 		MATRIX4 modelMatrix;

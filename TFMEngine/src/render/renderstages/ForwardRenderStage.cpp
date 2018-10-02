@@ -88,8 +88,6 @@ namespace RenderLib
 			{
 				GPU::Mesh::GPUMesh * mesh = r->gpuMesh;
 
-				r->object->transform.rotate(VECTOR3(0, 1, 0), 0.01f);
-				r->object->transform.update();
 				standard->onRenderObject(*(r->object), *cam);
 				glDrawElementsBaseVertex(GL_TRIANGLES, (GLsizei)(mesh->faces.numElements * mesh->vertices.elementCount), GL_UNSIGNED_INT, (void*)0, 0);
 				

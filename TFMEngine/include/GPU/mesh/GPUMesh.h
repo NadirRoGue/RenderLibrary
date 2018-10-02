@@ -3,6 +3,9 @@
 
 #include <memory>
 #include <vector>
+#include <unordered_map>
+
+//#include <GL/glew.h>
 
 #include "GPU/mesh/GPUBuffer.h"
 
@@ -19,6 +22,8 @@ namespace RenderLib
 				size_t numElements;
 				size_t offset;
 				size_t stride;
+				unsigned int dataType;
+				bool normalizeOnUpload;
 
 				GPUAttribute()
 					: elementTypeSize(0)
@@ -26,15 +31,19 @@ namespace RenderLib
 					, numElements(0)
 					, offset(0)
 					, stride(0)
+					, dataType(GL_FLOAT)
+					, normalizeOnUpload(false)
 				{
 				}
 
-				GPUAttribute(size_t elementTypeSize, size_t elemCount, size_t numElements, size_t offset, size_t stride)
+				GPUAttribute(size_t elementTypeSize, size_t elemCount, size_t numElements, size_t offset, size_t stride, unsigned int dataType, bool normalize)
 					: elementTypeSize(elementTypeSize)
 					, elementCount(elemCount)
 					, numElements(numElements)
 					, offset(offset)
 					, stride(stride)
+					, dataType(dataType)
+					, normalizeOnUpload(normalize)
 				{
 				}
 
@@ -61,6 +70,8 @@ namespace RenderLib
 
 				size_t getNumFaces();
 				size_t getNumVertices();
+				size_t getFaceSizeGPU();
+				size_t getDataSizeGPU();
 			};
 
 			typedef std::unique_ptr<GPUMesh> GPUMeshPtr;

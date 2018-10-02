@@ -19,7 +19,7 @@ namespace RenderLib
 			class MeshManager
 			{
 			private:
-				static MeshManager * INSTANCE;
+				static MeshManager INSTANCE;
 			private:
 				std::unordered_map<std::string, std::vector<std::unique_ptr<Mesh>>> meshes;
 			public:

@@ -156,6 +156,7 @@
     <ClInclude Include="include\CPU\mesh\MeshUtil.h" />
     <ClInclude Include="include\defaultimpl\components\MeshFilter.h" />
     <ClInclude Include="include\defaultimpl\components\MeshRenderer.h" />
+    <ClInclude Include="include\defaultimpl\components\ObjectSpinner.h" />
     <ClInclude Include="include\defaultimpl\fileloaders\AssimpFileLoader.h" />
     <ClInclude Include="include\defaultimpl\fileloaders\ShaderLoader.h" />
     <ClInclude Include="include\defaultimpl\loggers\BufferedFileLogger.h" />
@@ -225,6 +226,7 @@
     <ClCompile Include="src\CPU\mesh\MeshUtil.cpp" />
     <ClCompile Include="src\defaultimpl\components\MeshFilter.cpp" />
     <ClCompile Include="src\defaultimpl\components\MeshRenderer.cpp" />
+    <ClCompile Include="src\defaultimpl\components\ObjectSpinner.cpp" />
     <ClCompile Include="src\defaultimpl\fileloaders\AssimpFileLoader.cpp" />
     <ClCompile Include="src\defaultimpl\fileloaders\ShaderLoader.cpp" />
     <ClCompile Include="src\defaultimpl\loggers\BufferedFileLogger.cpp" />
@@ -237,7 +239,7 @@
     <ClCompile Include="src\defaultimpl\pipelinestages\GPUToCPUMeshSyncStage.cpp" />
     <ClCompile Include="src\defaultimpl\pipelinestages\IterationEndStage.cpp" />
     <ClCompile Include="src\defaultimpl\pipelinestages\RenderStage.cpp" />
-    <ClCompile Include="src\defaultimpl\pipelinestages\TransformUpdate.cpp" />
+    <ClCompile Include="src\defaultimpl\pipelinestages\TransformUpdateStage.cpp" />
     <ClCompile Include="src\defaultimpl\shaders\StandardProgram.cpp" />
     <ClCompile Include="src\defaultimpl\windowhandlers\GLFWWindowHandler.cpp" />
     <ClCompile Include="src\EngineException.cpp" />

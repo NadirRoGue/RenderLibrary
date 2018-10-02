@@ -203,7 +203,7 @@ namespace RenderLib
 
 			glfwSetWindowPos(window, config.windowPosX, config.windowPosY);
 
-			glfwSwapInterval(2);
+			glfwSwapInterval(1);
 		}
 
 		bool GLFWWindowHandler::isActive()

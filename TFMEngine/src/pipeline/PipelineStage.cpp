@@ -1,5 +1,7 @@
 #include "pipeline/PipelineStage.h"
 
+#include "pipeline/Threadpool.h"
+
 namespace RenderLib
 {
 	namespace Pipeline
@@ -39,6 +41,19 @@ namespace RenderLib
 			if (comp != NULL)
 			{
 				elements.push_back(comp);
+			}
+		}
+
+		const std::vector<Component*> & AbstractElementBasedStage::getRegisteredElements()
+		{
+			return elements;
+		}
+
+		void AbstractElementBasedStage::runStage()
+		{
+			if (elements.size() > 0)
+			{
+				ThreadPool::getInstance().processStage(*this, true);
 			}
 		}
 	}

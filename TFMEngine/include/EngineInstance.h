@@ -21,10 +21,7 @@ namespace RenderLib
 
 		unsigned int instanceID;
 
-		std::unique_ptr<Pipeline::PipelineManager> pipelineManager;
-		//std::unique_ptr<SceneManager> sceneManager;
-		//std::unique_ptr<GPU::Mesh::GPUMeshManager> gpuMeshManager;
-		//std::unique_ptr<GPU::
+		Pipeline::PipelineManager pipelineManager;
 		SceneManager sceneManager;
 		GPU::Mesh::GPUMeshManager gpuMeshManager;
 		GPU::Program::ProgramManager gpuProgramManager;

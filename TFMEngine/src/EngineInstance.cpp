@@ -20,17 +20,16 @@ namespace RenderLib
 			throw EngineException(("EngineInstance: Failed constructing instance " + instanceName + ", WindowHandler is NULL").c_str());
 		}
 
-		pipelineManager = std::make_unique<Pipeline::PipelineManager>(this);
-		//sceneManager = std::make_unique<SceneManager>();
-		//gpuMeshManager = std::make_unique<GPU::Mesh::GPUMeshManager>();
+		pipelineManager.setEngineInstance(this);
 		window->instance = this;
 	}
 
 	EngineInstance::~EngineInstance()
 	{
-		pipelineManager.reset();
-		//sceneManager.reset();
 	}
+
+	// ==============================================================
+	// ACCESORS
 
 	const unsigned int & EngineInstance::getInstanceID()
 	{
@@ -49,28 +48,7 @@ namespace RenderLib
 
 	GPU::Mesh::GPUMeshManager & EngineInstance::getGPUMeshManager()
 	{
-		return gpuMeshManager;// *(gpuMeshManager.get());
-	}
-
-	void EngineInstance::loadActiveScene()
-	{
-		Scene * scene = sceneManager.getActiveScene();// sceneManager.get()->getActiveScene();
-		pipelineManager.get()->initializeStages();
-	}
-	
-	void EngineInstance::loadScene(const std::string & sceneName)
-	{
-		Scene * scene = sceneManager.getScene(sceneName);// sceneManager.get()->getScene(sceneName);
-		if (scene)
-		{
-			sceneManager.setActiveScene(sceneName);//sceneManager.get()->setActiveScene(sceneName);
-			loadActiveScene();
-		}
-		else
-		{
-			std::string message = "EngineInstance [name=" + instanceName + ", ID=" + std::to_string(instanceID) + "]: Failed to load scene " + sceneName;
-			throw EngineException(message.c_str());
-		}
+		return gpuMeshManager;
 	}
 
 	void EngineInstance::disable()
@@ -85,12 +63,12 @@ namespace RenderLib
 
 	Pipeline::PipelineManager & EngineInstance::getPipelineManager()
 	{
-		return *(pipelineManager.get());
+		return pipelineManager;
 	}
 
 	SceneManager & EngineInstance::getSceneManager()
 	{
-		return sceneManager;// *(sceneManager.get());
+		return sceneManager;
 	}
 
 	GPU::Program::ProgramManager & EngineInstance::getProgramManager()
@@ -98,16 +76,49 @@ namespace RenderLib
 		return gpuProgramManager;
 	}
 
+	// ==============================================================
+	// EXECUTION
+
+	void EngineInstance::loadActiveScene()
+	{
+		Scene * scene = sceneManager.getActiveScene();
+		pipelineManager.initializeStages();
+	}
+	
+	void EngineInstance::loadScene(const std::string & sceneName)
+	{
+		Scene * scene = sceneManager.getScene(sceneName);
+		if (scene)
+		{
+			sceneManager.setActiveScene(sceneName);
+			loadActiveScene();
+		}
+		else
+		{
+			std::string message = "EngineInstance [name=" + instanceName + ", ID=" + std::to_string(instanceID) + "]: Failed to load scene " + sceneName;
+			throw EngineException(message.c_str());
+		}
+	}
+
 	void EngineInstance::executeIteration()
 	{
 		// Execute pipeline stages
-		pipelineManager.get()->executePipeline();
+		pipelineManager.executePipeline();
 
 		// Swap buffers
 		acquireContext();
 		window->onRenderLoopIteration();
 		releaseContext();
 	}
+
+	void EngineInstance::cleanUp()
+	{
+		pipelineManager.finishStages();
+		window->cleanUp();
+	}
+
+	// ==============================================================
+	// CONTEXT MANAGEMENT
 
 	void EngineInstance::acquireContext()
 	{
@@ -118,11 +129,5 @@ namespace RenderLib
 	void EngineInstance::releaseContext()
 	{
 		Graphics::ContextManager::getInstance().releaseContext();
-	}
-
-	void EngineInstance::cleanUp()
-	{
-		pipelineManager.get()->finishStages();
-		window->cleanUp();
 	}
 }

@@ -22,8 +22,10 @@ namespace RenderLib
 			PipelineBroker stageBroker;
 
 		public:
-			PipelineManager(EngineInstance * engInstance);
+			PipelineManager();
 			~PipelineManager();
+
+			void setEngineInstance(EngineInstance * instance);
 
 			Pipeline & getPipeline();
 			PipelineBroker & getStageBroker();

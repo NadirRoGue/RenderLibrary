@@ -14,8 +14,6 @@
 
 #include "Component.h"
 
-#include "pipeline/Threadpool.h"
-
 namespace RenderLib
 {
 	class EngineInstance;
@@ -44,7 +42,13 @@ namespace RenderLib
 			AbstractElementBasedStage();
 			~AbstractElementBasedStage();
 
+			const std::vector<Component*> & getRegisteredElements();
+
 			virtual void registerElement(Component * comp);
+
+			virtual void runStage();
+
+			virtual void processElementWrapper(Component * component) = 0;
 
 			virtual std::type_index getAssociatedElementType() = 0;
 		};
@@ -95,10 +99,16 @@ namespace RenderLib
 				}
 			}
 
+			void processElementWrapper(Component * component)
+			{
+				processElement(static_cast<T*>(component));
+			}
+
+			/*
 			virtual void runStage()
 			{
 				ThreadPool::getInstance().processStage<T>(this, true);
-				/*
+				
 				std::vector<Component*>::iterator it = elements.begin();
 				while (it != elements.end())
 				{
@@ -115,8 +125,8 @@ namespace RenderLib
 					}
 
 					it++;
-				}*/
-			}
+				}
+			}*/
 
 			virtual void processElement(T * element)
 			{

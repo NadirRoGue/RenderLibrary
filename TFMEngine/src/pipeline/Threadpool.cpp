@@ -6,6 +6,14 @@ namespace RenderLib
 {
 	namespace Pipeline
 	{
+		void Runnable::run()
+		{
+			for (auto e : elementsToProcess)
+			{
+				stage->processElementWrapper(e);
+			}
+		}
+
 		ThreadPool * ThreadPool::INSTANCE = new ThreadPool();
 
 		ThreadPool & ThreadPool::getInstance()
@@ -49,7 +57,7 @@ namespace RenderLib
 			}
 		}
 
-		void ThreadPool::addTask(std::unique_ptr<Runnable> task)
+		void ThreadPool::addTask(std::unique_ptr<Runnable> & task)
 		{
 			std::unique_lock<std::mutex> lock(globalLock);
 			tasks.push(std::move(task));
@@ -86,6 +94,39 @@ namespace RenderLib
 				{
 					lock.unlock();
 				}
+			}
+		}
+
+		void ThreadPool::processStage(AbstractElementBasedStage & stage, bool blocking)
+		{
+			this->blockingStage = blockingStage;
+			size_t elementsSize = stage.getRegisteredElements().size();
+			size_t perThreadAmount = elementsSize / poolSize;
+			perThreadAmount = std::max<size_t>(perThreadAmount, 1);
+			size_t assigned = 0;
+			auto itBegin = stage.getRegisteredElements().begin();
+			while (assigned < elementsSize)
+			{
+				std::unique_ptr<Runnable> newTask = std::make_unique<Runnable>();
+
+				size_t blockOffset = std::min<size_t>(assigned + perThreadAmount, elementsSize);
+				newTask.get()->elementsToProcess.assign(itBegin + assigned, itBegin + blockOffset);
+				newTask.get()->stage = &stage;
+
+				addTask(newTask);
+
+				assigned += (blockOffset - assigned);
+			}
+
+			if (blockingStage)
+			{
+				// Wait for the pool to complete
+				std::unique_lock<std::mutex> lock(globalLock);
+				while (!tasks.empty())
+				{
+					callingThreadMonitor.wait(lock);
+				}
+				lock.unlock();
 			}
 		}
 	}

@@ -6,14 +6,18 @@ namespace RenderLib
 {
 	namespace Pipeline
 	{
-		PipelineManager::PipelineManager(EngineInstance * engInstance)
+		PipelineManager::PipelineManager()
 		{
-			engineInstance = engInstance;
 		}
 
 		PipelineManager::~PipelineManager()
 		{
 
+		}
+
+		void PipelineManager::setEngineInstance(EngineInstance * instance)
+		{
+			engineInstance = instance;
 		}
 
 		Pipeline & PipelineManager::getPipeline()

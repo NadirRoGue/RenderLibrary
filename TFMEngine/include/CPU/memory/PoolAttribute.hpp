@@ -83,6 +83,7 @@ namespace RenderLib
 					size_t start, end;
 					getBytePosition(index, start, end);
 
+					const char * byteData = srcBlock->pool->getDataAsBytes();
 					return *((T*)(byteData + start));
 				}
 
@@ -145,6 +146,11 @@ namespace RenderLib
 				T getValue()
 				{
 					return (*this)[0];
+				}
+
+				MemoryBlock * getMemorySource()
+				{
+					return srcBlock;
 				}
 
 			private:

@@ -225,6 +225,11 @@ namespace RenderLib
 			glfwSwapBuffers(window);
 		}
 
+		double GLFWWindowHandler::elapsedTimeSinceStart()
+		{
+			return glfwGetTime();
+		}
+
 		void GLFWWindowHandler::cleanUp()
 		{
 			glfwDestroyWindow(window);

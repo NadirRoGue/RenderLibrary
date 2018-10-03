@@ -46,13 +46,16 @@ namespace RenderLib
 
 		void ThreadPool::shutDown()
 		{
-			active = false;
-			std::unique_lock<std::mutex> lock(globalLock);
-			monitor.notify_all();
-			lock.unlock();
-			for (auto & thread : pool)
+			if (active)
 			{
-				thread.join();
+				active = false;
+				std::unique_lock<std::mutex> lock(globalLock);
+				monitor.notify_all();
+				lock.unlock();
+				for (auto & thread : pool)
+				{
+					thread.join();
+				}
 			}
 		}
 

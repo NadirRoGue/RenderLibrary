@@ -5,6 +5,7 @@
 #include "CPU/mesh/Mesh.h"
 #include "defaultimpl/meshblockconfigurators/InterleavedMeshBuilder.h"
 #include "defaultimpl/meshblockconfigurators/CompactMeshBuilder.h"
+#include "defaultimpl/textureblockconfigurators/CompactTextureBuilder.h"
 
 #include "CPU/io/FileManager.h"
 #include "defaultimpl/fileloaders/AssimpFileLoader.h"
@@ -17,7 +18,8 @@ namespace RenderLib
 {
 	void DefaultEngineInitialization()
 	{
-		CPU::Memory::MemoryManager::getInstance().setAttributeBuilderForClass<CPU::Mesh::Mesh>(new DefaultImpl::CompactMeshBuilder());
+		CPU::Memory::MemoryManager::getInstance().setAttributeBuilderForClass<CPU::Mesh::Mesh, DefaultImpl::InterleavedMeshBuilder>();
+		CPU::Memory::MemoryManager::getInstance().setAttributeBuilderForClass<CPU::Texture::Texture, DefaultImpl::CompactTextureBuilder>();
 
 		CPU::IO::FileManager::registerFileLoader<DefaultImpl::AssimpFileLoader>();
 		CPU::IO::FileManager::registerFileLoader<DefaultImpl::ShaderLoader>();

@@ -51,6 +51,16 @@ namespace RenderLib
 		return gpuMeshManager;
 	}
 
+	GPU::Texture::GPUTextureManager & EngineInstance::getGPUTextureManager()
+	{
+		return gpuTextureManager;
+	}
+
+	Time & EngineInstance::getTime()
+	{
+		return timeHandler;
+	}
+
 	void EngineInstance::disable()
 	{
 		enableFlag = false;

@@ -58,6 +58,8 @@ namespace RenderLib
 
 			virtual void cleanUp() = 0;
 
+			virtual double elapsedTimeSinceStart() = 0;
+
 		protected:
 			void defaultOpenGLConfiguration();
 		};

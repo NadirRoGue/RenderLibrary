@@ -11,6 +11,9 @@
 
 #include "GPU/mesh/GPUMeshManager.h"
 #include "GPU/program/ProgramManager.h"
+#include "GPU/texture/GPUTextureManager.h"
+
+#include "EngineTime.h"
 
 namespace RenderLib
 {
@@ -24,7 +27,10 @@ namespace RenderLib
 		Pipeline::PipelineManager pipelineManager;
 		SceneManager sceneManager;
 		GPU::Mesh::GPUMeshManager gpuMeshManager;
+		GPU::Texture::GPUTextureManager gpuTextureManager;
 		GPU::Program::ProgramManager gpuProgramManager;
+
+		Time timeHandler;
 
 		Graphics::WindowHandler * window;
 
@@ -44,6 +50,8 @@ namespace RenderLib
 		SceneManager & getSceneManager();
 		GPU::Mesh::GPUMeshManager & getGPUMeshManager();
 		GPU::Program::ProgramManager & getProgramManager();
+		GPU::Texture::GPUTextureManager & getGPUTextureManager();
+		Time & getTime();
 
 		void acquireContext();
 		void releaseContext();

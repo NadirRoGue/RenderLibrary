@@ -23,7 +23,7 @@ namespace RenderLib
 				static MemoryManager INSTANCE;
 			private:
 				std::unordered_map<std::type_index, std::unique_ptr<MemoryPool>> memoryPool;
-				std::unordered_map<std::type_index, AbstractPoolObjectBuilder*> attributeBuilders;
+				std::unordered_map<std::type_index, std::unique_ptr<AbstractPoolObjectBuilder>> attributeBuilders;
 			private:
 				MemoryManager();
 			public:
@@ -45,23 +45,19 @@ namespace RenderLib
 					return it->second.get();
 				}
 
-				template<class TargetClass>
-				void setAttributeBuilderForClass(AbstractPoolObjectBuilder * builder)
+				template<class TargetClass, class Configurator>
+				void setAttributeBuilderForClass()
 				{
-					if (builder)
-					{
-						std::type_index classType = typeid(TargetClass);
+					std::type_index classType = typeid(TargetClass);
 
-						auto it = attributeBuilders.find(classType);
-						if (it != attributeBuilders.end())
-						{
-							delete it->second;
-							it->second = builder;
-						}
-						else
-						{
-							attributeBuilders[classType] = builder;
-						}
+					if (std::is_base_of<AbstractPoolObjectBuilder, Configurator>::value)
+					{
+						std::unique_ptr<AbstractPoolObjectBuilder> newBuilder = std::make_unique<Configurator>();
+						attributeBuilders[classType] = std::move(newBuilder);
+					}
+					else
+					{
+						throw EngineException("MemoryManager: Attempted to set a non AbstractPoolObjectBuilder derived class for type " + std::string(classType.name()));
 					}
 				}
 
@@ -70,7 +66,7 @@ namespace RenderLib
 				{
 					if (!destObject || !sourceData)
 					{
-						throw std::runtime_error("MemoryManager: NULL arguments passed when attempting to configure an object's pool attributes");
+						throw EngineException("MemoryManager: NULL arguments passed when attempting to configure an object's pool attributes");
 					}
 
 					std::type_index classType = typeid(DestObjectClass);
@@ -83,20 +79,20 @@ namespace RenderLib
 
 						if (castedBuilder == NULL)
 						{
-							throw std::runtime_error("MemoryManager: The associated object builder with class type " + std::string(classType.name()) + " has a different object type [MemoryManager::writeObject]");
+							throw EngineException("MemoryManager: The associated object builder with class type " + std::string(classType.name()) + " has a different object type [MemoryManager::writeObject]");
 						}
 
 						MemoryBlock * requiredBlock = objectPool->requestMemoryBlock(sourceData->getSizeBytes());
 						if (!requiredBlock)
 						{
-							throw std::runtime_error("MemoryManager: No space available to store the given object");
+							throw EngineException("MemoryManager: No space available to store the given object");
 						}
 
 						castedBuilder->configureAttributes(requiredBlock, destObject, sourceData);
 					}
 					else
 					{
-						throw std::runtime_error("MemoryManager: No PoolObjectBuilder found for class " + std::string(classType.name()) + " [MemoryManager::writeObject]");
+						throw EngineException("MemoryManager: No PoolObjectBuilder found for class " + std::string(classType.name()) + " [MemoryManager::writeObject]");
 					}
 				}
 

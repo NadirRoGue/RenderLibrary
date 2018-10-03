@@ -30,6 +30,8 @@ namespace RenderLib
 
 			void onRenderLoopIteration();
 
+			double elapsedTimeSinceStart();
+
 			void cleanUp();
 		};
 	}

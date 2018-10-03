@@ -3,14 +3,26 @@
 
 namespace RenderLib
 {
+	typedef unsigned long long ull_t;
+
 	class Time
 	{
+	private:
+		double delta;
+		double elapsed;
+		ull_t frame;
+
+		double scale;
 	public:
-		double deltaTime;
-		double elapsedSinceBeginning;
-		unsigned long long numFrame;
-	public:
+		Time();
 		void update(double elapsedTimeSinceBegining);
+
+		const double & deltaTime();
+		const double & elapsedTime();
+		const ull_t & frameNumber();
+		
+		const double & getTimeScale();
+		void setTimeScale(const double & timeScale);
 	};
 }
 

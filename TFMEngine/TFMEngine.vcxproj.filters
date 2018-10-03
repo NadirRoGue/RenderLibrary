@@ -157,6 +157,24 @@
     <Filter Include="Archivos de origen\CPU\material">
       <UniqueIdentifier>{639d2306-94ba-4b7e-83ce-875e6bb03806}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Archivos de encabezado\GPU\texture">
+      <UniqueIdentifier>{09d96bb2-a9e7-44b5-b500-299f066d95d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\GPU\texture">
+      <UniqueIdentifier>{d7f3c41c-3903-4e07-ab90-3b7d45d5022b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\CPU\texture">
+      <UniqueIdentifier>{73f1a5f3-a8ba-407b-89c4-e0e17ff2d763}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\CPU\texture">
+      <UniqueIdentifier>{128e7464-ea35-4bde-beaa-5250ba49145c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\defaultimpl\textureblockconfigurators">
+      <UniqueIdentifier>{0c947e42-f27e-4d88-a64c-658ecb9d513b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\defaultimpl\textureblockconfigurators">
+      <UniqueIdentifier>{a9902748-8d5b-4b2c-a321-06a5b699f6a6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Component.h">
@@ -381,6 +399,42 @@
     <ClInclude Include="include\EngineTime.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="include\render\FBO.h">
+      <Filter>Archivos de encabezado\render</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\texture\GPUTexture.h">
+      <Filter>Archivos de encabezado\GPU\texture</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\texture\GPUTexture2D.h">
+      <Filter>Archivos de encabezado\GPU\texture</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\texture\GPUTextureManager.h">
+      <Filter>Archivos de encabezado\GPU\texture</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\texture\GPUTexture1D.h">
+      <Filter>Archivos de encabezado\GPU\texture</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\texture\GPUTexture3D.h">
+      <Filter>Archivos de encabezado\GPU\texture</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\texture\GPUTextureInstance.h">
+      <Filter>Archivos de encabezado\GPU\texture</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CPU\texture\Texture.h">
+      <Filter>Archivos de encabezado\CPU\texture</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CPU\texture\TextureManager.h">
+      <Filter>Archivos de encabezado\CPU\texture</Filter>
+    </ClInclude>
+    <ClInclude Include="include\defaultimpl\fileloaders\PNGLoader.h">
+      <Filter>Archivos de encabezado\defaultimpl\fileloaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\defaultimpl\textureblockconfigurators\CompactTextureBuilder.h">
+      <Filter>Archivos de encabezado\defaultimpl\textureblockconfigurators</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CPU\texture\TextureBlockConfiguration.h">
+      <Filter>Archivos de encabezado\CPU\texture</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Component.cpp">
@@ -577,6 +631,42 @@
     </ClCompile>
     <ClCompile Include="src\EngineTime.cpp">
       <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\FBO.cpp">
+      <Filter>Archivos de origen\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GPU\texture\GPUTexture.cpp">
+      <Filter>Archivos de origen\GPU\texture</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GPU\texture\GPUTexture2D.cpp">
+      <Filter>Archivos de origen\GPU\texture</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GPU\texture\GPUTextureManager.cpp">
+      <Filter>Archivos de origen\GPU\texture</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GPU\texture\GPUTexture1D.cpp">
+      <Filter>Archivos de origen\GPU\texture</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GPU\texture\GPUTexture3D.cpp">
+      <Filter>Archivos de origen\GPU\texture</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GPU\texture\GPUTextureInstance.cpp">
+      <Filter>Archivos de origen\GPU\texture</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CPU\texture\Texture.cpp">
+      <Filter>Archivos de origen\CPU\texture</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CPU\texture\TextureManager.cpp">
+      <Filter>Archivos de origen\CPU\texture</Filter>
+    </ClCompile>
+    <ClCompile Include="src\defaultimpl\fileloaders\PNGLoader.cpp">
+      <Filter>Archivos de origen\defaultimpl\fileloaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\defaultimpl\textureblockconfigurators\CompactTextureBuilder.cpp">
+      <Filter>Archivos de origen\defaultimpl\textureblockconfigurators</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CPU\texture\TextureBlockConfiguration.cpp">
+      <Filter>Archivos de origen\CPU\texture</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

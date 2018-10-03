@@ -154,10 +154,14 @@
     <ClInclude Include="include\CPU\mesh\MeshLoadResult.h" />
     <ClInclude Include="include\CPU\mesh\MeshManager.h" />
     <ClInclude Include="include\CPU\mesh\MeshUtil.h" />
+    <ClInclude Include="include\CPU\texture\Texture.h" />
+    <ClInclude Include="include\CPU\texture\TextureBlockConfiguration.h" />
+    <ClInclude Include="include\CPU\texture\TextureManager.h" />
     <ClInclude Include="include\defaultimpl\components\MeshFilter.h" />
     <ClInclude Include="include\defaultimpl\components\MeshRenderer.h" />
     <ClInclude Include="include\defaultimpl\components\ObjectSpinner.h" />
     <ClInclude Include="include\defaultimpl\fileloaders\AssimpFileLoader.h" />
+    <ClInclude Include="include\defaultimpl\fileloaders\PNGLoader.h" />
     <ClInclude Include="include\defaultimpl\fileloaders\ShaderLoader.h" />
     <ClInclude Include="include\defaultimpl\loggers\BufferedFileLogger.h" />
     <ClInclude Include="include\defaultimpl\loggers\ConsoleLogger.h" />
@@ -171,6 +175,7 @@
     <ClInclude Include="include\defaultimpl\pipelinestages\RenderStage.h" />
     <ClInclude Include="include\defaultimpl\pipelinestages\TransformUpdateStage.h" />
     <ClInclude Include="include\defaultimpl\shaders\StandardProgram.h" />
+    <ClInclude Include="include\defaultimpl\textureblockconfigurators\CompactTextureBuilder.h" />
     <ClInclude Include="include\defaultimpl\windowhandlers\GLFWWindowHandler.h" />
     <ClInclude Include="include\Defines.h" />
     <ClInclude Include="include\EngineException.h" />
@@ -184,6 +189,12 @@
     <ClInclude Include="include\GPU\program\ProgramManager.h" />
     <ClInclude Include="include\GPU\program\ShaderLoadResult.h" />
     <ClInclude Include="include\GPU\program\ShaderProgram.h" />
+    <ClInclude Include="include\GPU\texture\GPUTexture.h" />
+    <ClInclude Include="include\GPU\texture\GPUTexture1D.h" />
+    <ClInclude Include="include\GPU\texture\GPUTexture2D.h" />
+    <ClInclude Include="include\GPU\texture\GPUTexture3D.h" />
+    <ClInclude Include="include\GPU\texture\GPUTextureInstance.h" />
+    <ClInclude Include="include\GPU\texture\GPUTextureManager.h" />
     <ClInclude Include="include\graphics\ContextManager.h" />
     <ClInclude Include="include\graphics\WindowHandler.h" />
     <ClInclude Include="include\graphics\WindowResizeObserver.h" />
@@ -200,6 +211,7 @@
     <ClInclude Include="include\pipeline\PipelineManager.h" />
     <ClInclude Include="include\pipeline\PipelineStage.h" />
     <ClInclude Include="include\pipeline\Threadpool.h" />
+    <ClInclude Include="include\render\FBO.h" />
     <ClInclude Include="include\render\RenderingPipeline.h" />
     <ClInclude Include="include\render\AbstractRenderingStage.h" />
     <ClInclude Include="include\render\renderstages\ForwardRenderStage.h" />
@@ -225,10 +237,14 @@
     <ClCompile Include="src\CPU\mesh\MeshLoadResult.cpp" />
     <ClCompile Include="src\CPU\mesh\MeshManager.cpp" />
     <ClCompile Include="src\CPU\mesh\MeshUtil.cpp" />
+    <ClCompile Include="src\CPU\texture\Texture.cpp" />
+    <ClCompile Include="src\CPU\texture\TextureBlockConfiguration.cpp" />
+    <ClCompile Include="src\CPU\texture\TextureManager.cpp" />
     <ClCompile Include="src\defaultimpl\components\MeshFilter.cpp" />
     <ClCompile Include="src\defaultimpl\components\MeshRenderer.cpp" />
     <ClCompile Include="src\defaultimpl\components\ObjectSpinner.cpp" />
     <ClCompile Include="src\defaultimpl\fileloaders\AssimpFileLoader.cpp" />
+    <ClCompile Include="src\defaultimpl\fileloaders\PNGLoader.cpp" />
     <ClCompile Include="src\defaultimpl\fileloaders\ShaderLoader.cpp" />
     <ClCompile Include="src\defaultimpl\loggers\BufferedFileLogger.cpp" />
     <ClCompile Include="src\defaultimpl\loggers\ConsoleLogger.cpp" />
@@ -242,6 +258,7 @@
     <ClCompile Include="src\defaultimpl\pipelinestages\RenderStage.cpp" />
     <ClCompile Include="src\defaultimpl\pipelinestages\TransformUpdateStage.cpp" />
     <ClCompile Include="src\defaultimpl\shaders\StandardProgram.cpp" />
+    <ClCompile Include="src\defaultimpl\textureblockconfigurators\CompactTextureBuilder.cpp" />
     <ClCompile Include="src\defaultimpl\windowhandlers\GLFWWindowHandler.cpp" />
     <ClCompile Include="src\EngineException.cpp" />
     <ClCompile Include="src\EngineInstance.cpp" />
@@ -254,6 +271,12 @@
     <ClCompile Include="src\GPU\program\ProgramManager.cpp" />
     <ClCompile Include="src\GPU\program\ShaderLoadResult.cpp" />
     <ClCompile Include="src\GPU\program\ShaderProgram.cpp" />
+    <ClCompile Include="src\GPU\texture\GPUTexture.cpp" />
+    <ClCompile Include="src\GPU\texture\GPUTexture1D.cpp" />
+    <ClCompile Include="src\GPU\texture\GPUTexture2D.cpp" />
+    <ClCompile Include="src\GPU\texture\GPUTexture3D.cpp" />
+    <ClCompile Include="src\GPU\texture\GPUTextureInstance.cpp" />
+    <ClCompile Include="src\GPU\texture\GPUTextureManager.cpp" />
     <ClCompile Include="src\graphics\ContextManager.cpp" />
     <ClCompile Include="src\graphics\WindowHandler.cpp" />
     <ClCompile Include="src\Initialization.cpp" />
@@ -268,6 +291,7 @@
     <ClCompile Include="src\pipeline\PipelineStage.cpp" />
     <ClCompile Include="src\pipeline\Threadpool.cpp" />
     <ClCompile Include="src\render\AbstractRenderingStage.cpp" />
+    <ClCompile Include="src\render\FBO.cpp" />
     <ClCompile Include="src\render\RenderingPipeline.cpp" />
     <ClCompile Include="src\render\renderstages\ForwardRenderStage.cpp" />
     <ClCompile Include="src\Scene.cpp" />

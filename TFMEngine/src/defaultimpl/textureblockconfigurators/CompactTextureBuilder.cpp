@@ -6,7 +6,7 @@ namespace RenderLib
 {
 	namespace DefaultImpl
 	{
-		void DefaultImpl::configureAttributes(CPU::Memory::MemoryBlock * memBlock, CPU::Texture::Texture * resource, CPU::Memory::BlockConfiguration * data)
+		void CompactTextureBuilder::configureAttributes(CPU::Memory::MemoryBlock * memBlock, CPU::Texture::Texture * resource, CPU::Memory::BlockConfiguration * data)
 		{
 			CPU::Texture::TextureBlockConfiguration * config = 
 				static_cast<CPU::Texture::TextureBlockConfiguration*>(data);

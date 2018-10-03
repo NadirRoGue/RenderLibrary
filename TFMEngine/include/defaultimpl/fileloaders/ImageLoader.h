@@ -1,5 +1,5 @@
-#ifndef __RENDERLIB_DEFAULTIMPL_PNGLOADER_H__
-#define __RENDERLIB_DEFAULTIMPL_PNGLOADER_H__
+#ifndef __RENDERLIB_DEFAULTIMPL_IMAGELOADER_H__
+#define __RENDERLIB_DEFAULTIMPL_IMAGELOADER_H__
 
 #include <vector>
 
@@ -9,10 +9,10 @@ namespace RenderLib
 {
 	namespace DefaultImpl
 	{
-		class PNGLoader : public CPU::IO::FileLoader
+		class ImageLoader : public CPU::IO::FileLoader
 		{
 		public:
-			PNGLoader();
+			ImageLoader();
 			CPU::IO::AbstractLoadResultPtr loadFile(const std::string & filePath, unsigned int options);
 		};
 	}

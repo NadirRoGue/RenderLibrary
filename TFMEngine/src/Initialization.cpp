@@ -10,6 +10,7 @@
 #include "CPU/io/FileManager.h"
 #include "defaultimpl/fileloaders/AssimpFileLoader.h"
 #include "defaultimpl/fileloaders/ShaderLoader.h"
+#include "defaultimpl/fileloaders/ImageLoader.h"
 
 #include "logger/Log.h"
 #include "defaultimpl/loggers/ConsoleLogger.h"
@@ -23,6 +24,7 @@ namespace RenderLib
 
 		CPU::IO::FileManager::registerFileLoader<DefaultImpl::AssimpFileLoader>();
 		CPU::IO::FileManager::registerFileLoader<DefaultImpl::ShaderLoader>();
+		CPU::IO::FileManager::registerFileLoader<DefaultImpl::ImageLoader>();
 
 		Logger::Log::getInstance().setLogger<DefaultImpl::ConsoleLogger>();
 	}

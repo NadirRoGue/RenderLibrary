@@ -10,6 +10,8 @@
 
 #include "GPU/program/ProgramManager.h"
 
+#include "CPU/memory/MemoryManager.h"
+
 #include <iostream>
 
 namespace RenderLib
@@ -165,6 +167,9 @@ namespace RenderLib
 		{
 			thread.join();
 		}
+
+		// Release memory
+		CPU::Memory::MemoryManager::getInstance().destroyAllPools();
 	}
 
 	void InstanceManager::launchParallel(std::vector<std::thread> & createdThreads)

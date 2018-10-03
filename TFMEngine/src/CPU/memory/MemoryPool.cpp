@@ -154,7 +154,7 @@ namespace RenderLib
 			{
 				if (allocatedMemory == 0)
 				{
-					allocatedMemory = malloc(size);
+					allocatedMemory = std::malloc(size);
 				}
 				else
 				{
@@ -164,7 +164,8 @@ namespace RenderLib
 
 			void MemoryPool::release()
 			{
-				free(allocatedMemory);
+				std::free(allocatedMemory);
+				allocatedMemory = NULL;
 			}
 
 			void MemoryPool::resize(size_t size)

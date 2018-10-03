@@ -7,6 +7,7 @@
 #include <typeindex>
 
 #include "Defines.h"
+#include "EngineInstance.h"
 
 #include "CPU/memory/MemoryPool.h"
 #include "CPU/memory/PoolObjectBuilder.h"
@@ -75,7 +76,7 @@ namespace RenderLib
 					if (attribBuilderIt != attributeBuilders.end())
 					{
 						MemoryPool * objectPool = getMemoryPool<DestObjectClass>();
-						PoolObjectBuilder<DestObjectClass> * castedBuilder = dynamic_cast<PoolObjectBuilder<DestObjectClass>*>(attribBuilderIt->second);
+						PoolObjectBuilder<DestObjectClass> * castedBuilder = dynamic_cast<PoolObjectBuilder<DestObjectClass>*>(attribBuilderIt->second.get());
 
 						if (castedBuilder == NULL)
 						{

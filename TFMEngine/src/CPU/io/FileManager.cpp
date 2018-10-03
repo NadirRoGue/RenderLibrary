@@ -1,6 +1,8 @@
 #include "CPU/io/FileManager.h"
 
-#include <iostream>
+#include "EngineException.h"
+
+#include <algorithm>
 
 namespace RenderLib
 {
@@ -16,18 +18,19 @@ namespace RenderLib
 
 				if (path.empty())
 				{
-					throw std::runtime_error("FileManager::loadFile passed an empty path");
+					throw EngineException("FileManager::loadFile passed an empty path");
 				}
 
 				size_t dotPosition = path.find_last_of(".");
 
 				std::string extension = path.substr(dotPosition + 1, path.length() - dotPosition);
+				std::transform(extension.begin(), extension.end(), extension.begin(), ::tolower);
 
 				auto it = fileLoaders.find(extension);
-
+				
 				if (it == fileLoaders.end())
 				{
-					throw std::runtime_error("FileManager::loadFile unsupported file extendion: " + extension);
+					throw EngineException("FileManager::loadFile unsupported file extendion: " + extension);
 				}
 
 				FileLoader * loader = it->second.get();
@@ -38,7 +41,7 @@ namespace RenderLib
 				}
 				else
 				{
-					throw std::runtime_error("FileManager: NULL FileLoader registered for file extension " + extension);
+					throw EngineException("FileManager: NULL FileLoader registered for file extension " + extension);
 				}
 
 				return result;

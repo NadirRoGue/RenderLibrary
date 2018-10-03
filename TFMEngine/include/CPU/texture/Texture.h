@@ -19,7 +19,7 @@ namespace RenderLib
 			class Texture
 			{
 			public:
-				Memory::FloatAttribute pixels;
+				Memory::ByteAttribute pixels;
 				unsigned int width, height, depth;
 
 				TextureType type;

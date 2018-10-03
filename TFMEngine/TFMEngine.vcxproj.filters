@@ -426,14 +426,17 @@
     <ClInclude Include="include\CPU\texture\TextureManager.h">
       <Filter>Archivos de encabezado\CPU\texture</Filter>
     </ClInclude>
-    <ClInclude Include="include\defaultimpl\fileloaders\PNGLoader.h">
-      <Filter>Archivos de encabezado\defaultimpl\fileloaders</Filter>
-    </ClInclude>
     <ClInclude Include="include\defaultimpl\textureblockconfigurators\CompactTextureBuilder.h">
       <Filter>Archivos de encabezado\defaultimpl\textureblockconfigurators</Filter>
     </ClInclude>
     <ClInclude Include="include\CPU\texture\TextureBlockConfiguration.h">
       <Filter>Archivos de encabezado\CPU\texture</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CPU\texture\TextureLoadResult.h">
+      <Filter>Archivos de encabezado\CPU\texture</Filter>
+    </ClInclude>
+    <ClInclude Include="include\defaultimpl\fileloaders\ImageLoader.h">
+      <Filter>Archivos de encabezado\defaultimpl\fileloaders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -659,14 +662,17 @@
     <ClCompile Include="src\CPU\texture\TextureManager.cpp">
       <Filter>Archivos de origen\CPU\texture</Filter>
     </ClCompile>
-    <ClCompile Include="src\defaultimpl\fileloaders\PNGLoader.cpp">
-      <Filter>Archivos de origen\defaultimpl\fileloaders</Filter>
-    </ClCompile>
     <ClCompile Include="src\defaultimpl\textureblockconfigurators\CompactTextureBuilder.cpp">
       <Filter>Archivos de origen\defaultimpl\textureblockconfigurators</Filter>
     </ClCompile>
     <ClCompile Include="src\CPU\texture\TextureBlockConfiguration.cpp">
       <Filter>Archivos de origen\CPU\texture</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CPU\texture\TextureLoadResult.cpp">
+      <Filter>Archivos de origen\CPU\texture</Filter>
+    </ClCompile>
+    <ClCompile Include="src\defaultimpl\fileloaders\ImageLoader.cpp">
+      <Filter>Archivos de origen\defaultimpl\fileloaders</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

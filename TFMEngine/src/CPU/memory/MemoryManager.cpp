@@ -69,11 +69,9 @@ namespace RenderLib
 				auto it = memoryPool.begin();
 				while (it != memoryPool.end())
 				{
-					std::unique_ptr<MemoryPool> temp = std::move(it->second);
+					it->second->release();
 					it++;
 				}
-
-				memoryPool.clear();
 			}
 		}
 	}

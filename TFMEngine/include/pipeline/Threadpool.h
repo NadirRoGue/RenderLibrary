@@ -21,31 +21,13 @@ namespace RenderLib
 		{
 		public:
 			std::vector<Component*> elementsToProcess;
-			Pipeline::AbstractElementBasedStage * stage;
+			AbstractElementBasedStage * stage;
 
 			void run();
 		};
 
-		/*
-		class ElementRunnable
-		{
-		public:
-			std::vector<Component*> elementsToProcess;
-			Pipeline::AbstractElementBasedStage * stage;
-
-			void run()
-			{
-				for (auto e : elementsToProcess)
-				{
-					stage->processElementWrapper(e);
-				}
-			}
-		};*/
-
 		class ThreadPool
 		{
-		private:
-			static ThreadPool * INSTANCE;
 		private:
 			std::list<std::thread> pool;
 			std::queue<std::unique_ptr<Runnable>> tasks;
@@ -60,15 +42,12 @@ namespace RenderLib
 			unsigned int poolSize;
 			bool blockingStage;
 		public:
-			static ThreadPool & getInstance();
-		private:
 			ThreadPool();
-		public:
 			~ThreadPool();
 
 			unsigned int getPoolSize() { return poolSize; }
 			bool isActive() { return active; }
-			void init();
+			void init(int threadPoolSize = -1);
 			void addTask(std::unique_ptr<Runnable> & task);
 			void shutDown();
 			void pollTask();

@@ -30,6 +30,11 @@ namespace RenderLib
 			return stageBroker;
 		}
 
+		ThreadPool & PipelineManager::getThreadPool()
+		{
+			return threadPool;
+		}
+
 		void PipelineManager::registerComponent(Component * component)
 		{
 			stageBroker.registerElement(component);

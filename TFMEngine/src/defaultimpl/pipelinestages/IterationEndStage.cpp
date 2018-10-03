@@ -14,6 +14,7 @@ namespace RenderLib
 		void IterationEndStage::postRunStage()
 		{
 			engineInstance->getProgramManager().clear();
+			engineInstance->getPipelineManager().getThreadPool().shutDown();
 		}
 	}
 }

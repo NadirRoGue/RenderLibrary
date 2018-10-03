@@ -3,6 +3,7 @@
 
 #include "pipeline/Pipeline.h"
 #include "pipeline/PipelineBroker.h"
+#include "pipeline/Threadpool.h"
 
 #include "Component.h"
 
@@ -20,6 +21,7 @@ namespace RenderLib
 			EngineInstance * engineInstance;
 			Pipeline pipeline;
 			PipelineBroker stageBroker;
+			ThreadPool threadPool;
 
 		public:
 			PipelineManager();
@@ -29,6 +31,7 @@ namespace RenderLib
 
 			Pipeline & getPipeline();
 			PipelineBroker & getStageBroker();
+			ThreadPool & getThreadPool();
 
 			template<class T>
 			T * addPipelineStage()

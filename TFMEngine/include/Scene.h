@@ -51,11 +51,12 @@ namespace RenderLib
 		InputHandlers::InputManager & getInputManager();
 
 		template<class T>
-		T * addObject()
+		T * addObject(const std::string & objName = "")
 		{
 			if (std::is_base_of<SceneObject, T>::value)
 			{
 				std::unique_ptr<SceneObject> newObject = std::make_unique<T>();
+				newObject.get()->objectName = objName;
 				T * result = newObject.get();
 				sceneObjects.push_back(std::move(newObject));
 

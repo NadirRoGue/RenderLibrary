@@ -206,6 +206,7 @@
     <ClInclude Include="include\Scene.h" />
     <ClInclude Include="include\SceneManager.h" />
     <ClInclude Include="include\SceneObject.h" />
+    <ClInclude Include="include\EngineTime.h" />
     <ClInclude Include="include\Transform.h" />
     <ClInclude Include="include\util\StringUtils.h" />
   </ItemGroup>
@@ -272,6 +273,7 @@
     <ClCompile Include="src\Scene.cpp" />
     <ClCompile Include="src\SceneManager.cpp" />
     <ClCompile Include="src\SceneObject.cpp" />
+    <ClCompile Include="src\EngineTime.cpp" />
     <ClCompile Include="src\Transform.cpp" />
     <ClCompile Include="src\util\StringUtils.cpp" />
   </ItemGroup>

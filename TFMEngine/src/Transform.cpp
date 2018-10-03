@@ -13,7 +13,6 @@ namespace RenderLib
 		translationV = VECTOR3(0, 0, 0);
 		scaleV = VECTOR3(1, 1, 1);
 		rotationV = QUATERNION::Identity();
-		needsUpdate = false;
 	}
 
 	Transform::~Transform()
@@ -34,7 +33,7 @@ namespace RenderLib
 
 	void Transform::scale(VECTOR3 scale)
 	{
-		this->scaleV.cwiseProduct(scale);
+		scaleV = scaleV.cwiseProduct(scale);
 		update();
 	}
 

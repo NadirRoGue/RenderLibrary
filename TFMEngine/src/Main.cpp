@@ -79,15 +79,20 @@ int main(int argc, void ** arg)
 	cam->translateView(VECTOR3(0.0, 0.0, -5.0));
 
 	// Object set up
-	RenderLib::SceneObject * obj = scene->addObject<SceneObject>();
-	obj->objectName = "testObject";
-	// Set position
-	//obj->transform.translate(VECTOR3(0, 0, 5));
-	
-	// Object component set up
+	// "Earth"
+	RenderLib::SceneObject * obj = scene->addObject<SceneObject>("Earth");
 	obj->addComponent<DefaultImpl::MeshFilter>()->mesh = mesh;
 	obj->addComponent<DefaultImpl::MeshRenderer>();
 	obj->addComponent<DefaultImpl::ObjectSpinner>();
+
+	// "Moon"
+	RenderLib::SceneObject * moon = scene->addObject<SceneObject>("Moon");
+	moon->transform.translate(VECTOR3(5, 0, 0));
+	moon->transform.scale(VECTOR3(0.5, 0.5, 0.5));
+	moon->addComponent<DefaultImpl::MeshFilter>()->mesh = mesh;
+	moon->addComponent<DefaultImpl::MeshRenderer>();
+	moon->addComponent<DefaultImpl::ObjectSpinner>();
+	moon->setParent(obj);
 
 	/*** EXECUTION (BLOCKING UNTIL ALL INSTANCES ARE DONE) ***/
 	// Run pipeline

@@ -104,32 +104,9 @@ namespace RenderLib
 				processElement(static_cast<T*>(component));
 			}
 
-			/*
-			virtual void runStage()
-			{
-				ThreadPool::getInstance().processStage<T>(this, true);
-				
-				std::vector<Component*>::iterator it = elements.begin();
-				while (it != elements.end())
-				{
-					if ((*it) != NULL)
-					{
-						if ((*it)->enabled)
-						{
-							processElement(static_cast<T*>(*it));
-						}
-					}
-					else // Invalid/null or scheduled to delete component. Remove it
-					{
-						elements.erase(it);
-					}
-
-					it++;
-				}
-			}*/
-
 			virtual void processElement(T * element)
 			{
+				// Default element based stage implementation (call component's update method)
 				static_cast<Component*>(element)->update();
 			}
 		};

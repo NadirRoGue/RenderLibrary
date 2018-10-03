@@ -14,29 +14,28 @@ namespace RenderLib
 			}
 		}
 
-		ThreadPool * ThreadPool::INSTANCE = new ThreadPool();
-
-		ThreadPool & ThreadPool::getInstance()
-		{
-			return *ThreadPool::INSTANCE;
-		}
-
 		ThreadPool::ThreadPool()
 		{
 			init();
 			Logger::Log::getInstance().logInfo("ThreadPool: Using " + std::to_string(poolSize) + " thread(s)");
 		}
 
-		void ThreadPool::init()
+		void ThreadPool::init(int threadPoolSize)
 		{
 			active = true;
-			poolSize = std::thread::hardware_concurrency();
-			poolSize = poolSize < 1 ? 1 : poolSize;
+			if (threadPoolSize < 1)
+			{
+				poolSize = std::thread::hardware_concurrency();
+				poolSize = poolSize < 1 ? 1 : poolSize;
+			}
+			else
+			{
+				poolSize = threadPoolSize;
+			}
 
 			for (unsigned i = 0; i < poolSize; i++)
 			{
-				std::thread t(&ThreadPool::pollTask, this);
-				pool.push_back(std::move(t));
+				pool.emplace_back(std::thread (&ThreadPool::pollTask, this));
 			}
 		}
 

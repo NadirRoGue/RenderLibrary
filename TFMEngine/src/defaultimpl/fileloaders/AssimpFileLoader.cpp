@@ -50,6 +50,36 @@ namespace RenderLib
 			return (IVECTOR3(face.mIndices[0], face.mIndices[1], face.mIndices[2]));
 		}
 
+		inline CPU::Texture::TextureStackBlendOperation aiBlendOpToEngineOp(aiTextureOp op)
+		{
+			CPU::Texture::TextureStackBlendOperation engineOp;
+			switch (op)
+			{
+			case aiTextureOp::aiTextureOp_Add:
+				engineOp = CPU::Texture::TextureStackBlendOperation::OP_ADD;
+				break;
+			case aiTextureOp::aiTextureOp_Divide:
+				engineOp = CPU::Texture::TextureStackBlendOperation::OP_DIVIDE;
+				break;
+			case aiTextureOp::aiTextureOp_Multiply:
+				engineOp = CPU::Texture::TextureStackBlendOperation::OP_MULTIPLY;
+				break;
+			case aiTextureOp::aiTextureOp_SignedAdd:
+				engineOp = CPU::Texture::TextureStackBlendOperation::OP_SIGNEDADD;
+				break;
+			case aiTextureOp::aiTextureOp_SmoothAdd:
+				engineOp = CPU::Texture::TextureStackBlendOperation::OP_SMOOTHADD;
+				break;
+			case aiTextureOp::aiTextureOp_Subtract:
+				engineOp = CPU::Texture::TextureStackBlendOperation::OP_SUBSTRACT;
+				break;
+			default:
+				engineOp = CPU::Texture::TextureStackBlendOperation::OP_ADD;
+			}
+
+			return engineOp;
+		}
+
 		template<class SRC, class DST, typename CONVFUNC>
 		inline void gatherMaterialValue(aiMaterial * mat, const char * pkey, unsigned int type, unsigned int idx, CPU::IO::LoadedParameter<DST> &dst, CONVFUNC func)
 		{
@@ -60,15 +90,39 @@ namespace RenderLib
 			}
 		}
 
-		inline void gatherMaterialTexturesOfType(aiMaterial * mat, const aiTextureType & textureType, std::vector<CPU::IO::LoadedParameter<std::string>> & dst, const std::string & rootPath)
+		inline void gatherMaterialTexturesOfType(aiMaterial * mat, 
+			const aiTextureType & textureType, 
+			std::vector<CPU::IO::LoadedParameter<CPU::Mesh::MaterialTextureInfo>> & dst, 
+			const std::string & rootPath)
 		{
 			unsigned int numTexturesInStack = mat->GetTextureCount(textureType);
 			dst.resize(numTexturesInStack);
 			for (unsigned int i = 0; i < numTexturesInStack; i++)
 			{
-				gatherMaterialValue<aiString, std::string>(mat, AI_MATKEY_TEXTURE(textureType, i), dst[i], assimpToString);
-				std::string relativePath = dst[i].get();
-				dst[i].set(rootPath + "/" + relativePath);
+				aiString assimpPath;
+				if (mat->Get(AI_MATKEY_TEXTURE(textureType, i), assimpPath) == AI_SUCCESS)
+				{
+					std::string path = rootPath + "/" + assimpToString(assimpPath);
+					
+					float blendStrenght;
+					if (mat->Get(AI_MATKEY_TEXBLEND(textureType, i), blendStrenght) != AI_SUCCESS)
+					{
+						blendStrenght = 1.0;
+					}
+
+					CPU::Texture::TextureStackBlendOperation engineBlendOp = CPU::Texture::TextureStackBlendOperation::OP_ADD;
+					aiTextureOp blendOp;
+					if (mat->Get(AI_MATKEY_TEXOP(textureType, i), blendOp) == AI_SUCCESS)
+					{
+						engineBlendOp = aiBlendOpToEngineOp(blendOp);
+					}
+
+					CPU::Mesh::MaterialTextureInfo info;
+					info.blendStrength = blendStrenght;
+					info.filePath = path;
+					info.blendOperation = engineBlendOp;
+					dst[i].set(info);
+				}
 			}
 		}
 
@@ -119,7 +173,7 @@ namespace RenderLib
 			size_t lastIndexSlash = fileName.find_last_of("/\\");
 			std::string rootPath = lastIndexSlash == std::string::npos? "." : fileName.substr(0, lastIndexSlash);
 			processSceneMaterials(scene, result.get(), rootPath);
-			processSceneMeshes(scene, result.get());
+			processSceneMeshes(scene, result.get(), fileName);
 
 			return result;
 		}
@@ -144,6 +198,7 @@ namespace RenderLib
 		void AssimpFileLoader::processFileMaterial(aiMaterial * material, CPU::Mesh::MaterialLoadedData & matData, const std::string & rootPath)
 		{
 			gatherMaterialValue<aiString, std::string>(material, AI_MATKEY_NAME, matData.name, assimpToString);
+
 			gatherMaterialValue<aiVector3D, VECTOR3>(material, AI_MATKEY_COLOR_DIFFUSE, matData.diffuseColor, assimpToEigen3F);
 			gatherMaterialValue<aiVector3D, VECTOR3>(material, AI_MATKEY_COLOR_SPECULAR, matData.specularColor, assimpToEigen3F);
 			gatherMaterialValue<aiVector3D, VECTOR3>(material, AI_MATKEY_COLOR_AMBIENT, matData.ambientColor, assimpToEigen3F);
@@ -178,7 +233,7 @@ namespace RenderLib
 			}
 		}
 
-		void AssimpFileLoader::processSceneMeshes(const aiScene * scene, CPU::Mesh::MeshLoadResult * dst)
+		void AssimpFileLoader::processSceneMeshes(const aiScene * scene, CPU::Mesh::MeshLoadResult * dst, const std::string & rootPath)
 		{
 			if (!scene->HasMeshes())
 			{
@@ -192,19 +247,22 @@ namespace RenderLib
 				aiMesh * meshToProcess = scene->mMeshes[i];
 
 				CPU::Mesh::MeshLoadedData meshDst;
-				processFileMesh(meshToProcess, meshDst);
+				processFileMesh(meshToProcess, meshDst, rootPath);
 
 				dst->loadedData.push_back(meshDst);
 				i++;
 			}
 		}
 
-		void AssimpFileLoader::processFileMesh(aiMesh * mesh, CPU::Mesh::MeshLoadedData & dst)
+		void AssimpFileLoader::processFileMesh(aiMesh * mesh, CPU::Mesh::MeshLoadedData & dst, const std::string & fileRoot)
 		{
 			std::unique_ptr<CPU::Mesh::MeshLoadResult> meshDataPtr = std::make_unique<CPU::Mesh::MeshLoadResult>();
 			CPU::Mesh::MeshLoadResult * meshData = meshDataPtr.get();
 
 			size_t i = 0;
+
+			dst.materialIndex = mesh->mMaterialIndex;
+			dst.srcFile = fileRoot;
 
 			dst.numFaces = mesh->mNumFaces;
 			dst.loadedFaces.reserve(dst.numFaces);

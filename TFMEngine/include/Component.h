@@ -7,12 +7,14 @@
 namespace RenderLib
 {
 	class SceneObject;
+	class EngineInstance;
 
 	class Component
 	{
 	public:
 		bool enabled;
 		SceneObject * object;
+		EngineInstance * engineInstance;
 	public:
 		Component();
 		~Component();
@@ -20,6 +22,7 @@ namespace RenderLib
 		virtual void start();
 		virtual void update();
 		virtual void fixedUpdate();
+
 		virtual void destroy();
 
 		virtual std::type_index getComponentType();

@@ -8,11 +8,6 @@ namespace RenderLib
 		{
 			GPUTexture::GPUTexture()
 				:id(-1)
-				, mutableTexture(false)
-				, generateMipMaps(false)
-				, internalFormat(GL_RGBA8)
-				, format(GL_RGBA)
-				, pixelType(GL_UNSIGNED_BYTE)
 			{
 			}
 
@@ -57,29 +52,14 @@ namespace RenderLib
 				return depth;
 			}
 
-			void GPUTexture::setIsMutable(bool mutableT)
+			GPUTextureConfig & GPUTexture::getConfig()
 			{
-				mutableTexture = mutableT;
+				return config;
 			}
 
 			bool GPUTexture::isMutable()
 			{
-				return mutableTexture;
-			}
-
-			void GPUTexture::setInternalFormat(const int & internalFormat)
-			{
-				this->internalFormat = internalFormat;
-			}
-
-			void GPUTexture::setDataFormat(const GLenum & format)
-			{
-				this->format = format;
-			}
-
-			void GPUTexture::setPixelFormat(const GLenum & pixelFormat)
-			{
-				this->pixelType = pixelFormat;
+				return config.isMutable;
 			}
 
 			void GPUTexture::upload(void * data, unsigned int width, unsigned int height, unsigned int depth)
@@ -93,7 +73,7 @@ namespace RenderLib
 
 				bind();
 
-				if (mutableTexture)
+				if (config.isMutable)
 				{
 					uploadMutable(data);
 				}
@@ -102,9 +82,21 @@ namespace RenderLib
 					uploadInmutable(data);
 				}
 
-				if (generateMipMaps)
+				GLenum type = getTexturType();
+				glTexParameteri(type, GL_TEXTURE_MIN_FILTER, config.minificationFilter);
+				glTexParameteri(type, GL_TEXTURE_MAG_FILTER, config.magnificationFilter);
+				glTexParameteri(type, GL_TEXTURE_WRAP_T, config.tComponentWrapType);
+				glTexParameteri(type, GL_TEXTURE_WRAP_S, config.sComponentWrapType);
+				glTexParameteri(type, GL_TEXTURE_WRAP_R, config.rComponentWrapType);
+
+				if (config.anysotropyLevel > 0.0f)
 				{
-					glGenerateMipmap(getTexturType());
+					glTexParameterf(type, GL_TEXTURE_MAX_ANISOTROPY_EXT, config.anysotropyLevel);
+				}
+				
+				if (config.generateMipMaps)
+				{
+					glGenerateMipmap(type);
 				}
 			}
 

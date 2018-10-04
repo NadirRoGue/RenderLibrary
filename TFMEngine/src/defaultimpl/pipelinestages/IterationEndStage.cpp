@@ -29,6 +29,16 @@ namespace RenderLib
 
 			// Non context-related clean ups
 			engineInstance->getPipelineManager().getThreadPool().shutDown();
+
+			// Call component's destroy method
+			for (auto & obj : engineInstance->getSceneManager().getActiveScene()->getSceneObjects())
+			{
+				SceneObject * objPtr = obj.get();
+				for (auto & comp : objPtr->getAllComponents())
+				{
+					comp.get()->destroy();
+				}
+			}
 		}
 	}
 }

@@ -52,6 +52,9 @@ namespace RenderLib
 				{
 					for (auto & unregisteredComp : unregisterComps)
 					{
+						unregisteredComp.get()->engineInstance = engineInstance;
+						unregisteredComp.get()->start();
+
 						stageBroker.registerElement(unregisteredComp.get());
 						obj->getComponentList().registerComponent(unregisteredComp);
 					}

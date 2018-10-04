@@ -18,10 +18,10 @@ namespace RenderLib
 			CPU::IO::AbstractLoadResultPtr loadFile(const std::string & fileName, unsigned int options);
 		private:
 			void processSceneMaterials(const aiScene * scene, CPU::Mesh::MeshLoadResult * dst, const std::string & rootPath);
-			void processSceneMeshes(const aiScene * scene, CPU::Mesh::MeshLoadResult * dst);
+			void processSceneMeshes(const aiScene * scene, CPU::Mesh::MeshLoadResult * dst, const std::string & rootPath);
 
 			void processFileMaterial(aiMaterial * material, CPU::Mesh::MaterialLoadedData & dst, const std::string & roothPath);
-			void processFileMesh(aiMesh * assimpMesh, CPU::Mesh::MeshLoadedData & dst);
+			void processFileMesh(aiMesh * assimpMesh, CPU::Mesh::MeshLoadedData & dst, const std::string & rootPath);
 		};
 	}
 }

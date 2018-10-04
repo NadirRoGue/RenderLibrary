@@ -34,6 +34,9 @@ namespace RenderLib
 #endif
 				size_t index;
 
+				std::string sourceFileName;
+				unsigned int materialIndex;
+
 				Memory::MemoryBlock * memoryBlock;
 			public:
 				Mesh();

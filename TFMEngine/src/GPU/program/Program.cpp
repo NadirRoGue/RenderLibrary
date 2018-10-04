@@ -580,6 +580,22 @@ namespace RenderLib
 #endif
 #endif
 			}
+
+			void Program::setUniformTexture(const std::string & name, Texture::GPUTexture * texture, unsigned int & textureUnit)
+			{
+				auto it = shaderUniforms.find(name);
+				if (it == shaderUniforms.end())
+				{
+					return;
+				}
+				unsigned int id = it->second.id;
+
+				glActiveTexture(GL_TEXTURE0 + textureUnit);
+				texture->bind();
+				glUniform1i(id, textureUnit);
+
+				textureUnit++;
+			}
 		}
 	}
 }

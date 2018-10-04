@@ -5,6 +5,7 @@
 #include <string>
 #include <typeinfo>
 #include <typeindex>
+#include <mutex>
 
 #include "Defines.h"
 #include "EngineInstance.h"
@@ -25,6 +26,8 @@ namespace RenderLib
 			private:
 				std::unordered_map<std::type_index, std::unique_ptr<MemoryPool>> memoryPool;
 				std::unordered_map<std::type_index, std::unique_ptr<AbstractPoolObjectBuilder>> attributeBuilders;
+
+				std::mutex mtx;
 			private:
 				MemoryManager();
 			public:

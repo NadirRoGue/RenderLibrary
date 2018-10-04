@@ -7,6 +7,9 @@
 #include "GPU/program/ProgramManager.h"
 #include "defaultimpl/shaders/StandardProgram.h"
 
+#include "CPU/texture/TextureManager.h"
+#include "GPU/texture/GPUTexture2D.h"
+
 #include "EngineInstance.h"
 
 namespace RenderLib
@@ -62,6 +65,12 @@ namespace RenderLib
 			{
 				standard->configureShaderAttributes(renderables->gpuMesh);
 			}
+
+			CPU::Texture::Texture * cpuTexture = CPU::Texture::TextureManager::getInstance().loadTexture("./assets/texture.png", CPU::Texture::TextureType::TEXTURE2D);
+			texture = manager.createTexture<GPU::Texture::GPUTexture2D>(cpuTexture->index);
+			std::vector<unsigned char> data;
+			cpuTexture->pixels.dumpAttributes(data);
+			texture->upload(&data[0], cpuTexture->width, cpuTexture->height);
 		}
 
 		void ForwardRenderStage::runStage()
@@ -88,7 +97,9 @@ namespace RenderLib
 			{
 				GPU::Mesh::GPUMesh * mesh = r->gpuMesh;
 
-				standard->onRenderObject(*(r->object), *cam);
+				standard->onRenderObject(*(r->object), *(r->material), *cam);
+				standard->setUniformTexture("diffuseTexture", texture);
+
 				glDrawElementsBaseVertex(GL_TRIANGLES, (GLsizei)(mesh->faces.numElements * mesh->vertices.elementCount), GL_UNSIGNED_INT, (void*)0, 0);
 				
 			}

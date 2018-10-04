@@ -73,7 +73,7 @@ namespace RenderLib
 
 			}
 
-			void ShaderProgram::onRenderObject(const SceneObject & object, const Camera & camera)
+			void ShaderProgram::onRenderObject(const SceneObject & object, const Material::Material & material, const Camera & camera)
 			{
 				
 			}

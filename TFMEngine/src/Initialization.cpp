@@ -12,6 +12,8 @@
 #include "defaultimpl/fileloaders/ShaderLoader.h"
 #include "defaultimpl/fileloaders/ImageLoader.h"
 
+#include "GPU/texture/GPUTextureManager.h"
+
 #include "logger/Log.h"
 #include "defaultimpl/loggers/ConsoleLogger.h"
 
@@ -27,5 +29,7 @@ namespace RenderLib
 		CPU::IO::FileManager::registerFileLoader<DefaultImpl::ImageLoader>();
 
 		Logger::Log::getInstance().setLogger<DefaultImpl::ConsoleLogger>();
+
+		GPU::Texture::GPUTextureManager::queryAnisotropicFilterSupport();
 	}
 }

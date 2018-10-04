@@ -71,6 +71,7 @@ namespace RenderLib
 
 			void GPUBuffer::updateData(char * faceData, const size_t & faceSize, char * vertexData, const size_t & vertexSize)
 			{
+				//std::cout << faceSize << " " << vertexSize << std::endl;
 				bindDataBuffer();
 				glBufferData(GL_ARRAY_BUFFER, vertexSize, NULL, usage);
 				glBufferSubData(GL_ARRAY_BUFFER, 0, vertexSize, vertexData);

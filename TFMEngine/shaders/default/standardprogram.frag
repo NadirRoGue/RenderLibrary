@@ -4,6 +4,7 @@ layout (location=0) out vec4 outColor;
 
 layout (location=0) in vec3 pos;
 layout (location=1) in vec3 normal;
+layout (location=2) in vec2 uv;
 
 uniform vec3 LightDiffuse = vec3(1.0);
 uniform vec3 LightAmbient = vec3(0.1);
@@ -11,9 +12,11 @@ uniform vec3 LightSpecular = vec3(1.0);
 
 uniform vec3 LightDir = vec3(1.0, 1.0, 0.0);
 
+uniform sampler2D diffuseTexture;
+
 void main()
 {
-	vec3 Ka = vec3(1.0, 0.0, 0.0);
+	vec3 Ka = texture(diffuseTexture, uv).rgb;//vec3(1.0, 0.0, 0.0);
 	vec3 Ks = vec3(1.0);
 
 	vec3 c = vec3(0.0);

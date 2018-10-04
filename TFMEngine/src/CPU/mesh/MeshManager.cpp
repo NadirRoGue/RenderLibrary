@@ -6,6 +6,8 @@
 #include "CPU/memory/MemoryManager.h"
 #include "CPU/mesh/MeshBlockConfiguration.h"
 
+#include "material/MaterialManager.h"
+
 #include <iostream>
 
 namespace RenderLib
@@ -99,6 +101,8 @@ namespace RenderLib
 
 			std::vector<Mesh *> MeshManager::loadMeshFromFile(const std::string & fileName, unsigned int optionsFlag)
 			{
+				std::unique_lock<std::mutex> lock(mtx);
+
 				// Import data from file
 				IO::AbstractLoadResultPtr loadedMeshes = IO::FileManager::loadFile(fileName, optionsFlag);
 				MeshLoadResult * result = static_cast<MeshLoadResult*>(loadedMeshes.get());
@@ -107,7 +111,9 @@ namespace RenderLib
 				std::vector<Mesh*> meshList = processLoadedMeshes(fileName, result->loadedData);
 
 				// Process materials
-				
+				Material::MaterialManager::getInstance().parseMaterials(fileName, result->loadedMaterials);
+
+				lock.unlock();
 
 				return meshList;
 			}
@@ -207,6 +213,9 @@ namespace RenderLib
 #endif
 				//compare(data, meshPtr);
 
+				meshPtr->materialIndex = data.materialIndex;
+				meshPtr->sourceFileName = data.srcFile;
+
 				return newMesh;
 			}
 
@@ -233,12 +242,16 @@ namespace RenderLib
 
 			void MeshManager::destroyMesh(std::vector<std::unique_ptr<Mesh>> && meshToDestroy)
 			{
+				std::unique_lock<std::mutex> lock(mtx);
+
 				for (auto & subMesh : meshToDestroy)
 				{
 					subMesh.reset();
 				}
 
 				meshToDestroy.clear();
+
+				lock.unlock();
 			}
 
 			void MeshManager::destroy()

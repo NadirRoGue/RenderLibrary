@@ -7,6 +7,8 @@ namespace RenderLib
 		namespace Mesh
 		{
 			Mesh::Mesh()
+				: index(-1)
+				, materialIndex(-1)
 			{
 			}
 

@@ -9,6 +9,8 @@
 
 #include "GPU/mesh/GPUMesh.h"
 
+#include "material/Material.h"
+
 namespace RenderLib
 {
 	namespace DefaultImpl
@@ -41,6 +43,7 @@ namespace RenderLib
 			GPUToCPUSyncPolicy gpuToCpuSync;
 			PreferredRenderer preferredRender;
 			GPU::Mesh::GPUMesh * gpuMesh;
+			Material::Material * material;
 		public:
 			MeshRenderer();
 			void start();

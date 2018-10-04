@@ -9,6 +9,8 @@
 
 #include "Defines.h"
 
+#include "GPU/texture/GPUTexture.h"
+
 namespace RenderLib
 {
 	namespace GPU
@@ -68,6 +70,7 @@ namespace RenderLib
 				void setUniformMatrix2(const std::string & name, const unsigned int & count, const bool & transpose, const FLOAT * val);
 				void setUniformMatrix3(const std::string & name, const unsigned int & count, const bool & transpose, const FLOAT * val);
 				void setUniformMatrix4(const std::string & name, const unsigned int & count, const bool & transpose, const FLOAT * val);
+				void setUniformTexture(const std::string & name, Texture::GPUTexture * texture, unsigned int & textureUnit);
 			protected:
 				virtual void getUberShaderDefines(std::vector<std::string> & definesBuffer);
 				virtual unsigned int loadShaderFromFile(GLenum shaderType, const std::string & filePath, std::vector<std::string> & configStrings);

@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <memory>
 #include <vector>
+#include <mutex>
 
 #include "Defines.h"
 
@@ -28,6 +29,8 @@ namespace RenderLib
 				static unsigned int OPTION_COMPUTE_BITANGENTS_IF_ABSENT;
 			public:
 				static MeshManager & getInstance();
+			private:
+				std::mutex mtx;
 			private:
 				MeshManager();
 			public:

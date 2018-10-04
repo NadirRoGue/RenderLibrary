@@ -11,7 +11,12 @@ namespace RenderLib
 			CPU::Texture::TextureBlockConfiguration * config = 
 				static_cast<CPU::Texture::TextureBlockConfiguration*>(data);
 
-			resource->pixels.setAttributeSource(memBlock, 0, sizeof(FLOAT), config->depth * config->width * config->height);
+			resource->pixels.setAttributeSource(memBlock, 0, sizeof(unsigned char), config->getSizeBytes());
+
+			resource->depth = config->depth;
+			resource->height = config->height;
+			resource->width = config->width;
+			resource->index = memBlock->index;
 		}
 	}
 }

@@ -24,13 +24,13 @@ namespace RenderLib
 
 			void GPUTexture3D::uploadMutable(void * data)
 			{
-				glTexImage3D(GL_TEXTURE_3D, 0, internalFormat, width, height, depth, 0, format, pixelType, data);
+				glTexImage3D(GL_TEXTURE_3D, 0, config.internalFormat, width, height, depth, 0, config.format, config.pixelType, data);
 			}
 
 			void GPUTexture3D::uploadInmutable(void * data)
 			{
-				glTexStorage3D(GL_TEXTURE_3D, 1, internalFormat, width, height, depth);
-				glTexSubImage3D(GL_TEXTURE_3D, 0, 0, 0, 0, width, height, depth, format, pixelType, data);
+				glTexStorage3D(GL_TEXTURE_3D, 1, config.internalFormat, width, height, depth);
+				glTexSubImage3D(GL_TEXTURE_3D, 0, 0, 0, 0, width, height, depth, config.format, config.pixelType, data);
 			}
 		}
 	}

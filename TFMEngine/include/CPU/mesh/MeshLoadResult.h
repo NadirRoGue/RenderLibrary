@@ -6,6 +6,8 @@
 #include "Defines.h"
 #include "CPU/io/FileLoadResult.h"
 
+#include "CPU/texture/TextureStackBlendOperation.h"
+
 namespace RenderLib
 {
 	namespace CPU
@@ -20,6 +22,9 @@ namespace RenderLib
 				size_t numUVMaps;
 				size_t numColorLayers;
 
+				unsigned int materialIndex;
+				std::string srcFile;
+
 				std::vector<IVECTOR3> loadedFaces;
 				std::vector<VECTOR3> loadedVertices;
 				std::vector<VECTOR3> loadedNormals;
@@ -28,6 +33,22 @@ namespace RenderLib
 				std::vector<std::vector<VECTOR2>> loadedUvs;
 				std::vector<std::vector<VECTOR4>> loadedColors;
 			} MeshLoadedData;
+
+			typedef struct MaterialTextureInfo
+			{
+			public:
+				std::string filePath;
+				Texture::TextureStackBlendOperation blendOperation;
+				float blendStrength;
+
+				MaterialTextureInfo()
+					: filePath("")
+					, blendOperation(Texture::TextureStackBlendOperation::OP_ADD)
+					, blendStrength(1.0f)
+				{
+				}
+
+			} MaterialTextureInfo;
 
 			typedef struct MaterialLoadedData
 			{
@@ -42,16 +63,16 @@ namespace RenderLib
 				IO::LoadedParameter<FLOAT> shininess;
 				IO::LoadedParameter<FLOAT> specularScale; // A.K.A shininessStrength
 				IO::LoadedParameter<FLOAT> indexOfRefraction;
-				std::vector<IO::LoadedParameter<std::string>> diffuseTextures;
-				std::vector<IO::LoadedParameter<std::string>> specularTextures;
-				std::vector<IO::LoadedParameter<std::string>> shininessTextures;
-				std::vector<IO::LoadedParameter<std::string>> ambientTextures;
-				std::vector<IO::LoadedParameter<std::string>> emissiveTextures;
-				std::vector<IO::LoadedParameter<std::string>> normalMapTextures;
-				std::vector<IO::LoadedParameter<std::string>> opacityTextures;
-				std::vector<IO::LoadedParameter<std::string>> heightMapTextures;
-				std::vector<IO::LoadedParameter<std::string>> displacementTextures;
-				std::vector<IO::LoadedParameter<std::string>> otherTextures;
+				std::vector<IO::LoadedParameter<MaterialTextureInfo>> diffuseTextures;
+				std::vector<IO::LoadedParameter<MaterialTextureInfo>> specularTextures;
+				std::vector<IO::LoadedParameter<MaterialTextureInfo>> shininessTextures;
+				std::vector<IO::LoadedParameter<MaterialTextureInfo>> ambientTextures;
+				std::vector<IO::LoadedParameter<MaterialTextureInfo>> emissiveTextures;
+				std::vector<IO::LoadedParameter<MaterialTextureInfo>> normalMapTextures;
+				std::vector<IO::LoadedParameter<MaterialTextureInfo>> opacityTextures;
+				std::vector<IO::LoadedParameter<MaterialTextureInfo>> heightMapTextures;
+				std::vector<IO::LoadedParameter<MaterialTextureInfo>> displacementTextures;
+				std::vector<IO::LoadedParameter<MaterialTextureInfo>> otherTextures;
 				bool wireFrameRender;
 				bool twoSidedRender;
 
@@ -62,18 +83,6 @@ namespace RenderLib
 				}
 
 			} MaterialLoadedData;
-
-			enum class MaterialTextureType : int
-			{
-				TEXTURE_DIFFUSE,
-				TEXTURE_SPECULAR,
-				TEXTURE_SHININESS,
-				TEXTURE_AMBIENT,
-				TEXTURE_EMISSIVE,
-				TEXTURE_NORMALMAP,
-				TEXTURE_HEIGHTMAP,
-				TEXTURE_DISPLACEMENT,
-			};
 
 			class MeshLoadResult : public IO::AbstractLoadResult
 			{

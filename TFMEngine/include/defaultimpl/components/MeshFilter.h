@@ -16,6 +16,7 @@ namespace RenderLib
 		public:
 			CPU::Mesh::Mesh * mesh;
 		public:
+			MeshFilter();
 			void start();
 			size_t getIndex();
 		};

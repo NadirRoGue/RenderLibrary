@@ -151,12 +151,6 @@
     <Filter Include="shaders\default">
       <UniqueIdentifier>{45b42444-0f82-43e7-acf7-092d0d9e72ae}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Archivos de encabezado\CPU\material">
-      <UniqueIdentifier>{e50c766e-d02a-4894-8da4-e2e5c884de1d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Archivos de origen\CPU\material">
-      <UniqueIdentifier>{639d2306-94ba-4b7e-83ce-875e6bb03806}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Archivos de encabezado\GPU\texture">
       <UniqueIdentifier>{09d96bb2-a9e7-44b5-b500-299f066d95d1}</UniqueIdentifier>
     </Filter>
@@ -174,6 +168,15 @@
     </Filter>
     <Filter Include="Archivos de encabezado\defaultimpl\textureblockconfigurators">
       <UniqueIdentifier>{a9902748-8d5b-4b2c-a321-06a5b699f6a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\material">
+      <UniqueIdentifier>{45c2aad6-0aa1-4426-8f73-87534cec44f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\material">
+      <UniqueIdentifier>{0e311509-7f57-47a3-a031-c9a07c121f8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\CPU\texture\blendoperations">
+      <UniqueIdentifier>{ae7642f8-434a-44f3-b1c4-e29ff8e55c92}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -381,12 +384,6 @@
     <ClInclude Include="include\defaultimpl\shaders\StandardProgram.h">
       <Filter>Archivos de encabezado\defaultimpl\shaders</Filter>
     </ClInclude>
-    <ClInclude Include="include\CPU\material\Material.h">
-      <Filter>Archivos de encabezado\CPU\material</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CPU\material\MaterialManager.h">
-      <Filter>Archivos de encabezado\CPU\material</Filter>
-    </ClInclude>
     <ClInclude Include="include\defaultimpl\pipelinestages\TransformUpdateStage.h">
       <Filter>Archivos de encabezado\defaultimpl\pipelinestages</Filter>
     </ClInclude>
@@ -437,6 +434,36 @@
     </ClInclude>
     <ClInclude Include="include\defaultimpl\fileloaders\ImageLoader.h">
       <Filter>Archivos de encabezado\defaultimpl\fileloaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\material\Material.h">
+      <Filter>Archivos de encabezado\material</Filter>
+    </ClInclude>
+    <ClInclude Include="include\material\MaterialManager.h">
+      <Filter>Archivos de encabezado\material</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CPU\texture\TextureStackBlendOperation.h">
+      <Filter>Archivos de encabezado\CPU\texture</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CPU\texture\TextureBlendOperation.h">
+      <Filter>Archivos de encabezado\CPU\texture</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CPU\texture\blendoperations\BlendAdd.h">
+      <Filter>Archivos de encabezado\CPU\texture\blendoperations</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CPU\texture\blendoperations\BlendDivide.h">
+      <Filter>Archivos de encabezado\CPU\texture\blendoperations</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CPU\texture\blendoperations\BlendMultiply.h">
+      <Filter>Archivos de encabezado\CPU\texture\blendoperations</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CPU\texture\blendoperations\BlendSignedAdd.h">
+      <Filter>Archivos de encabezado\CPU\texture\blendoperations</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CPU\texture\blendoperations\BlendSmoothAdd.h">
+      <Filter>Archivos de encabezado\CPU\texture\blendoperations</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CPU\texture\blendoperations\BlendSub.h">
+      <Filter>Archivos de encabezado\CPU\texture\blendoperations</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -617,12 +644,6 @@
     <ClCompile Include="src\defaultimpl\shaders\StandardProgram.cpp">
       <Filter>Archivos de origen\defaultimpl\shaders</Filter>
     </ClCompile>
-    <ClCompile Include="src\CPU\material\Material.cpp">
-      <Filter>Archivos de origen\CPU\material</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CPU\material\MaterialManager.cpp">
-      <Filter>Archivos de origen\CPU\material</Filter>
-    </ClCompile>
     <ClCompile Include="src\pipeline\Threadpool.cpp">
       <Filter>Archivos de origen\pipeline</Filter>
     </ClCompile>
@@ -673,6 +694,12 @@
     </ClCompile>
     <ClCompile Include="src\defaultimpl\fileloaders\ImageLoader.cpp">
       <Filter>Archivos de origen\defaultimpl\fileloaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\material\Material.cpp">
+      <Filter>Archivos de origen\material</Filter>
+    </ClCompile>
+    <ClCompile Include="src\material\MaterialManager.cpp">
+      <Filter>Archivos de origen\material</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

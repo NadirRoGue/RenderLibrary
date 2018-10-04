@@ -16,6 +16,10 @@ namespace RenderLib
 		{
 			class GPUTextureManager
 			{
+			public:
+				static float MAX_ANISOTROPIC_FILTERING;
+			public:
+				static void queryAnisotropicFilterSupport();
 			private:
 				std::unordered_map<size_t, std::unique_ptr<GPUTexture>> gpuTextures;
 				std::unordered_map<std::string, std::unique_ptr<GPUTexture>> customTextures;

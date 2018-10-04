@@ -4,6 +4,8 @@
 
 #include "defaultimpl/components/MeshFilter.h"
 
+#include "material/MaterialManager.h"
+
 #include "logger/Log.h"
 
 namespace RenderLib
@@ -14,6 +16,8 @@ namespace RenderLib
 			: cpuToGpuSync(CPUToGPUSyncPolicy::CPU_SYNC_ONCE_AT_BEGINNING)
 			, gpuToCpuSync(GPUToCPUSyncPolicy::GPU_DO_NOT_SYNC)
 			, preferredRender(PreferredRenderer::AUTO_SELECT)
+			, gpuMesh(NULL)
+			, material(NULL)
 		{
 
 		}
@@ -21,11 +25,16 @@ namespace RenderLib
 		void MeshRenderer::start()
 		{
 			MeshFilter * meshFilter = object->getComponent<MeshFilter>();
-			if (meshFilter == NULL)
+			if (meshFilter == NULL || meshFilter->mesh == NULL)
 			{
 				enabled = false;
 
 				Logger::Log::getInstance().logWarning("MeshRenderer: Object " + object->objectName + " has no MeshFilter component attached, MeshRenderer component is disabled");
+			}
+			else
+			{
+				CPU::Mesh::Mesh * cpuMesh = meshFilter->mesh;
+				material = Material::MaterialManager::getInstance().getMaterial(cpuMesh->sourceFileName, cpuMesh->materialIndex);
 			}
 		}
 

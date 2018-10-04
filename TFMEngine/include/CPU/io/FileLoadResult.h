@@ -36,6 +36,11 @@ namespace RenderLib
 				{
 					return value;
 				}
+
+				const bool & paramExists()
+				{
+					return exists;
+				}
 			};
 
 			class AbstractLoadResult

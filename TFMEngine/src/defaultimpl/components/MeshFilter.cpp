@@ -8,6 +8,12 @@ namespace RenderLib
 {
 	namespace DefaultImpl
 	{
+		MeshFilter::MeshFilter()
+			: mesh(NULL)
+		{
+
+		}
+
 		void MeshFilter::start()
 		{
 			if (mesh == NULL)

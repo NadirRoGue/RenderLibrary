@@ -10,16 +10,58 @@ namespace RenderLib
 	{
 		namespace Texture
 		{
-			class GPUTexture
+			typedef struct GPUTextureConfig
 			{
-			protected:
-				unsigned int id;
 				int internalFormat;	// How do we want to store the texture in the gpu memory?
 				GLenum format;		// Whats the format of the image we got form disk (what does each element we read mean)?
 				GLenum pixelType;	// Hows each element of the texture codified? (3 floats, 1 unsigned int, 1 unsigned char,...)
 				bool generateMipMaps;
 
 				bool mutableTexture;
+
+				int minificationFilter;
+				int magnificationFilter;
+
+				int tComponentWrapType;
+				int sComponentWrapType;
+				int rComponentWrapType;
+
+				float anysotropyLevel;
+
+				bool isMutable;
+
+				GPUTextureConfig()
+					: mutableTexture(false)
+					, generateMipMaps(false)
+					, internalFormat(GL_RGBA8)
+					, format(GL_RGBA)
+					, pixelType(GL_UNSIGNED_BYTE)
+					, anysotropyLevel(0.0f)
+				{
+					setMinMaxFilter();
+					setWrapType();
+				}
+
+				void setMinMaxFilter(int minification = GL_NEAREST, int magnification = GL_NEAREST)
+				{
+					minificationFilter = minification;
+					magnificationFilter = magnification;
+				}
+
+				void setWrapType(int wrapT = GL_REPEAT, int wrapS = GL_REPEAT, int wrapR = GL_REPEAT)
+				{
+					tComponentWrapType = wrapT;
+					sComponentWrapType = wrapS;
+					rComponentWrapType = wrapR;
+				}
+			} GPUTextureConfig;
+
+			class GPUTexture
+			{
+			protected:
+				unsigned int id;
+
+				GPUTextureConfig config;
 
 				unsigned int width, height, depth;
 			public:
@@ -39,12 +81,9 @@ namespace RenderLib
 				const unsigned int & getHeight();
 				const unsigned int & getDepth();
 
-				void setIsMutable(bool isMutable);
 				bool isMutable();
 
-				void setInternalFormat(const int & internalFormat);
-				void setDataFormat(const GLenum & format);
-				void setPixelFormat(const GLenum & pixelFormat);
+				GPUTextureConfig & getConfig();
 				
 				void upload(void * data, unsigned int width, unsigned int height = 1, unsigned int depth = 1);
 

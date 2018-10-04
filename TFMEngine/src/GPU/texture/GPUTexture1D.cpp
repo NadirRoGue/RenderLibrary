@@ -24,13 +24,13 @@ namespace RenderLib
 
 			void GPUTexture1D::uploadMutable(void * data)
 			{
-				glTexImage1D(GL_TEXTURE_1D, 0, internalFormat, width, 0, format, pixelType, data);
+				glTexImage1D(GL_TEXTURE_1D, 0, config.internalFormat, width, 0, config.format, config.pixelType, data);
 			}
 
 			void GPUTexture1D::uploadInmutable(void * data)
 			{
-				glTexStorage1D(GL_TEXTURE_1D, 1, internalFormat, width);
-				glTexSubImage1D(GL_TEXTURE_1D, 0, 0, width, format, pixelType, data);
+				glTexStorage1D(GL_TEXTURE_1D, 1, config.internalFormat, width);
+				glTexSubImage1D(GL_TEXTURE_1D, 0, 0, width, config.format, config.pixelType, data);
 			}
 		}
 	}

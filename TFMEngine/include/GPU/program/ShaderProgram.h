@@ -3,6 +3,7 @@
 
 #include "GPU/mesh/GPUMesh.h"
 #include "GPU/program/Program.h"
+#include "material/Material.h"
 
 #include "SceneObject.h"
 #include "Camera.h"
@@ -40,7 +41,7 @@ namespace RenderLib
 				void destroyShaders();
 
 				virtual void onFrameBegin();
-				virtual void onRenderObject(const SceneObject & object, const Camera & camera);
+				virtual void onRenderObject(const SceneObject & object, const Material::Material & material, const Camera & camera);
 			protected:
 				void configureShaderAttribute(const std::string & shaderAttribute, Mesh::GPUAttribute & meshAttribute);
 			};

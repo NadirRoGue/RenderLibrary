@@ -26,52 +26,67 @@ namespace RenderLib
 
 			MemoryPool * MemoryManager::createMemoryPool(const std::type_index & classType, const size_t & sizeInBytes)
 			{
-				if (memoryPool.find(classType) == memoryPool.end())
+				std::unique_lock<std::mutex> lock(mtx);
+				MemoryPool * poolResult = NULL;
+
+				auto it = memoryPool.find(classType);
+				if (it == memoryPool.end())
 				{
 					std::unique_ptr<MemoryPool> pool;
 					try
 					{
 						pool = std::make_unique<MemoryPool>(sizeInBytes);
+						poolResult = pool.get();
 					}
 					catch (std::bad_alloc & balloc)
 					{
 						// FIXME: Error code / message returned. Could not create pool because there is no memory left
-						const char * exception = balloc.what();
+						lock.unlock();
+						throw EngineException("MemoryManager: Error when creating new memory pool: " + std::string(balloc.what()));
 						return NULL;
 					}
 
-					MemoryPool * newPool = pool.get();
-
-					memoryPool[classType] = std::move(pool);
-
-					return newPool;
+					if (poolResult != NULL)
+					{
+						memoryPool[classType] = std::move(pool);
+					}
 				}
 				else
 				{
-					// Return existing pool or warn about duplicate pool name
+					poolResult = it->second.get();
 				}
 
-				return NULL;
+				lock.unlock();
+
+				return poolResult;
 			}
 
 			void MemoryManager::destroyMemoryPool(const std::type_index & classType)
 			{
+				std::unique_lock<std::mutex> lock(mtx);
+
 				auto it = memoryPool.find(classType);
 				if (it != memoryPool.end())
 				{
-					std::unique_ptr<MemoryPool> pool = std::move(it->second);
+					it->second.get()->release();
 					memoryPool.erase(it);
 				}
+
+				lock.unlock();
 			}
 
 			void MemoryManager::destroyAllPools()
 			{
+				std::unique_lock<std::mutex> lock(mtx);
+
 				auto it = memoryPool.begin();
 				while (it != memoryPool.end())
 				{
-					it->second->release();
+					it->second.get()->release();
 					it++;
 				}
+
+				lock.unlock();
 			}
 		}
 	}

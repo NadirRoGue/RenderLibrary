@@ -141,8 +141,6 @@
     <ClInclude Include="include\CPU\io\FileLoader.h" />
     <ClInclude Include="include\CPU\io\FileLoadResult.h" />
     <ClInclude Include="include\CPU\io\FileManager.h" />
-    <ClInclude Include="include\CPU\material\Material.h" />
-    <ClInclude Include="include\CPU\material\MaterialManager.h" />
     <ClInclude Include="include\CPU\memory\MemoryPool.h" />
     <ClInclude Include="include\CPU\memory\MemoryManager.h" />
     <ClInclude Include="include\CPU\memory\MemoryUtil.h" />
@@ -154,10 +152,18 @@
     <ClInclude Include="include\CPU\mesh\MeshLoadResult.h" />
     <ClInclude Include="include\CPU\mesh\MeshManager.h" />
     <ClInclude Include="include\CPU\mesh\MeshUtil.h" />
+    <ClInclude Include="include\CPU\texture\blendoperations\BlendAdd.h" />
+    <ClInclude Include="include\CPU\texture\blendoperations\BlendDivide.h" />
+    <ClInclude Include="include\CPU\texture\blendoperations\BlendMultiply.h" />
+    <ClInclude Include="include\CPU\texture\blendoperations\BlendSignedAdd.h" />
+    <ClInclude Include="include\CPU\texture\blendoperations\BlendSmoothAdd.h" />
+    <ClInclude Include="include\CPU\texture\blendoperations\BlendSub.h" />
     <ClInclude Include="include\CPU\texture\Texture.h" />
+    <ClInclude Include="include\CPU\texture\TextureBlendOperation.h" />
     <ClInclude Include="include\CPU\texture\TextureBlockConfiguration.h" />
     <ClInclude Include="include\CPU\texture\TextureLoadResult.h" />
     <ClInclude Include="include\CPU\texture\TextureManager.h" />
+    <ClInclude Include="include\CPU\texture\TextureStackBlendOperation.h" />
     <ClInclude Include="include\defaultimpl\components\MeshFilter.h" />
     <ClInclude Include="include\defaultimpl\components\MeshRenderer.h" />
     <ClInclude Include="include\defaultimpl\components\ObjectSpinner.h" />
@@ -207,6 +213,8 @@
     <ClInclude Include="include\InstanceManager.h" />
     <ClInclude Include="include\logger\AbstractLogger.h" />
     <ClInclude Include="include\logger\Log.h" />
+    <ClInclude Include="include\material\Material.h" />
+    <ClInclude Include="include\material\MaterialManager.h" />
     <ClInclude Include="include\pipeline\Pipeline.h" />
     <ClInclude Include="include\pipeline\PipelineBroker.h" />
     <ClInclude Include="include\pipeline\PipelineManager.h" />
@@ -228,8 +236,6 @@
     <ClCompile Include="src\Component.cpp" />
     <ClCompile Include="src\CPU\io\FileLoader.cpp" />
     <ClCompile Include="src\CPU\io\FileManager.cpp" />
-    <ClCompile Include="src\CPU\material\Material.cpp" />
-    <ClCompile Include="src\CPU\material\MaterialManager.cpp" />
     <ClCompile Include="src\CPU\memory\MemoryPool.cpp" />
     <ClCompile Include="src\CPU\memory\MemoryManager.cpp" />
     <ClCompile Include="src\CPU\memory\MemoryUtil.cpp" />
@@ -287,6 +293,8 @@
     <ClCompile Include="src\logger\AbstractLogger.cpp" />
     <ClCompile Include="src\logger\Log.cpp" />
     <ClCompile Include="src\Main.cpp" />
+    <ClCompile Include="src\material\Material.cpp" />
+    <ClCompile Include="src\material\MaterialManager.cpp" />
     <ClCompile Include="src\pipeline\Pipeline.cpp" />
     <ClCompile Include="src\pipeline\PipelineBroker.cpp" />
     <ClCompile Include="src\pipeline\PipelineManager.cpp" />

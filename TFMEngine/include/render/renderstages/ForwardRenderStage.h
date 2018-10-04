@@ -5,6 +5,8 @@
 
 #include "GPU/mesh/GPUBuffer.h"
 
+#include "GPU/texture/GPUTextureManager.h"
+
 #include <vector>
 
 namespace RenderLib
@@ -16,6 +18,9 @@ namespace RenderLib
 		private:
 			std::vector<DefaultImpl::MeshRenderer*> staticRenderables;
 			std::vector<DefaultImpl::MeshRenderer*> dynamicRenderables;
+
+			GPU::Texture::GPUTextureManager manager;
+			GPU::Texture::GPUTexture * texture;
 
 			unsigned int programId;
 			unsigned int mvp;

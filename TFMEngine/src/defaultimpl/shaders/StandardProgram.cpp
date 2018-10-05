@@ -27,7 +27,17 @@ namespace RenderLib
 		{
 			configureShaderAttribute("inPos", targetMesh->vertices);
 			configureShaderAttribute("inNormal", targetMesh->normals);
-			configureShaderAttribute("inUV", targetMesh->uvs[0]);
+			configureShaderAttribute("inTangent", targetMesh->tangents);
+
+			if (targetMesh->uvs.size() > 0)
+			{
+				configureShaderAttribute("inUV", targetMesh->uvs[0]);
+			}
+
+			if (targetMesh->colors.size() > 0)
+			{
+				configureShaderAttribute("inColor", targetMesh->colors[0]);
+			}
 		}
 
 		void StandardProgram::onRenderObject(const SceneObject & object, const Material::Material & material, const Camera & camera)
@@ -49,7 +59,7 @@ namespace RenderLib
 			setUniformF("specularScale", material.specularScale());
 
 			unsigned int texUnit = 0;
-			setUniformTexture("diffuseTexture", material.diffuseTexture.getTexture(), texUnit);
+			//setUniformTexture("diffuseTexture", material.diffuseTexture.getTexture(), texUnit);
 			setUniformTexture("specularTexture", material.specularTexture.getTexture(), texUnit);
 			setUniformTexture("ambientTexture", material.ambientTexture.getTexture(), texUnit);
 			setUniformTexture("emissiveTexture", material.emissiveTexture.getTexture(), texUnit);

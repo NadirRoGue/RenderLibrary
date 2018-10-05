@@ -3,8 +3,10 @@
 
 #include "Defines.h"
 
+#include <typeindex>
+#include <typeinfo>
+
 #include "GPU/texture/GPUTexture.h"
-#include "CPU/texture/TextureStackBlendOperation.h"
 
 namespace RenderLib
 {
@@ -100,9 +102,20 @@ namespace RenderLib
 
 			bool wireFrameRender;
 			bool twoSidedRender;
+
+		private:
+			std::type_index gpuProgram;
 		public:
 			Material();
 			~Material();
+
+			template<class T>
+			void useShader()
+			{
+				gpuProgram = typeid(T);
+			}
+
+			const std::type_index & getShaderType();
 		};
 	}
 }

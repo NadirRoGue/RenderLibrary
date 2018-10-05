@@ -32,7 +32,7 @@ int main(int argc, void ** arg)
 	DefaultEngineInitialization();
 
 	// Asset load
-	std::vector<Mesh::Mesh *> meshes = Mesh::MeshManager::getInstance().loadMeshFromFile("./assets/mat_cube.obj", Mesh::MeshManager::OPTION_COMPUTE_NORMALS_IF_ABSENT);
+	std::vector<Mesh::Mesh *> meshes = Mesh::MeshManager::getInstance().loadMeshFromFile("./assets/mat_cube.obj", Mesh::Mesh::OPTION_COMPUTE_NORMALS_IF_ABSENT);
 	if (meshes.size() == 0)
 	{
 		Log::getInstance().logError("No meshes were found in the given file");

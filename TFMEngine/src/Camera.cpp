@@ -3,8 +3,6 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-#include <iostream>
-
 #define degreesToRadians(angleDegrees) ((angleDegrees) * M_PI / 180.0)
 
 namespace RenderLib

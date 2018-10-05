@@ -16,6 +16,11 @@ namespace RenderLib
 			class Mesh
 			{
 			public:
+			public:
+				static unsigned int OPTION_COMPUTE_NORMALS_IF_ABSENT;
+				static unsigned int OPTION_COMPUTE_TANGENTS_IF_ABSENT;
+				static unsigned int OPTION_COMPUTE_BITANGENTS_IF_ABSENT;
+			public:
 				Memory::IVector3Attribute faces;
 
 				Memory::Vector3Attribute vertices;

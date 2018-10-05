@@ -1,17 +1,14 @@
 #include "defaultimpl/fileloaders/AssimpFileLoader.h"
 
-#include "Defines.h"
-
 #include <assimp/Importer.hpp>
 #include <assimp/postprocess.h>
 
-#include "CPU/mesh/MeshManager.h"
-
+#include "Defines.h"
 #include "EngineException.h"
 
-#include "util/StringUtils.h"
+#include "CPU/mesh/Mesh.h"
 
-#include <iostream>
+#include "util/StringUtils.h"
 
 namespace RenderLib
 {
@@ -126,8 +123,6 @@ namespace RenderLib
 			}
 		}
 
-		//void gatherMaterialTexture(aiMaterial * mat)
-
 		// ===========================================================================
 
 		AssimpFileLoader::AssimpFileLoader()
@@ -155,9 +150,9 @@ namespace RenderLib
 			unsigned int assimpFlags = 0;
 
 			assimpFlags |= aiPostProcessSteps::aiProcess_JoinIdenticalVertices;
-			assimpFlags |= (options & CPU::Mesh::MeshManager::OPTION_COMPUTE_NORMALS_IF_ABSENT) ? aiProcess_GenSmoothNormals : 0;
-			assimpFlags |= (options & CPU::Mesh::MeshManager::OPTION_COMPUTE_TANGENTS_IF_ABSENT
-				|| options & CPU::Mesh::MeshManager::OPTION_COMPUTE_BITANGENTS_IF_ABSENT) ? aiProcess_CalcTangentSpace : 0;
+			assimpFlags |= (options & CPU::Mesh::Mesh::OPTION_COMPUTE_NORMALS_IF_ABSENT) ? aiProcess_GenSmoothNormals : 0;
+			assimpFlags |= (options & CPU::Mesh::Mesh::OPTION_COMPUTE_TANGENTS_IF_ABSENT
+				|| options & CPU::Mesh::Mesh::OPTION_COMPUTE_BITANGENTS_IF_ABSENT) ? aiProcess_CalcTangentSpace : 0;
 			assimpFlags |= aiProcess_Triangulate;
 
 			const aiScene * scene = importer.ReadFile(fileName, assimpFlags);

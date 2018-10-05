@@ -200,7 +200,6 @@
     <ClInclude Include="include\GPU\texture\GPUTexture1D.h" />
     <ClInclude Include="include\GPU\texture\GPUTexture2D.h" />
     <ClInclude Include="include\GPU\texture\GPUTexture3D.h" />
-    <ClInclude Include="include\GPU\texture\GPUTextureInstance.h" />
     <ClInclude Include="include\GPU\texture\GPUTextureManager.h" />
     <ClInclude Include="include\graphics\ContextManager.h" />
     <ClInclude Include="include\graphics\WindowHandler.h" />
@@ -283,7 +282,6 @@
     <ClCompile Include="src\GPU\texture\GPUTexture1D.cpp" />
     <ClCompile Include="src\GPU\texture\GPUTexture2D.cpp" />
     <ClCompile Include="src\GPU\texture\GPUTexture3D.cpp" />
-    <ClCompile Include="src\GPU\texture\GPUTextureInstance.cpp" />
     <ClCompile Include="src\GPU\texture\GPUTextureManager.cpp" />
     <ClCompile Include="src\graphics\ContextManager.cpp" />
     <ClCompile Include="src\graphics\WindowHandler.cpp" />

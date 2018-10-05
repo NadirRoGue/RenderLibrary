@@ -6,6 +6,10 @@ namespace RenderLib
 	{
 		namespace Mesh
 		{
+			unsigned int Mesh::OPTION_COMPUTE_NORMALS_IF_ABSENT = 0x01;
+			unsigned int Mesh::OPTION_COMPUTE_TANGENTS_IF_ABSENT = 0x02;
+			unsigned int Mesh::OPTION_COMPUTE_BITANGENTS_IF_ABSENT = 0x04;
+
 			Mesh::Mesh()
 				: index(-1)
 				, materialIndex(-1)

@@ -81,10 +81,6 @@ namespace RenderLib
 
 			MeshManager MeshManager::INSTANCE;
 
-			unsigned int MeshManager::OPTION_COMPUTE_NORMALS_IF_ABSENT = 0x01;
-			unsigned int MeshManager::OPTION_COMPUTE_TANGENTS_IF_ABSENT = 0x02;
-			unsigned int MeshManager::OPTION_COMPUTE_BITANGENTS_IF_ABSENT = 0x04;
-
 			MeshManager & MeshManager::getInstance()
 			{
 				return INSTANCE;

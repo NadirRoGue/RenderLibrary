@@ -93,12 +93,14 @@ namespace RenderLib
 			standard->bind();
 			meshBuffer->bind();
 			
+			unsigned int unit = 0;
 			for (auto r : renderables)
 			{
 				GPU::Mesh::GPUMesh * mesh = r->gpuMesh;
 
 				standard->onRenderObject(*(r->object), *(r->material), *cam);
-				standard->setUniformTexture("diffuseTexture", texture);
+				standard->setUniformTexture("diffuseTexture", texture, unit);
+				unit = 0;
 
 				glDrawElementsBaseVertex(GL_TRIANGLES, (GLsizei)(mesh->faces.numElements * mesh->vertices.elementCount), GL_UNSIGNED_INT, (void*)0, 0);
 				

@@ -9,6 +9,8 @@
 
 #include "Defines.h"
 
+#include "defaultimpl/components/MeshRenderer.h"
+
 #include "GPU/texture/GPUTexture.h"
 
 namespace RenderLib

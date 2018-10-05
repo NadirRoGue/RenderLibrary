@@ -1,5 +1,7 @@
 #include "material\Material.h"
 
+#include "defaultimpl/shaders/StandardProgram.h"
+
 namespace RenderLib
 {
 	namespace Material
@@ -41,6 +43,7 @@ namespace RenderLib
 		Material::Material()
 			:	twoSidedRender(false)
 			,	wireFrameRender(false)
+			, gpuProgram(typeid(DefaultImpl::StandardProgram))
 		{
 
 		}
@@ -48,6 +51,11 @@ namespace RenderLib
 		Material::~Material()
 		{
 
+		}
+
+		const std::type_index & Material::getShaderType()
+		{
+			return gpuProgram;
 		}
 	}
 }

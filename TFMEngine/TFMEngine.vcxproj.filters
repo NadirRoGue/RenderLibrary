@@ -462,6 +462,15 @@
     <ClInclude Include="include\CPU\texture\blendoperations\BlendSub.h">
       <Filter>Archivos de encabezado\CPU\texture\blendoperations</Filter>
     </ClInclude>
+    <ClInclude Include="include\defaultimpl\pipelinestages\CPUToGPUTextureSyncStage.h">
+      <Filter>Archivos de encabezado\defaultimpl\pipelinestages</Filter>
+    </ClInclude>
+    <ClInclude Include="include\defaultimpl\pipelinestages\ShaderCompilationStage.h">
+      <Filter>Archivos de encabezado\defaultimpl\pipelinestages</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\program\UberMaskFactory.h">
+      <Filter>Archivos de encabezado\GPU\program</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Component.cpp">
@@ -694,6 +703,15 @@
     </ClCompile>
     <ClCompile Include="src\material\MaterialManager.cpp">
       <Filter>Archivos de origen\material</Filter>
+    </ClCompile>
+    <ClCompile Include="src\defaultimpl\pipelinestages\CPUToGPUTextureSyncStage.cpp">
+      <Filter>Archivos de origen\defaultimpl\pipelinestages</Filter>
+    </ClCompile>
+    <ClCompile Include="src\defaultimpl\pipelinestages\ShaderCompilationStage.cpp">
+      <Filter>Archivos de origen\defaultimpl\pipelinestages</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GPU\program\UberMaskFactory.cpp">
+      <Filter>Archivos de origen\GPU\program</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

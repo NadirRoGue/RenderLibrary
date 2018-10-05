@@ -13,9 +13,11 @@
 #include "defaultimpl/pipelinestages/ComponentRegisterStage.h"
 #include "defaultimpl/pipelinestages/CPUToGPUMeshSyncStage.h"
 #include "defaultimpl/pipelinestages/GPUToCPUMeshSyncStage.h"
+#include "defaultimpl/pipelinestages/CPUToGPUTextureSyncStage.h"
 #include "defaultimpl/pipelinestages/RenderStage.h"
 #include "defaultimpl/pipelinestages/IterationEndStage.h"
 #include "defaultimpl/pipelinestages/TransformUpdateStage.h"
+#include "defaultimpl/pipelinestages/ShaderCompilationStage.h"
 
 #include "logger/Log.h"
 
@@ -58,6 +60,8 @@ int main(int argc, void ** arg)
 	// Pipeline set up
 	instance->getPipelineManager().addPipelineStage<DefaultImpl::ComponentRegisterStage>();
 	instance->getPipelineManager().addPipelineStage<DefaultImpl::CPUToGPUMeshSyncStage>();
+	instance->getPipelineManager().addPipelineStage<DefaultImpl::CPUToGPUTextureSyncStage>();
+	instance->getPipelineManager().addPipelineStage<DefaultImpl::ShaderCompilationStage>();
 	instance->getPipelineManager().addPipelineStage<Pipeline::ElementBasedStage<DefaultImpl::ObjectSpinner>>();
 	instance->getPipelineManager().addPipelineStage<DefaultImpl::TransformUpdateStage>();
 	instance->getPipelineManager().addPipelineStage<DefaultImpl::RenderStage>();

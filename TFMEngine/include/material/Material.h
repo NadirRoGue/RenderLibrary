@@ -56,6 +56,11 @@ namespace RenderLib
 			{
 				return value;
 			}
+
+			bool paramExists()
+			{
+				return exists;
+			}
 		};
 
 		class MaterialTexture
@@ -105,6 +110,7 @@ namespace RenderLib
 
 		private:
 			std::type_index gpuProgram;
+			unsigned long long uberMask;
 		public:
 			Material();
 			~Material();
@@ -114,6 +120,9 @@ namespace RenderLib
 			{
 				gpuProgram = typeid(T);
 			}
+
+			void setUberMask(unsigned long long mask);
+			unsigned long long getUberMask();
 
 			const std::type_index & getShaderType();
 		};

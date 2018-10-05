@@ -30,7 +30,7 @@ namespace RenderLib
 
 			class Program
 			{
-			private:
+			protected:
 				UberParamMask configMask;
 			protected:
 				std::unordered_map<std::string, ShaderInput> shaderUniforms;
@@ -43,6 +43,8 @@ namespace RenderLib
 
 				void bind();
 				void unBind();
+
+				const UberParamMask & getConfigMask();
 
 				void init(const UberParamMask & mask);
 
@@ -83,6 +85,8 @@ namespace RenderLib
 				void attachShader(unsigned int shaderId);
 				void detachShader(unsigned int shaderId, bool deleteShader = true);
 				void link();
+
+				bool hasMask(const UberParamMask & prop);
 			private:
 				void gatherInputs();
 			};

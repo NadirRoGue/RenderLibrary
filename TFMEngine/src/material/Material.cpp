@@ -44,6 +44,7 @@ namespace RenderLib
 			:	twoSidedRender(false)
 			,	wireFrameRender(false)
 			, gpuProgram(typeid(DefaultImpl::StandardProgram))
+			, uberMask(0)
 		{
 
 		}
@@ -56,6 +57,16 @@ namespace RenderLib
 		const std::type_index & Material::getShaderType()
 		{
 			return gpuProgram;
+		}
+
+		void Material::setUberMask(unsigned long long mask)
+		{
+			uberMask = mask;
+		}
+
+		unsigned long long Material::getUberMask()
+		{
+			return uberMask;
 		}
 	}
 }

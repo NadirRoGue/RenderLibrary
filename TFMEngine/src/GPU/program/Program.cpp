@@ -33,6 +33,11 @@ namespace RenderLib
 				
 			}
 
+			const UberParamMask & Program::getConfigMask()
+			{
+				return configMask;
+			}
+
 			void Program::destroyShaders()
 			{
 			}
@@ -199,6 +204,11 @@ namespace RenderLib
 			void Program::unBind()
 			{
 				glUseProgram(0);
+			}
+
+			bool Program::hasMask(const UberParamMask & prop)
+			{
+				return (configMask & prop) == prop;
 			}
 
 			void Program::setUniformI(const std::string & name, const int & val)
@@ -588,6 +598,19 @@ namespace RenderLib
 				{
 					return;
 				}
+
+				if (texture == NULL)
+				{
+					throw EngineException("Program " 
+						+ std::string(typeid(*this).name()) 
+						+ "[" + std::to_string(configMask) 
+						+ "] expected texture " 
+						+ name 
+						+ ", but passed texture is NULL");
+
+					return;
+				}
+
 				unsigned int id = it->second.id;
 
 				glActiveTexture(GL_TEXTURE0 + textureUnit);

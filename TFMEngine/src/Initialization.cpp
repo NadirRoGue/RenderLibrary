@@ -13,6 +13,9 @@
 #include "defaultimpl/fileloaders/ImageLoader.h"
 
 #include "GPU/texture/GPUTextureManager.h"
+#include "GPU/program/ProgramManager.h"
+
+#include "defaultimpl/shaders/StandardProgram.h"
 
 #include "logger/Log.h"
 #include "defaultimpl/loggers/ConsoleLogger.h"
@@ -31,5 +34,6 @@ namespace RenderLib
 		Logger::Log::getInstance().setLogger<DefaultImpl::ConsoleLogger>();
 
 		GPU::Texture::GPUTextureManager::queryAnisotropicFilterSupport();
+		GPU::Program::ProgramManager::registerUberMaskFactory<DefaultImpl::StandardProgram, DefaultImpl::StandardUberFactory>();
 	}
 }

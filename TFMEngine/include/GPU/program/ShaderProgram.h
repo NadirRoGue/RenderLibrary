@@ -3,6 +3,7 @@
 
 #include "GPU/mesh/GPUMesh.h"
 #include "GPU/program/Program.h"
+
 #include "material/Material.h"
 
 #include "SceneObject.h"

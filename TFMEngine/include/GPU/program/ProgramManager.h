@@ -12,8 +12,6 @@
 
 #include "EngineException.h"
 
-#include <iostream>
-
 namespace RenderLib
 {
 	namespace GPU
@@ -39,7 +37,9 @@ namespace RenderLib
 
 					if (!std::is_base_of<Program, T>::value)
 					{
-						throw new EngineException("ProgramManager: Attempted to create a program from the non program-derived class " + std::string(id.name()));
+						throw new EngineException(
+							"ProgramManager: Attempted to create a program from the non program-derived class " 
+							+ std::string(id.name()));
 						return NULL;
 					}
 					
@@ -53,8 +53,6 @@ namespace RenderLib
 						newProgram.get()->init(configMask);
 						result = static_cast<T*>(newProgram.get());
 						progMap[configMask] = std::move(newProgram);
-
-						std::cout << "Added " << id.name() << std::endl;
 					}
 					else
 					{
@@ -64,7 +62,8 @@ namespace RenderLib
 					return result;
 				}
 
-				Program * findProgram(const std::type_index & programType, const UberParamMask & configMask = 0);
+				Program * findProgram(const std::type_index & programType, 
+					const UberParamMask & configMask = 0);
 			};
 		}
 	}

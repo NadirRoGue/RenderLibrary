@@ -3,7 +3,6 @@
 #define __CPU_PIPELINE_STAGE_H__
 
 #include <vector>
-#include <iostream>
 
 #include <typeindex>
 #include <typeinfo>
@@ -90,8 +89,10 @@ namespace RenderLib
 							if (b == NULL)
 								return true;
 
-							CPU::Memory::SortablePoolElement * aSortable = dynamic_cast<CPU::Memory::SortablePoolElement*>(a);
-							CPU::Memory::SortablePoolElement * bSortable = dynamic_cast<CPU::Memory::SortablePoolElement*>(b);
+							CPU::Memory::SortablePoolElement * aSortable = 
+								dynamic_cast<CPU::Memory::SortablePoolElement*>(a);
+							CPU::Memory::SortablePoolElement * bSortable = 
+								dynamic_cast<CPU::Memory::SortablePoolElement*>(b);
 
 							return aSortable->getIndex() < bSortable->getIndex();
 						});

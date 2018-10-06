@@ -27,6 +27,17 @@ using namespace RenderLib;
 using namespace RenderLib::CPU;
 using namespace RenderLib::Logger;
 
+Mesh::Mesh * loadMesh(const std::string & file, unsigned int options)
+{
+	std::vector<Mesh::Mesh *> meshes = Mesh::MeshManager::getInstance().loadMeshFromFile(file, options);
+	if (meshes.size() == 0)
+	{
+		Log::getInstance().logError("No meshes were found in the given file");
+		return NULL;
+	}
+	return meshes[0];
+}
+
 int main(int argc, void ** arg)
 {
 	/*** INSTANCE SET UP ***/
@@ -34,13 +45,9 @@ int main(int argc, void ** arg)
 	DefaultEngineInitialization();
 
 	// Asset load
-	std::vector<Mesh::Mesh *> meshes = Mesh::MeshManager::getInstance().loadMeshFromFile("./assets/mat_cube.obj", Mesh::Mesh::OPTION_COMPUTE_NORMALS_IF_ABSENT);
-	if (meshes.size() == 0)
-	{
-		Log::getInstance().logError("No meshes were found in the given file");
-		return -1;
-	}
-	Mesh::Mesh * mesh = meshes[0];
+	Mesh::Mesh * cube = loadMesh("./assets/mat_cube.obj", Mesh::Mesh::OPTION_COMPUTE_NORMALS_IF_ABSENT);
+	Mesh::Mesh * sphere = loadMesh("./assets/sphere_mat_opacity.obj", Mesh::Mesh::OPTION_COMPUTE_NORMALS_IF_ABSENT);
+	Mesh::Mesh * cube2 = loadMesh("./assets/mat_cube_2.obj", Mesh::Mesh::OPTION_COMPUTE_NORMALS_IF_ABSENT);
 
 	// Window creation
 	Graphics::WindowConfiguration config;
@@ -83,9 +90,9 @@ int main(int argc, void ** arg)
 	cam->translateView(VECTOR3(0.0, 0.0, -5.0));
 
 	// Object set up
-	// "Earth"
-	RenderLib::SceneObject * obj = scene->addObject<SceneObject>("Earth");
-	obj->addComponent<DefaultImpl::MeshFilter>()->mesh = mesh;
+	// "Cube"
+	RenderLib::SceneObject * obj = scene->addObject<SceneObject>("Cube");
+	obj->addComponent<DefaultImpl::MeshFilter>()->mesh = cube;
 	obj->addComponent<DefaultImpl::MeshRenderer>()->preferredRender = DefaultImpl::FORWARD_RENDER;
 	obj->addComponent<DefaultImpl::ObjectSpinner>();
 
@@ -93,10 +100,19 @@ int main(int argc, void ** arg)
 	RenderLib::SceneObject * moon = scene->addObject<SceneObject>("Moon");
 	moon->transform.translate(VECTOR3(5, 0, 0));
 	moon->transform.scale(VECTOR3(0.5, 0.5, 0.5));
-	moon->addComponent<DefaultImpl::MeshFilter>()->mesh = mesh;
+	moon->addComponent<DefaultImpl::MeshFilter>()->mesh = sphere;
 	moon->addComponent<DefaultImpl::MeshRenderer>()->preferredRender = DefaultImpl::FORWARD_RENDER;
 	moon->addComponent<DefaultImpl::ObjectSpinner>();
 	moon->setParent(obj);
+
+	// Cube crown
+	RenderLib::SceneObject * crown = scene->addObject<SceneObject>("Crown");
+	crown->transform.translate(VECTOR3(0, 5, 0));
+	crown->transform.scale(VECTOR3(0.5, 0.5, 0.5));
+	crown->addComponent<DefaultImpl::MeshFilter>()->mesh = cube2;
+	crown->addComponent<DefaultImpl::MeshRenderer>()->preferredRender = DefaultImpl::FORWARD_RENDER;
+	crown->addComponent<DefaultImpl::ObjectSpinner>();
+	crown->setParent(obj);
 
 	/*** EXECUTION (BLOCKING UNTIL ALL INSTANCES ARE DONE) ***/
 	// Run pipeline

@@ -31,6 +31,8 @@ namespace RenderLib
 			RenderableMap();
 			~RenderableMap();
 
+			size_t getSize();
+
 			void setName(const std::string & name);
 			const std::string & getName();
 

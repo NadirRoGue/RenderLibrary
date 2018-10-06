@@ -12,8 +12,6 @@
 
 #include "CPU/memory/MemoryManager.h"
 
-#include <iostream>
-
 namespace RenderLib
 {
 	void SequentialInstanceExecution(std::vector<EngineInstance *> instancePool)

@@ -5,15 +5,16 @@
 #include "CPU/io/FileManager.h"
 #include "GPU/program/ShaderLoadResult.h"
 
-#include <iostream>
-
 namespace RenderLib
 {
 	namespace GPU
 	{
 		namespace Program
 		{
-			inline void castDoubleToFloatArray(const size_t & count, const double * array, std::vector<float> & buffer)
+			inline void castDoubleToFloatArray(
+				const size_t & count, 
+				const double * array, 
+				std::vector<float> & buffer)
 			{
 				buffer.resize(count);
 				size_t i = 0;
@@ -99,10 +100,15 @@ namespace RenderLib
 				}
 			}
 
-			unsigned int Program::loadShaderFromFile(GLenum shaderType, const std::string & filePath, std::vector<std::string> & configStrings)
+			unsigned int Program::loadShaderFromFile(
+				GLenum shaderType,
+				const std::string & filePath,
+				std::vector<std::string> & configStrings)
 			{
-				CPU::IO::AbstractLoadResultPtr fileloadResult = CPU::IO::FileManager::loadFile(filePath, 0);
-				GPU::Program::ShaderLoadResult * loadResult = dynamic_cast<GPU::Program::ShaderLoadResult*>(fileloadResult.get());
+				CPU::IO::AbstractLoadResultPtr fileloadResult =
+					CPU::IO::FileManager::loadFile(filePath, 0);
+				GPU::Program::ShaderLoadResult * loadResult = 
+					dynamic_cast<GPU::Program::ShaderLoadResult*>(fileloadResult.get());
 
 				size_t fileLen = loadResult->getResultSizeBytes() - 1;
 

@@ -2,6 +2,8 @@
 
 #include "logger/Log.h"
 
+#include "EngineException.h"
+
 #include "GPU/program/ShaderProgram.h"
 
 namespace RenderLib
@@ -28,6 +30,20 @@ namespace RenderLib
 			return mapRenderOwnerName;
 		}
 
+		size_t RenderableMap::getSize()
+		{
+			size_t size = 0;
+			for (auto it = renderablesMap.begin(); it != renderablesMap.end(); it++)
+			{
+				for (auto it2 = it->second.begin(); it2 != it->second.end(); it2++)
+				{
+					size += it2->second.renderables.size();
+				}
+			}
+
+			return size;
+		}
+
 		void RenderableMap::addRenderable(GPU::Program::ProgramManager & programManager, DefaultImpl::MeshRenderer * renderable)
 		{
 			std::type_index progType = renderable->material->getShaderType();
@@ -42,11 +58,15 @@ namespace RenderLib
 				GPU::Program::Program * program = programManager.findProgram(progType, mask);
 
 				GPU::Program::ShaderProgram * castedProg = NULL;
-				if (program != NULL || (castedProg = dynamic_cast<GPU::Program::ShaderProgram*>(program)) != NULL)
+				if (program != NULL && (castedProg = dynamic_cast<GPU::Program::ShaderProgram*>(program)) != NULL)
 				{
 					newStub.program = castedProg;
 					newStub.renderables.push_back(renderable);
 					innerMap[mask] = newStub;
+				}
+				else
+				{
+					throw EngineException("RenderableMap: Attempted to register a non ShaderProgram program instance for a mesh");
 				}
 			}
 			else
@@ -82,7 +102,7 @@ namespace RenderLib
 					RenderableStub & stub = innerIt->second;
 					
 					stub.program->bind();
-
+					
 					for (auto renderable : stub.renderables)
 					{
 						if (!renderable->enabled)
@@ -92,17 +112,18 @@ namespace RenderLib
 
 						GPU::Mesh::GPUMesh * mesh = renderable->gpuMesh;
 
+						stub.program->configureShaderAttributes(mesh);
+
 						stub.program->onRenderObject(*(renderable->object), *(renderable->material), fromCamera);
 
 						GLenum drawMode = renderable->material->wireFrameRender ? GL_LINES : GL_TRIANGLES;
 
-						glDrawElementsBaseVertex
+						glDrawElements
 						(
 							drawMode,
 							(GLsizei)(mesh->faces.numElements * mesh->vertices.elementCount),
 							GL_UNSIGNED_INT,
-							(void*)mesh->faceIndexOffset,
-							(GLint)mesh->verticesBaseOffset
+							(void*)mesh->faceIndexOffset
 						);
 					}
 				}

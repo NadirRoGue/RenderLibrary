@@ -1,7 +1,5 @@
 #include "util/StringUtils.h"
 
-#include <iostream>
-
 namespace RenderLib
 {
 	namespace StringUtils

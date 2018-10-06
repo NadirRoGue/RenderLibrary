@@ -6,6 +6,13 @@
 
 #include "CPU/texture/Texture.h"
 
+#include "CPU/texture/blendoperations/BlendAdd.h"
+#include "CPU/texture/blendoperations/BlendDivide.h"
+#include "CPU/texture/blendoperations/BlendMultiply.h"
+#include "CPU/texture/blendoperations/BlendSignedAdd.h"
+#include "CPU/texture/blendoperations/BlendSmoothAdd.h"
+#include "CPU/texture/blendoperations/BlendSub.h"
+
 namespace RenderLib
 {
 	namespace CPU
@@ -50,6 +57,13 @@ namespace RenderLib
 				registerTextureTypeConfigurator<TextureType::TEXTURE1D, Texture1DBlockConfigSetup>();
 				registerTextureTypeConfigurator<TextureType::TEXTURE2D, Texture2DBlockConfigSetup>();
 				registerTextureTypeConfigurator<TextureType::TEXTURE3D, Texture3DBlockConfigSetup>();
+
+				registerTextureBlendOperation<TextureStackBlendOperation::OP_ADD, BlendAdd>();
+				registerTextureBlendOperation<TextureStackBlendOperation::OP_DIVIDE, BlendDivide>();
+				registerTextureBlendOperation<TextureStackBlendOperation::OP_MULTIPLY, BlendMultiply>();
+				registerTextureBlendOperation<TextureStackBlendOperation::OP_SIGNEDADD, BlendSignedAdd>();
+				registerTextureBlendOperation<TextureStackBlendOperation::OP_SMOOTHADD, BlendSmoothAdd>();
+				registerTextureBlendOperation<TextureStackBlendOperation::OP_SUBSTRACT, BlendSub>();
 			}
 
 			TextureManager::~TextureManager()

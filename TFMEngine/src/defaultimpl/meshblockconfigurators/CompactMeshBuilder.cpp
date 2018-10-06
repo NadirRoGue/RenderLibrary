@@ -9,10 +9,14 @@ namespace RenderLib
 {
 	namespace DefaultImpl
 	{
-		void CompactMeshBuilder::configureAttributes(CPU::Memory::MemoryBlock * memBlock, CPU::Mesh::Mesh * dst, CPU::Memory::BlockConfiguration * data)
+		void CompactMeshBuilder::configureAttributes(
+			CPU::Memory::MemoryBlock * memBlock, 
+			CPU::Mesh::Mesh * dst, 
+			CPU::Memory::BlockConfiguration * data)
 		{
 			size_t offset = 0;
-			CPU::Mesh::MeshBlockConfiguration * meshConfig = dynamic_cast<CPU::Mesh::MeshBlockConfiguration*>(data);
+			CPU::Mesh::MeshBlockConfiguration * meshConfig = 
+				dynamic_cast<CPU::Mesh::MeshBlockConfiguration*>(data);
 			if (!meshConfig)
 			{
 				throw std::runtime_error("CompactMeshBuilder: Wrong BlockConfiguration object passed to configure mesh attributes");
@@ -31,29 +35,35 @@ namespace RenderLib
 			size_t sizeV2 = sizeof(VECTOR2);
 #endif
 
-			dst->faces.setAttributeSource(memBlock, offset, sizeof(IVECTOR3), meshConfig->numFaces);
+			dst->faces.setAttributeSource(
+				memBlock, offset, sizeof(IVECTOR3), meshConfig->numFaces);
 			offset += meshConfig->numFaces * sizeof(IVECTOR3);
 
-			const size_t verticesOffset = meshConfig->numVertices * sizeof(VECTOR3);
+			const size_t verticesOffset = 
+				meshConfig->numVertices * sizeof(VECTOR3);
 
-			dst->vertices.setAttributeSource(memBlock, offset, sizeof(VECTOR3), meshConfig->numVertices);
+			dst->vertices.setAttributeSource(
+				memBlock, offset, sizeof(VECTOR3), meshConfig->numVertices);
 			offset += verticesOffset;
 
 			if (meshConfig->hasNormals)
 			{
-				dst->normals.setAttributeSource(memBlock, offset, sizeV3, meshConfig->numVertices);
+				dst->normals.setAttributeSource(
+					memBlock, offset, sizeV3, meshConfig->numVertices);
 				offset += (meshConfig->numVertices * sizeV3);
 			}
 
 			if (meshConfig->hasTangents)
 			{
-				dst->tangents.setAttributeSource(memBlock, offset, sizeV3, meshConfig->numVertices);
+				dst->tangents.setAttributeSource(
+					memBlock, offset, sizeV3, meshConfig->numVertices);
 				offset += (meshConfig->numVertices * sizeV3);
 			}
 
 			if (meshConfig->hasBiTangents)
 			{
-				dst->bitangents.setAttributeSource(memBlock, offset, sizeV3, meshConfig->numVertices);
+				dst->bitangents.setAttributeSource(
+					memBlock, offset, sizeV3, meshConfig->numVertices);
 				offset += (meshConfig->numVertices * sizeV3);
 			}
 
@@ -62,7 +72,8 @@ namespace RenderLib
 				dst->uvs.resize(meshConfig->numUVChannels);
 				for (auto & uvMap : dst->uvs)
 				{
-					uvMap.setAttributeSource(memBlock, offset, sizeV2, meshConfig->numVertices);
+					uvMap.setAttributeSource(
+						memBlock, offset, sizeV2, meshConfig->numVertices);
 					offset += meshConfig->numVertices * sizeV2;
 				}
 			}
@@ -72,7 +83,8 @@ namespace RenderLib
 				dst->colors.resize(meshConfig->numColorChannels);
 				for (auto & colorMap : dst->colors)
 				{
-					colorMap.setAttributeSource(memBlock, offset, sizeV4, meshConfig->numVertices);
+					colorMap.setAttributeSource(
+						memBlock, offset, sizeV4, meshConfig->numVertices);
 					offset += meshConfig->numVertices * sizeV4;
 				}
 			}

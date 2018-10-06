@@ -26,11 +26,18 @@ namespace RenderLib
 			}
 		}
 
-		void RenderingPipeline::initializeStages(EngineInstance * engineInstance)
+		void RenderingPipeline::setEngineInstance(EngineInstance * engineInstance)
+		{
+			for (auto & stage : renderStages)
+			{
+				stage.get()->engineInstance = engineInstance;
+			}
+		}
+
+		void RenderingPipeline::initializeStages()
 		{
 			for (auto & stages : renderStages)
 			{
-				stages.get()->engineInstance = engineInstance;
 				stages.get()->initialize();
 			}
 		}

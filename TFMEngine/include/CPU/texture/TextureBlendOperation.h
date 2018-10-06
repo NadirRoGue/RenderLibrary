@@ -12,7 +12,10 @@ namespace RenderLib
 			class TextureBlendOperation
 			{
 			public:
-				virtual void doBlend(std::vector<unsigned char> & firstAndDst, std::vector<unsigned char> & second, float blendStrength) = 0;
+				virtual void doBlend(
+					std::vector<unsigned char> & firstAndDst, 
+					std::vector<unsigned char> & second, 
+					float blendStrength) = 0;
 			};
 		}
 	}

@@ -41,6 +41,8 @@ namespace RenderLib
 
 			static GPU::Program::UberParamMask HAS_SPECULAR_SCALE;
 
+			static GPU::Program::UberParamMask FORWARD_SHADING;
+
 			static std::unordered_map<GPU::Program::UberParamMask, std::string> maskToDefines;
 		public:
 			StandardProgram();

@@ -248,6 +248,12 @@
     <ClCompile Include="src\CPU\mesh\MeshLoadResult.cpp" />
     <ClCompile Include="src\CPU\mesh\MeshManager.cpp" />
     <ClCompile Include="src\CPU\mesh\MeshUtil.cpp" />
+    <ClCompile Include="src\CPU\texture\blendoperations\BlendAdd.cpp" />
+    <ClCompile Include="src\CPU\texture\blendoperations\BlendDivide.cpp" />
+    <ClCompile Include="src\CPU\texture\blendoperations\BlendMultiply.cpp" />
+    <ClCompile Include="src\CPU\texture\blendoperations\BlendSignedAdd.cpp" />
+    <ClCompile Include="src\CPU\texture\blendoperations\BlendSmoothAdd.cpp" />
+    <ClCompile Include="src\CPU\texture\blendoperations\BlendSub.cpp" />
     <ClCompile Include="src\CPU\texture\Texture.cpp" />
     <ClCompile Include="src\CPU\texture\TextureBlockConfiguration.cpp" />
     <ClCompile Include="src\CPU\texture\TextureLoadResult.cpp" />
@@ -322,8 +328,6 @@
   <ItemGroup>
     <None Include="shaders\default\standardprogram.frag" />
     <None Include="shaders\default\standardprogram.vert" />
-    <None Include="shaders\test.frag" />
-    <None Include="shaders\test.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

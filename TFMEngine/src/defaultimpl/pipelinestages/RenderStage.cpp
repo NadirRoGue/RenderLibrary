@@ -6,23 +6,10 @@
 
 #include "EngineInstance.h"
 
-#include <iostream>
-
 namespace RenderLib
 {
 	namespace DefaultImpl
 	{
-		/*
-		void RenderStage::registerElement(Component * comp)
-		{
-			MeshRenderer * meshRenderer = static_cast<MeshRenderer*>(comp);
-
-			if (meshRenderer->cpuToGpuSync != CPUToGPUSyncPolicy::CPU_DO_NOT_SYNC)
-			{
-				renderPipeline.registerRenderable(meshRenderer);
-			}
-		}
-		*/
 		void RenderStage::preRunStage()
 		{
 			// Sort all elements
@@ -30,14 +17,15 @@ namespace RenderLib
 
 			engineInstance->acquireContext();
 
-			std::cout << "Setting engine instance" << std::endl;
-			renderPipeline.initializeStages(engineInstance);
+			renderPipeline.setEngineInstance(engineInstance);
 
 			// Add them sorted to the correspondent places
 			for (auto comp : elements)
 			{
 				renderPipeline.registerRenderable(static_cast<MeshRenderer*>(comp));
 			}
+
+			renderPipeline.initializeStages();
 
 			engineInstance->releaseContext();
 		}
@@ -58,8 +46,6 @@ namespace RenderLib
 			renderPipeline.finalizeStages();
 
 			engineInstance->releaseContext();
-
-			//GPU::Program::ProgramManager::getInstance().clear();
 		}
 	}
 }

@@ -24,7 +24,8 @@ namespace RenderLib
 			RenderingPipeline();
 			~RenderingPipeline();
 
-			void initializeStages(EngineInstance * engineInstance);
+			void setEngineInstance(EngineInstance * engineInstance);
+			void initializeStages();
 			void executePipelineIteration();
 			void finalizeStages();
 

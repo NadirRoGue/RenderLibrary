@@ -6,8 +6,6 @@
 
 #include "GPU/program/ShaderLoadResult.h"
 
-#include <iostream>
-
 namespace RenderLib
 {
 	namespace DefaultImpl
@@ -24,17 +22,22 @@ namespace RenderLib
 			registerFileExtension("comp");
 		}
 
-		CPU::IO::AbstractLoadResultPtr ShaderLoader::loadFile(const std::string & filePath, unsigned int options)
+		CPU::IO::AbstractLoadResultPtr ShaderLoader::loadFile(
+			const std::string & filePath, 
+			unsigned int options)
 		{
 			std::ifstream file;
 			file.open(filePath, std::ios::in);
 			if (!file)
 			{
-				std::string message = "ShaderLoader: Could not load file " + filePath + ": file not found";
+				std::string message = 
+					"ShaderLoader: Could not load file " + filePath + ": file not found";
+
 				throw EngineException(message.c_str());
 			}
 
-			std::unique_ptr<GPU::Program::ShaderLoadResult> loadResultPtr = std::make_unique<GPU::Program::ShaderLoadResult>();
+			std::unique_ptr<GPU::Program::ShaderLoadResult> loadResultPtr = 
+				std::make_unique<GPU::Program::ShaderLoadResult>();
 			GPU::Program::ShaderLoadResult * loadResult = loadResultPtr.get();
 
 			file.seekg(0, std::ios::end);
@@ -64,19 +67,6 @@ namespace RenderLib
 
 			loadResult->body += std::string("\0");
 
-			/*
-			loadResult->text.resize(fileLen + 1);
-
-			int i = 0;
-			while (file.good())
-			{
-				loadResult->text[i] = char(file.get());
-				if (!file.eof()) i++;
-				else fileLen = i;
-			}
-
-			loadResult->text[fileLen] = '\0';
-			*/
 			file.close();
 
 			return loadResultPtr;

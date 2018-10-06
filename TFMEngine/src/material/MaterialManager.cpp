@@ -2,8 +2,6 @@
 
 #include "CPU/texture/TextureManager.h"
 
-#include <iostream>
-
 namespace RenderLib
 {
 	namespace Material
@@ -63,7 +61,7 @@ namespace RenderLib
 			parseMaterialTexture(baseName+"_transparent", data.transparentColor.get(), data.opacityTextures, ptr->opacityTexture);
 			parseMaterialTexture(baseName+"_other", VECTOR3(0,0,0), data.otherTextures, ptr->otherTexture);
 			parseMaterialTexture(baseName+"_shininess", VECTOR3(0,0,0), data.shininessTextures, ptr->shininessTexture);
-			
+
 			materials[fileName][ptr->index] = std::move(newMaterial);
 		}
 

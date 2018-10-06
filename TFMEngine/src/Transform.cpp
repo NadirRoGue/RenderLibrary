@@ -4,8 +4,6 @@
 
 #include "SceneObject.h"
 
-#include <iostream>
-
 namespace RenderLib
 {
 	Transform::Transform()

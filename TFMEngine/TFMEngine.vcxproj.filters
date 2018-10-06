@@ -178,6 +178,9 @@
     <Filter Include="Archivos de encabezado\CPU\texture\blendoperations">
       <UniqueIdentifier>{ae7642f8-434a-44f3-b1c4-e29ff8e55c92}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Archivos de origen\CPU\texture\blendoperations">
+      <UniqueIdentifier>{31221466-4f39-4b47-88c9-18d3b5eb7cef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Component.h">
@@ -725,14 +728,26 @@
     <ClCompile Include="src\render\RenderableMap.cpp">
       <Filter>Archivos de origen\render</Filter>
     </ClCompile>
+    <ClCompile Include="src\CPU\texture\blendoperations\BlendAdd.cpp">
+      <Filter>Archivos de origen\CPU\texture\blendoperations</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CPU\texture\blendoperations\BlendDivide.cpp">
+      <Filter>Archivos de origen\CPU\texture\blendoperations</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CPU\texture\blendoperations\BlendMultiply.cpp">
+      <Filter>Archivos de origen\CPU\texture\blendoperations</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CPU\texture\blendoperations\BlendSignedAdd.cpp">
+      <Filter>Archivos de origen\CPU\texture\blendoperations</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CPU\texture\blendoperations\BlendSmoothAdd.cpp">
+      <Filter>Archivos de origen\CPU\texture\blendoperations</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CPU\texture\blendoperations\BlendSub.cpp">
+      <Filter>Archivos de origen\CPU\texture\blendoperations</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders\test.frag">
-      <Filter>shaders</Filter>
-    </None>
-    <None Include="shaders\test.vert">
-      <Filter>shaders</Filter>
-    </None>
     <None Include="shaders\default\standardprogram.frag">
       <Filter>shaders\default</Filter>
     </None>

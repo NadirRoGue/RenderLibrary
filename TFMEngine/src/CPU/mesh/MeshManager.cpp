@@ -8,15 +8,15 @@
 
 #include "material/MaterialManager.h"
 
-#include <iostream>
-
 namespace RenderLib
 {
 	namespace CPU
 	{
 		namespace Mesh
 		{
-			inline void packVector4ToUint(std::vector<VECTOR4> & src, std::vector<unsigned int> & dst)
+			inline void packVector4ToUint(
+				std::vector<VECTOR4> & src, 
+				std::vector<unsigned int> & dst)
 			{
 				dst.reserve(src.size());
 				for (auto & v : src)
@@ -24,18 +24,25 @@ namespace RenderLib
 					VECTOR4 normalized = v;// .normalized();
 					unsigned int buf;
 
-					const int16_t maxValue = static_cast<int16_t>(std::numeric_limits<uint8_t>::max());
+					const int16_t maxValue = static_cast<int16_t>(
+						std::numeric_limits<uint8_t>::max());
 					const int16_t negativeValueScale = maxValue + 1;
 
-					buf |= static_cast<uint8_t>(normalized.x() < 0? normalized.x() * negativeValueScale : normalized.x() * maxValue);
-					buf |= static_cast<uint8_t>(normalized.y() < 0? normalized.y() * negativeValueScale : normalized.y() * maxValue) << 8;
-					buf |= static_cast<uint8_t>(normalized.z() < 0? normalized.z() * negativeValueScale : normalized.z() * maxValue) << 16;
-					buf |= static_cast<uint8_t>(normalized.w() < 0? normalized.w() * negativeValueScale : normalized.w() * maxValue) << 24;
+					buf |= static_cast<uint8_t>(normalized.x() < 0? normalized.x() * 
+						negativeValueScale : normalized.x() * maxValue);
+					buf |= static_cast<uint8_t>(normalized.y() < 0? normalized.y() * 
+						negativeValueScale : normalized.y() * maxValue) << 8;
+					buf |= static_cast<uint8_t>(normalized.z() < 0? normalized.z() * 
+						negativeValueScale : normalized.z() * maxValue) << 16;
+					buf |= static_cast<uint8_t>(normalized.w() < 0? normalized.w() * 
+						negativeValueScale : normalized.w() * maxValue) << 24;
 					dst.push_back(buf);
 				}
 			}
 
-			inline void packVector3ToUInt(std::vector<VECTOR3> & src, std::vector<int> & dst)
+			inline void packVector3ToUInt(
+				std::vector<VECTOR3> & src, 
+				std::vector<int> & dst)
 			{
 				int w = 0;
 				dst.reserve(src.size());
@@ -47,16 +54,11 @@ namespace RenderLib
 					const int8_t maxValue = (std::numeric_limits<int8_t>::max());
 					const int8_t negativeValueScale = maxValue;
 
-					std::cout << maxValue << std::endl;
-
 					int a = static_cast<int>(normalized.x() * 127.0) & 0x000000ff;
 					int b = static_cast<int>(normalized.y() * 127.0) & 0x000000ff;
 					int c = static_cast<int>(normalized.z() * 127.0) & 0x000000ff;
 					int d = 0;
 
-					std::cout << "Vector: " << normalized.x() << ", " << normalized.y() << ", " << normalized.z() << std::endl;
-					std::cout << "Masks: " << a << ", " << b << ", " << c << std::endl << std::endl;
-						 
 					buf |= (d << 30);
 					buf |= (c << 20);
 					buf |= (b << 10);
@@ -66,7 +68,9 @@ namespace RenderLib
 				}
 			}
 
-			inline void packVector2ToUShort(std::vector<VECTOR2> & src, std::vector<unsigned short> & dst)
+			inline void packVector2ToUShort(
+				std::vector<VECTOR2> & src, 
+				std::vector<unsigned short> & dst)
 			{
 				dst.reserve(src.size());
 				for (auto & v : src)
@@ -95,26 +99,34 @@ namespace RenderLib
 				destroy();
 			}
 
-			std::vector<Mesh *> MeshManager::loadMeshFromFile(const std::string & fileName, unsigned int optionsFlag)
+			std::vector<Mesh *> MeshManager::loadMeshFromFile(
+				const std::string & fileName, 
+				unsigned int optionsFlag)
 			{
 				std::unique_lock<std::mutex> lock(mtx);
 
 				// Import data from file
-				IO::AbstractLoadResultPtr loadedMeshes = IO::FileManager::loadFile(fileName, optionsFlag);
-				MeshLoadResult * result = static_cast<MeshLoadResult*>(loadedMeshes.get());
+				IO::AbstractLoadResultPtr loadedMeshes = 
+					IO::FileManager::loadFile(fileName, optionsFlag);
+				MeshLoadResult * result = 
+					static_cast<MeshLoadResult*>(loadedMeshes.get());
 
 				// Process meshes
-				std::vector<Mesh*> meshList = processLoadedMeshes(fileName, result->loadedData);
+				std::vector<Mesh*> meshList = 
+					processLoadedMeshes(fileName, result->loadedData);
 
 				// Process materials
-				Material::MaterialManager::getInstance().parseMaterials(fileName, result->loadedMaterials);
+				Material::MaterialManager::getInstance()
+					.parseMaterials(fileName, result->loadedMaterials);
 
 				lock.unlock();
 
 				return meshList;
 			}
 
-			std::vector<Mesh *> MeshManager::processLoadedMeshes(const std::string & fileName, std::vector<MeshLoadedData> & loadedData)
+			std::vector<Mesh *> MeshManager::processLoadedMeshes(
+				const std::string & fileName, 
+				std::vector<MeshLoadedData> & loadedData)
 			{
 				// Check for duplicates
 				auto it = meshes.find(fileName);
@@ -141,7 +153,9 @@ namespace RenderLib
 				return result;
 			}
 
-			std::unique_ptr<Mesh> MeshManager::buildMeshFromData(MeshLoadedData & data, unsigned int optionsFlag)
+			std::unique_ptr<Mesh> MeshManager::buildMeshFromData(
+				MeshLoadedData & data, 
+				unsigned int optionsFlag)
 			{
 				// Create new object
 				std::unique_ptr<Mesh> newMesh = std::make_unique<Mesh>();
@@ -215,7 +229,8 @@ namespace RenderLib
 				return newMesh;
 			}
 
-			std::vector<Mesh *> MeshManager::getMesh(const std::string & fileName)
+			std::vector<Mesh *> MeshManager::getMesh(
+				const std::string & fileName)
 			{
 				// Check whether mesh exist
 				auto it = meshes.find(fileName);
@@ -236,7 +251,8 @@ namespace RenderLib
 				return result;
 			}
 
-			void MeshManager::destroyMesh(std::vector<std::unique_ptr<Mesh>> && meshToDestroy)
+			void MeshManager::destroyMesh(
+				std::vector<std::unique_ptr<Mesh>> && meshToDestroy)
 			{
 				std::unique_lock<std::mutex> lock(mtx);
 

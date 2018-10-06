@@ -38,7 +38,7 @@ namespace RenderLib
 			void registerMeshes(SourceMeshList & staticMeshes, SourceMeshList & dynamicMeshes);
 			void createGPUMeshes(SourceMeshList & src, GPUMeshList & dst, bool staticMeshes);
 			void synchronizeData(GPU::Mesh::GPUBuffer * buffer, GPUMeshList & sourceMeshes);
-			GPU::Mesh::GPUMesh * buildGPUMeshFromCPUMesh(CPU::Mesh::Mesh * cpuMesh, bool staticMesh);
+			GPU::Mesh::GPUMesh * buildGPUMeshFromCPUMesh(CPU::Mesh::Mesh * cpuMesh, size_t faceOffsetFix, bool staticMesh);
 		};
 	}
 }

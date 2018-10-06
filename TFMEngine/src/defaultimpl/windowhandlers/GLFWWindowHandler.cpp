@@ -5,17 +5,21 @@
 
 #include "inputhandlers/InputManager.h"
 
-#include <iostream>
-
 #include "Camera.h"
 
 namespace RenderLib
 {
 	namespace DefaultImpl
 	{
-		inline void KeyboardCallbackFunc(GLFWwindow * window, int key, int scancode, int action, int mods)
+		inline void KeyboardCallbackFunc(
+			GLFWwindow * window, 
+			int key, 
+			int scancode, 
+			int action, 
+			int mods)
 		{
-			GLFWWindowHandler * handler = reinterpret_cast<GLFWWindowHandler*>(glfwGetWindowUserPointer(window));
+			GLFWWindowHandler * handler = 
+				reinterpret_cast<GLFWWindowHandler*>(glfwGetWindowUserPointer(window));
 
 			InputHandlers::KeyAction actionEnum;
 			switch (action)
@@ -40,16 +44,22 @@ namespace RenderLib
 			}
 
 			EngineInstance * instance = handler->instance;
-			Scene * activeScene = instance->getSceneManager().getActiveScene();
+			Scene * activeScene = 
+				instance->getSceneManager().getActiveScene();
 			if (activeScene)
 			{
 				activeScene->getInputManager().handleKeyPress((char)key, actionEnum);
 			}
 		}
 
-		void MouseInputCallbackFunc(GLFWwindow * window, int button, int action, int mods)
+		void MouseInputCallbackFunc(
+			GLFWwindow * window, 
+			int button, 
+			int action, 
+			int mods)
 		{
-			GLFWWindowHandler * handler = reinterpret_cast<GLFWWindowHandler*>(glfwGetWindowUserPointer(window));
+			GLFWWindowHandler * handler = 
+				reinterpret_cast<GLFWWindowHandler*>(glfwGetWindowUserPointer(window));
 
 			InputHandlers::MouseAction actionEnum;
 			switch (action)
@@ -74,13 +84,21 @@ namespace RenderLib
 			Scene * activeScene = instance->getSceneManager().getActiveScene();
 			if (activeScene)
 			{
-				activeScene->getInputManager().handleMouseClick(button, actionEnum, (int)(handler->lastMouseX), int(handler->lastMouseY));
+				activeScene->getInputManager().handleMouseClick(
+					button, 
+					actionEnum, 
+					(int)(handler->lastMouseX), 
+					int(handler->lastMouseY));
 			}
 		}
 
-		void MouseMovementCallbackFunc(GLFWwindow * window, double xpos, double ypos)
+		void MouseMovementCallbackFunc(
+			GLFWwindow * window, 
+			double xpos, 
+			double ypos)
 		{
-			GLFWWindowHandler * handler = reinterpret_cast<GLFWWindowHandler*>(glfwGetWindowUserPointer(window));
+			GLFWWindowHandler * handler = 
+				reinterpret_cast<GLFWWindowHandler*>(glfwGetWindowUserPointer(window));
 			if (!handler->instance)
 			{
 				//throw EngineException(("GLFWWindowHandler: NULL EngineInstance for window " + handler->getTitle()).c_str());
@@ -94,16 +112,19 @@ namespace RenderLib
 			Scene * activeScene = instance->getSceneManager().getActiveScene();
 			if (activeScene)
 			{
-				activeScene->getInputManager().handleMouseMotion((int)(handler->lastMouseX), int(handler->lastMouseY));
+				activeScene->getInputManager().handleMouseMotion(
+					(int)(handler->lastMouseX), int(handler->lastMouseY));
 			}
 		}
 
 		void ResizeCallbackFunc(GLFWwindow * window, int width, int height)
 		{
-			GLFWWindowHandler * handler = reinterpret_cast<GLFWWindowHandler*>(glfwGetWindowUserPointer(window));
+			GLFWWindowHandler * handler = 
+				reinterpret_cast<GLFWWindowHandler*>(glfwGetWindowUserPointer(window));
 			if (!handler->instance)
 			{
-				throw EngineException(("GLFWWindowHandler: NULL EngineInstance for window " + handler->getTitle()).c_str());
+				throw EngineException(
+					"GLFWWindowHandler: NULL EngineInstance for window " + handler->getTitle());
 				return;
 			}
 
@@ -127,7 +148,8 @@ namespace RenderLib
 		void GLFWWindowErrorCallback(int errorCode, const char * message)
 		{
 			//std::cout << errorCode << " " << message << std::endl;
-			throw new EngineException(("GLFW Error (" + std::to_string(errorCode) + ": " + std::string(message)).c_str());
+			throw new EngineException(
+				"GLFW Error (" + std::to_string(errorCode) + ": " + std::string(message));
 		}
 
 		// =================================================================================================
@@ -139,7 +161,8 @@ namespace RenderLib
 
 		// =================================================================================================
 
-		GLFWWindowHandler::GLFWWindowHandler(Graphics::WindowConfiguration config)
+		GLFWWindowHandler::GLFWWindowHandler(
+			Graphics::WindowConfiguration config)
 			: WindowHandler(config)
 			, lastMouseX(0.0)
 			, lastMouseY(0.0)
@@ -149,7 +172,6 @@ namespace RenderLib
 
 		GLFWWindowHandler::~GLFWWindowHandler()
 		{
-			std::cout << "Called dstrcutur" << std::endl;
 			if (window)
 			{
 				glfwDestroyWindow(window);
@@ -160,19 +182,21 @@ namespace RenderLib
 		{
 			if (!glfwInit())
 			{
-				std::cout << "GLFW Not initialized" << std::endl;
 				return;
 			}
 
 			//glfwWindowHint(GLFW_SAMPLES, 4);
 
-			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, config.openGLMajorVersion);
-			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, config.openGLMinorVersion);
+			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 
+				config.openGLMajorVersion);
+			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 
+				config.openGLMinorVersion);
 
 			glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
 			glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-			glfwWindowHint(GLFW_OPENGL_PROFILE, config.openGLContextProfile); //GLFW_OPENGL_CORE_PROFILE
+			glfwWindowHint(GLFW_OPENGL_PROFILE, 
+				config.openGLContextProfile); //GLFW_OPENGL_CORE_PROFILE
 
 			window = glfwCreateWindow
 			(

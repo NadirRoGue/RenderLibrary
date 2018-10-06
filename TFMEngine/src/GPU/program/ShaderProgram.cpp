@@ -2,8 +2,6 @@
 
 #include "EngineException.h"
 
-#include <iostream>
-
 namespace RenderLib
 {
 	namespace GPU
@@ -86,11 +84,11 @@ namespace RenderLib
 					if (it != shaderAttributes.end())
 					{
 						ShaderInput input = it->second;
-						glVertexAttribPointer(input.id, 
-							(GLsizei)meshAttribute.elementCount, 
-							meshAttribute.dataType, 
-							meshAttribute.normalizeOnUpload, 
-							(GLsizei)(meshAttribute.stride), 
+						glVertexAttribPointer(input.id,
+							(GLsizei)meshAttribute.elementCount,
+							meshAttribute.dataType,
+							meshAttribute.normalizeOnUpload,
+							(GLsizei)(meshAttribute.stride),
 							(GLvoid*)(meshAttribute.offset));
 
 						glEnableVertexAttribArray(input.id);

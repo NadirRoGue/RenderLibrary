@@ -1,7 +1,5 @@
 #include "SceneManager.h"
 
-#include <iostream>
-
 namespace RenderLib
 {
 	SceneManager::SceneManager()
@@ -28,7 +26,6 @@ namespace RenderLib
 		std::unique_ptr<Scene> newScene = std::make_unique<Scene>(sceneName);
 		scene = newScene.get();
 		sceneCache[sceneName] = std::move(newScene);
-		//scene = sceneCache[sceneName].get();
 		
 		return scene;
 	}

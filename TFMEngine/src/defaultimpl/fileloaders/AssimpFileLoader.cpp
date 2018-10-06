@@ -47,6 +47,11 @@ namespace RenderLib
 			return (IVECTOR3(face.mIndices[0], face.mIndices[1], face.mIndices[2]));
 		}
 
+		inline VECTOR3 assimpColorToEigen(const aiColor3D & source)
+		{
+			return VECTOR3(source.r, source.g, source.b);
+		}
+
 		inline CPU::Texture::TextureStackBlendOperation aiBlendOpToEngineOp(aiTextureOp op)
 		{
 			CPU::Texture::TextureStackBlendOperation engineOp;
@@ -78,7 +83,12 @@ namespace RenderLib
 		}
 
 		template<class SRC, class DST, typename CONVFUNC>
-		inline void gatherMaterialValue(aiMaterial * mat, const char * pkey, unsigned int type, unsigned int idx, CPU::IO::LoadedParameter<DST> &dst, CONVFUNC func)
+		inline void gatherMaterialValue(aiMaterial * mat, 
+			const char * pkey, 
+			unsigned int type, 
+			unsigned int idx, 
+			CPU::IO::LoadedParameter<DST> &dst, 
+			CONVFUNC func)
 		{
 			SRC storage;
 			if (mat->Get(pkey, type, idx, storage) == AI_SUCCESS)
@@ -107,7 +117,8 @@ namespace RenderLib
 						blendStrenght = 1.0;
 					}
 
-					CPU::Texture::TextureStackBlendOperation engineBlendOp = CPU::Texture::TextureStackBlendOperation::OP_ADD;
+					CPU::Texture::TextureStackBlendOperation engineBlendOp = 
+						CPU::Texture::TextureStackBlendOperation::OP_ADD;
 					aiTextureOp blendOp;
 					if (mat->Get(AI_MATKEY_TEXOP(textureType, i), blendOp) == AI_SUCCESS)
 					{
@@ -131,7 +142,8 @@ namespace RenderLib
 			std::string extensions;
 			temp.GetExtensionList(extensions);
 
-			std::vector<std::string> splitExtensions = StringUtils::split(extensions, ";");
+			std::vector<std::string> splitExtensions = 
+				StringUtils::split(extensions, ";");
 			for (auto & rawExt : splitExtensions)
 			{
 				size_t dotPos = rawExt.find_first_of(".");
@@ -143,16 +155,25 @@ namespace RenderLib
 			}
 		}
 
-		CPU::IO::AbstractLoadResultPtr AssimpFileLoader::loadFile(const std::string & fileName, unsigned int options)
+		CPU::IO::AbstractLoadResultPtr AssimpFileLoader::loadFile(
+			const std::string & fileName, 
+			unsigned int options)
 		{
 			Assimp::Importer importer;
 
 			unsigned int assimpFlags = 0;
 
 			assimpFlags |= aiPostProcessSteps::aiProcess_JoinIdenticalVertices;
-			assimpFlags |= (options & CPU::Mesh::Mesh::OPTION_COMPUTE_NORMALS_IF_ABSENT) ? aiProcess_GenSmoothNormals : 0;
-			assimpFlags |= (options & CPU::Mesh::Mesh::OPTION_COMPUTE_TANGENTS_IF_ABSENT
-				|| options & CPU::Mesh::Mesh::OPTION_COMPUTE_BITANGENTS_IF_ABSENT) ? aiProcess_CalcTangentSpace : 0;
+
+			assimpFlags |= 
+				(options & CPU::Mesh::Mesh::OPTION_COMPUTE_NORMALS_IF_ABSENT) ? 
+				aiProcess_GenNormals : 0;
+
+			assimpFlags |= 
+				(options & CPU::Mesh::Mesh::OPTION_COMPUTE_TANGENTS_IF_ABSENT
+				|| options & CPU::Mesh::Mesh::OPTION_COMPUTE_BITANGENTS_IF_ABSENT) ? 
+				aiProcess_CalcTangentSpace : 0;
+
 			assimpFlags |= aiProcess_Triangulate;
 
 			const aiScene * scene = importer.ReadFile(fileName, assimpFlags);
@@ -160,20 +181,27 @@ namespace RenderLib
 			if (scene == NULL || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE)
 			{
 				std::string importerError(importer.GetErrorString());
-				throw EngineException("AssimpFileLoader: Error importing mesh " + fileName + ": " + importerError);
+				throw EngineException(
+					"AssimpFileLoader: Error importing mesh " 
+					+ fileName + ": " + importerError);
 			}
 
-			std::unique_ptr<CPU::Mesh::MeshLoadResult> result = std::make_unique<CPU::Mesh::MeshLoadResult>();
+			std::unique_ptr<CPU::Mesh::MeshLoadResult> result = 
+				std::make_unique<CPU::Mesh::MeshLoadResult>();
 
 			size_t lastIndexSlash = fileName.find_last_of("/\\");
-			std::string rootPath = lastIndexSlash == std::string::npos? "." : fileName.substr(0, lastIndexSlash);
+			std::string rootPath = lastIndexSlash == 
+				std::string::npos? "." : fileName.substr(0, lastIndexSlash);
 			processSceneMaterials(scene, result.get(), rootPath);
 			processSceneMeshes(scene, result.get(), fileName);
 
 			return result;
 		}
 
-		void AssimpFileLoader::processSceneMaterials(const aiScene * scene, CPU::Mesh::MeshLoadResult * dst, const std::string & rootPath)
+		void AssimpFileLoader::processSceneMaterials(
+			const aiScene * scene, 
+			CPU::Mesh::MeshLoadResult * dst, 
+			const std::string & rootPath)
 		{
 			if (!scene->HasMaterials())
 			{
@@ -190,29 +218,51 @@ namespace RenderLib
 			}
 		}
 
-		void AssimpFileLoader::processFileMaterial(aiMaterial * material, CPU::Mesh::MaterialLoadedData & matData, const std::string & rootPath)
+		void AssimpFileLoader::processFileMaterial(
+			aiMaterial * material, 
+			CPU::Mesh::MaterialLoadedData & matData, 
+			const std::string & rootPath)
 		{
 			gatherMaterialValue<aiString, std::string>(material, AI_MATKEY_NAME, matData.name, assimpToString);
 
-			gatherMaterialValue<aiVector3D, VECTOR3>(material, AI_MATKEY_COLOR_DIFFUSE, matData.diffuseColor, assimpToEigen3F);
-			gatherMaterialValue<aiVector3D, VECTOR3>(material, AI_MATKEY_COLOR_SPECULAR, matData.specularColor, assimpToEigen3F);
-			gatherMaterialValue<aiVector3D, VECTOR3>(material, AI_MATKEY_COLOR_AMBIENT, matData.ambientColor, assimpToEigen3F);
-			gatherMaterialValue<aiVector3D, VECTOR3>(material, AI_MATKEY_COLOR_EMISSIVE, matData.emissiveColor, assimpToEigen3F);
-			gatherMaterialValue<aiVector3D, VECTOR3>(material, AI_MATKEY_COLOR_TRANSPARENT, matData.transparentColor, assimpToEigen3F);
-			gatherMaterialValue<FLOAT, FLOAT>(material, AI_MATKEY_OPACITY, matData.opacity, dummyFunc<FLOAT>);
-			gatherMaterialValue<FLOAT, FLOAT>(material, AI_MATKEY_SHININESS, matData.shininess, dummyFunc<FLOAT>);
-			gatherMaterialValue<FLOAT, FLOAT>(material, AI_MATKEY_SHININESS_STRENGTH, matData.specularScale, dummyFunc<FLOAT>);
-			gatherMaterialValue<FLOAT, FLOAT>(material, AI_MATKEY_REFRACTI, matData.indexOfRefraction, dummyFunc<FLOAT>);
-			gatherMaterialTexturesOfType(material, aiTextureType_DIFFUSE, matData.diffuseTextures, rootPath);
-			gatherMaterialTexturesOfType(material, aiTextureType_SPECULAR, matData.specularTextures, rootPath);
-			gatherMaterialTexturesOfType(material, aiTextureType_SHININESS, matData.shininessTextures, rootPath);
-			gatherMaterialTexturesOfType(material, aiTextureType_EMISSIVE, matData.emissiveTextures, rootPath);
-			gatherMaterialTexturesOfType(material, aiTextureType_AMBIENT, matData.ambientTextures, rootPath);
-			gatherMaterialTexturesOfType(material, aiTextureType_OPACITY, matData.opacityTextures, rootPath);
-			gatherMaterialTexturesOfType(material, aiTextureType_NORMALS, matData.normalMapTextures, rootPath);
-			gatherMaterialTexturesOfType(material, aiTextureType_HEIGHT, matData.heightMapTextures, rootPath);
-			gatherMaterialTexturesOfType(material, aiTextureType_DISPLACEMENT, matData.displacementTextures, rootPath);
-			gatherMaterialTexturesOfType(material, aiTextureType_UNKNOWN, matData.otherTextures, rootPath);
+			gatherMaterialValue<aiColor3D, VECTOR3>(
+				material, AI_MATKEY_COLOR_DIFFUSE, matData.diffuseColor, assimpColorToEigen);
+			gatherMaterialValue<aiColor3D, VECTOR3>(
+				material, AI_MATKEY_COLOR_SPECULAR, matData.specularColor, assimpColorToEigen);
+			gatherMaterialValue<aiColor3D, VECTOR3>(
+				material, AI_MATKEY_COLOR_AMBIENT, matData.ambientColor, assimpColorToEigen);
+			gatherMaterialValue<aiColor3D, VECTOR3>(
+				material, AI_MATKEY_COLOR_EMISSIVE, matData.emissiveColor, assimpColorToEigen);
+			gatherMaterialValue<aiColor3D, VECTOR3>(
+				material, AI_MATKEY_COLOR_TRANSPARENT, matData.transparentColor, assimpColorToEigen);
+			gatherMaterialValue<FLOAT, FLOAT>(
+				material, AI_MATKEY_OPACITY, matData.opacity, dummyFunc<FLOAT>);
+			gatherMaterialValue<FLOAT, FLOAT>(
+				material, AI_MATKEY_SHININESS, matData.shininess, dummyFunc<FLOAT>);
+			gatherMaterialValue<FLOAT, FLOAT>(
+				material, AI_MATKEY_SHININESS_STRENGTH, matData.specularScale, dummyFunc<FLOAT>);
+			gatherMaterialValue<FLOAT, FLOAT>(
+				material, AI_MATKEY_REFRACTI, matData.indexOfRefraction, dummyFunc<FLOAT>);
+			gatherMaterialTexturesOfType(
+				material, aiTextureType_DIFFUSE, matData.diffuseTextures, rootPath);
+			gatherMaterialTexturesOfType(
+				material, aiTextureType_SPECULAR, matData.specularTextures, rootPath);
+			gatherMaterialTexturesOfType(
+				material, aiTextureType_SHININESS, matData.shininessTextures, rootPath);
+			gatherMaterialTexturesOfType(
+				material, aiTextureType_EMISSIVE, matData.emissiveTextures, rootPath);
+			gatherMaterialTexturesOfType(
+				material, aiTextureType_AMBIENT, matData.ambientTextures, rootPath);
+			gatherMaterialTexturesOfType(
+				material, aiTextureType_OPACITY, matData.opacityTextures, rootPath);
+			gatherMaterialTexturesOfType(
+				material, aiTextureType_NORMALS, matData.normalMapTextures, rootPath);
+			gatherMaterialTexturesOfType(
+				material, aiTextureType_HEIGHT, matData.heightMapTextures, rootPath);
+			gatherMaterialTexturesOfType(
+				material, aiTextureType_DISPLACEMENT, matData.displacementTextures, rootPath);
+			gatherMaterialTexturesOfType(
+				material, aiTextureType_UNKNOWN, matData.otherTextures, rootPath);
 			// NOT DONE: aiTextureType_LIGHTMAP, aiTextureType_REFLECTION
 
 			bool renderMode = false;
@@ -228,7 +278,10 @@ namespace RenderLib
 			}
 		}
 
-		void AssimpFileLoader::processSceneMeshes(const aiScene * scene, CPU::Mesh::MeshLoadResult * dst, const std::string & rootPath)
+		void AssimpFileLoader::processSceneMeshes(
+			const aiScene * scene, 
+			CPU::Mesh::MeshLoadResult * dst, 
+			const std::string & rootPath)
 		{
 			if (!scene->HasMeshes())
 			{
@@ -249,9 +302,14 @@ namespace RenderLib
 			}
 		}
 
-		void AssimpFileLoader::processFileMesh(aiMesh * mesh, CPU::Mesh::MeshLoadedData & dst, const std::string & fileRoot)
+		void AssimpFileLoader::processFileMesh(
+			aiMesh * mesh, 
+			CPU::Mesh::MeshLoadedData & dst, 
+			const std::string & fileRoot)
 		{
-			std::unique_ptr<CPU::Mesh::MeshLoadResult> meshDataPtr = std::make_unique<CPU::Mesh::MeshLoadResult>();
+			std::unique_ptr<CPU::Mesh::MeshLoadResult> meshDataPtr = 
+				std::make_unique<CPU::Mesh::MeshLoadResult>();
+
 			CPU::Mesh::MeshLoadResult * meshData = meshDataPtr.get();
 
 			size_t i = 0;

@@ -4,8 +4,6 @@
 
 #include "EngineInstance.h"
 
-#include <iostream>
-
 namespace RenderLib
 {
 	namespace DefaultImpl

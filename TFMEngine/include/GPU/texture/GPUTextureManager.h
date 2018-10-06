@@ -30,6 +30,14 @@ namespace RenderLib
 				template<class T>
 				T * createTexture(size_t index)
 				{
+					// If present, return the same texture
+					auto it = gpuTextures.find(index);
+					if (it != gpuTextures.end())
+					{
+						return static_cast<T*>(it->second.get());
+					}
+
+					// Create a new one otherwise
 					if (std::is_base_of<GPUTexture, T>::value)
 					{
 						std::unique_ptr<GPUTexture> newTexture = std::make_unique<T>();

@@ -27,10 +27,12 @@ namespace RenderLib
 
 			GPU::Mesh::GPUBuffer * staticBuf = engineInstance->getGPUMeshManager().getStaticMeshBuffer();
 			staticBuf->bind();
+			staticBuf->bindDataBuffer();
 			staticRenderables.renderMap(*cam);
 
 			GPU::Mesh::GPUBuffer * dynamicBuf = engineInstance->getGPUMeshManager().getDynamicMeshBuffer();
 			dynamicBuf->bind();
+			dynamicBuf->bindDataBuffer();
 			dynamicRenderables.renderMap(*cam);
 		}
 	}

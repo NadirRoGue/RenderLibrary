@@ -68,7 +68,7 @@ namespace RenderLib
 					return sizeof(T) * numElements;
 				}
 
-				const size_t & getOffset()
+				const size_t getOffset()
 				{
 					return offset;
 				}
@@ -162,7 +162,7 @@ namespace RenderLib
 					}
 
 					const size_t typeSize = sizeof(T) * numElements;
-					start = offset + (stride) * index;
+					start = srcBlock->offset + offset + (stride) * index;
 					end = start + typeSize;
 
 					if (start < srcBlock->offset || end > srcBlock->offset + srcBlock->length)

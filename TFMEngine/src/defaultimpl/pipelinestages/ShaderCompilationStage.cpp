@@ -2,12 +2,17 @@
 
 #include "EngineInstance.h"
 
+#include "GPU/program/UberFactoryManager.h"
+
+#include <iostream>
+
 namespace RenderLib
 {
 	namespace DefaultImpl
 	{
 		void ShaderCompilationStage::preRunStage()
 		{
+			std::cout << "AQUI" << std::endl;
 			// Compile all shaders present at beginning
 			compileShaders();
 		}
@@ -32,8 +37,10 @@ namespace RenderLib
 					GPU::Program::ShaderUberFactoryParam param;
 					param.renderable = renderable;
 
+					GPU::Program::AbstractMaskFactory * factory = GPU::Program::UberFactoryManager::getMaskFactory(shaderType);
+
 					// Compile if not done already. Return already compiled shader if present
-					GPU::Program::Program * prog = engineInstance->getProgramManager().getProgram(shaderType, &param);
+					GPU::Program::Program * prog = factory->createProgram(engineInstance->getProgramManager(), &param);
 
 					if (prog != NULL)
 					{

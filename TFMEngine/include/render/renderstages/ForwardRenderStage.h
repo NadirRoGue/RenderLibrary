@@ -11,21 +11,11 @@ namespace RenderLib
 {
 	namespace Render
 	{
-		class ForwardRenderStage : public AbstractRenderingStage
+		class ForwardRenderStage : public MeshRenderingStage
 		{
-		private:
-			std::vector<DefaultImpl::MeshRenderer*> staticRenderables;
-			std::vector<DefaultImpl::MeshRenderer*> dynamicRenderables;
-
-			unsigned int programId;
-			unsigned int mvp;
-			unsigned int apos;
-		public:
-			void initialize();
-			void tryRegisterElement(DefaultImpl::MeshRenderer * renderable);
+	public:
+			bool shouldRegisterRenderable(DefaultImpl::MeshRenderer * renderable);
 			void runStage();
-		private:
-			void doRender(std::vector<DefaultImpl::MeshRenderer*> & renderables, GPU::Mesh::GPUBuffer * meshBuffer);
 		};
 	}
 }

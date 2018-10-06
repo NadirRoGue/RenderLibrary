@@ -471,6 +471,12 @@
     <ClInclude Include="include\GPU\program\UberMaskFactory.h">
       <Filter>Archivos de encabezado\GPU\program</Filter>
     </ClInclude>
+    <ClInclude Include="include\GPU\program\UberFactoryManager.h">
+      <Filter>Archivos de encabezado\GPU\program</Filter>
+    </ClInclude>
+    <ClInclude Include="include\render\RenderableMap.h">
+      <Filter>Archivos de encabezado\render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Component.cpp">
@@ -712,6 +718,12 @@
     </ClCompile>
     <ClCompile Include="src\GPU\program\UberMaskFactory.cpp">
       <Filter>Archivos de origen\GPU\program</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GPU\program\UberFactoryManager.cpp">
+      <Filter>Archivos de origen\GPU\program</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\RenderableMap.cpp">
+      <Filter>Archivos de origen\render</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -6,8 +6,6 @@ namespace RenderLib
 	{
 		namespace Program
 		{
-			std::unordered_map<std::type_index, std::unique_ptr<UberMaskFactory>> ProgramManager::uberFactories;
-
 			ProgramManager::ProgramManager()
 			{
 
@@ -18,32 +16,20 @@ namespace RenderLib
 
 			}
 
-			Program * ProgramManager::getProgram(std::type_index programType, UberFactoryParam * param)
+			Program * ProgramManager::findProgram(const std::type_index & programType, const UberParamMask & configMask)
 			{
-				UberParamMask configMask = 0;
-				auto factoryIt = uberFactories.find(programType);
-				if (factoryIt != uberFactories.end())
+				auto outerIt = programList.find(programType);
+				if (outerIt != programList.end())
 				{
-					configMask = factoryIt->second.get()->computeUberMask(param);
+					auto innerIt = outerIt->second.find(configMask);
+
+					if (innerIt != outerIt->second.end())
+					{
+						return innerIt->second.get();
+					}
 				}
 
-				Program * result = NULL;
-
-				ProgramMap & progMap = programList[programType];
-				auto it = progMap.find(configMask);
-				if (it == progMap.end())
-				{
-					std::unique_ptr<Program> newProgram = std::make_unique<T>();
-					newProgram.get()->init(configMask);
-					result = newProgram.get();
-					progMap[configMask] = std::move(newProgram);
-				}
-				else
-				{
-					result = it->second.get();
-				}
-
-				return result;
+				return NULL;
 			}
 
 			void ProgramManager::clear()

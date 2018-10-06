@@ -52,10 +52,10 @@ namespace RenderLib
 			void onRenderObject(const SceneObject & object, const Material::Material & material, const Camera & camera);
 		};
 
-		class StandardUberFactory : public GPU::Program::ShaderUberMaskFactory
+		class StandardUberFactory : public GPU::Program::AbstractShaderUberMaskFactory<StandardProgram>
 		{
 		public:
-			GPU::Program::UberParamMask computeUberMaskFromRenderable(DefaultImpl::MeshRenderer * param);
+			GPU::Program::UberParamMask computeMaskFromRenderable(DefaultImpl::MeshRenderer * renderable);
 		private:
 			GPU::Program::UberParamMask parseMesh(GPU::Mesh::GPUMesh * mesh);
 			GPU::Program::UberParamMask parseMaterial(GPU::Program::UberParamMask meshMask, Material::Material * mat);

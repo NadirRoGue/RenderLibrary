@@ -16,7 +16,7 @@ namespace RenderLib
 		private:
 			Render::RenderingPipeline renderPipeline;
 		public:
-			void registerElement(Component * component);
+			//void registerElement(Component * component);
 			void preRunStage();
 			void runStage();
 			void postRunStage();

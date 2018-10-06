@@ -198,6 +198,7 @@
     <ClInclude Include="include\GPU\program\ProgramManager.h" />
     <ClInclude Include="include\GPU\program\ShaderLoadResult.h" />
     <ClInclude Include="include\GPU\program\ShaderProgram.h" />
+    <ClInclude Include="include\GPU\program\UberFactoryManager.h" />
     <ClInclude Include="include\GPU\program\UberMaskFactory.h" />
     <ClInclude Include="include\GPU\texture\GPUTexture.h" />
     <ClInclude Include="include\GPU\texture\GPUTexture1D.h" />
@@ -223,6 +224,7 @@
     <ClInclude Include="include\pipeline\PipelineStage.h" />
     <ClInclude Include="include\pipeline\Threadpool.h" />
     <ClInclude Include="include\render\FBO.h" />
+    <ClInclude Include="include\render\RenderableMap.h" />
     <ClInclude Include="include\render\RenderingPipeline.h" />
     <ClInclude Include="include\render\AbstractRenderingStage.h" />
     <ClInclude Include="include\render\renderstages\ForwardRenderStage.h" />
@@ -283,6 +285,7 @@
     <ClCompile Include="src\GPU\program\ProgramManager.cpp" />
     <ClCompile Include="src\GPU\program\ShaderLoadResult.cpp" />
     <ClCompile Include="src\GPU\program\ShaderProgram.cpp" />
+    <ClCompile Include="src\GPU\program\UberFactoryManager.cpp" />
     <ClCompile Include="src\GPU\program\UberMaskFactory.cpp" />
     <ClCompile Include="src\GPU\texture\GPUTexture.cpp" />
     <ClCompile Include="src\GPU\texture\GPUTexture1D.cpp" />
@@ -306,6 +309,7 @@
     <ClCompile Include="src\pipeline\Threadpool.cpp" />
     <ClCompile Include="src\render\AbstractRenderingStage.cpp" />
     <ClCompile Include="src\render\FBO.cpp" />
+    <ClCompile Include="src\render\RenderableMap.cpp" />
     <ClCompile Include="src\render\RenderingPipeline.cpp" />
     <ClCompile Include="src\render\renderstages\ForwardRenderStage.cpp" />
     <ClCompile Include="src\Scene.cpp" />

@@ -127,16 +127,16 @@ namespace RenderLib
 
 		// ===============================================================================================
 
-		GPU::Program::UberParamMask StandardUberFactory::computeUberMaskFromRenderable(DefaultImpl::MeshRenderer * param)
+		GPU::Program::UberParamMask StandardUberFactory::computeMaskFromRenderable(DefaultImpl::MeshRenderer * renderable)
 		{
-			if (param == NULL)
+			if (renderable == NULL)
 			{
 				return 0;
 			}
 
-			GPU::Program::UberParamMask meshMask = parseMesh(param->gpuMesh);
+			GPU::Program::UberParamMask meshMask = parseMesh(renderable->gpuMesh);
 
-			return parseMaterial(meshMask, param->material);
+			return parseMaterial(meshMask, renderable->material);
 		}
 
 		GPU::Program::UberParamMask StandardUberFactory::parseMesh(GPU::Mesh::GPUMesh * mesh)

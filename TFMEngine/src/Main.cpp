@@ -86,7 +86,7 @@ int main(int argc, void ** arg)
 	// "Earth"
 	RenderLib::SceneObject * obj = scene->addObject<SceneObject>("Earth");
 	obj->addComponent<DefaultImpl::MeshFilter>()->mesh = mesh;
-	obj->addComponent<DefaultImpl::MeshRenderer>();
+	obj->addComponent<DefaultImpl::MeshRenderer>()->preferredRender = DefaultImpl::FORWARD_RENDER;
 	obj->addComponent<DefaultImpl::ObjectSpinner>();
 
 	// "Moon"
@@ -94,7 +94,7 @@ int main(int argc, void ** arg)
 	moon->transform.translate(VECTOR3(5, 0, 0));
 	moon->transform.scale(VECTOR3(0.5, 0.5, 0.5));
 	moon->addComponent<DefaultImpl::MeshFilter>()->mesh = mesh;
-	moon->addComponent<DefaultImpl::MeshRenderer>();
+	moon->addComponent<DefaultImpl::MeshRenderer>()->preferredRender = DefaultImpl::FORWARD_RENDER;
 	moon->addComponent<DefaultImpl::ObjectSpinner>();
 	moon->setParent(obj);
 

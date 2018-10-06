@@ -6,10 +6,13 @@
 
 #include "EngineInstance.h"
 
+#include <iostream>
+
 namespace RenderLib
 {
 	namespace DefaultImpl
 	{
+		/*
 		void RenderStage::registerElement(Component * comp)
 		{
 			MeshRenderer * meshRenderer = static_cast<MeshRenderer*>(comp);
@@ -19,16 +22,22 @@ namespace RenderLib
 				renderPipeline.registerRenderable(meshRenderer);
 			}
 		}
-
+		*/
 		void RenderStage::preRunStage()
 		{
-			engineInstance->acquireContext();
-
 			// Sort all elements
 			Pipeline::ElementBasedStage<MeshRenderer>::preRunStage();
-			// Add them sorted to the correspondent places
-			
+
+			engineInstance->acquireContext();
+
+			std::cout << "Setting engine instance" << std::endl;
 			renderPipeline.initializeStages(engineInstance);
+
+			// Add them sorted to the correspondent places
+			for (auto comp : elements)
+			{
+				renderPipeline.registerRenderable(static_cast<MeshRenderer*>(comp));
+			}
 
 			engineInstance->releaseContext();
 		}

@@ -74,4 +74,20 @@ namespace RenderLib
 	{
 		return inputManager;
 	}
+
+	Lighting::DirectionalLight * Scene::addDirectionalLight()
+	{
+		std::unique_ptr<SceneObject> newDL = std::make_unique<Lighting::DirectionalLight>();
+		Lighting::DirectionalLight * result = static_cast<Lighting::DirectionalLight*>(newDL.get());
+		
+		direcionalLights.push_back(result);
+		sceneObjects.push_back(std::move(newDL));
+
+		return result;
+	}
+
+	std::vector<Lighting::DirectionalLight*> & Scene::geteDirectionalLights()
+	{
+		return direcionalLights;
+	}
 }

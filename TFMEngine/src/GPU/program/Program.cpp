@@ -195,6 +195,24 @@ namespace RenderLib
 					shaderAttributes[nameStr] = input;
 					i++;
 				}
+
+				GLint activeBlocks = 0;
+				glGetProgramiv(programId, GL_ACTIVE_UNIFORM_BLOCKS, &activeBlocks);
+				i = 0;
+				while (i < activeBlocks)
+				{
+					ShaderInput newBlock;
+
+					glGetActiveUniformBlockiv(programId, i, GL_UNIFORM_NAME_LENGTH, &nameLen);
+					glGetActiveUniformBlockName(programId, i, 0xff, NULL, nameBuffer);
+
+					newBlock.id = glGetUniformBlockIndex(programId, nameBuffer);
+					
+					std::string nameStr(nameBuffer);
+					shaderBlocks[nameStr] = newBlock;
+
+					i++;
+				}
 			}
 
 			void Program::getUberShaderDefines(std::vector<std::string> & definesBuffer)
@@ -624,6 +642,17 @@ namespace RenderLib
 				glUniform1i(id, textureUnit);
 
 				textureUnit++;
+			}
+
+			void Program::setUniformBlock(const std::string & name, const unsigned int & ubo)
+			{
+				auto it = shaderBlocks.find(name);
+				if (it == shaderBlocks.end())
+				{
+					return;
+				}
+
+				glBindBufferBase(GL_UNIFORM_BUFFER, it->second.id, ubo);
 			}
 		}
 	}

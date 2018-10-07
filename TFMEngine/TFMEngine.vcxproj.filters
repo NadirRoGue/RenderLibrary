@@ -181,6 +181,18 @@
     <Filter Include="Archivos de origen\CPU\texture\blendoperations">
       <UniqueIdentifier>{31221466-4f39-4b47-88c9-18d3b5eb7cef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Archivos de encabezado\lights">
+      <UniqueIdentifier>{d1aa88ac-2949-484a-93bd-5018d9fbf723}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\lights">
+      <UniqueIdentifier>{bc186742-de24-4778-8161-091fd3c6f776}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\GPU\light">
+      <UniqueIdentifier>{10471fe4-a3ad-40d8-ac32-a944424597f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\GPU\light">
+      <UniqueIdentifier>{f6834c48-de2b-421b-88db-e0981ddf6ce3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Component.h">
@@ -480,6 +492,27 @@
     <ClInclude Include="include\render\RenderableMap.h">
       <Filter>Archivos de encabezado\render</Filter>
     </ClInclude>
+    <ClInclude Include="include\lights\DirectionalLight.h">
+      <Filter>Archivos de encabezado\lights</Filter>
+    </ClInclude>
+    <ClInclude Include="include\lights\PointLight.h">
+      <Filter>Archivos de encabezado\lights</Filter>
+    </ClInclude>
+    <ClInclude Include="include\lights\SpotLight.h">
+      <Filter>Archivos de encabezado\lights</Filter>
+    </ClInclude>
+    <ClInclude Include="include\lights\Light.h">
+      <Filter>Archivos de encabezado\lights</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\light\LightBuffer.h">
+      <Filter>Archivos de encabezado\GPU\light</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GPU\light\LightManager.h">
+      <Filter>Archivos de encabezado\GPU\light</Filter>
+    </ClInclude>
+    <ClInclude Include="include\defaultimpl\pipelinestages\LightSyncStage.h">
+      <Filter>Archivos de encabezado\defaultimpl\pipelinestages</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Component.cpp">
@@ -745,6 +778,27 @@
     </ClCompile>
     <ClCompile Include="src\CPU\texture\blendoperations\BlendSub.cpp">
       <Filter>Archivos de origen\CPU\texture\blendoperations</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lights\DirectionalLight.cpp">
+      <Filter>Archivos de origen\lights</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lights\Light.cpp">
+      <Filter>Archivos de origen\lights</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lights\PointLight.cpp">
+      <Filter>Archivos de origen\lights</Filter>
+    </ClCompile>
+    <ClCompile Include="src\lights\SpotLight.cpp">
+      <Filter>Archivos de origen\lights</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GPU\light\LightBuffer.cpp">
+      <Filter>Archivos de origen\GPU\light</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GPU\light\LightManager.cpp">
+      <Filter>Archivos de origen\GPU\light</Filter>
+    </ClCompile>
+    <ClCompile Include="src\defaultimpl\pipelinestages\LightSyncStage.cpp">
+      <Filter>Archivos de origen\defaultimpl\pipelinestages</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

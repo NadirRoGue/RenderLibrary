@@ -12,6 +12,8 @@
 
 #include "inputhandlers/InputManager.h"
 
+#include "lights/DirectionalLight.h"
+
 namespace RenderLib
 {
 	class Scene
@@ -22,12 +24,12 @@ namespace RenderLib
 		std::vector<SceneObjectPtr> sceneObjects;
 
 		std::unordered_map<std::string, Camera *> sceneCameras;
-
 		std::vector<Graphics::WindowResizeObserver *> windowResizables;
+		Camera * activeCamera;
+
+		std::vector<Lighting::DirectionalLight*> direcionalLights;
 
 		InputHandlers::InputManager inputManager;
-
-		Camera * activeCamera;
 
 		SceneObject * sceneRoot;
 
@@ -104,6 +106,10 @@ namespace RenderLib
 			throw EngineException("Scene: Attempted to add a non-derived Camera camera");
 			return NULL;
 		}
+
+		Lighting::DirectionalLight * addDirectionalLight();
+
+		std::vector<Lighting::DirectionalLight*> & geteDirectionalLights();
 	};
 }
 

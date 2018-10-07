@@ -86,6 +86,11 @@ namespace RenderLib
 		return gpuProgramManager;
 	}
 
+	GPU::Light::LightManager & EngineInstance::getGPULightManager()
+	{
+		return lightManager;
+	}
+
 	// ==============================================================
 	// EXECUTION
 

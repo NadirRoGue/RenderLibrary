@@ -180,6 +180,7 @@
     <ClInclude Include="include\defaultimpl\pipelinestages\CPUToGPUTextureSyncStage.h" />
     <ClInclude Include="include\defaultimpl\pipelinestages\GPUToCPUMeshSyncStage.h" />
     <ClInclude Include="include\defaultimpl\pipelinestages\IterationEndStage.h" />
+    <ClInclude Include="include\defaultimpl\pipelinestages\LightSyncStage.h" />
     <ClInclude Include="include\defaultimpl\pipelinestages\RenderStage.h" />
     <ClInclude Include="include\defaultimpl\pipelinestages\ShaderCompilationStage.h" />
     <ClInclude Include="include\defaultimpl\pipelinestages\TransformUpdateStage.h" />
@@ -189,6 +190,8 @@
     <ClInclude Include="include\Defines.h" />
     <ClInclude Include="include\EngineException.h" />
     <ClInclude Include="include\EngineInstance.h" />
+    <ClInclude Include="include\GPU\light\LightBuffer.h" />
+    <ClInclude Include="include\GPU\light\LightManager.h" />
     <ClInclude Include="include\GPU\mesh\GPUBuffer.h" />
     <ClInclude Include="include\GPU\mesh\GPUMesh.h" />
     <ClInclude Include="include\GPU\mesh\GPUMeshManager.h" />
@@ -214,6 +217,10 @@
     <ClInclude Include="include\inputhandlers\MouseInputHandler.h" />
     <ClInclude Include="include\inputhandlers\MouseMotionHandler.h" />
     <ClInclude Include="include\InstanceManager.h" />
+    <ClInclude Include="include\lights\DirectionalLight.h" />
+    <ClInclude Include="include\lights\Light.h" />
+    <ClInclude Include="include\lights\PointLight.h" />
+    <ClInclude Include="include\lights\SpotLight.h" />
     <ClInclude Include="include\logger\AbstractLogger.h" />
     <ClInclude Include="include\logger\Log.h" />
     <ClInclude Include="include\material\Material.h" />
@@ -274,6 +281,7 @@
     <ClCompile Include="src\defaultimpl\pipelinestages\CPUToGPUTextureSyncStage.cpp" />
     <ClCompile Include="src\defaultimpl\pipelinestages\GPUToCPUMeshSyncStage.cpp" />
     <ClCompile Include="src\defaultimpl\pipelinestages\IterationEndStage.cpp" />
+    <ClCompile Include="src\defaultimpl\pipelinestages\LightSyncStage.cpp" />
     <ClCompile Include="src\defaultimpl\pipelinestages\RenderStage.cpp" />
     <ClCompile Include="src\defaultimpl\pipelinestages\ShaderCompilationStage.cpp" />
     <ClCompile Include="src\defaultimpl\pipelinestages\TransformUpdateStage.cpp" />
@@ -282,6 +290,8 @@
     <ClCompile Include="src\defaultimpl\windowhandlers\GLFWWindowHandler.cpp" />
     <ClCompile Include="src\EngineException.cpp" />
     <ClCompile Include="src\EngineInstance.cpp" />
+    <ClCompile Include="src\GPU\light\LightBuffer.cpp" />
+    <ClCompile Include="src\GPU\light\LightManager.cpp" />
     <ClCompile Include="src\GPU\mesh\GPUBuffer.cpp" />
     <ClCompile Include="src\GPU\mesh\GPUMesh.cpp" />
     <ClCompile Include="src\GPU\mesh\GPUMeshManager.cpp" />
@@ -303,6 +313,10 @@
     <ClCompile Include="src\Initialization.cpp" />
     <ClCompile Include="src\inputhandlers\InputManager.cpp" />
     <ClCompile Include="src\InstanceManager.cpp" />
+    <ClCompile Include="src\lights\DirectionalLight.cpp" />
+    <ClCompile Include="src\lights\Light.cpp" />
+    <ClCompile Include="src\lights\PointLight.cpp" />
+    <ClCompile Include="src\lights\SpotLight.cpp" />
     <ClCompile Include="src\logger\AbstractLogger.cpp" />
     <ClCompile Include="src\logger\Log.cpp" />
     <ClCompile Include="src\Main.cpp" />

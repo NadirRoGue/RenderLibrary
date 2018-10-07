@@ -18,6 +18,7 @@
 #include "defaultimpl/pipelinestages/IterationEndStage.h"
 #include "defaultimpl/pipelinestages/TransformUpdateStage.h"
 #include "defaultimpl/pipelinestages/ShaderCompilationStage.h"
+#include "defaultimpl/pipelinestages/LightSyncStage.h"
 
 #include "logger/Log.h"
 
@@ -71,6 +72,7 @@ int main(int argc, void ** arg)
 	instance->getPipelineManager().addPipelineStage<DefaultImpl::ShaderCompilationStage>();
 	instance->getPipelineManager().addPipelineStage<Pipeline::ElementBasedStage<DefaultImpl::ObjectSpinner>>();
 	instance->getPipelineManager().addPipelineStage<DefaultImpl::TransformUpdateStage>();
+	instance->getPipelineManager().addPipelineStage<DefaultImpl::LightSyncStage>();
 	instance->getPipelineManager().addPipelineStage<DefaultImpl::RenderStage>();
 	instance->getPipelineManager().addPipelineStage<DefaultImpl::IterationEndStage>();
 	
@@ -88,6 +90,14 @@ int main(int argc, void ** arg)
 	RenderLib::Camera * cam = scene->addCamera<RenderLib::Camera>("Main_Camera");
 	cam->setProjectionParams((FLOAT)0.5, (FLOAT)75.0, (FLOAT)45.0);
 	cam->translateView(VECTOR3(0.0, 0.0, -5.0));
+
+	// Light set up
+	Lighting::DirectionalLight * dl = scene->addDirectionalLight();
+	dl->setLightColor(VECTOR3(1.0, 1.0, 1.0));
+	dl->setDiffuseIntensity(1.0f);
+	dl->setSpecularIntensity(1.0f);
+	dl->setAmbientIntensity(0.15f);
+	dl->setDirection(VECTOR3(1.0, 1.0, 0.0));
 
 	// Object set up
 	// "Cube"

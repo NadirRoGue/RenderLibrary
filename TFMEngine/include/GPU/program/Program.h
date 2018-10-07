@@ -35,6 +35,7 @@ namespace RenderLib
 			protected:
 				std::unordered_map<std::string, ShaderInput> shaderUniforms;
 				std::unordered_map<std::string, ShaderInput> shaderAttributes;
+				std::unordered_map<std::string, ShaderInput> shaderBlocks;
 			public:
 				unsigned int programId;
 			public:
@@ -75,6 +76,7 @@ namespace RenderLib
 				void setUniformMatrix3(const std::string & name, const unsigned int & count, const bool & transpose, const FLOAT * val);
 				void setUniformMatrix4(const std::string & name, const unsigned int & count, const bool & transpose, const FLOAT * val);
 				void setUniformTexture(const std::string & name, Texture::GPUTexture * texture, unsigned int & textureUnit);
+				void setUniformBlock(const std::string & name, const unsigned int & ubo);
 			protected:
 				virtual void getUberShaderDefines(std::vector<std::string> & definesBuffer);
 				virtual unsigned int loadShaderFromFile(GLenum shaderType, const std::string & filePath, std::vector<std::string> & configStrings);

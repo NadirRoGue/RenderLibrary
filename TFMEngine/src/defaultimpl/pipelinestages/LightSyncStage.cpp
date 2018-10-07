@@ -2,6 +2,8 @@
 
 #include "EngineInstance.h"
 
+#include <iostream>
+
 namespace RenderLib
 {
 	namespace DefaultImpl
@@ -32,6 +34,7 @@ namespace RenderLib
 			if (dirLights.size() > 0)
 			{
 				size_t dirLightSize = dirLights[0]->getDataSize();
+				//std::cout << dirLightSize << std::endl;
 				size_t totalSize = dirLights.size() * dirLightSize;
 
 				std::vector<char> buffer;

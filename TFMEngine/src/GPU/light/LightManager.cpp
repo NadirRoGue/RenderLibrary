@@ -1,5 +1,9 @@
 #include "GPU/light/LightManager.h"
 
+#include <gl/glew.h>
+
+#include <iostream>
+
 namespace RenderLib
 {
 	namespace GPU
@@ -18,22 +22,27 @@ namespace RenderLib
 
 			void LightManager::initializeBuffers()
 			{
+				std::cout << "initializeBuffers" << std::endl;
+				std::cout << glGetError() << std::endl;
 				dirLightBuffer.generate();
+				std::cout << glGetError() << std::endl;
 				pointLightBuffer.generate();
+				std::cout << glGetError() << std::endl;
 				spotLightBuffer.generate();
+				std::cout << glGetError() << std::endl;
 			}
 
-			const LightBuffer & LightManager::getDirectionalLightBuffer()
+			LightBuffer & LightManager::getDirectionalLightBuffer()
 			{
 				return dirLightBuffer;
 			}
 
-			const LightBuffer & LightManager::getPointLightBuffer()
+			LightBuffer & LightManager::getPointLightBuffer()
 			{
 				return pointLightBuffer;
 			}
 
-			const LightBuffer & LightManager::getSpotLightBuffer()
+			LightBuffer & LightManager::getSpotLightBuffer()
 			{
 				return spotLightBuffer;
 			}

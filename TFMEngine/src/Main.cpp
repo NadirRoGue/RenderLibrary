@@ -41,6 +41,7 @@ Mesh::Mesh * loadMesh(const std::string & file, unsigned int options)
 
 int main(int argc, void ** arg)
 {
+
 	/*** INSTANCE SET UP ***/
 	// Default initialization (registers components for asset loading, memory building, synchronization, etc.)
 	DefaultEngineInitialization();

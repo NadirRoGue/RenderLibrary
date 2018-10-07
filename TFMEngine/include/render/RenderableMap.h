@@ -11,6 +11,8 @@
 
 #include "defaultimpl/components/MeshRenderer.h"
 
+#include "EngineInstance.h"
+
 namespace RenderLib
 {
 	namespace Render
@@ -39,7 +41,7 @@ namespace RenderLib
 			void addRenderable(GPU::Program::ProgramManager & programManager, DefaultImpl::MeshRenderer * renderable);
 
 			void initializeMap();
-			void renderMap(const Camera & fromCamera);
+			void renderMap(const Camera & fromCamera, EngineInstance * instance);
 		};
 	}
 }

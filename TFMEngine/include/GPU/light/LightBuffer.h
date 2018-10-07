@@ -14,6 +14,7 @@ namespace RenderLib
 			public:
 				LightBuffer();
 				~LightBuffer();
+				unsigned int getBufferId();
 				void generate();
 				void bind();
 				void unBind();

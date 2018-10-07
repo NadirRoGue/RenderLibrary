@@ -23,9 +23,9 @@ namespace RenderLib
 
 				void initializeBuffers();
 
-				const LightBuffer & getDirectionalLightBuffer();
-				const LightBuffer & getPointLightBuffer();
-				const LightBuffer & getSpotLightBuffer();
+				LightBuffer & getDirectionalLightBuffer();
+				LightBuffer & getPointLightBuffer();
+				LightBuffer & getSpotLightBuffer();
 
 				void setDirectionalLightData(std::vector<char> & bytesData);
 				void setPointLightData(std::vector<char> & bytesData);

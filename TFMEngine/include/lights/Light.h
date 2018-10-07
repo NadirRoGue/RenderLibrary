@@ -18,6 +18,7 @@ namespace RenderLib
 			float lightKd;
 			float lightKs;
 			float lightKa;
+			float padding;
 
 			LightData()
 			{
@@ -66,7 +67,7 @@ namespace RenderLib
 				data->lightColor[0] = color.x();
 				data->lightColor[1] = color.y();
 				data->lightColor[2] = color.z();
-				data->lightColor[3] = 1.0f;
+				data->lightColor[3] = 5.0f;
 			}
 
 			void setDiffuseIntensity(const float & value)

@@ -195,7 +195,7 @@ namespace RenderLib
 					shaderAttributes[nameStr] = input;
 					i++;
 				}
-
+				
 				GLint activeBlocks = 0;
 				glGetProgramiv(programId, GL_ACTIVE_UNIFORM_BLOCKS, &activeBlocks);
 				i = 0;
@@ -203,7 +203,8 @@ namespace RenderLib
 				{
 					ShaderInput newBlock;
 
-					glGetActiveUniformBlockiv(programId, i, GL_UNIFORM_NAME_LENGTH, &nameLen);
+					glGetActiveUniformBlockiv(programId, i, GL_UNIFORM_BLOCK_NAME_LENGTH, &nameLen);
+
 					glGetActiveUniformBlockName(programId, i, 0xff, NULL, nameBuffer);
 
 					newBlock.id = glGetUniformBlockIndex(programId, nameBuffer);

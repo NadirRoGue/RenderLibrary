@@ -79,14 +79,33 @@ uniform sampler2D normalTexture;
 uniform float specularScale;
 #endif
 
-uniform vec3 LightDiffuse = vec3(1.0);
-uniform vec3 LightAmbient = vec3(0.1);
-uniform vec3 LightSpecular = vec3(1.0);
+/*
+struct DirectionalLight
+{
+	vec4 lightColor;
+	float dlKd;
+	float dlKs;
+	float dlKa;
+	vec4 dir;
+};
 
-uniform vec3 LightDir = vec3(1.0, 1.0, 0.0);
+//#define MAX_DIR_LIGHTS 10
+*/
+
+
+layout (std140, binding = 0) uniform DLBlock {
+	mat4 a;
+	mat4 b;
+};
 
 void main()
 {
+	vec3 LightDiffuse = vec3(1.0);
+	vec3 LightAmbient = vec3(0.1);
+	vec3 LightSpecular = vec3(1.0);
+
+	vec3 LightDir = vec3(1.0, 1.0, 0.0);
+
 // ==============================================================
 // Gather input parameters
 

@@ -4,6 +4,8 @@
 
 #include "EngineInstance.h"
 
+#include <iostream>
+
 namespace RenderLib
 {
 	namespace Render
@@ -21,6 +23,7 @@ namespace RenderLib
 
 		void ForwardRenderStage::runStage()
 		{
+
 			glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 			
 			Camera * cam = engineInstance->getSceneManager().getActiveScene()->getActiveCamera();
@@ -28,12 +31,13 @@ namespace RenderLib
 			GPU::Mesh::GPUBuffer * staticBuf = engineInstance->getGPUMeshManager().getStaticMeshBuffer();
 			staticBuf->bind();
 			staticBuf->bindDataBuffer();
-			staticRenderables.renderMap(*cam);
+			staticRenderables.renderMap(*cam, engineInstance);
 
 			GPU::Mesh::GPUBuffer * dynamicBuf = engineInstance->getGPUMeshManager().getDynamicMeshBuffer();
 			dynamicBuf->bind();
 			dynamicBuf->bindDataBuffer();
-			dynamicRenderables.renderMap(*cam);
+			dynamicRenderables.renderMap(*cam, engineInstance);
+
 		}
 	}
 }

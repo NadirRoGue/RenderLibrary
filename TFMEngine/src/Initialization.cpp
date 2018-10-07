@@ -19,6 +19,7 @@
 
 #include "logger/Log.h"
 #include "defaultimpl/loggers/ConsoleLogger.h"
+#include "defaultimpl/loggers/BufferedFileLogger.h"
 
 namespace RenderLib
 {
@@ -31,7 +32,8 @@ namespace RenderLib
 		CPU::IO::FileManager::registerFileLoader<DefaultImpl::ShaderLoader>();
 		CPU::IO::FileManager::registerFileLoader<DefaultImpl::ImageLoader>();
 
-		Logger::Log::getInstance().setLogger<DefaultImpl::ConsoleLogger>();
+		Logger::Log::getInstance().addLogger<DefaultImpl::ConsoleLogger>();
+		Logger::Log::getInstance().addLogger<DefaultImpl::BufferedFileLogger>();
 
 		GPU::Texture::GPUTextureManager::queryAnisotropicFilterSupport();
 		GPU::Program::UberFactoryManager::registerUberFactory<DefaultImpl::StandardProgram, DefaultImpl::StandardUberFactory>();

@@ -4,44 +4,125 @@ namespace RenderLib
 {
 	namespace Logger
 	{
-		std::unique_ptr<Log> Log::INSTANCE = std::make_unique<Log>();
+	Log Log::INSTANCE;
 
 
 		Log & Log::getInstance()
 		{
-			return *(INSTANCE.get());
+			return INSTANCE;
+		}
+
+		std::string Log::getLevelString(LogLevel level)
+		{
+			std::string logStr;
+
+			switch (level)
+			{
+			case LogLevel::LEVEL_ERROR:
+				logStr = "[ERROR]";
+				break;
+			case LogLevel::LEVEL_WARNING:
+				logStr = "[WARNING]";
+				break;
+			case LogLevel::LEVEL_INFO:
+			default:
+				logStr = "[INFO]";
+				break;
+			}
+
+			return logStr;
 		}
 
 		void Log::log(const std::string & message, const LogLevel & level)
 		{
-			if (logger.get() != NULL)
+			auto currentTime = std::chrono::system_clock::now();
+			std::time_t currentDate = std::chrono::system_clock::to_time_t(currentTime);
+			char dateStrBuf[0xff];
+			
+			std::tm time;
+			LOCALTIME(time, &currentDate);
+
+			std::strftime(dateStrBuf, 0xff, "[%d-%m-%Y_%H-%M_%S]", &time);
+			std::string finalStr = std::string(dateStrBuf) + getLevelString(level) + message;
+
+			std::unique_lock<std::mutex> lock(mtx);
+			for (auto & logger : loggers)
 			{
-				logger.get()->log(message, level);
+				if (logger.get() != NULL)
+				{
+					logger.get()->log(finalStr, level);
+				}
 			}
+			lock.unlock();
 		}
 
 		void Log::logError(const std::string & error)
 		{
-			if (logger.get() != NULL)
+			auto currentTime = std::chrono::system_clock::now();
+			std::time_t currentDate = std::chrono::system_clock::to_time_t(currentTime);
+			char dateStrBuf[0xff];
+
+			std::tm time;
+			LOCALTIME(time, &currentDate);
+
+			std::strftime(dateStrBuf, 0xff, "[%d-%m-%Y_%H-%M_%S][ERROR]", &time);
+			std::string finalStr = std::string(dateStrBuf) + error;
+
+			std::unique_lock<std::mutex> lock(mtx);
+			for (auto & logger : loggers)
 			{
-				logger.get()->logError(error);
+				if (logger.get() != NULL)
+				{
+					logger.get()->logError(finalStr);
+				}
 			}
+			lock.unlock();
 		}
 
 		void Log::logInfo(const std::string & info)
 		{
-			if (logger.get() != NULL)
+			auto currentTime = std::chrono::system_clock::now();
+			std::time_t currentDate = std::chrono::system_clock::to_time_t(currentTime);
+			char dateStrBuf[0xff];
+
+			std::tm time;
+			LOCALTIME(time, &currentDate);
+
+			std::strftime(dateStrBuf, 0xff, "[%d-%m-%Y_%H-%M_%S][INFO]", &time);
+			std::string finalStr = std::string(dateStrBuf) + info;
+
+			std::unique_lock<std::mutex> lock(mtx);
+			for (auto & logger : loggers)
 			{
-				logger.get()->logInfo(info);
+				if (logger.get() != NULL)
+				{
+					logger.get()->logInfo(finalStr);
+				}
 			}
+			lock.unlock();
 		}
 
 		void Log::logWarning(const std::string & warning)
 		{
-			if (logger.get() != NULL)
+			auto currentTime = std::chrono::system_clock::now();
+			std::time_t currentDate = std::chrono::system_clock::to_time_t(currentTime);
+			char dateStrBuf[0xff];
+
+			std::tm time;
+			LOCALTIME(time, &currentDate);
+
+			std::strftime(dateStrBuf, 0xff, "[%d-%m-%Y_%H-%M_%S][WARNING]", &time);
+			std::string finalStr = std::string(dateStrBuf) + warning;
+
+			std::unique_lock<std::mutex> lock(mtx);
+			for (auto & logger : loggers)
 			{
-				logger.get()->logWarning(warning);
+				if (logger.get() != NULL)
+				{
+					logger.get()->logWarning(finalStr);
+				}
 			}
+			lock.unlock();
 		}
 
 		Log::Log()
@@ -50,7 +131,12 @@ namespace RenderLib
 
 		Log::~Log()
 		{
-			logger.reset();
+			/*
+			for (auto & logger : loggers)
+			{
+				logger.reset();
+			}
+			*/
 		}
 	}
 }

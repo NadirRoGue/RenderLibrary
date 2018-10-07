@@ -4,6 +4,16 @@ namespace RenderLib
 {
 	namespace Logger
 	{
+		AbstractLogger::AbstractLogger()
+		{
+
+		}
+
+		AbstractLogger::~AbstractLogger()
+		{
+
+		}
+
 		void AbstractLogger::log(const std::string & text, const LogLevel & level)
 		{
 			switch (level)

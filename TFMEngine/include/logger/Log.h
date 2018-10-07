@@ -2,8 +2,12 @@
 #define __RENDERLIB_LOGGER_LOG_H__
 
 #include <memory>
+#include <vector>
+#include <mutex>
 
 #include "AbstractLogger.h"
+
+#include <iostream>
 
 namespace RenderLib
 {
@@ -12,9 +16,10 @@ namespace RenderLib
 		class Log
 		{
 		private:
-			static std::unique_ptr<Log> INSTANCE;
+			static Log INSTANCE;
 		private:
-			std::unique_ptr<AbstractLogger> logger;
+			std::vector<std::unique_ptr<AbstractLogger>> loggers;
+			std::mutex mtx;
 		public:
 			Log();
 			~Log();
@@ -22,12 +27,22 @@ namespace RenderLib
 			static Log & getInstance();
 		public:
 			template<class T>
-			void setLogger()
+			void addLogger()
 			{
 				if (std::is_base_of<AbstractLogger, T>::value)
 				{
-					logger.reset();
-					logger = std::make_unique<T>();
+					for (auto & cl : loggers)
+					{
+						// A log of the given type exists, skip it
+						if (dynamic_cast<T*>(cl.get()) != NULL)
+						{
+							std::cerr << "Log: Skipping adding duplicate logger of type " << typeid(T).name() << std::endl;
+							return;
+						}
+					}
+
+					std::unique_ptr<AbstractLogger> newLogger = std::make_unique<T>();
+					loggers.push_back(std::move(newLogger));
 				}
 				else
 				{
@@ -39,6 +54,8 @@ namespace RenderLib
 			void logInfo(const std::string & text);
 			void logWarning(const std::string & text);
 			void logError(const std::string & text);
+		private:
+			std::string getLevelString(LogLevel level);
 		};
 	}
 }

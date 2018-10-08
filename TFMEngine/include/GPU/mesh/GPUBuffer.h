@@ -13,6 +13,9 @@ namespace RenderLib
 		{
 			class GPUBuffer
 			{
+			private:
+				size_t faceSize;
+				size_t dataSize;
 			public:
 				unsigned int vao;
 				unsigned int indexBuffer;
@@ -35,6 +38,9 @@ namespace RenderLib
 				void unBindDataBuffer();
 
 				void updateData(char * faceData, const size_t & faceSize, char * vertexData, const size_t & vertexSize);
+
+				const size_t & getFacesSizeBytes();
+				const size_t & getDataSizeBytes();
 			};
 
 			typedef std::unique_ptr<GPUBuffer> GPUBufferPtr;

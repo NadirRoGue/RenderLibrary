@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <memory>
+#include <unordered_map>
 
 namespace RenderLib
 {
@@ -43,6 +44,7 @@ namespace RenderLib
 				void * allocatedMemory;
 				size_t sizeBytes;
 				size_t usedBytes;
+				std::unordered_map<size_t, MemoryBlock*> blocksByIndex;
 				std::vector<std::unique_ptr<MemoryBlock>> memoryBlockList;
 
 			public:
@@ -58,6 +60,10 @@ namespace RenderLib
 				void resize(size_t newSizeBytes);
 				void allocate(size_t newSizeBytes);
 				void release();
+
+				void setBlockData(MemoryBlock * block, size_t offset, size_t length, char * data);
+
+				std::unordered_map<size_t, MemoryBlock*> & getBlocksByIndex();
 
 				void * getData();
 				char * getDataAsBytes();

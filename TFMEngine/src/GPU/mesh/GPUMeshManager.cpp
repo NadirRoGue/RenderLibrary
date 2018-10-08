@@ -56,6 +56,11 @@ namespace RenderLib
 				return dynamicFrontBuffer.get();
 			}
 
+			GPUBuffer * GPUMeshManager::getSyncDynamicBuffer()
+			{
+				return dynamicBackBuffer.get();
+			}
+
 			void GPUMeshManager::swapDynamicBuffers()
 			{
 				dynamicFrontBuffer.swap(dynamicBackBuffer);
@@ -92,6 +97,7 @@ namespace RenderLib
 			{
 				GPUMeshPtr newGPUMesh = std::make_unique<GPUMesh>();
 				GPUMesh * result = newGPUMesh.get();
+				result->index = index;
 				if (staticMesh)
 				{
 					staticMeshes[index] = std::move(newGPUMesh);

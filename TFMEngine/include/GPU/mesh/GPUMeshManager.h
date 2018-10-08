@@ -32,6 +32,7 @@ namespace RenderLib
 
 				GPUBuffer * getStaticMeshBuffer();
 				GPUBuffer * getDynamicMeshBuffer();
+				GPUBuffer * getSyncDynamicBuffer();
 
 				void swapDynamicBuffers();
 

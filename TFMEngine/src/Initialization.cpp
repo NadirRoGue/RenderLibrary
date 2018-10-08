@@ -33,7 +33,7 @@ namespace RenderLib
 		CPU::IO::FileManager::registerFileLoader<DefaultImpl::ImageLoader>();
 
 		Logger::Log::getInstance().addLogger<DefaultImpl::ConsoleLogger>();
-		Logger::Log::getInstance().addLogger<DefaultImpl::BufferedFileLogger>();
+		//Logger::Log::getInstance().addLogger<DefaultImpl::BufferedFileLogger>();
 
 		GPU::Texture::GPUTextureManager::queryAnisotropicFilterSupport();
 		GPU::Program::UberFactoryManager::registerUberFactory<DefaultImpl::StandardProgram, DefaultImpl::StandardUberFactory>();

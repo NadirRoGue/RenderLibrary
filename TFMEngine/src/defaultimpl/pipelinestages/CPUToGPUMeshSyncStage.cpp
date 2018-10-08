@@ -37,6 +37,10 @@ namespace RenderLib
 			GPU::Mesh::GPUBuffer * dynamicBuffer = 
 				engineInstance->getGPUMeshManager().initializeDynamicBuffer();
 			synchronizeData(dynamicBuffer, syncContinouslyData);
+			
+			GPU::Mesh::GPUBuffer * dynamicBackBuffer =
+				engineInstance->getGPUMeshManager().getSyncDynamicBuffer();
+			synchronizeData(dynamicBackBuffer, syncContinouslyData);
 		}
 
 		void CPUToGPUMeshSyncStage::runStage()
@@ -49,9 +53,9 @@ namespace RenderLib
 				registerMeshes(dummy, newDynamic);
 				createGPUMeshes(newDynamic, syncContinouslyData, false);
 			}
-
-			GPU::Mesh::GPUBuffer * dynamicBuffer = 
-				engineInstance->getGPUMeshManager().getDynamicMeshBuffer();
+			
+			GPU::Mesh::GPUBuffer * dynamicBuffer =
+				engineInstance->getGPUMeshManager().getSyncDynamicBuffer();
 			synchronizeData(dynamicBuffer, syncContinouslyData);
 		}
 
@@ -66,14 +70,20 @@ namespace RenderLib
 				for (auto comp : elements)
 				{
 					MeshRenderer * renderable = static_cast<MeshRenderer*>(comp);
-					switch (renderable->cpuToGpuSync)
+					// Skips uploading mesh. If CPU_DO_NOT_SYNC, it will also overload the GPU to CPU policy
+					if (renderable->cpuToGpuSync == CPUToGPUSyncPolicy::CPU_DO_NOT_SYNC)
 					{
-					case CPUToGPUSyncPolicy::CPU_SYNC_ONCE_AT_BEGINNING:
+						continue;
+					}
+
+					if (renderable->cpuToGpuSync == CPUToGPUSyncPolicy::CPU_SYNC_ONCE_AT_BEGINNING
+						&& renderable->gpuToCpuSync == GPUToCPUSyncPolicy::GPU_DO_NOT_SYNC)
+					{
 						syncOnce.push_back(renderable);
-						break;
-					case CPUToGPUSyncPolicy::CPU_SYNC_CONTINOUSLY:
+					}
+					else
+					{
 						syncContinously.push_back(renderable);
-						break;
 					}
 				}
 
@@ -228,6 +238,9 @@ namespace RenderLib
 			{
 				// Adjust current gpu mesh params
 				syncData.gpuMesh->faceIndexOffset = faceSize;
+				syncData.gpuMesh->dataIndexOffset = dataSize;
+				syncData.gpuMesh->faceSize = syncData.facesSize;
+				syncData.gpuMesh->dataSize = syncData.dataSize;
 
 				// Increase global offsets
 				faceSize += syncData.facesSize;

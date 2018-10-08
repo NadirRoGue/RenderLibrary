@@ -17,9 +17,11 @@ namespace RenderLib
 			{
 			public:
 			public:
+				static unsigned int OPTION_JOIN_IDENTICAL_VERTICES;
+				static unsigned int OPTION_COMPUTE_SMOOTHNORMALS_IF_ABSENT;
 				static unsigned int OPTION_COMPUTE_NORMALS_IF_ABSENT;
-				static unsigned int OPTION_COMPUTE_TANGENTS_IF_ABSENT;
-				static unsigned int OPTION_COMPUTE_BITANGENTS_IF_ABSENT;
+				static unsigned int OPTION_COMPUTE_TANGENTSPACE;
+				
 			public:
 				Memory::IVector3Attribute faces;
 

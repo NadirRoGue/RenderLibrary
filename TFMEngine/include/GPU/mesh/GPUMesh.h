@@ -52,9 +52,15 @@ namespace RenderLib
 			class GPUMesh
 			{
 			public:
+				size_t index;
+
 				GPUBuffer * gpuBuffer;
 				
 				size_t faceIndexOffset;
+				size_t dataIndexOffset;
+
+				size_t faceSize;
+				size_t dataSize;
 
 				GPUAttribute faces;
 				GPUAttribute vertices;

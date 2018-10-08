@@ -4,6 +4,8 @@
 
 #include "CPU/memory/MemoryUtil.h"
 
+#include "EngineException.h"
+
 namespace RenderLib
 {
 	namespace CPU
@@ -27,12 +29,17 @@ namespace RenderLib
 				memcpy(allocatedMemory, other.allocatedMemory, sizeBytes);
 			}
 
-			MemoryBlock * MemoryPool::requestMemoryBlock(size_t sizeBytes, bool checkForGaps)
+			MemoryBlock * MemoryPool::requestMemoryBlock(
+				size_t sizeBytes, 
+				bool checkForGaps)
 			{
 				return append(NULL, sizeBytes, checkForGaps);
 			}
 
-			MemoryBlock * MemoryPool::append(void * data, size_t sizeBytes, bool checkForGaps)
+			MemoryBlock * MemoryPool::append(
+				void * data, 
+				size_t sizeBytes, 
+				bool checkForGaps)
 			{
 				bool added = false;
 				MemoryBlock * result = NULL;
@@ -77,10 +84,12 @@ namespace RenderLib
 
 					if (remainingMem >= sizeBytes)
 					{
-						std::unique_ptr<MemoryBlock> newBlock = std::make_unique<MemoryBlock>(usedBytes, sizeBytes, this);
+						std::unique_ptr<MemoryBlock> newBlock = 
+							std::make_unique<MemoryBlock>(usedBytes, sizeBytes, this);
 						newBlock.get()->index = memoryBlockList.size();
 						this->usedBytes += sizeBytes;
 						result = newBlock.get();
+						blocksByIndex[result->index] = result;
 						memoryBlockList.push_back(std::move(newBlock));
 						if (data)
 						{
@@ -92,7 +101,11 @@ namespace RenderLib
 				return result;
 			}
 
-			void MemoryPool::retrieve(void * dst, MemoryBlock * block, size_t offset, size_t length) const
+			void MemoryPool::retrieve(
+				void * dst, 
+				MemoryBlock * block, 
+				size_t offset, 
+				size_t length) const
 			{
 				copyFromPool(dst, block, offset, length);
 			}
@@ -127,9 +140,19 @@ namespace RenderLib
 							// Update current
 							// Copy current block's content to temporary buffer
 							void * buf = (void*)malloc(mbPtr->sizeUsedBlock);
-							copyBytes(buf, 0, allocatedMemory, mbPtr->offset, mbPtr->sizeUsedBlock);
+							copyBytes(
+								buf, 
+								0, 
+								allocatedMemory, 
+								mbPtr->offset, 
+								mbPtr->sizeUsedBlock);
 							// Copy temp memory buffer into main memory buffer correct position
-							copyBytes(allocatedMemory, start, buf, 0, mbPtr->sizeUsedBlock);
+							copyBytes(
+								allocatedMemory, 
+								start, 
+								buf, 
+								0, 
+								mbPtr->sizeUsedBlock);
 							// update block
 							mbPtr->offset = start;
 						}
@@ -184,26 +207,63 @@ namespace RenderLib
 				return reinterpret_cast<char*>(allocatedMemory);
 			}
 
-			void MemoryPool::destroyBlock(std::unique_ptr<MemoryBlock> block)
+			void MemoryPool::setBlockData(
+				MemoryBlock * block, 
+				size_t offset, 
+				size_t length, 
+				char * data)
 			{
-				// We pass the unique ptr by value, taking ownership, being released when the function goes out of scope
-				// Perform memory clean up tasks??
+				bool check = block->length - offset > length;
+				if (!check)
+				{
+					throw EngineException(
+						"MemoryManager: attempted to write on a MemoryBlock, but length surpassed block size");
+				}
+
+				char * castedData = 
+					reinterpret_cast<char*>(this->allocatedMemory);
+
+				memcpy(castedData + block->offset + offset, data, length);
 			}
 
-			void MemoryPool::copyToPool(void * src, size_t srcSizeBytes, MemoryBlock * block)
+			std::unordered_map<size_t, MemoryBlock*> & MemoryPool::getBlocksByIndex()
+			{
+				return blocksByIndex;
+			}
+
+			void MemoryPool::destroyBlock(
+				std::unique_ptr<MemoryBlock> block)
+			{
+				block.get()->sizeUsedBlock = 0;
+			}
+
+			void MemoryPool::copyToPool(
+				void * src, 
+				size_t srcSizeBytes, 
+				MemoryBlock * block)
 			{
 				if (srcSizeBytes <= block->length)
 				{
-					copyBytes(static_cast<char*>(allocatedMemory), block->offset, src, 0, srcSizeBytes);
+					copyBytes(
+						static_cast<char*>(allocatedMemory), 
+						block->offset, 
+						src, 
+						0, 
+						srcSizeBytes);
 				}
 			}
 
-			void MemoryPool::copyFromPool(void * dst, MemoryBlock * block, size_t offset, size_t lenght) const
+			void MemoryPool::copyFromPool(
+				void * dst, 
+				MemoryBlock * block, 
+				size_t offset, 
+				size_t lenght) const
 			{
 				size_t startCopy = block->offset + offset;
 				size_t endCopy = startCopy + lenght;
 
-				if (startCopy < block->offset + block->length && endCopy <= block->offset + block->length)
+				if (startCopy < block->offset + block->length 
+					&& endCopy <= block->offset + block->length)
 				{
 					copyBytes(dst, 0, allocatedMemory, block->offset + offset, lenght);
 				}

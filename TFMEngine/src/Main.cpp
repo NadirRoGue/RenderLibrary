@@ -46,10 +46,18 @@ int main(int argc, void ** arg)
 	// Default initialization (registers components for asset loading, memory building, synchronization, etc.)
 	DefaultEngineInitialization();
 
+	unsigned int cubeOptions =
+		(Mesh::Mesh::OPTION_COMPUTE_NORMALS_IF_ABSENT
+			| Mesh::Mesh::OPTION_JOIN_IDENTICAL_VERTICES);
+
+	unsigned int sphereOptions =
+		(Mesh::Mesh::OPTION_COMPUTE_SMOOTHNORMALS_IF_ABSENT
+			| Mesh::Mesh::OPTION_JOIN_IDENTICAL_VERTICES);
+
 	// Asset load
-	Mesh::Mesh * cube = loadMesh("./assets/mat_cube.obj", Mesh::Mesh::OPTION_COMPUTE_NORMALS_IF_ABSENT);
-	Mesh::Mesh * sphere = loadMesh("./assets/sphere_mat_opacity.obj", Mesh::Mesh::OPTION_COMPUTE_NORMALS_IF_ABSENT);
-	Mesh::Mesh * cube2 = loadMesh("./assets/mat_cube_2.obj", Mesh::Mesh::OPTION_COMPUTE_NORMALS_IF_ABSENT);
+	Mesh::Mesh * cube = loadMesh("./assets/mat_cube.obj", cubeOptions);
+	Mesh::Mesh * sphere = loadMesh("./assets/sphere_mat_opacity.obj", sphereOptions);
+	Mesh::Mesh * cube2 = loadMesh("./assets/mat_cube_2.obj", cubeOptions);
 
 	// Window creation
 	Graphics::WindowConfiguration config;

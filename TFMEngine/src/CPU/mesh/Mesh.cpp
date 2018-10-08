@@ -7,8 +7,9 @@ namespace RenderLib
 		namespace Mesh
 		{
 			unsigned int Mesh::OPTION_COMPUTE_NORMALS_IF_ABSENT = 0x01;
-			unsigned int Mesh::OPTION_COMPUTE_TANGENTS_IF_ABSENT = 0x02;
-			unsigned int Mesh::OPTION_COMPUTE_BITANGENTS_IF_ABSENT = 0x04;
+			unsigned int Mesh::OPTION_COMPUTE_SMOOTHNORMALS_IF_ABSENT = 0x02;
+			unsigned int Mesh::OPTION_COMPUTE_TANGENTSPACE = 0x04;
+			unsigned int Mesh::OPTION_JOIN_IDENTICAL_VERTICES = 0x08;
 
 			Mesh::Mesh()
 				: index(-1)

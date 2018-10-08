@@ -163,15 +163,25 @@ namespace RenderLib
 
 			unsigned int assimpFlags = 0;
 
-			assimpFlags |= aiPostProcessSteps::aiProcess_JoinIdenticalVertices;
+			assimpFlags |= 
+				(options & CPU::Mesh::Mesh::OPTION_JOIN_IDENTICAL_VERTICES)?
+				aiPostProcessSteps::aiProcess_JoinIdenticalVertices : 0;
 
+			if (options & CPU::Mesh::Mesh::OPTION_COMPUTE_NORMALS_IF_ABSENT)
+			{
+				assimpFlags |= aiProcess_GenNormals;
+			}
+			else if (options & CPU::Mesh::Mesh::OPTION_COMPUTE_SMOOTHNORMALS_IF_ABSENT)
+			{
+				assimpFlags |= aiProcess_GenSmoothNormals;
+			}
+			
 			assimpFlags |= 
 				(options & CPU::Mesh::Mesh::OPTION_COMPUTE_NORMALS_IF_ABSENT) ? 
 				aiProcess_GenNormals : 0;
 
 			assimpFlags |= 
-				(options & CPU::Mesh::Mesh::OPTION_COMPUTE_TANGENTS_IF_ABSENT
-				|| options & CPU::Mesh::Mesh::OPTION_COMPUTE_BITANGENTS_IF_ABSENT) ? 
+				options & CPU::Mesh::Mesh::OPTION_COMPUTE_TANGENTSPACE? 
 				aiProcess_CalcTangentSpace : 0;
 
 			assimpFlags |= aiProcess_Triangulate;

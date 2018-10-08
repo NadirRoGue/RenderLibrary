@@ -3,15 +3,25 @@
 
 #include "pipeline/PipelineStage.h"
 
+#include <vector>
+
 #include "defaultimpl/components/MeshRenderer.h"
 
 namespace RenderLib
 {
 	namespace DefaultImpl
 	{
-		class GPUToCPUSyncStage : public Pipeline::ElementBasedStage<DefaultImpl::MeshRenderer>
+		class GPUToCPUMeshSyncStage : public Pipeline::ElementBasedStage<DefaultImpl::MeshRenderer>
 		{
-
+		private:
+			std::vector<GPU::Mesh::GPUMesh *> syncContinousMeshes;
+			std::vector<GPU::Mesh::GPUMesh *> syncOnceMeshes;
+		public:
+			void registerElement(Component * comp);
+			void runStage();
+			void postRunStage();
+		private:
+			void updateCPUMeshes(std::vector<GPU::Mesh::GPUMesh*> & list);
 		};
 	}
 }

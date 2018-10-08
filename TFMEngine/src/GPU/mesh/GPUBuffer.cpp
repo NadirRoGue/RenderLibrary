@@ -12,6 +12,8 @@ namespace RenderLib
 				: vao(-1)
 			  , indexBuffer(-1)
 				, dataBuffer(-1)
+				, faceSize(0)
+				, dataSize(0)
 			{
 			}
 
@@ -73,6 +75,9 @@ namespace RenderLib
 				char * vertexData, 
 				const size_t & vertexSize)
 			{
+				this->faceSize = faceSize;
+				this->dataSize = dataSize;
+
 				bindDataBuffer();
 				glBufferData(GL_ARRAY_BUFFER, vertexSize, NULL, usage);
 				glBufferSubData(GL_ARRAY_BUFFER, 0, vertexSize, vertexData);
@@ -80,6 +85,16 @@ namespace RenderLib
 				bindIndexBuffer();
 				glBufferData(GL_ELEMENT_ARRAY_BUFFER, faceSize, NULL, usage);
 				glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, faceSize, faceData);
+			}
+
+			const size_t & GPUBuffer::getFacesSizeBytes()
+			{
+				return faceSize;
+			}
+
+			const size_t & GPUBuffer::getDataSizeBytes()
+			{
+				return dataSize;
 			}
 		}
 	}

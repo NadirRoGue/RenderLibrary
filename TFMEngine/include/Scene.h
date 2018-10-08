@@ -13,6 +13,8 @@
 #include "inputhandlers/InputManager.h"
 
 #include "lights/DirectionalLight.h"
+#include "lights/SpotLight.h"
+#include "lights/PointLight.h"
 
 namespace RenderLib
 {
@@ -28,6 +30,8 @@ namespace RenderLib
 		Camera * activeCamera;
 
 		std::vector<Lighting::DirectionalLight*> direcionalLights;
+		std::vector<Lighting::SpotLight*> spotLights;
+		std::vector<Lighting::PointLight*> pointLights;
 
 		InputHandlers::InputManager inputManager;
 
@@ -107,9 +111,13 @@ namespace RenderLib
 			return NULL;
 		}
 
-		Lighting::DirectionalLight * addDirectionalLight();
+		Lighting::DirectionalLight * addDirectionalLight(const std::string & name);
+		Lighting::PointLight * addPointLight(const std::string & name);
+		Lighting::SpotLight * addSpotLight(const std::string & name);
 
-		std::vector<Lighting::DirectionalLight*> & geteDirectionalLights();
+		std::vector<Lighting::DirectionalLight*> & getDirectionalLights();
+		std::vector<Lighting::PointLight*> & getPointLights();
+		std::vector<Lighting::SpotLight*> & getSpotLights();
 	};
 }
 

@@ -111,21 +111,17 @@ namespace RenderLib
 					dynamic_cast<GPU::Program::ShaderLoadResult*>(fileloadResult.get());
 
 				size_t fileLen = loadResult->getResultSizeBytes() - 1;
+				std::string defines = "";
 
-				//std::string result;
+				configStrings.emplace_back("MAX_DIRECTIONAL_LIGHTS " + std::to_string(MAX_DIRECTIONAL_LIGHTS));
+				configStrings.emplace_back("MAX_POINT_LIGHTS " + std::to_string(MAX_POINT_LIGHTS));
+				configStrings.emplace_back("MAX_SPOT_LIGHTS " + std::to_string(MAX_SPOT_LIGHTS));
 
-				//if (!configStrings.empty())
-				//{
-					//std::string header = result.substr(0, VERSION_HEADER_LENGHT);
-					//std::string body = result.substr(VERSION_HEADER_LENGHT, result.size() - VERSION_HEADER_LENGHT);
-					std::string defines;
-
-					for (auto & cnfgStr : configStrings)
-					{
-						defines += "#define " + cnfgStr + "\n";
-					}
-					std::string result = loadResult->header + "\n" + defines + "\n" + loadResult->body;
-				//}
+				for (auto & cnfgStr : configStrings)
+				{
+					defines += "#define " + cnfgStr + "\n";
+				}
+				std::string result = loadResult->header + "\n" + defines + "\n" + loadResult->body;
 
 				char * finalSourceCStr = new char[result.size()];
 				memcpy(finalSourceCStr, result.c_str(), result.size() * sizeof(char));
@@ -161,6 +157,7 @@ namespace RenderLib
 				GLint size = 0;
 				GLenum type;
 
+				// Gather active uniforms
 				GLint activeUniforms = 0;
 				glGetProgramiv(programId, GL_ACTIVE_UNIFORMS, &activeUniforms);
 				while (i < activeUniforms)
@@ -169,7 +166,7 @@ namespace RenderLib
 
 					std::string nameStr(nameBuffer);
 					ShaderInput input;
-					input.id = i;
+					input.id = glGetUniformLocation(programId, nameBuffer);;
 					input.size = size;
 					input.type = type;
 
@@ -180,6 +177,7 @@ namespace RenderLib
 				GLint activeAttributes = 0;
 				glGetProgramiv(programId, GL_ACTIVE_ATTRIBUTES, &activeAttributes);
 
+				// Gather active attributes
 				i = 0;
 				while (i < activeAttributes)
 				{
@@ -187,7 +185,6 @@ namespace RenderLib
 
 					std::string nameStr(nameBuffer);
 					ShaderInput input;
-					// A WHOLE F*CKING AFTERNOON LOST BECAUSE THE REAL BINDING IS NOT THE QUERIED ON glGetActiveAttrib
 					input.id = glGetAttribLocation(programId, nameBuffer);
 					input.size = size;
 					input.type = type;
@@ -196,6 +193,7 @@ namespace RenderLib
 					i++;
 				}
 				
+				// Gather active uniform blocks
 				GLint activeBlocks = 0;
 				glGetProgramiv(programId, GL_ACTIVE_UNIFORM_BLOCKS, &activeBlocks);
 				i = 0;
@@ -207,7 +205,11 @@ namespace RenderLib
 
 					glGetActiveUniformBlockName(programId, i, 0xff, NULL, nameBuffer);
 
-					newBlock.id = glGetUniformBlockIndex(programId, nameBuffer);
+					GLint blockIndex = glGetUniformBlockIndex(programId, nameBuffer);
+					GLint bindingPoint;
+					glGetActiveUniformBlockiv(programId, blockIndex, GL_UNIFORM_BLOCK_BINDING, &bindingPoint);
+					glUniformBlockBinding(programId, blockIndex, bindingPoint);
+					newBlock.id = bindingPoint;
 					
 					std::string nameStr(nameBuffer);
 					shaderBlocks[nameStr] = newBlock;

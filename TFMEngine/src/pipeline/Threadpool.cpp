@@ -2,6 +2,8 @@
 
 #include "logger/Log.h"
 
+#include <chrono>
+
 namespace RenderLib
 {
 	namespace Pipeline
@@ -75,8 +77,10 @@ namespace RenderLib
 				std::unique_lock<std::mutex> lock(globalLock);
 				while (tasks.empty() && active)
 				{
-					if (blockingStage && checkReleaseCallingThread)
+					if (checkReleaseCallingThread)
 					{
+						activeThreads--;
+						checkReleaseCallingThread = false;
 						callingThreadMonitor.notify_all();
 					}
 
@@ -87,7 +91,9 @@ namespace RenderLib
 				{
 					std::unique_ptr<Runnable> task = std::move(tasks.front());
 					tasks.pop();
+					activeThreads++;
 					lock.unlock();
+
 					checkReleaseCallingThread = true;
 
 					task->run();
@@ -99,9 +105,9 @@ namespace RenderLib
 			}
 		}
 
-		void ThreadPool::processStage(AbstractElementBasedStage & stage, bool blocking)
+		void ThreadPool::processStage(AbstractElementBasedStage & stage)
 		{
-			this->blockingStage = blocking;
+			activeThreads = 0;
 
 			size_t elementsSize = stage.getRegisteredElements().size();
 			size_t perThreadAmount = elementsSize / poolSize;
@@ -121,17 +127,13 @@ namespace RenderLib
 				assigned += (blockOffset - assigned);
 			}
 
-			if (blockingStage)
+			// Wait for the pool to complete
+			std::unique_lock<std::mutex> lock(globalLock);
+			while (!tasks.empty() && activeThreads > 0)
 			{
-				// Wait for the pool to complete
-				std::unique_lock<std::mutex> lock(globalLock);
-				while (!tasks.empty())
-				{
-					callingThreadMonitor.wait(lock);
-				}
-				lock.unlock();
+				callingThreadMonitor.wait(lock);
 			}
-			
+			lock.unlock();
 		}
 	}
 }

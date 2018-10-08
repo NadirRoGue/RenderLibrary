@@ -93,12 +93,21 @@ int main(int argc, void ** arg)
 	cam->translateView(VECTOR3(0.0, 0.0, -5.0));
 
 	// Light set up
-	Lighting::DirectionalLight * dl = scene->addDirectionalLight();
+	Lighting::DirectionalLight * dl = scene->addDirectionalLight("Sun");
 	dl->setLightColor(VECTOR3(1.0, 1.0, 1.0));
 	dl->setDiffuseIntensity(1.0f);
 	dl->setSpecularIntensity(1.0f);
 	dl->setAmbientIntensity(0.15f);
-	dl->setDirection(VECTOR3(1.0, 1.0, 0.0));
+	//dl->setPosition(VECTOR3(-2.0, 2.0, 5.0));
+	dl->setDirection(VECTOR3(1.0, 1.0, 1.0));
+
+	Lighting::PointLight * pl = scene->addPointLight("Bulb");
+	pl->setLightColor(VECTOR3(1.0, 1.0, 0.4));
+	pl->setPosition(VECTOR3(-3.0, 2.0, 5.0));
+	pl->setDiffuseIntensity(1.0f);
+	pl->setAmbientIntensity(0.1f);
+	pl->setSpecularIntensity(0.9f);
+	pl->setAttenuationFactors(0.7f, 0.2f, 0.1f);
 
 	// Object set up
 	// "Cube"

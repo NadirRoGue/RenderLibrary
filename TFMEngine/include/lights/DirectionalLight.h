@@ -14,6 +14,8 @@ namespace RenderLib
 
 		class DirectionalLight : public Light<DirectionalLightData>
 		{
+		private:
+			VECTOR4 direction;
 		public:
 			DirectionalLight();
 			~DirectionalLight();

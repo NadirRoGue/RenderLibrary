@@ -19,16 +19,6 @@ namespace RenderLib
 			float lightKs;
 			float lightKa;
 			float padding;
-
-			LightData()
-			{
-
-			}
-
-			virtual ~LightData()
-			{
-
-			}
 		} LightData;
 
 		template<class T>

@@ -2,6 +2,8 @@
 
 #include "EngineInstance.h"
 
+#include <iostream>
+
 namespace RenderLib
 {
 	namespace Pipeline
@@ -53,7 +55,7 @@ namespace RenderLib
 		{
 			if (elements.size() > 0)
 			{
-				engineInstance->getPipelineManager().getThreadPool().processStage(*this, true);
+				engineInstance->getPipelineManager().getThreadPool().processStage(*this);
 			}
 		}
 	}

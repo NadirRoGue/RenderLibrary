@@ -22,14 +22,9 @@ namespace RenderLib
 
 			void LightManager::initializeBuffers()
 			{
-				std::cout << "initializeBuffers" << std::endl;
-				std::cout << glGetError() << std::endl;
 				dirLightBuffer.generate();
-				std::cout << glGetError() << std::endl;
 				pointLightBuffer.generate();
-				std::cout << glGetError() << std::endl;
 				spotLightBuffer.generate();
-				std::cout << glGetError() << std::endl;
 			}
 
 			LightBuffer & LightManager::getDirectionalLightBuffer()

@@ -15,26 +15,20 @@ namespace RenderLib
 
 		}
 
-		void DirectionalLight::setDirection(const VECTOR3 & direction)
+		void DirectionalLight::setDirection(const VECTOR3 & d)
 		{
-			DirectionalLightData & data = getData();
-			data.lightDirection[0] = direction.x();
-			data.lightDirection[1] = direction.y();
-			data.lightDirection[2] = direction.z();
-			data.lightDirection[3] = 0.0f;
+			this->direction = VECTOR4(d.x(), d.y(), d.z(), 0.0);
+			this->direction.normalize();
 		}
 
 		void DirectionalLight::update(const Camera & camera)
 		{
+			VECTOR4 transformed = camera.viewMatrix 
+				* transform.worldModelMatrix 
+				* direction;
+			transformed.normalize();
+
 			DirectionalLightData & data = getData();
-			VECTOR4 lightDir(
-				data.lightDirection[0], 
-				data.lightDirection[1], 
-				data.lightDirection[2], 
-				data.lightDirection[3]);
-
-			VECTOR4 transformed = camera.viewMatrix * lightDir;
-
 			data.lightDirection[0] = transformed.x();
 			data.lightDirection[1] = transformed.y();
 			data.lightDirection[2] = transformed.z();

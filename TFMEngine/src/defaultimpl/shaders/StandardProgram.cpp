@@ -103,6 +103,13 @@ namespace RenderLib
 			}
 		}
 
+		void StandardProgram::onFrameBegin(EngineInstance * instance)
+		{
+			setUniformBlock("DLBlock", instance->getGPULightManager().getDirectionalLightBuffer().getBufferId());
+			setUniformBlock("PLBlock", instance->getGPULightManager().getPointLightBuffer().getBufferId());
+			setUniformBlock("SLBlock", instance->getGPULightManager().getSpotLightBuffer().getBufferId());
+		}
+
 		void StandardProgram::configureShaderAttributes(
 			GPU::Mesh::GPUMesh * targetMesh)
 		{
@@ -126,64 +133,43 @@ namespace RenderLib
 			const Material::Material & material, 
 			const Camera & camera)
 		{
-			GLint active;
-			glGetIntegerv(GL_CURRENT_PROGRAM, &active);
-			std::cout << "ACTIVE PROGRAM " << active << std::endl;
-
 			MATRIX4 modelView = camera.viewMatrix * object.transform.worldModelMatrix;
 			MATRIX4 modelViewProj = camera.projectionMatrix * modelView;
 			MATRIX4 normalMat = modelView.inverse().transpose();
-			std::cout << "Before " << glGetError() << std::endl;
+			
 			setUniformMatrix4("modelView", 1, false, modelView.data());
-			std::cout << "modelview " << glGetError() << std::endl;
 			setUniformMatrix4("modelViewProj", 1, false, modelViewProj.data());
-			std::cout << "modelview " << glGetError() << std::endl;
 			setUniformMatrix4("normalMat", 1, false, normalMat.data());
-			std::cout << "modelview " << glGetError() << std::endl;
-
+			
 			setUniform3FV("diffuseColor", 1, material.diffuseColor().data());
-			std::cout << "modelview " << glGetError() << std::endl;
 			setUniform3FV("specularColor", 1, material.specularColor().data());
-			std::cout << "modelview " << glGetError() << std::endl;
 			setUniform3FV("ambientColor", 1, material.ambientColor().data());
-			std::cout << "modelview " << glGetError() << std::endl;
 			setUniform3FV("emissiveColor", 1, material.emissiveColor().data());
-			std::cout << "modelview " << glGetError() << std::endl;
 			setUniformF("opacity", material.opacity());
-			std::cout << "modelview " << glGetError() << std::endl;
 			setUniformF("shininess", material.shininess());
-			std::cout << "modelview " << glGetError() << std::endl;
 			setUniformF("specularScale", material.specularScale());
-			std::cout << "modelview " << glGetError() << std::endl;
-
+			
 			unsigned int texUnit = 0;
 			setUniformTexture("diffuseTexture", 
 				material.diffuseTexture.getTexture(), texUnit);
-			std::cout << "modelview " << glGetError() << std::endl;
-
+			
 			setUniformTexture("specularTexture", 
 				material.specularTexture.getTexture(), texUnit);
-			std::cout << "modelview " << glGetError() << std::endl;
-
+			
 			setUniformTexture("ambientTexture", 
 				material.ambientTexture.getTexture(), texUnit);
-			std::cout << "modelview " << glGetError() << std::endl;
-
+			
 			setUniformTexture("emissiveTexture", 
 				material.emissiveTexture.getTexture(), texUnit);
-			std::cout << "modelview " << glGetError() << std::endl;
-
+			
 			setUniformTexture("normalTexture", 
 				material.normalMapTexture.getTexture(), texUnit);
-			std::cout << "modelview " << glGetError() << std::endl;
-
+			
 			setUniformTexture("shininessTexture", 
 				material.shininessTexture.getTexture(), texUnit);
-			std::cout << "modelview " << glGetError() << std::endl;
-
+			
 			setUniformTexture("opacityTexture", 
 				material.opacityTexture.getTexture(), texUnit);
-			std::cout << "modelview " << glGetError() << std::endl;
 		}
 
 		// ===============================================================================================

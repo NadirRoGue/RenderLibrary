@@ -50,6 +50,8 @@ namespace RenderLib
 
 			void getUberShaderDefines(std::vector<std::string> & definesBuffer);
 
+			void onFrameBegin(EngineInstance * instance);
+
 			void configureShaderAttributes(GPU::Mesh::GPUMesh * targetMesh);
 			void onRenderObject(const SceneObject & object, const Material::Material & material, const Camera & camera);
 		};

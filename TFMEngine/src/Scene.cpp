@@ -75,19 +75,63 @@ namespace RenderLib
 		return inputManager;
 	}
 
-	Lighting::DirectionalLight * Scene::addDirectionalLight()
+	Lighting::DirectionalLight * Scene::addDirectionalLight(const std::string & name)
 	{
 		std::unique_ptr<SceneObject> newDL = std::make_unique<Lighting::DirectionalLight>();
 		Lighting::DirectionalLight * result = static_cast<Lighting::DirectionalLight*>(newDL.get());
 		
+		newDL.get()->objectName = name;
+
+		sceneTreeUpdated = true;
+
 		direcionalLights.push_back(result);
 		sceneObjects.push_back(std::move(newDL));
 
 		return result;
 	}
 
-	std::vector<Lighting::DirectionalLight*> & Scene::geteDirectionalLights()
+	Lighting::SpotLight * Scene::addSpotLight(const std::string & name)
+	{
+		std::unique_ptr<SceneObject> newSL = std::make_unique<Lighting::SpotLight>();
+		Lighting::SpotLight * result = static_cast<Lighting::SpotLight*>(newSL.get());
+
+		newSL.get()->objectName = name;
+
+		sceneTreeUpdated = true;
+
+		spotLights.push_back(result);
+		sceneObjects.push_back(std::move(newSL));
+
+		return result;
+	}
+
+	Lighting::PointLight * Scene::addPointLight(const std::string & name)
+	{
+		std::unique_ptr<SceneObject> newPL = std::make_unique<Lighting::PointLight>();
+		Lighting::PointLight * result = static_cast<Lighting::PointLight*>(newPL.get());
+
+		newPL.get()->objectName = name;
+
+		sceneTreeUpdated = true;
+
+		pointLights.push_back(result);
+		sceneObjects.push_back(std::move(newPL));
+
+		return result;
+	}
+
+	std::vector<Lighting::DirectionalLight*> & Scene::getDirectionalLights()
 	{
 		return direcionalLights;
+	}
+
+	std::vector<Lighting::SpotLight*> & Scene::getSpotLights()
+	{
+		return spotLights;
+	}
+
+	std::vector<Lighting::PointLight*> & Scene::getPointLights()
+	{
+		return pointLights;
 	}
 }

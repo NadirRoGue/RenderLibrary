@@ -66,9 +66,9 @@ namespace RenderLib
 				detachShader(fShader);
 			}
 
-			void ShaderProgram::onFrameBegin()
+			void ShaderProgram::onFrameBegin(EngineInstance * instance)
 			{
-
+				
 			}
 
 			void ShaderProgram::onRenderObject(const SceneObject & object, const Material::Material & material, const Camera & camera)

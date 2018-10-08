@@ -34,5 +34,8 @@
 
 /** GLSL Optimization */
 //#define USE_PACKED_ATTRIB_WHEN_POSSIBLE
+#define MAX_DIRECTIONAL_LIGHTS 1
+#define MAX_POINT_LIGHTS 20
+#define MAX_SPOT_LIGHTS 20
 
 #endif

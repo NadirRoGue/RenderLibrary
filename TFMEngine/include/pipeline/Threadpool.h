@@ -40,7 +40,7 @@ namespace RenderLib
 
 			bool active;
 			unsigned int poolSize;
-			bool blockingStage;
+			unsigned int activeThreads;
 		public:
 			ThreadPool();
 			~ThreadPool();
@@ -52,7 +52,7 @@ namespace RenderLib
 			void shutDown();
 			void pollTask();
 
-			void processStage(AbstractElementBasedStage & stage, bool blockingStage);
+			void processStage(AbstractElementBasedStage & stage);
 		};
 	}
 }

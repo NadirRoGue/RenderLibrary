@@ -1,6 +1,7 @@
 #include "defaultimpl/pipelinestages/TransformUpdateStage.h"
 
 #include <queue>
+#include <iostream>
 
 #include "EngineInstance.h"
 
@@ -8,38 +9,57 @@ namespace RenderLib
 {
 	namespace DefaultImpl
 	{
-		void TransformUpdateStage::buildLinearSceneTree()
+		void TransformUpdateStage::updateLinealGraph()
 		{
-			elements.clear();
 			Scene * scene = engineInstance->getSceneManager().getActiveScene();
-			elements.reserve(scene->getSceneObjects().size());
-
+			
 			std::queue<SceneObject*> toProcess;
+			std::queue<SceneObject*> tempQueue;
+
+			// Add initial batch: scene's root children
 			for (auto rootChild : scene->getSceneRoot()->getChildren())
 			{
-				toProcess.push(rootChild);
+				tempQueue.push(rootChild);
 			}
 
-			while (!toProcess.empty())
+			// Updates graph by level, ensuring children will have access
+			// to parent's UPDATED transforms
+			linearGraph.clear();
+			do
 			{
-				SceneObject * next = toProcess.front();
-				toProcess.pop();
+				// Change queues: previous iteration added children will be
+				// updated parents now
+				toProcess.swap(tempQueue);
 
-				elements.push_back(&(next->transform));
+				std::vector<Component*> treeLevel;
 
-				if (next->getChildren().size() > 0)
+				while (!toProcess.empty())
 				{
-					for (auto child : next->getChildren())
+					SceneObject * next = toProcess.front();
+					toProcess.pop();
+
+					treeLevel.push_back(&(next->transform));
+
+					if (next->getChildren().size() > 0)
 					{
-						toProcess.push(child);
+						for (auto child : next->getChildren())
+						{
+							tempQueue.push(child);
+						}
 					}
 				}
-			}
+
+				// Push current level
+				linearGraph.push_back(treeLevel);
+
+			} while (!tempQueue.empty());
+
+			scene->setSceneTreeNeedsUpdate(false);
 		}
 
 		void TransformUpdateStage::preRunStage()
 		{
-			buildLinearSceneTree();
+			updateLinealGraph();
 		}
 
 		void TransformUpdateStage::runStage()
@@ -47,11 +67,15 @@ namespace RenderLib
 			Scene * scene = engineInstance->getSceneManager().getActiveScene();
 			if (scene->sceneTreeNeedsUpdate())
 			{
-				buildLinearSceneTree();
-				scene->setSceneTreeNeedsUpdate(false);
+				updateLinealGraph();
 			}
 
-			ElementBasedStage<Transform>::runStage();
+			for (auto & treeLevel : linearGraph)
+			{
+				elements.clear();
+				elements = treeLevel;
+				ElementBasedStage<Transform>::runStage();
+			}
 		}
 
 		void TransformUpdateStage::processElement(Transform * element)

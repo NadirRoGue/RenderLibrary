@@ -1,7 +1,5 @@
 #include "defaultimpl/pipelinestages/IterationEndStage.h"
 
-#include <iostream>
-
 #include "EngineInstance.h"
 
 namespace RenderLib
@@ -15,8 +13,6 @@ namespace RenderLib
 
 			// Update time
 			engineInstance->acquireContext();
-
-			std::cout << glGetError() << std::endl;
 
 			double elapsedTime = engineInstance->getWindow()->elapsedTimeSinceStart();
 			engineInstance->getTime().update(elapsedTime);

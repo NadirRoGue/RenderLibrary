@@ -9,6 +9,8 @@
 #include "SceneObject.h"
 #include "Camera.h"
 
+#include "EngineInstance.h"
+
 namespace RenderLib
 {
 	namespace GPU
@@ -41,7 +43,7 @@ namespace RenderLib
 				
 				void destroyShaders();
 
-				virtual void onFrameBegin();
+				virtual void onFrameBegin(EngineInstance * instance);
 				virtual void onRenderObject(const SceneObject & object, const Material::Material & material, const Camera & camera);
 			protected:
 				void configureShaderAttribute(const std::string & shaderAttribute, Mesh::GPUAttribute & meshAttribute);

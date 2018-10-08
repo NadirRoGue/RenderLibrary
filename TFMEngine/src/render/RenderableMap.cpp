@@ -101,11 +101,8 @@ namespace RenderLib
 				{
 					RenderableStub & stub = innerIt->second;
 					
-					std::cout << "Before program bind " << glGetError() << std::endl;
 					stub.program->bind(); 
-					std::cout << "After program bind " << glGetError() << std::endl;
-					//instance->getGPULightManager().getDirectionalLightBuffer().bind();
-					stub.program->setUniformBlock("DLBlock", instance->getGPULightManager().getDirectionalLightBuffer().getBufferId());
+					stub.program->onFrameBegin(instance);
 					
 					for (auto renderable : stub.renderables)
 					{
@@ -114,14 +111,10 @@ namespace RenderLib
 							continue;
 						}
 
-						std::cout << renderable->getCPUMesh()->sourceFileName << std::endl;
-
 						GPU::Mesh::GPUMesh * mesh = renderable->gpuMesh;
 
 						stub.program->configureShaderAttributes(mesh);
-						std::cout << "After config shader attrib " << glGetError() << std::endl;
 						stub.program->onRenderObject(*(renderable->object), *(renderable->material), fromCamera);
-						std::cout << "After onRenderObject " << glGetError() << std::endl;
 						GLenum drawMode = renderable->material->wireFrameRender ? GL_LINES : GL_TRIANGLES;
 
 						glDrawElements
@@ -131,8 +124,6 @@ namespace RenderLib
 							GL_UNSIGNED_INT,
 							(void*)mesh->faceIndexOffset
 						);
-
-						std::cout << "After render " << glGetError() << std::endl;
 					}
 				}
 			}

@@ -14,6 +14,7 @@ namespace RenderLib
 		class ForwardRenderStage : public MeshRenderingStage
 		{
 	public:
+			ForwardRenderStage();
 			bool shouldRegisterRenderable(DefaultImpl::MeshRenderer * renderable);
 			void runStage();
 		};

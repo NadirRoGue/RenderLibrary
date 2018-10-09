@@ -23,6 +23,8 @@ namespace RenderLib
 			instance->loadActiveScene();
 		}
 
+		GPU::Texture::GPUTextureManager::queryAnisotropicFilterSupport();
+
 		bool activeInstances = true;
 		std::vector<unsigned int> instancesToClean;
 		instancesToClean.reserve(instancePool.size());
@@ -35,7 +37,9 @@ namespace RenderLib
 			{
 				if (instance->getWindow()->isActive() && instance->isEnabled())
 				{
+					instance->acquireContext();
 					instance->executeIteration();
+					instance->releaseContext();
 					activeInstances = true;
 				}
 				else
@@ -75,6 +79,7 @@ namespace RenderLib
 		Graphics::ContextManager::getInstance().aquireContext();
 		// Initialize graphics
 		graphicsHandler->initialize();
+		GPU::Texture::GPUTextureManager::queryAnisotropicFilterSupport();
 		// Release context ownership
 		Graphics::ContextManager::getInstance().releaseContext();
 

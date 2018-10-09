@@ -10,14 +10,15 @@ namespace RenderLib
 	{
 		namespace Texture
 		{
-			float GPUTextureManager::MAX_ANISOTROPIC_FILTERING = 0.0f;
+			float GPUTextureManager::MAX_ANISOTROPIC_FILTERING = -1.0f;
 
 			void GPUTextureManager::queryAnisotropicFilterSupport()
 			{
-				MAX_ANISOTROPIC_FILTERING = 0.0f;
-				glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &MAX_ANISOTROPIC_FILTERING);
-				MAX_ANISOTROPIC_FILTERING = std::max<float>(MAX_ANISOTROPIC_FILTERING, 0.f);
-				Logger::Log::getInstance().logInfo("Textures: Max anysotropic filtering level: " + std::to_string(MAX_ANISOTROPIC_FILTERING));
+				if (MAX_ANISOTROPIC_FILTERING < 0.0f)
+				{
+					glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &MAX_ANISOTROPIC_FILTERING);
+					Logger::Log::getInstance().logInfo("Textures: Max anysotropic filtering level: " + std::to_string(MAX_ANISOTROPIC_FILTERING));
+				}
 			}
 
 			GPUTextureManager::GPUTextureManager()

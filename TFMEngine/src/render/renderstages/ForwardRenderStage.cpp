@@ -10,6 +10,11 @@ namespace RenderLib
 {
 	namespace Render
 	{
+		ForwardRenderStage::ForwardRenderStage()
+		{
+			setTargetFBO(&FBO::DEFAULTFRAMEBUFFER);
+		}
+
 		bool ForwardRenderStage::shouldRegisterRenderable(DefaultImpl::MeshRenderer * renderable)
 		{
 			Material::Material * mat = renderable->material;
@@ -23,6 +28,12 @@ namespace RenderLib
 
 		void ForwardRenderStage::runStage()
 		{
+			if (!outputFBO)
+			{
+				throw EngineException("ForwardRenderStage: No FrameBuffer setted. Aborting");
+			}
+
+			outputFBO->bind();
 
 			glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 			glEnable(GL_BLEND);

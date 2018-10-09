@@ -519,6 +519,21 @@
     <ClInclude Include="include\defaultimpl\components\UserScript.h">
       <Filter>Archivos de encabezado\defaultimpl\components</Filter>
     </ClInclude>
+    <ClInclude Include="include\render\renderstages\BloomPostProcessStage.h">
+      <Filter>Archivos de encabezado\render\renderstages</Filter>
+    </ClInclude>
+    <ClInclude Include="include\render\renderstages\DeferredRenderStage.h">
+      <Filter>Archivos de encabezado\render\renderstages</Filter>
+    </ClInclude>
+    <ClInclude Include="include\render\renderstages\HDRPostProcessStage.h">
+      <Filter>Archivos de encabezado\render\renderstages</Filter>
+    </ClInclude>
+    <ClInclude Include="include\render\renderstages\SSAAPostProcessStage.h">
+      <Filter>Archivos de encabezado\render\renderstages</Filter>
+    </ClInclude>
+    <ClInclude Include="include\defaultimpl\shaders\DeferredShadingProgram.h">
+      <Filter>Archivos de encabezado\defaultimpl\shaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Component.cpp">
@@ -811,6 +826,21 @@
     </ClCompile>
     <ClCompile Include="src\defaultimpl\components\UserScript.cpp">
       <Filter>Archivos de origen\defaultimpl\components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\renderstages\BloomPostProcessStage.cpp">
+      <Filter>Archivos de origen\render\renderstages</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\renderstages\DeferredRenderStage.cpp">
+      <Filter>Archivos de origen\render\renderstages</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\renderstages\HDRPostProcessStage.cpp">
+      <Filter>Archivos de origen\render\renderstages</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\renderstages\SSAAPostProcessStage.cpp">
+      <Filter>Archivos de origen\render\renderstages</Filter>
+    </ClCompile>
+    <ClCompile Include="src\defaultimpl\shaders\DeferredShadingProgram.cpp">
+      <Filter>Archivos de origen\defaultimpl\shaders</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

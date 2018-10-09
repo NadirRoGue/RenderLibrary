@@ -3,6 +3,8 @@
 
 #include "GPU/program/Program.h"
 
+#include "EngineInstance.h"
+
 namespace RenderLib
 {
 	namespace GPU
@@ -26,7 +28,7 @@ namespace RenderLib
 
 				void destroyShaders();
 
-				virtual void onRender();
+				virtual void onRender(EngineInstance * instance);
 			};
 		}
 	}

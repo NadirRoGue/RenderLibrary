@@ -4,8 +4,6 @@ namespace RenderLib
 {
 	namespace Render
 	{
-		FBO FBOManager::GBUFFERS;
-
 		FBOManager::FBOManager()
 		{
 		}

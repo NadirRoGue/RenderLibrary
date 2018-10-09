@@ -14,8 +14,6 @@ namespace RenderLib
 	{
 		class FBOManager
 		{
-		public:
-			static FBO GBUFFERS;
 		private:
 			std::unordered_map<std::string, std::unique_ptr<FBO>> fbos;
 		public:

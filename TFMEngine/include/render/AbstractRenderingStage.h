@@ -18,7 +18,7 @@ namespace RenderLib
 		{
 		public:
 			EngineInstance * engineInstance;
-		private:
+		protected:
 			FBO * outputFBO;
 		public:
 			AbstractRenderingStage();

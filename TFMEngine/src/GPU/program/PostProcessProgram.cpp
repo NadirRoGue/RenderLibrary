@@ -43,7 +43,7 @@ namespace RenderLib
 				detachShader(fShader);
 			}
 
-			void PostProcessProgram::onRender()
+			void PostProcessProgram::onRender(EngineInstance * instance)
 			{
 
 			}

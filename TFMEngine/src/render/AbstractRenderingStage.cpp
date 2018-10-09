@@ -6,6 +6,12 @@ namespace RenderLib
 {
 	namespace Render
 	{
+		AbstractRenderingStage::AbstractRenderingStage()
+			: outputFBO(NULL)
+		{
+
+		}
+
 		void AbstractRenderingStage::initialize()
 		{
 
@@ -24,6 +30,11 @@ namespace RenderLib
 		void AbstractRenderingStage::forceRegisterRenderable(DefaultImpl::MeshRenderer * renderable)
 		{
 
+		}
+
+		void AbstractRenderingStage::setTargetFBO(FBO * fbo)
+		{
+			outputFBO = fbo;
 		}
 
 		// =============================================================================================

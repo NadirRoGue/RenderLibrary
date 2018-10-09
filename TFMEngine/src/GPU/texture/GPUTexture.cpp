@@ -30,6 +30,11 @@ namespace RenderLib
 				glBindTexture(getTexturType(), 0);
 			}
 
+			unsigned int GPUTexture::getId()
+			{
+				return id;
+			}
+
 			void GPUTexture::setSize(unsigned int width, unsigned int height, unsigned int depth)
 			{
 				this->width = width;

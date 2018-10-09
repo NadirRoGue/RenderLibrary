@@ -9,6 +9,7 @@
 #include "defaultimpl/components/MeshFilter.h"
 #include "defaultimpl/components/MeshRenderer.h"
 #include "defaultimpl/components/ObjectSpinner.h"
+#include "defaultimpl/components/UserScript.h"
 
 #include "defaultimpl/pipelinestages/ComponentRegisterStage.h"
 #include "defaultimpl/pipelinestages/CPUToGPUMeshSyncStage.h"
@@ -41,7 +42,6 @@ Mesh::Mesh * loadMesh(const std::string & file, unsigned int options)
 
 int main(int argc, void ** arg)
 {
-
 	/*** INSTANCE SET UP ***/
 	// Default initialization (registers components for asset loading, memory building, synchronization, etc.)
 	DefaultEngineInitialization();
@@ -79,7 +79,7 @@ int main(int argc, void ** arg)
 	instance->getPipelineManager().addPipelineStage<DefaultImpl::CPUToGPUMeshSyncStage>();
 	instance->getPipelineManager().addPipelineStage<DefaultImpl::CPUToGPUTextureSyncStage>();
 	instance->getPipelineManager().addPipelineStage<DefaultImpl::ShaderCompilationStage>();
-	instance->getPipelineManager().addPipelineStage<Pipeline::ElementBasedStage<DefaultImpl::ObjectSpinner>>();
+	instance->getPipelineManager().addPipelineStage<Pipeline::ElementBasedStage<DefaultImpl::UserScript>>();
 	instance->getPipelineManager().addPipelineStage<DefaultImpl::TransformUpdateStage>();
 	instance->getPipelineManager().addPipelineStage<DefaultImpl::LightSyncStage>();
 	instance->getPipelineManager().addPipelineStage<DefaultImpl::RenderStage>();
@@ -110,7 +110,7 @@ int main(int argc, void ** arg)
 	dl->setDirection(VECTOR3(1.0, 1.0, 1.0));
 
 	Lighting::PointLight * pl = scene->addPointLight("Bulb");
-	pl->setLightColor(VECTOR3(1.0, 1.0, 0.4));
+	pl->setLightColor(VECTOR3((FLOAT)1.0, (FLOAT)1.0, (FLOAT)0.4));
 	pl->setPosition(VECTOR3(-3.0, 2.0, 5.0));
 	pl->setDiffuseIntensity(1.0f);
 	pl->setAmbientIntensity(0.1f);

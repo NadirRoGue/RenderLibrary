@@ -75,6 +75,7 @@ namespace RenderLib
 				void generate();
 				void bind();
 				void unBind();
+				unsigned int getId();
 
 				void setSize(unsigned int width, unsigned int height = 1, unsigned int depth = 1);
 				const unsigned int & getWidth();

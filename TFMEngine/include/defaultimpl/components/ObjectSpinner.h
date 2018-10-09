@@ -1,16 +1,16 @@
 #ifndef __RENDERLIB_DEFAULTIMPL_OBJECTSPINNER_H__
-#define __RENDERLIB_DEFAULTIMPL_OBJECGTSPINER_H__
+#define __RENDERLIB_DEFAULTIMPL_OBJECTSPINNER_H__
 
-#include "Component.h"
+#include "defaultimpl/components/UserScript.h"
 
 namespace RenderLib
 {
 	namespace DefaultImpl
 	{
-		class ObjectSpinner : public Component
+		class ObjectSpinner : public UserScript
 		{
 		public:
-			void update();
+			virtual void update();
 		};
 	}
 }

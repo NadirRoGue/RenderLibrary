@@ -1,0 +1,72 @@
+#include "render/FBOManager.h"
+
+namespace RenderLib
+{
+	namespace Render
+	{
+		FBO FBOManager::GBUFFERS;
+
+		FBOManager::FBOManager()
+		{
+		}
+
+		FBOManager::~FBOManager()
+		{
+
+		}
+
+		FBO * FBOManager::createFBO(const std::string & name)
+		{
+			auto it = fbos.find(name);
+			if (it != fbos.end())
+			{
+				return it->second.get();
+			}
+
+			std::unique_ptr<FBO> newFBO = std::make_unique<FBO>();
+			FBO * result = newFBO.get();
+			result->generate();
+
+			fbos[name] = std::move(newFBO);
+
+			return result;
+		}
+
+		FBO * FBOManager::getFBO(const std::string & name)
+		{
+			auto it = fbos.find(name);
+			if (it != fbos.end())
+			{
+				return it->second.get();
+			}
+
+			return NULL;
+		}
+
+		void FBOManager::destroyFBO(const std::string & name)
+		{
+			auto it = fbos.find(name);
+			if (it != fbos.end())
+			{
+				it->second.get()->destroy();
+				fbos.erase(it);
+			}
+		}
+
+		void FBOManager::onResize(const unsigned int & width, const unsigned int & height)
+		{
+			for (auto it = fbos.begin(); it != fbos.end(); it++)
+			{
+				it->second.get()->setSize(width, height);
+			}
+		}
+
+		void FBOManager::clean()
+		{
+			for (auto it = fbos.begin(); it != fbos.end(); it++)
+			{
+				it->second.get()->destroy();
+			}
+		}
+	}
+}

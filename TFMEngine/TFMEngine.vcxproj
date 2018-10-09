@@ -167,6 +167,7 @@
     <ClInclude Include="include\defaultimpl\components\MeshFilter.h" />
     <ClInclude Include="include\defaultimpl\components\MeshRenderer.h" />
     <ClInclude Include="include\defaultimpl\components\ObjectSpinner.h" />
+    <ClInclude Include="include\defaultimpl\components\UserScript.h" />
     <ClInclude Include="include\defaultimpl\fileloaders\AssimpFileLoader.h" />
     <ClInclude Include="include\defaultimpl\fileloaders\ImageLoader.h" />
     <ClInclude Include="include\defaultimpl\fileloaders\ShaderLoader.h" />
@@ -269,6 +270,7 @@
     <ClCompile Include="src\defaultimpl\components\MeshFilter.cpp" />
     <ClCompile Include="src\defaultimpl\components\MeshRenderer.cpp" />
     <ClCompile Include="src\defaultimpl\components\ObjectSpinner.cpp" />
+    <ClCompile Include="src\defaultimpl\components\UserScript.cpp" />
     <ClCompile Include="src\defaultimpl\fileloaders\AssimpFileLoader.cpp" />
     <ClCompile Include="src\defaultimpl\fileloaders\ImageLoader.cpp" />
     <ClCompile Include="src\defaultimpl\fileloaders\ShaderLoader.cpp" />

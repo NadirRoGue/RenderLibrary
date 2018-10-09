@@ -14,10 +14,8 @@ namespace RenderLib
 	{
 		class FBOManager
 		{
-		private:
-			static unsigned int MAX_RENDER_TARGETS;
 		public:
-			void queryMaxRenderTargets();
+			static FBO GBUFFERS;
 		private:
 			std::unordered_map<std::string, std::unique_ptr<FBO>> fbos;
 		public:
@@ -29,6 +27,8 @@ namespace RenderLib
 			FBO * getFBO(const std::string & name);
 
 			void destroyFBO(const std::string & name);
+
+			void onResize(const unsigned int & width, const unsigned int & height);
 
 			void clean();
 		};

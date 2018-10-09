@@ -516,6 +516,9 @@
     <ClInclude Include="include\render\FBOManager.h">
       <Filter>Archivos de encabezado\render</Filter>
     </ClInclude>
+    <ClInclude Include="include\defaultimpl\components\UserScript.h">
+      <Filter>Archivos de encabezado\defaultimpl\components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Component.cpp">
@@ -805,6 +808,9 @@
     </ClCompile>
     <ClCompile Include="src\render\FBOManager.cpp">
       <Filter>Archivos de origen\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\defaultimpl\components\UserScript.cpp">
+      <Filter>Archivos de origen\defaultimpl\components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

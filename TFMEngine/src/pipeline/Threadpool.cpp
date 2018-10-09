@@ -8,6 +8,11 @@ namespace RenderLib
 {
 	namespace Pipeline
 	{
+		void dummyCallback(AbstractElementBasedStage * stage, Component * comp)
+		{
+
+		}
+
 		void Runnable::run()
 		{
 			for (auto e : elementsToProcess)
@@ -121,7 +126,6 @@ namespace RenderLib
 				size_t blockOffset = std::min<size_t>(assigned + perThreadAmount, elementsSize);
 				newTask.get()->elementsToProcess.assign(itBegin + assigned, itBegin + blockOffset);
 				newTask.get()->stage = &stage;
-
 				addTask(newTask);
 
 				assigned += (blockOffset - assigned);

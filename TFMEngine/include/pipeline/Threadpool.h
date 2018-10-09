@@ -26,6 +26,8 @@ namespace RenderLib
 			void run();
 		};
 
+		void dummyCallback(AbstractElementBasedStage * stage, Component * comp);
+
 		class ThreadPool
 		{
 		private:

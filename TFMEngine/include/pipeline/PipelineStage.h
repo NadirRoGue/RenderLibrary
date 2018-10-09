@@ -3,7 +3,6 @@
 #define __CPU_PIPELINE_STAGE_H__
 
 #include <vector>
-
 #include <typeindex>
 #include <typeinfo>
 

@@ -19,7 +19,7 @@ namespace RenderLib
 			void runStage();
 			void processElement(Transform * element);
 		private:
-			void updateLinealGraph();
+			void updateLinealGraph(); // UNUSED
 		};
 	}
 }

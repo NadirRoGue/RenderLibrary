@@ -513,6 +513,9 @@
     <ClInclude Include="include\defaultimpl\pipelinestages\LightSyncStage.h">
       <Filter>Archivos de encabezado\defaultimpl\pipelinestages</Filter>
     </ClInclude>
+    <ClInclude Include="include\render\FBOManager.h">
+      <Filter>Archivos de encabezado\render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Component.cpp">
@@ -799,6 +802,9 @@
     </ClCompile>
     <ClCompile Include="src\defaultimpl\pipelinestages\LightSyncStage.cpp">
       <Filter>Archivos de origen\defaultimpl\pipelinestages</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\FBOManager.cpp">
+      <Filter>Archivos de origen\render</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

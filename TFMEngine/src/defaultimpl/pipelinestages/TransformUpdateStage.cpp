@@ -59,28 +59,37 @@ namespace RenderLib
 
 		void TransformUpdateStage::preRunStage()
 		{
-			updateLinealGraph();
+			elements.clear();
+			Scene * scene = engineInstance->getSceneManager().getActiveScene();
+			for (auto child : scene->getSceneRoot()->getChildren())
+			{
+				registerElement(&(child->transform));
+			}
 		}
 
 		void TransformUpdateStage::runStage()
 		{
 			Scene * scene = engineInstance->getSceneManager().getActiveScene();
+			
 			if (scene->sceneTreeNeedsUpdate())
 			{
-				updateLinealGraph();
+				preRunStage();
 			}
 
-			for (auto & treeLevel : linearGraph)
-			{
-				elements.clear();
-				elements = treeLevel;
-				ElementBasedStage<Transform>::runStage();
-			}
+			ElementBasedStage<Transform>::runStage();
 		}
 
 		void TransformUpdateStage::processElement(Transform * element)
 		{
 			element->updateGraph();
+			Pipeline::ThreadPool & pool = engineInstance->getPipelineManager().getThreadPool();
+			for (auto child : element->object->getChildren())
+			{
+				std::unique_ptr<Pipeline::Runnable> newTask = std::make_unique<Pipeline::Runnable>();
+				newTask.get()->elementsToProcess.push_back(&(child->transform));
+				newTask.get()->stage = this;
+				pool.addTask(newTask);
+			}
 		}
 	}
 }

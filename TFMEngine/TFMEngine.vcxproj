@@ -231,6 +231,7 @@
     <ClInclude Include="include\pipeline\PipelineStage.h" />
     <ClInclude Include="include\pipeline\Threadpool.h" />
     <ClInclude Include="include\render\FBO.h" />
+    <ClInclude Include="include\render\FBOManager.h" />
     <ClInclude Include="include\render\RenderableMap.h" />
     <ClInclude Include="include\render\RenderingPipeline.h" />
     <ClInclude Include="include\render\AbstractRenderingStage.h" />
@@ -329,6 +330,7 @@
     <ClCompile Include="src\pipeline\Threadpool.cpp" />
     <ClCompile Include="src\render\AbstractRenderingStage.cpp" />
     <ClCompile Include="src\render\FBO.cpp" />
+    <ClCompile Include="src\render\FBOManager.cpp" />
     <ClCompile Include="src\render\RenderableMap.cpp" />
     <ClCompile Include="src\render\RenderingPipeline.cpp" />
     <ClCompile Include="src\render\renderstages\ForwardRenderStage.cpp" />

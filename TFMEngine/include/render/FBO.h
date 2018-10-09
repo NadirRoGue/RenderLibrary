@@ -4,6 +4,8 @@
 #include <unordered_map>
 #include <string>
 
+#include "GPU/texture/GPUTexture.h"
+
 namespace RenderLib
 {
 	namespace Render
@@ -11,6 +13,7 @@ namespace RenderLib
 		class FBO
 		{
 		private:
+			std::unordered_map<std::string, GPU::Texture::GPUTexture *> attachments;
 		};
 	}
 }

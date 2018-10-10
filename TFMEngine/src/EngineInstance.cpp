@@ -81,6 +81,11 @@ namespace RenderLib
 		return sceneManager;
 	}
 
+	Render::FBOManager & EngineInstance::getFBOManager()
+	{
+		return fboManager;
+	}
+
 	GPU::Program::ProgramManager & EngineInstance::getProgramManager()
 	{
 		return gpuProgramManager;

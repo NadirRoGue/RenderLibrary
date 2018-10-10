@@ -18,21 +18,28 @@ namespace RenderLib
 			private:
 				std::unordered_map<size_t, GPUMeshPtr> staticMeshes;
 				std::unordered_map<size_t, GPUMeshPtr> dynamicMeshes;
+				GPUMeshPtr postProcessQuadMesh;
 
 				GPUBufferPtr staticBuffer;
 
 				GPUBufferPtr dynamicFrontBuffer;
 				GPUBufferPtr dynamicBackBuffer;
+
+				GPUBufferPtr postProcessQuadBuffer;
 			public:
 				GPUMeshManager();
 				~GPUMeshManager();
 
 				GPUBuffer * initializeStaticBuffer();
 				GPUBuffer * initializeDynamicBuffer();
+				GPUBuffer * initializePostProcessQuadBuffer();
 
 				GPUBuffer * getStaticMeshBuffer();
 				GPUBuffer * getDynamicMeshBuffer();
 				GPUBuffer * getSyncDynamicBuffer();
+				GPUBuffer * getPostProcessQuadBuffer();
+
+				GPUMesh * getPostProcessQuad();
 
 				void swapDynamicBuffers();
 

@@ -13,6 +13,7 @@
 #include "GPU/program/ProgramManager.h"
 #include "GPU/texture/GPUTextureManager.h"
 #include "GPU/light/LightManager.h"
+#include "render/FBOManager.h"
 
 #include "EngineTime.h"
 
@@ -26,7 +27,11 @@ namespace RenderLib
 		unsigned int instanceID;
 
 		Pipeline::PipelineManager pipelineManager;
+
 		SceneManager sceneManager;
+
+		Render::FBOManager fboManager;
+
 		GPU::Mesh::GPUMeshManager gpuMeshManager;
 		GPU::Texture::GPUTextureManager gpuTextureManager;
 		GPU::Program::ProgramManager gpuProgramManager;
@@ -48,12 +53,18 @@ namespace RenderLib
 		void loadScene(const std::string & name);
 		
 		Graphics::WindowHandler * getWindow();
+
 		Pipeline::PipelineManager & getPipelineManager();
+
 		SceneManager & getSceneManager();
+
+		Render::FBOManager & getFBOManager();
+
 		GPU::Mesh::GPUMeshManager & getGPUMeshManager();
 		GPU::Program::ProgramManager & getProgramManager();
 		GPU::Texture::GPUTextureManager & getGPUTextureManager();
 		GPU::Light::LightManager & getGPULightManager();
+
 		Time & getTime();
 
 		void acquireContext();

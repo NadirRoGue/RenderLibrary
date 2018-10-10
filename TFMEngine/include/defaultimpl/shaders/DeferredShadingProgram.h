@@ -11,7 +11,7 @@ namespace RenderLib
 		{
 		public:
 			DeferredShadingProgram();
-			void onRender(Scene * scene);
+			void onRender(EngineInstance * instance);
 		};
 	}
 }

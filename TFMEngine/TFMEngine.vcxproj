@@ -354,6 +354,8 @@
     <ClCompile Include="src\util\StringUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="shaders\default\postprocess.vert" />
+    <None Include="shaders\default\postprocess\deferredshading.frag" />
     <None Include="shaders\default\standardprogram.frag" />
     <None Include="shaders\default\standardprogram.vert" />
   </ItemGroup>

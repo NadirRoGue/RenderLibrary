@@ -193,6 +193,9 @@
     <Filter Include="Archivos de origen\GPU\light">
       <UniqueIdentifier>{f6834c48-de2b-421b-88db-e0981ddf6ce3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="shaders\default\postprocess">
+      <UniqueIdentifier>{a130bdfc-ceab-4cc1-b220-5def20cdf10a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Component.h">
@@ -849,6 +852,12 @@
     </None>
     <None Include="shaders\default\standardprogram.vert">
       <Filter>shaders\default</Filter>
+    </None>
+    <None Include="shaders\default\postprocess.vert">
+      <Filter>shaders\default</Filter>
+    </None>
+    <None Include="shaders\default\postprocess\deferredshading.frag">
+      <Filter>shaders\default\postprocess</Filter>
     </None>
   </ItemGroup>
 </Project>

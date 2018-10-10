@@ -38,7 +38,7 @@ namespace RenderLib
 			RenderableMap staticRenderables;
 			RenderableMap dynamicRenderables;
 		public:
-			void initialize();
+			virtual void initialize();
 			void tryRegisterElement(DefaultImpl::MeshRenderer * renderable);
 			void forceRegisterRenderable(DefaultImpl::MeshRenderer * renderable);
 

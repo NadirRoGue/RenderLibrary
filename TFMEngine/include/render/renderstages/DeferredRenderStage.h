@@ -13,6 +13,7 @@ namespace RenderLib
 			FBO * gBuffers;
 		public:
 			DeferredRenderStage();
+			void initialize();
 			bool shouldRegisterRenderable(DefaultImpl::MeshRenderer * renderable);
 			void runStage();
 		};

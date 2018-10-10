@@ -24,7 +24,6 @@ namespace RenderLib
 				GPUBuffer * buf = staticBuffer.get();
 				buf->usage = GL_STATIC_DRAW;
 
-				
 				buf->generate();
 				
 				return buf;
@@ -46,6 +45,17 @@ namespace RenderLib
 				return buf;
 			}
 
+			GPUBuffer * GPUMeshManager::initializePostProcessQuadBuffer()
+			{
+				postProcessQuadBuffer = std::make_unique<GPUBuffer>();
+				GPUBuffer * ppq = postProcessQuadBuffer.get();
+				ppq->usage = GL_STATIC_DRAW;
+
+				ppq->generate();
+
+				return ppq;
+			}
+
 			GPUBuffer * GPUMeshManager::getStaticMeshBuffer()
 			{
 				return staticBuffer.get();
@@ -59,6 +69,11 @@ namespace RenderLib
 			GPUBuffer * GPUMeshManager::getSyncDynamicBuffer()
 			{
 				return dynamicBackBuffer.get();
+			}
+
+			GPUBuffer * GPUMeshManager::getPostProcessQuadBuffer()
+			{
+				return postProcessQuadBuffer.get();
 			}
 
 			void GPUMeshManager::swapDynamicBuffers()
@@ -107,6 +122,11 @@ namespace RenderLib
 					dynamicMeshes[index] = std::move(newGPUMesh);
 				}
 				return result;
+			}
+
+			GPUMesh * GPUMeshManager::getPostProcessQuad()
+			{
+				return postProcessQuadMesh.get();
 			}
 		}
 	}

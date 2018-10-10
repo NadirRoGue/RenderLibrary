@@ -3,11 +3,12 @@
 #if defined FORWARD_SHADING
 layout (location=0) out vec4 outColor;
 #else
-layout (location=0) out vec4 outColorOpacity;
-layout (location=1) out vec4 outNormalSpecularScale;
-layout (location=2) out vec4 outSpecularColorShininess;
-layout (location=3) out vec4 outEmissive;
-layout (location=4) out vec4 outAmbient;
+layout (location=0) out vec4 outPosAndSpecScale;
+layout (location=1) out vec4 outColorOpacity;
+layout (location=2) out vec4 outNormal;
+layout (location=3) out vec4 outSpecularColorShininess;
+layout (location=4) out vec4 outEmissive;
+layout (location=5) out vec4 outAmbient;
 #endif
 
 layout (location=0) in vec3 pos;
@@ -338,8 +339,9 @@ void main()
 	outColor = vec4(c, opacityVal);
 
 #else
+	outPosAndSpecScale					= vec4(pos, specularScaleVal);
 	outColorOpacity							= vec4(Kd, opacityVal);
-	outNormalSpecularScale			= vec4(normalVector, specularScaleVal);
+	outNormal										= vec4(normalVector, 0.0);
 	outSpecularColorShininess		= vec4(Ks, shininessVal);
 	outEmissive									= vec4(Ke, 1.0);	
 	outAmbient									= vec4(Ka, 1.0);

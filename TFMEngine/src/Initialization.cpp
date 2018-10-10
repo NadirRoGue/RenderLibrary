@@ -12,7 +12,6 @@
 #include "defaultimpl/fileloaders/ShaderLoader.h"
 #include "defaultimpl/fileloaders/ImageLoader.h"
 
-#include "GPU/texture/GPUTextureManager.h"
 #include "GPU/program/UberFactoryManager.h"
 
 #include "defaultimpl/shaders/StandardProgram.h"

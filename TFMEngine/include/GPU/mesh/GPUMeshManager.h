@@ -41,6 +41,8 @@ namespace RenderLib
 
 				GPUMesh * getPostProcessQuad();
 
+				void generatePostProcessQuad();
+
 				void swapDynamicBuffers();
 
 				bool meshAlreadyExists(size_t index, bool staticMesh);

@@ -192,7 +192,7 @@ namespace RenderLib
 				materialMask;
 
 			finalMask |= 
-				renderable->preferredRender == DefaultImpl::FORWARD_RENDER ? 
+				(renderable->preferredRender == DefaultImpl::FORWARD_RENDER || renderable->material->opacity() < 1.0f)? 
 				StandardProgram::FORWARD_SHADING : 0;
 
 			return finalMask;

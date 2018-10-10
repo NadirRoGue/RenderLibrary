@@ -89,6 +89,8 @@ namespace RenderLib
 				void link();
 
 				bool hasMask(const UberParamMask & prop);
+	
+				void configureShaderAttribute(const std::string & shaderAttribute, Mesh::GPUAttribute & meshAttribute);
 			private:
 				void gatherInputs();
 			};

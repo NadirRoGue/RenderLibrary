@@ -45,8 +45,6 @@ namespace RenderLib
 
 				virtual void onFrameBegin(EngineInstance * instance);
 				virtual void onRenderObject(const SceneObject & object, const Material::Material & material, const Camera & camera);
-			protected:
-				void configureShaderAttribute(const std::string & shaderAttribute, Mesh::GPUAttribute & meshAttribute);
 			};
 		}
 	}

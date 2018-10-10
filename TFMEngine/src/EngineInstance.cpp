@@ -21,6 +21,7 @@ namespace RenderLib
 		}
 
 		pipelineManager.setEngineInstance(this);
+		fboManager.setEngineInstance(this);
 		window->instance = this;
 	}
 

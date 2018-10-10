@@ -37,6 +37,12 @@ namespace RenderLib
 				link();
 			}
 
+			void PostProcessProgram::configureRenderQuad(GPU::Mesh::GPUMesh * quad)
+			{
+				configureShaderAttribute("inPos", quad->vertices);
+				configureShaderAttribute("inUV", quad->uvs[0]);
+			}
+
 			void PostProcessProgram::destroyShaders()
 			{
 				detachShader(vShader);

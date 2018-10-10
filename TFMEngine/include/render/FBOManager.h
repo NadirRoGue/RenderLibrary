@@ -10,15 +10,20 @@
 
 namespace RenderLib
 {
+	class EngineInstance;
+
 	namespace Render
 	{
 		class FBOManager
 		{
 		private:
 			std::unordered_map<std::string, std::unique_ptr<FBO>> fbos;
+			EngineInstance * instance;
 		public:
 			FBOManager();
 			~FBOManager();
+
+			void setEngineInstance(EngineInstance * instance);
 
 			FBO * createFBO(const std::string & name);
 

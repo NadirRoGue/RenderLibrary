@@ -19,6 +19,9 @@ namespace RenderLib
 
 			renderPipeline.setEngineInstance(engineInstance);
 
+			// Instantiate the common quad
+			engineInstance->getGPUMeshManager().generatePostProcessQuad();
+
 			// Add them sorted to the correspondent places
 			for (auto comp : elements)
 			{

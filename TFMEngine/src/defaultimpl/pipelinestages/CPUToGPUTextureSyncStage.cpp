@@ -59,6 +59,13 @@ namespace RenderLib
 
 			if (cpuTexture != NULL)
 			{
+				GPU::Texture::GPUTexture * gpuTexture = NULL;
+				if ((gpuTexture = engineInstance->getGPUTextureManager().getTexture<GPU::Texture::GPUTexture2D>(cpuTexture->index)) != NULL)
+				{
+					textureParameter.setTexture(gpuTexture);
+					return;
+				}
+
 				std::vector<unsigned char> buf;
 				cpuTexture->pixels.dumpAttributes(buf);
 

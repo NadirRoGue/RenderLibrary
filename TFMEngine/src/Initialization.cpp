@@ -32,6 +32,7 @@ namespace RenderLib
 		CPU::IO::FileManager::registerFileLoader<DefaultImpl::ImageLoader>();
 
 		Logger::Log::getInstance().addLogger<DefaultImpl::ConsoleLogger>();
+		Render::FBO::initializeDefaultFBO();
 		//Logger::Log::getInstance().addLogger<DefaultImpl::BufferedFileLogger>();
 
 		GPU::Program::UberFactoryManager::registerUberFactory<DefaultImpl::StandardProgram, DefaultImpl::StandardUberFactory>();

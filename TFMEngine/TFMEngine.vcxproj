@@ -239,6 +239,7 @@
     <ClInclude Include="include\render\AbstractRenderingStage.h" />
     <ClInclude Include="include\render\renderstages\BloomPostProcessStage.h" />
     <ClInclude Include="include\render\renderstages\DeferredRenderStage.h" />
+    <ClInclude Include="include\render\renderstages\DeferredShadingStage.h" />
     <ClInclude Include="include\render\renderstages\ForwardRenderStage.h" />
     <ClInclude Include="include\render\renderstages\HDRPostProcessStage.h" />
     <ClInclude Include="include\render\renderstages\SSAAPostProcessStage.h" />
@@ -343,6 +344,7 @@
     <ClCompile Include="src\render\RenderingPipeline.cpp" />
     <ClCompile Include="src\render\renderstages\BloomPostProcessStage.cpp" />
     <ClCompile Include="src\render\renderstages\DeferredRenderStage.cpp" />
+    <ClCompile Include="src\render\renderstages\DeferredShadingStage.cpp" />
     <ClCompile Include="src\render\renderstages\ForwardRenderStage.cpp" />
     <ClCompile Include="src\render\renderstages\HDRPostProcessStage.cpp" />
     <ClCompile Include="src\render\renderstages\SSAAPostProcessStage.cpp" />
@@ -354,8 +356,9 @@
     <ClCompile Include="src\util\StringUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="shaders\api\defaultlighting.glsl" />
+    <None Include="shaders\default\deferredshading.frag" />
     <None Include="shaders\default\postprocess.vert" />
-    <None Include="shaders\default\postprocess\deferredshading.frag" />
     <None Include="shaders\default\standardprogram.frag" />
     <None Include="shaders\default\standardprogram.vert" />
   </ItemGroup>

@@ -14,6 +14,8 @@ namespace RenderLib
 		public:
 			ShaderLoader();
 			CPU::IO::AbstractLoadResultPtr loadFile(const std::string & filePath, unsigned int options);
+		private:
+			void handleInclude(const std::string & include, std::string & dst);
 		};
 	}
 }

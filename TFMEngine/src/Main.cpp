@@ -121,7 +121,7 @@ int main(int argc, void ** arg)
 	// "Cube"
 	RenderLib::SceneObject * obj = scene->addObject<SceneObject>("Cube");
 	obj->addComponent<DefaultImpl::MeshFilter>()->mesh = cube;
-	obj->addComponent<DefaultImpl::MeshRenderer>()->preferredRender = DefaultImpl::FORWARD_RENDER;
+	obj->addComponent<DefaultImpl::MeshRenderer>();
 	obj->addComponent<DefaultImpl::ObjectSpinner>();
 
 	// "Moon"
@@ -129,8 +129,7 @@ int main(int argc, void ** arg)
 	moon->transform.translate(VECTOR3(5, 0, 0));
 	moon->transform.scale(VECTOR3(0.5, 0.5, 0.5));
 	moon->addComponent<DefaultImpl::MeshFilter>()->mesh = sphere;
-	moon->addComponent<DefaultImpl::MeshRenderer>()->preferredRender = DefaultImpl::FORWARD_RENDER;
-	moon->addComponent<DefaultImpl::ObjectSpinner>();
+	moon->addComponent<DefaultImpl::MeshRenderer>();
 	moon->setParent(obj);
 
 	// Cube crown
@@ -138,8 +137,7 @@ int main(int argc, void ** arg)
 	crown->transform.translate(VECTOR3(0, 5, 0));
 	crown->transform.scale(VECTOR3(0.5, 0.5, 0.5));
 	crown->addComponent<DefaultImpl::MeshFilter>()->mesh = cube2;
-	crown->addComponent<DefaultImpl::MeshRenderer>()->preferredRender = DefaultImpl::FORWARD_RENDER;
-	crown->addComponent<DefaultImpl::ObjectSpinner>();
+	crown->addComponent<DefaultImpl::MeshRenderer>();
 	crown->setParent(obj);
 
 	/*** EXECUTION (BLOCKING UNTIL ALL INSTANCES ARE DONE) ***/

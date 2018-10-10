@@ -13,6 +13,8 @@
 #include "CPU/texture/blendoperations/BlendSmoothAdd.h"
 #include "CPU/texture/blendoperations/BlendSub.h"
 
+#include <iostream>
+
 namespace RenderLib
 {
 	namespace CPU

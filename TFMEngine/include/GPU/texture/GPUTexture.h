@@ -17,8 +17,6 @@ namespace RenderLib
 				GLenum pixelType;	// Hows each element of the texture codified? (3 floats, 1 unsigned int, 1 unsigned char,...)
 				bool generateMipMaps;
 
-				bool mutableTexture;
-
 				int minificationFilter;
 				int magnificationFilter;
 
@@ -31,7 +29,7 @@ namespace RenderLib
 				bool isMutable;
 
 				GPUTextureConfig()
-					: mutableTexture(false)
+					: isMutable(true)
 					, generateMipMaps(false)
 					, internalFormat(GL_RGBA8)
 					, format(GL_RGBA)

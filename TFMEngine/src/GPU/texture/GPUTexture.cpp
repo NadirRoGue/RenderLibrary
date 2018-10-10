@@ -103,6 +103,8 @@ namespace RenderLib
 				{
 					glGenerateMipmap(type);
 				}
+
+				unBind();
 			}
 
 			void GPUTexture::destroy()

@@ -1,6 +1,8 @@
 #include "render/RenderingPipeline.h"
 
 #include "render/renderstages/ForwardRenderStage.h"
+#include "render/renderstages/DeferredRenderStage.h"
+#include "render/renderstages/DeferredShadingStage.h"
 
 #include "EngineInstance.h"
 
@@ -10,6 +12,7 @@ namespace RenderLib
 	{
 		RenderingPipeline::RenderingPipeline()
 		{
+			addRenderStage<DeferredRenderStage>();
 			addRenderStage<ForwardRenderStage>();
 		}
 
@@ -32,11 +35,21 @@ namespace RenderLib
 			{
 				stage.get()->engineInstance = engineInstance;
 			}
+
+			for (auto & stages : postProcessStages)
+			{
+				stages.get()->engineInstance = engineInstance;
+			}
 		}
 
 		void RenderingPipeline::initializeStages()
 		{
 			for (auto & stages : renderStages)
+			{
+				stages.get()->initialize();
+			}
+
+			for (auto & stages : postProcessStages)
 			{
 				stages.get()->initialize();
 			}
@@ -48,11 +61,21 @@ namespace RenderLib
 			{
 				stages.get()->runStage();
 			}
+
+			for (auto & stages : postProcessStages)
+			{
+				stages.get()->runStage();
+			}
 		}
 
 		void RenderingPipeline::finalizeStages()
 		{
 			for (auto & stages : renderStages)
+			{
+				stages.get()->finalize();
+			}
+
+			for (auto & stages : postProcessStages)
 			{
 				stages.get()->finalize();
 			}

@@ -20,6 +20,7 @@ namespace RenderLib
 		{
 		private:
 			std::vector<AbstractRenderingStagePtr> renderStages;
+			std::vector<AbstractRenderingStagePtr> postProcessStages;
 		public:
 			RenderingPipeline();
 			~RenderingPipeline();
@@ -43,7 +44,14 @@ namespace RenderLib
 				std::unique_ptr<T> newStage = std::make_unique<T>();
 				T * result = newStage.get();
 
-				renderStages.push_back(std::move(newStage));
+				if (std::is_base_of<MeshRenderingStage, T>::value)
+				{
+					renderStages.push_back(std::move(newStage));
+				}
+				else
+				{
+					postProcessStages.push_back(std::move(newStage));
+				}
 
 				return result;
 			}
@@ -57,14 +65,29 @@ namespace RenderLib
 					throw EngineException(message.c_str());
 				}
 
-				for (auto it = renderStages.begin(); it != renderStages.end(); it++)
+				bool found = false;
+				for (auto it = renderStages.begin(); it != renderStages.end() && !found; it++)
 				{
 					AbstractRenderingStage * stage = (*it).get();
 					if (dynamic_cast<T>(stage) != NULL)
 					{
-						(*it).reset();
+						//(*it).reset();
 						renderStages.erase(it);
-						break;
+						found = true;
+					}
+				}
+
+				if (!found)
+				{
+					for (auto it = postProcessStages.begin(); it != postProcessStages.end() && !found; it++)
+					{
+						AbstractRenderingStage * stage = (*it).get();
+						if (dynamic_cast<T>(stage) != NULL)
+						{
+							//(*it).reset();
+							renderStages.erase(it);
+							found = true;
+						}
 					}
 				}
 			}

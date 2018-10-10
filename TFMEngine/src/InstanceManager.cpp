@@ -24,6 +24,7 @@ namespace RenderLib
 		}
 
 		GPU::Texture::GPUTextureManager::queryAnisotropicFilterSupport();
+		Render::FBO::queryMaxRenderTargets();
 
 		bool activeInstances = true;
 		std::vector<unsigned int> instancesToClean;
@@ -80,6 +81,7 @@ namespace RenderLib
 		// Initialize graphics
 		graphicsHandler->initialize();
 		GPU::Texture::GPUTextureManager::queryAnisotropicFilterSupport();
+		Render::FBO::queryMaxRenderTargets();
 		// Release context ownership
 		Graphics::ContextManager::getInstance().releaseContext();
 

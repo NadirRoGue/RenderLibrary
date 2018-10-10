@@ -20,6 +20,7 @@ namespace RenderLib
 			registerFileExtension("geom");
 			registerFileExtension("frag");
 			registerFileExtension("comp");
+			registerFileExtension("glsl");
 		}
 
 		CPU::IO::AbstractLoadResultPtr ShaderLoader::loadFile(
@@ -31,7 +32,7 @@ namespace RenderLib
 			if (!file)
 			{
 				std::string message = 
-					"ShaderLoader: Could not load file " + filePath + ": file not found";
+					"ShaderLoader: Could not load file \"" + filePath + "\": file not found";
 
 				throw EngineException(message.c_str());
 			}
@@ -40,17 +41,12 @@ namespace RenderLib
 				std::make_unique<GPU::Program::ShaderLoadResult>();
 			GPU::Program::ShaderLoadResult * loadResult = loadResultPtr.get();
 
-			file.seekg(0, std::ios::end);
-			size_t fileLen = file.tellg();
-			file.seekg(std::ios::beg);
-
 			char buf[1024];
 
 			if (file.good())
 			{
 				file.getline(buf, 1024);
 				size_t rawStrLen = strlen(buf);
-				fileLen += rawStrLen;
 				loadResult->header = std::string(buf);
 			}
 
@@ -59,9 +55,19 @@ namespace RenderLib
 				while (file.good())
 				{
 					file.getline(buf, 1024);
-					size_t rawStrLen = strlen(buf);
-					fileLen += rawStrLen;
-					loadResult->body += std::string(buf) + "\n";
+					std::string appendLine(buf);
+
+					size_t includePos = appendLine.find("#include");
+					if (includePos != std::string::npos)
+					{
+						std::string subShader;
+						handleInclude(appendLine, subShader);
+						loadResult->body += subShader + "\n";
+					}
+					else
+					{
+						loadResult->body += appendLine + "\n";
+					}
 				}
 			}
 
@@ -70,6 +76,24 @@ namespace RenderLib
 			file.close();
 
 			return loadResultPtr;
+		}
+
+		void ShaderLoader::handleInclude(const std::string & include, std::string & dst)
+		{
+			size_t spacePos = include.find_first_of(" ");
+			if (spacePos == std::string::npos)
+			{
+				throw EngineException("ShaderLoader: Illegal #include declaration: " + include);
+			}
+
+			std::string filePath = include.substr(spacePos + 1, include.length() - 1 - spacePos);
+
+			CPU::IO::AbstractLoadResultPtr includePtr = loadFile(filePath, 0);
+			GPU::Program::ShaderLoadResult * loadResult = static_cast<GPU::Program::ShaderLoadResult*>(includePtr.get());
+
+			dst = "";
+			dst += loadResult->header + "\n";
+			dst += loadResult->body.substr(0, loadResult->body.length() - 1);
 		}
 	}
 }

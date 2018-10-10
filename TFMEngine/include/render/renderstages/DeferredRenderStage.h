@@ -3,6 +3,8 @@
 
 #include "render/AbstractRenderingStage.h"
 
+#include "defaultimpl/shaders/DeferredShadingProgram.h"
+
 namespace RenderLib
 {
 	namespace Render
@@ -11,6 +13,7 @@ namespace RenderLib
 		{
 		private:
 			FBO * gBuffers;
+			DefaultImpl::DeferredShadingProgram * deferredShading;
 		public:
 			DeferredRenderStage();
 			void initialize();

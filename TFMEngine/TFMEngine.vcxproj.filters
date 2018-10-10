@@ -196,6 +196,9 @@
     <Filter Include="shaders\default\postprocess">
       <UniqueIdentifier>{a130bdfc-ceab-4cc1-b220-5def20cdf10a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="shaders\api">
+      <UniqueIdentifier>{dfd82948-e423-4bba-b6b4-38febe0ef206}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Component.h">
@@ -537,6 +540,9 @@
     <ClInclude Include="include\defaultimpl\shaders\DeferredShadingProgram.h">
       <Filter>Archivos de encabezado\defaultimpl\shaders</Filter>
     </ClInclude>
+    <ClInclude Include="include\render\renderstages\DeferredShadingStage.h">
+      <Filter>Archivos de encabezado\render\renderstages</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Component.cpp">
@@ -842,6 +848,9 @@
     <ClCompile Include="src\render\renderstages\SSAAPostProcessStage.cpp">
       <Filter>Archivos de origen\render\renderstages</Filter>
     </ClCompile>
+    <ClCompile Include="src\render\renderstages\DeferredShadingStage.cpp">
+      <Filter>Archivos de origen\render\renderstages</Filter>
+    </ClCompile>
     <ClCompile Include="src\defaultimpl\shaders\DeferredShadingProgram.cpp">
       <Filter>Archivos de origen\defaultimpl\shaders</Filter>
     </ClCompile>
@@ -856,8 +865,11 @@
     <None Include="shaders\default\postprocess.vert">
       <Filter>shaders\default</Filter>
     </None>
-    <None Include="shaders\default\postprocess\deferredshading.frag">
-      <Filter>shaders\default\postprocess</Filter>
+    <None Include="shaders\default\deferredshading.frag">
+      <Filter>shaders\default</Filter>
+    </None>
+    <None Include="shaders\api\defaultlighting.glsl">
+      <Filter>shaders\api</Filter>
     </None>
   </ItemGroup>
 </Project>

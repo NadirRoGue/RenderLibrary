@@ -28,6 +28,8 @@ namespace RenderLib
 
 				void destroyShaders();
 
+				void configureRenderQuad(GPU::Mesh::GPUMesh * quad);
+
 				virtual void onRender(EngineInstance * instance);
 			};
 		}

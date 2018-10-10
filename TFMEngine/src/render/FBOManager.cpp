@@ -13,6 +13,11 @@ namespace RenderLib
 
 		}
 
+		void FBOManager::setEngineInstance(EngineInstance * instance)
+		{
+			this->instance = instance;
+		}
+
 		FBO * FBOManager::createFBO(const std::string & name)
 		{
 			auto it = fbos.find(name);
@@ -24,6 +29,7 @@ namespace RenderLib
 			std::unique_ptr<FBO> newFBO = std::make_unique<FBO>();
 			FBO * result = newFBO.get();
 			result->generate();
+			result->setEngineInstance(instance);
 
 			fbos[name] = std::move(newFBO);
 

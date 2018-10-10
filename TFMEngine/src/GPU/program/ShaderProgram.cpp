@@ -75,26 +75,6 @@ namespace RenderLib
 			{
 				
 			}
-
-			void ShaderProgram::configureShaderAttribute(const std::string & shaderAttribute, Mesh::GPUAttribute & meshAttribute)
-			{
-				if (meshAttribute.numElements > 0)
-				{
-					auto it = shaderAttributes.find(shaderAttribute);
-					if (it != shaderAttributes.end())
-					{
-						ShaderInput input = it->second;
-						glVertexAttribPointer(input.id,
-							(GLsizei)meshAttribute.elementCount,
-							meshAttribute.dataType,
-							meshAttribute.normalizeOnUpload,
-							(GLsizei)(meshAttribute.stride),
-							(GLvoid*)(meshAttribute.offset));
-
-						glEnableVertexAttribArray(input.id);
-					}
-				}
-			}
 		}
 	}
 }

@@ -2,6 +2,10 @@
 
 #include "GPU/texture/GPUTexture2D.h"
 
+#include "EngineInstance.h"
+
+#include <iostream>
+
 namespace RenderLib
 {
 	namespace Render
@@ -46,7 +50,7 @@ namespace RenderLib
 
 		void FBO::generate()
 		{
-
+			glGenFramebuffers(1, &id);
 		}
 
 		void FBO::setEngineInstance(EngineInstance * instance)
@@ -54,7 +58,11 @@ namespace RenderLib
 			accessor = instance;
 		}
 
-		GPU::Texture::GPUTexture * FBO::addColorAttachment(const unsigned int & index, const std::string & name)
+		GPU::Texture::GPUTexture * FBO::addColorAttachment(const unsigned int & index,
+			const std::string & name,
+			GLenum internalFormat,
+			GLenum format,
+			GLenum pixelType)
 		{
 			if (index > MAX_RENDER_TARGETS)
 			{
@@ -64,6 +72,12 @@ namespace RenderLib
 
 			GPU::Texture::GPUTexture * colorAttachment = 
 				accessor->getGPUTextureManager().createGPUOnlyTexture<GPU::Texture::GPUTexture2D>(name);
+
+			GPU::Texture::GPUTextureConfig & config = colorAttachment->getConfig();
+			config.internalFormat = internalFormat;
+			config.format = format;
+			config.pixelType = pixelType;
+			config.setWrapType(GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
 
 			attachmentTextures[name] = colorAttachment;
 
@@ -80,8 +94,15 @@ namespace RenderLib
 		{
 			depthAttachment.attachment = accessor->getGPUTextureManager()
 				.createGPUOnlyTexture<GPU::Texture::GPUTexture2D>(name);
-			depthAttachment.attachmentType = GL_DEPTH_ATTACHMENT;
 
+			GPU::Texture::GPUTextureConfig & config = depthAttachment.attachment->getConfig();
+			config.internalFormat = GL_DEPTH_COMPONENT24;
+			config.format = GL_DEPTH_COMPONENT;
+			config.pixelType = GL_FLOAT;
+			config.setWrapType(GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
+
+			depthAttachment.attachmentType = GL_DEPTH_ATTACHMENT;
+			
 			attachmentTextures[name] = depthAttachment.attachment;
 
 			return depthAttachment.attachment;
@@ -110,7 +131,7 @@ namespace RenderLib
 
 		void FBO::unBind()
 		{
-			DEFAULTFRAMEBUFFER.bind();
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		}
 
 		void FBO::setSize(const unsigned int & width, const unsigned int & height)
@@ -125,23 +146,16 @@ namespace RenderLib
 					info.attachment->upload(NULL, width, height);
 				}
 			}
-
-			bool addDepthBuffer = false;
+			
 			if (depthAttachment.attachment == NULL)
 			{
-				depthAttachment.attachment = accessor->getGPUTextureManager()
-					.createGPUOnlyTexture<GPU::Texture::GPUTexture2D>("depthattachment_FBO_UNUSED_"+std::to_string(id));
-				depthAttachment.attachmentType = GL_DEPTH_ATTACHMENT;
+				addDepthAttachment("depth");
 			}
-			else
-			{
-				addDepthBuffer = true;
-			}
-
+			
 			depthAttachment.attachment->upload(NULL, width, height);
-
+			
 			bind();
-
+			
 			std::vector<GLenum> attachmentList;
 			for (auto & info : indexedAttachments)
 			{
@@ -151,21 +165,23 @@ namespace RenderLib
 					attachmentList.push_back(info.attachmentType);
 				}
 			}
-
+			
 			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthAttachment.attachment->getId(), 0);
 
 			if (attachmentList.size() > 0)
 			{
 				glDrawBuffers((GLsizei)attachmentList.size(), &attachmentList[0]);
+				
 			}
 			else
 			{
 				glDrawBuffer(GL_NONE);
 			}
 
-			if (GL_FRAMEBUFFER_COMPLETE != glCheckFramebufferStatus(GL_FRAMEBUFFER))
+			GLenum error;
+			if (GL_FRAMEBUFFER_COMPLETE != (error = glCheckFramebufferStatus(GL_FRAMEBUFFER)))
 			{
-				exit(-1);
+				throw EngineException("FBO: Incomplete framebuffer: Error code: " + std::to_string(error));
 			}
 
 			unBind();

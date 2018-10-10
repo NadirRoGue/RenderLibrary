@@ -6,10 +6,11 @@
 #include <string>
 
 #include "GPU/texture/GPUTexture.h"
-#include "EngineInstance.h"
 
 namespace RenderLib
 {
+	class EngineInstance;
+
 	namespace Render
 	{
 		typedef struct AttachmentInfo
@@ -43,12 +44,23 @@ namespace RenderLib
 			void generate();
 			void bind();
 			void unBind();
-			void setSize(const unsigned int & width, const unsigned int & height);
+			void setSize(
+				const unsigned int & width, 
+				const unsigned int & height);
 
-			GPU::Texture::GPUTexture * addColorAttachment(const unsigned int & index, const std::string & name);
-			GPU::Texture::GPUTexture * addDepthAttachment(const std::string & name);
+			GPU::Texture::GPUTexture * addColorAttachment(
+				const unsigned int & index, 
+				const std::string & name,
+				GLenum internalFormat,
+				GLenum format,
+				GLenum pixelType);
 
-			GPU::Texture::GPUTexture * getAttachment(const std::string & name);
+			GPU::Texture::GPUTexture * addDepthAttachment(
+				const std::string & name);
+
+			GPU::Texture::GPUTexture * getAttachment(
+				const std::string & name);
+
 			GPU::Texture::GPUTexture * getDepthAttachment();
 
 			void destroy();

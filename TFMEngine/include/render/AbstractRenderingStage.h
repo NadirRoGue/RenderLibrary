@@ -5,6 +5,10 @@
 
 #include "defaultimpl/components/MeshRenderer.h"
 
+#include "GPU/program/PostProcessProgram.h"
+
+#include "GPU/mesh/GPUMesh.h"
+
 #include "render/RenderableMap.h"
 #include "render/FBO.h"
 
@@ -43,6 +47,54 @@ namespace RenderLib
 			void forceRegisterRenderable(DefaultImpl::MeshRenderer * renderable);
 
 			virtual bool shouldRegisterRenderable(DefaultImpl::MeshRenderer * renderable) = 0;
+		};
+
+		template<class T>
+		class PostProcessRenderStage : public AbstractRenderingStage
+		{
+		protected:
+			GPU::Program::PostProcessProgram * postProcessProgram;
+		public:
+			PostProcessRenderStage()
+			{
+
+			}
+
+			virtual void initialize()
+			{
+				postProcessProgram = engineInstance->getProgramManager()
+					.getProgram<T>(0);
+
+				GPU::Mesh::GPUMesh * quad =
+					engineInstance->getGPUMeshManager().getPostProcessQuad();
+
+				GPU::Mesh::GPUBuffer * buffer = engineInstance->getGPUMeshManager()
+					.getPostProcessQuadBuffer();
+
+				buffer->bind();
+				buffer->bindDataBuffer();
+				postProcessProgram->configureRenderQuad(quad);
+				buffer->unBindDataBuffer();
+				buffer->unBind();
+			}
+
+			void runStage()
+			{
+				if (!outputFBO)
+				{
+					throw EngineException("DeferredRenderStage: No FrameBuffer setted. Aborting");
+				}
+
+				outputFBO->bind();
+
+				GPU::Mesh::GPUBuffer * buffer = engineInstance->getGPUMeshManager()
+					.getPostProcessQuadBuffer();
+
+				buffer->bind();
+				postProcessProgram->bind();
+
+				glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)0);
+			}
 		};
 	}
 }

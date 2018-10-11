@@ -58,6 +58,7 @@ int main(int argc, void ** arg)
 	Mesh::Mesh * cube = loadMesh("./assets/mat_cube.obj", cubeOptions);
 	Mesh::Mesh * sphere = loadMesh("./assets/sphere_mat_opacity.obj", sphereOptions);
 	Mesh::Mesh * cube2 = loadMesh("./assets/mat_cube_2.obj", cubeOptions);
+	Mesh::Mesh * sun = loadMesh("./assets/emissive_sphere.obj", sphereOptions);
 
 	// Window creation
 	Graphics::WindowConfiguration config;
@@ -139,6 +140,11 @@ int main(int argc, void ** arg)
 	crown->addComponent<DefaultImpl::MeshFilter>()->mesh = cube2;
 	crown->addComponent<DefaultImpl::MeshRenderer>();
 	crown->setParent(obj);
+
+	RenderLib::SceneObject * sunObj = scene->addObject<SceneObject>("Sun");
+	sunObj->transform.translate(VECTOR3(-3.0, 0.0, -3.0));
+	sunObj->addComponent<DefaultImpl::MeshFilter>()->mesh = sun;
+	sunObj->addComponent<DefaultImpl::MeshRenderer>();
 
 	/*** EXECUTION (BLOCKING UNTIL ALL INSTANCES ARE DONE) ***/
 	// Run pipeline

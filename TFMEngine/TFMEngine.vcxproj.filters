@@ -540,8 +540,8 @@
     <ClInclude Include="include\defaultimpl\shaders\DeferredShadingProgram.h">
       <Filter>Archivos de encabezado\defaultimpl\shaders</Filter>
     </ClInclude>
-    <ClInclude Include="include\render\renderstages\DeferredShadingStage.h">
-      <Filter>Archivos de encabezado\render\renderstages</Filter>
+    <ClInclude Include="include\defaultimpl\shaders\BloomProgram.h">
+      <Filter>Archivos de encabezado\defaultimpl\shaders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -848,10 +848,10 @@
     <ClCompile Include="src\render\renderstages\SSAAPostProcessStage.cpp">
       <Filter>Archivos de origen\render\renderstages</Filter>
     </ClCompile>
-    <ClCompile Include="src\render\renderstages\DeferredShadingStage.cpp">
-      <Filter>Archivos de origen\render\renderstages</Filter>
-    </ClCompile>
     <ClCompile Include="src\defaultimpl\shaders\DeferredShadingProgram.cpp">
+      <Filter>Archivos de origen\defaultimpl\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\defaultimpl\shaders\BloomProgram.cpp">
       <Filter>Archivos de origen\defaultimpl\shaders</Filter>
     </ClCompile>
   </ItemGroup>

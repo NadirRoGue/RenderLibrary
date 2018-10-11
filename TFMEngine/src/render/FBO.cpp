@@ -58,6 +58,16 @@ namespace RenderLib
 			accessor = instance;
 		}
 
+		const unsigned int & FBO::getWidth()
+		{
+			return width;
+		}
+
+		const unsigned int & FBO::getHeight()
+		{
+			return height;
+		}
+
 		GPU::Texture::GPUTexture * FBO::addColorAttachment(const unsigned int & index,
 			const std::string & name,
 			GLenum internalFormat,

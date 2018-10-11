@@ -2,7 +2,7 @@
 
 #include "render/renderstages/ForwardRenderStage.h"
 #include "render/renderstages/DeferredRenderStage.h"
-#include "render/renderstages/DeferredShadingStage.h"
+#include "render/renderstages/BloomPostProcessStage.h"
 
 #include "EngineInstance.h"
 
@@ -14,6 +14,7 @@ namespace RenderLib
 		{
 			addRenderStage<DeferredRenderStage>();
 			addRenderStage<ForwardRenderStage>();
+			addRenderStage<BloomPostProcessStage>();
 		}
 
 		RenderingPipeline::~RenderingPipeline()

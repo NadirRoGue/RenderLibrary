@@ -185,6 +185,7 @@
     <ClInclude Include="include\defaultimpl\pipelinestages\RenderStage.h" />
     <ClInclude Include="include\defaultimpl\pipelinestages\ShaderCompilationStage.h" />
     <ClInclude Include="include\defaultimpl\pipelinestages\TransformUpdateStage.h" />
+    <ClInclude Include="include\defaultimpl\shaders\BloomProgram.h" />
     <ClInclude Include="include\defaultimpl\shaders\DeferredShadingProgram.h" />
     <ClInclude Include="include\defaultimpl\shaders\StandardProgram.h" />
     <ClInclude Include="include\defaultimpl\textureblockconfigurators\CompactTextureBuilder.h" />
@@ -239,7 +240,6 @@
     <ClInclude Include="include\render\AbstractRenderingStage.h" />
     <ClInclude Include="include\render\renderstages\BloomPostProcessStage.h" />
     <ClInclude Include="include\render\renderstages\DeferredRenderStage.h" />
-    <ClInclude Include="include\render\renderstages\DeferredShadingStage.h" />
     <ClInclude Include="include\render\renderstages\ForwardRenderStage.h" />
     <ClInclude Include="include\render\renderstages\HDRPostProcessStage.h" />
     <ClInclude Include="include\render\renderstages\SSAAPostProcessStage.h" />
@@ -294,6 +294,7 @@
     <ClCompile Include="src\defaultimpl\pipelinestages\RenderStage.cpp" />
     <ClCompile Include="src\defaultimpl\pipelinestages\ShaderCompilationStage.cpp" />
     <ClCompile Include="src\defaultimpl\pipelinestages\TransformUpdateStage.cpp" />
+    <ClCompile Include="src\defaultimpl\shaders\BloomProgram.cpp" />
     <ClCompile Include="src\defaultimpl\shaders\DeferredShadingProgram.cpp" />
     <ClCompile Include="src\defaultimpl\shaders\StandardProgram.cpp" />
     <ClCompile Include="src\defaultimpl\textureblockconfigurators\CompactTextureBuilder.cpp" />
@@ -344,7 +345,6 @@
     <ClCompile Include="src\render\RenderingPipeline.cpp" />
     <ClCompile Include="src\render\renderstages\BloomPostProcessStage.cpp" />
     <ClCompile Include="src\render\renderstages\DeferredRenderStage.cpp" />
-    <ClCompile Include="src\render\renderstages\DeferredShadingStage.cpp" />
     <ClCompile Include="src\render\renderstages\ForwardRenderStage.cpp" />
     <ClCompile Include="src\render\renderstages\HDRPostProcessStage.cpp" />
     <ClCompile Include="src\render\renderstages\SSAAPostProcessStage.cpp" />

@@ -48,6 +48,11 @@ namespace RenderLib
 				const unsigned int & width, 
 				const unsigned int & height);
 
+			const unsigned int &
+				getWidth();
+			const unsigned int &
+				getHeight();
+
 			GPU::Texture::GPUTexture * addColorAttachment(
 				const unsigned int & index, 
 				const std::string & name,

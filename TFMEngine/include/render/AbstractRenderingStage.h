@@ -65,6 +65,8 @@ namespace RenderLib
 				postProcessProgram = engineInstance->getProgramManager()
 					.getProgram<T>(0);
 
+				postProcessProgram->initializeShader(engineInstance);
+
 				GPU::Mesh::GPUMesh * quad =
 					engineInstance->getGPUMeshManager().getPostProcessQuad();
 
@@ -78,7 +80,7 @@ namespace RenderLib
 				buffer->unBind();
 			}
 
-			void runStage()
+			virtual void runStage()
 			{
 				if (!outputFBO)
 				{
@@ -92,6 +94,8 @@ namespace RenderLib
 
 				buffer->bind();
 				postProcessProgram->bind();
+
+				postProcessProgram->onRender(engineInstance);
 
 				glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)0);
 			}

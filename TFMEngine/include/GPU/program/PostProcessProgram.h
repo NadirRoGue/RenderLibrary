@@ -30,6 +30,7 @@ namespace RenderLib
 
 				void configureRenderQuad(GPU::Mesh::GPUMesh * quad);
 
+				virtual void initializeShader(EngineInstance * instance);
 				virtual void onRender(EngineInstance * instance);
 			};
 		}

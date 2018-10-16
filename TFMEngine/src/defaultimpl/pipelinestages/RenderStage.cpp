@@ -30,6 +30,10 @@ namespace RenderLib
 
 			renderPipeline.initializeStages();
 
+			engineInstance->getFBOManager().onResize(
+				engineInstance->getWindow()->getWidth(),
+				engineInstance->getWindow()->getHeight());
+
 			engineInstance->releaseContext();
 		}
 

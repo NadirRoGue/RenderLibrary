@@ -1,5 +1,7 @@
 #include "Camera.h"
 
+#include <iostream>
+
 #define _USE_MATH_DEFINES
 #include <math.h>
 
@@ -11,7 +13,7 @@ namespace RenderLib
 		: initWidth(-1)
 		, initHeight(-1)
 	{
-		
+		totalRotation.setZero();
 	}
 
 	Camera::~Camera()
@@ -90,23 +92,23 @@ namespace RenderLib
 
 	void Camera::translateView(const VECTOR3 & translation)
 	{
-		FLOAT forwardDelta = translation.z();
-		FLOAT strafeDelta = translation.x();
-		FLOAT upDelta = translation.y();
-
-		VECTOR3 traslatedPosition = transform.forwardVector * forwardDelta + transform.rightVector * strafeDelta + transform.upVector * upDelta;
-		
-		transform.translationV += traslatedPosition;
+		transform.translate(translation);
 		updateViewMatrix();
 	}
 
 	void Camera::rotateView(const VECTOR3 & angles)
 	{
-		transform.rotationV =
-			ANGLEAXIS(angles.z(), VECTOR3::UnitZ()) *
-			ANGLEAXIS(angles.x(), VECTOR3::UnitX()) *
-			ANGLEAXIS(angles.y(), VECTOR3::UnitY());
+		totalRotation += angles;
+		
+		ANGLEAXIS roll = ANGLEAXIS(totalRotation.z(), VECTOR3::UnitZ());
+		ANGLEAXIS yaw = ANGLEAXIS(totalRotation.y(), VECTOR3::UnitY());
+		ANGLEAXIS pitch = ANGLEAXIS(totalRotation.x(), VECTOR3::UnitX());
 
+		MATRIX3 yawMat = yaw.matrix();
+		MATRIX3 pitchMat = pitch.matrix();
+
+		transform.rotationV = QUATERNION(roll * pitchMat * yawMat);
+		
 		updateViewMatrix();
 	}
 

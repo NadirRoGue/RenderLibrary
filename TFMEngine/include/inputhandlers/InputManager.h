@@ -26,10 +26,13 @@ namespace RenderLib
 			std::unordered_map<int, std::vector<MouseHandlerPtr>> mouseInputHandlers;
 			std::vector<MouseMotionHandlerPtr> mouseMotionHandlers;
 
+			bool validKBInput;
 			char lastKeyPressed;
 			KeyAction lastKeyAction;
 
+			bool validMInput;
 			int lastMouseButton;
+			unsigned int lastMouseX, lastMouseY;
 			MouseAction lastMouseAction;
 
 		public:
@@ -44,11 +47,16 @@ namespace RenderLib
 			void handleMouseClick(int button, const MouseAction & action, int x, int y);
 			void handleMouseMotion(int x, int y);
 
+			void consumeMouseInput();
+			void consumeKeyboardInput();
+
 			bool mouseButtonDown(int button);
 			bool mouseButtonReleased(int button);
 			bool keyDown(char key);
 			bool keyPressed(char key);
 			bool keyReleased(char key);
+			unsigned int getLastMouseX();
+			unsigned int getLastMouseY();
 
 			void cleanInputHandlers();
 		};

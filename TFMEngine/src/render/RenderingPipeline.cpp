@@ -1,8 +1,12 @@
 #include "render/RenderingPipeline.h"
 
+#include "render/renderstages/PickingRenderStage.h"
 #include "render/renderstages/ForwardRenderStage.h"
 #include "render/renderstages/DeferredRenderStage.h"
-#include "render/renderstages/BloomPostProcessStage.h"
+#include "render/renderstages/PipelineOutputStage.h"
+
+#include "defaultimpl/shaders/BloomProgram.h"
+#include "defaultimpl/shaders/HDRProgram.h"
 
 #include "EngineInstance.h"
 
@@ -12,9 +16,12 @@ namespace RenderLib
 	{
 		RenderingPipeline::RenderingPipeline()
 		{
+			pickStage = std::make_unique<PickingRenderStage>();
+
 			addRenderStage<DeferredRenderStage>();
 			addRenderStage<ForwardRenderStage>();
-			addRenderStage<BloomPostProcessStage>();
+			addRenderStage<PostProcessRenderStage<DefaultImpl::BloomProgram>>();
+			addRenderStage<PostProcessRenderStage<DefaultImpl::HDRProgram>>();
 		}
 
 		RenderingPipeline::~RenderingPipeline()
@@ -24,6 +31,8 @@ namespace RenderLib
 
 		void RenderingPipeline::registerRenderable(DefaultImpl::MeshRenderer * renderable)
 		{
+			pickStage.get()->tryRegisterElement(renderable);
+
 			for (auto & stages : renderStages)
 			{
 				stages.get()->tryRegisterElement(renderable);
@@ -32,25 +41,22 @@ namespace RenderLib
 
 		void RenderingPipeline::setEngineInstance(EngineInstance * engineInstance)
 		{
+			pickStage.get()->engineInstance = engineInstance;
+
+			addRenderStage<PipelineOutputStage>();
+
+			this->engineInstance = engineInstance;
 			for (auto & stage : renderStages)
 			{
 				stage.get()->engineInstance = engineInstance;
-			}
-
-			for (auto & stages : postProcessStages)
-			{
-				stages.get()->engineInstance = engineInstance;
 			}
 		}
 
 		void RenderingPipeline::initializeStages()
 		{
-			for (auto & stages : renderStages)
-			{
-				stages.get()->initialize();
-			}
+			pickStage.get()->initialize();
 
-			for (auto & stages : postProcessStages)
+			for (auto & stages : renderStages)
 			{
 				stages.get()->initialize();
 			}
@@ -58,12 +64,9 @@ namespace RenderLib
 
 		void RenderingPipeline::executePipelineIteration()
 		{
-			for (auto & stages : renderStages)
-			{
-				stages.get()->runStage();
-			}
+			pickStage.get()->runStage();
 
-			for (auto & stages : postProcessStages)
+			for (auto & stages : renderStages)
 			{
 				stages.get()->runStage();
 			}
@@ -71,12 +74,9 @@ namespace RenderLib
 
 		void RenderingPipeline::finalizeStages()
 		{
-			for (auto & stages : renderStages)
-			{
-				stages.get()->finalize();
-			}
+			pickStage.get()->finalize();
 
-			for (auto & stages : postProcessStages)
+			for (auto & stages : renderStages)
 			{
 				stages.get()->finalize();
 			}

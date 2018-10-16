@@ -9,6 +9,7 @@
 #include "render/AbstractRenderingStage.h"
 
 #include "EngineException.h"
+#include "EngineInstance.h"
 
 namespace RenderLib
 {
@@ -19,8 +20,10 @@ namespace RenderLib
 		class RenderingPipeline
 		{
 		private:
+			AbstractRenderingStagePtr pickStage;
+
 			std::vector<AbstractRenderingStagePtr> renderStages;
-			std::vector<AbstractRenderingStagePtr> postProcessStages;
+			EngineInstance * engineInstance;
 		public:
 			RenderingPipeline();
 			~RenderingPipeline();
@@ -41,17 +44,20 @@ namespace RenderLib
 					throw EngineException(message.c_str());
 				}
 
-				std::unique_ptr<T> newStage = std::make_unique<T>();
-				T * result = newStage.get();
+				std::unique_ptr<AbstractRenderingStage> newStage = std::make_unique<T>();
+				T * result = static_cast<T*>(newStage.get());
 
-				if (std::is_base_of<MeshRenderingStage, T>::value)
+				if (renderStages.size() > 0)
 				{
-					renderStages.push_back(std::move(newStage));
+					AbstractRenderingStage * prev = renderStages[renderStages.size() - 1].get();
+					if (prev)
+					{
+						prev->nextStage = result;
+						newStage.get()->prevStage = prev;
+					}
 				}
-				else
-				{
-					postProcessStages.push_back(std::move(newStage));
-				}
+
+				renderStages.push_back(std::move(newStage));
 
 				return result;
 			}
@@ -66,32 +72,28 @@ namespace RenderLib
 				}
 
 				bool found = false;
+				auto previousIt = renderStages.begin();
 				for (auto it = renderStages.begin(); it != renderStages.end() && !found; it++)
 				{
 					AbstractRenderingStage * stage = (*it).get();
 					if (dynamic_cast<T>(stage) != NULL)
 					{
-						//(*it).reset();
+						// remove stage
 						renderStages.erase(it);
 						found = true;
-					}
-				}
 
-				if (!found)
-				{
-					for (auto it = postProcessStages.begin(); it != postProcessStages.end() && !found; it++)
+						it++;
+
+						// Fix pipeline
+						(*previousIt).get()->nextStage = (*it).get();
+						(*it).get()->prevStage = (*previousIt);
+					}
+					else
 					{
-						AbstractRenderingStage * stage = (*it).get();
-						if (dynamic_cast<T>(stage) != NULL)
-						{
-							//(*it).reset();
-							renderStages.erase(it);
-							found = true;
-						}
+						previousIt = it;
 					}
 				}
 			}
-
 		};
 	}
 }

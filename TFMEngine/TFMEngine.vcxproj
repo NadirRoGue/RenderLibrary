@@ -164,6 +164,7 @@
     <ClInclude Include="include\CPU\texture\TextureLoadResult.h" />
     <ClInclude Include="include\CPU\texture\TextureManager.h" />
     <ClInclude Include="include\CPU\texture\TextureStackBlendOperation.h" />
+    <ClInclude Include="include\defaultimpl\components\CameraController.h" />
     <ClInclude Include="include\defaultimpl\components\MeshFilter.h" />
     <ClInclude Include="include\defaultimpl\components\MeshRenderer.h" />
     <ClInclude Include="include\defaultimpl\components\ObjectSpinner.h" />
@@ -187,6 +188,9 @@
     <ClInclude Include="include\defaultimpl\pipelinestages\TransformUpdateStage.h" />
     <ClInclude Include="include\defaultimpl\shaders\BloomProgram.h" />
     <ClInclude Include="include\defaultimpl\shaders\DeferredShadingProgram.h" />
+    <ClInclude Include="include\defaultimpl\shaders\HDRProgram.h" />
+    <ClInclude Include="include\defaultimpl\shaders\OutputProgram.h" />
+    <ClInclude Include="include\defaultimpl\shaders\PickingProgram.h" />
     <ClInclude Include="include\defaultimpl\shaders\StandardProgram.h" />
     <ClInclude Include="include\defaultimpl\textureblockconfigurators\CompactTextureBuilder.h" />
     <ClInclude Include="include\defaultimpl\windowhandlers\GLFWWindowHandler.h" />
@@ -238,11 +242,10 @@
     <ClInclude Include="include\render\RenderableMap.h" />
     <ClInclude Include="include\render\RenderingPipeline.h" />
     <ClInclude Include="include\render\AbstractRenderingStage.h" />
-    <ClInclude Include="include\render\renderstages\BloomPostProcessStage.h" />
     <ClInclude Include="include\render\renderstages\DeferredRenderStage.h" />
     <ClInclude Include="include\render\renderstages\ForwardRenderStage.h" />
-    <ClInclude Include="include\render\renderstages\HDRPostProcessStage.h" />
-    <ClInclude Include="include\render\renderstages\SSAAPostProcessStage.h" />
+    <ClInclude Include="include\render\renderstages\PickingRenderStage.h" />
+    <ClInclude Include="include\render\renderstages\PipelineOutputStage.h" />
     <ClInclude Include="include\Scene.h" />
     <ClInclude Include="include\SceneManager.h" />
     <ClInclude Include="include\SceneObject.h" />
@@ -273,6 +276,7 @@
     <ClCompile Include="src\CPU\texture\TextureBlockConfiguration.cpp" />
     <ClCompile Include="src\CPU\texture\TextureLoadResult.cpp" />
     <ClCompile Include="src\CPU\texture\TextureManager.cpp" />
+    <ClCompile Include="src\defaultimpl\components\CameraController.cpp" />
     <ClCompile Include="src\defaultimpl\components\MeshFilter.cpp" />
     <ClCompile Include="src\defaultimpl\components\MeshRenderer.cpp" />
     <ClCompile Include="src\defaultimpl\components\ObjectSpinner.cpp" />
@@ -296,6 +300,9 @@
     <ClCompile Include="src\defaultimpl\pipelinestages\TransformUpdateStage.cpp" />
     <ClCompile Include="src\defaultimpl\shaders\BloomProgram.cpp" />
     <ClCompile Include="src\defaultimpl\shaders\DeferredShadingProgram.cpp" />
+    <ClCompile Include="src\defaultimpl\shaders\HDRProgram.cpp" />
+    <ClCompile Include="src\defaultimpl\shaders\OutputProgram.cpp" />
+    <ClCompile Include="src\defaultimpl\shaders\PickingProgram.cpp" />
     <ClCompile Include="src\defaultimpl\shaders\StandardProgram.cpp" />
     <ClCompile Include="src\defaultimpl\textureblockconfigurators\CompactTextureBuilder.cpp" />
     <ClCompile Include="src\defaultimpl\windowhandlers\GLFWWindowHandler.cpp" />
@@ -343,11 +350,10 @@
     <ClCompile Include="src\render\FBOManager.cpp" />
     <ClCompile Include="src\render\RenderableMap.cpp" />
     <ClCompile Include="src\render\RenderingPipeline.cpp" />
-    <ClCompile Include="src\render\renderstages\BloomPostProcessStage.cpp" />
     <ClCompile Include="src\render\renderstages\DeferredRenderStage.cpp" />
     <ClCompile Include="src\render\renderstages\ForwardRenderStage.cpp" />
-    <ClCompile Include="src\render\renderstages\HDRPostProcessStage.cpp" />
-    <ClCompile Include="src\render\renderstages\SSAAPostProcessStage.cpp" />
+    <ClCompile Include="src\render\renderstages\PickingRenderStage.cpp" />
+    <ClCompile Include="src\render\renderstages\PipelineOutputStage.cpp" />
     <ClCompile Include="src\Scene.cpp" />
     <ClCompile Include="src\SceneManager.cpp" />
     <ClCompile Include="src\SceneObject.cpp" />
@@ -358,7 +364,11 @@
   <ItemGroup>
     <None Include="shaders\api\defaultlighting.glsl" />
     <None Include="shaders\default\deferredshading.frag" />
+    <None Include="shaders\default\picking.frag" />
+    <None Include="shaders\default\picking.vert" />
     <None Include="shaders\default\postprocess.vert" />
+    <None Include="shaders\default\postprocess\bloom.frag" />
+    <None Include="shaders\default\postprocess\hdr.frag" />
     <None Include="shaders\default\standardprogram.frag" />
     <None Include="shaders\default\standardprogram.vert" />
   </ItemGroup>

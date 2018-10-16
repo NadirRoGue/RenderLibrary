@@ -79,8 +79,6 @@ namespace RenderLib
 			deferredShading->configureRenderQuad(quad);
 			
 			buffer->unBindDataBuffer();
-
-			outputFBO = &(FBO::DEFAULTFRAMEBUFFER);
 		}
 
 		bool DeferredRenderStage::shouldRegisterRenderable(DefaultImpl::MeshRenderer * renderable)
@@ -89,7 +87,6 @@ namespace RenderLib
 			if ((mat->opacity() >= (FLOAT)1.0 && renderable->preferredRender == DefaultImpl::PreferredRenderer::AUTO_SELECT)
 					|| renderable->preferredRender == DefaultImpl::PreferredRenderer::DEFERRED_RENDER)
 			{
-				std::cout << "Registering" << std::endl;
 				return true;
 			}
 
@@ -105,7 +102,11 @@ namespace RenderLib
 
 			gBuffers->bind();
 
+			GLfloat bkColor[4];
+			glGetFloatv(GL_COLOR_CLEAR_VALUE, bkColor);
+			glClearColor(0.0, 0.0, 0.0, 0.0);
 			glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+			glClearColor(bkColor[0], bkColor[1], bkColor[2], 0.0f);
 			glEnable(GL_CULL_FACE);
 			glEnable(GL_DEPTH_TEST);
 			glDisable(GL_BLEND);

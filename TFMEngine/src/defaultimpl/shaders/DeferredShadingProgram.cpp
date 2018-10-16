@@ -32,8 +32,7 @@ namespace RenderLib
 				gBuffers->getAttachment("emissiveAndSpecScale");
 			GPU::Texture::GPUTexture * ambient =
 				gBuffers->getAttachment("ambient");
-			GPU::Texture::GPUTexture * depth =
-				gBuffers->getAttachment("depth");
+			GPU::Texture::GPUTexture * depth = gBuffers->getDepthAttachment();
 
 			unsigned int texUnit = 0;
 			setUniformTexture("position", positionAndSpecScale, texUnit);

@@ -8,13 +8,19 @@ namespace RenderLib
 	{
 		AbstractRenderingStage::AbstractRenderingStage()
 			: outputFBO(NULL)
+			, prevStage(NULL)
+			, nextStage(NULL)
 		{
 
 		}
 
+		GPU::Texture::GPUTexture * AbstractRenderingStage::getStageOutput()
+		{
+			return finalOutput;
+		}
+
 		void AbstractRenderingStage::initialize()
 		{
-
 		}
 
 		void AbstractRenderingStage::finalize()
@@ -39,8 +45,38 @@ namespace RenderLib
 
 		// =============================================================================================
 
+		RenderableMap & MeshRenderingStage::getStaticRenderables()
+		{
+			return staticRenderables;
+		}
+
+		RenderableMap & MeshRenderingStage::getDynamicRenderables()
+		{
+			return dynamicRenderables;
+		}
+
 		void MeshRenderingStage::initialize()
 		{
+			const std::string name = std::to_string(engineInstance->getInstanceID()) + "_coloroutput";
+			outputFBO = engineInstance->getFBOManager().
+				getFBO(name);
+			if (outputFBO == NULL)
+			{
+				outputFBO = engineInstance->getFBOManager().
+					createFBO(name);
+				finalOutput = outputFBO->addColorAttachment(
+					0,
+					name,
+					GL_RGBA32F,
+					GL_RGBA,
+					GL_FLOAT);
+				outputFBO->setSize(500, 500);
+			}
+			else
+			{
+				finalOutput = outputFBO->getAttachment(name);
+			}
+
 			// Static meshes
 			GPU::Mesh::GPUBuffer * staticBuffer = engineInstance->getGPUMeshManager().getStaticMeshBuffer();
 			staticBuffer->bind();

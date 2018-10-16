@@ -9,6 +9,7 @@
 #include "defaultimpl/components/MeshFilter.h"
 #include "defaultimpl/components/MeshRenderer.h"
 #include "defaultimpl/components/ObjectSpinner.h"
+#include "defaultimpl/components/CameraController.h"
 #include "defaultimpl/components/UserScript.h"
 
 #include "defaultimpl/pipelinestages/ComponentRegisterStage.h"
@@ -98,6 +99,7 @@ int main(int argc, void ** arg)
 
 	// Camera set up
 	RenderLib::Camera * cam = scene->addCamera<RenderLib::Camera>("Main_Camera");
+	cam->addComponent<DefaultImpl::CameraController>();
 	cam->setProjectionParams((FLOAT)0.5, (FLOAT)75.0, (FLOAT)45.0);
 	cam->translateView(VECTOR3(0.0, 0.0, -5.0));
 

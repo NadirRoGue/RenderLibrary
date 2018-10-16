@@ -29,6 +29,7 @@ namespace RenderLib
 		private:
 			std::string mapRenderOwnerName;
 			std::unordered_map<std::type_index, std::unordered_map<GPU::Program::UberParamMask, RenderableStub>> renderablesMap;
+			std::vector<DefaultImpl::MeshRenderer *> allRenderables;
 		public:
 			RenderableMap();
 			~RenderableMap();
@@ -39,6 +40,8 @@ namespace RenderLib
 			const std::string & getName();
 
 			void addRenderable(GPU::Program::ProgramManager & programManager, DefaultImpl::MeshRenderer * renderable);
+			
+			const std::vector<DefaultImpl::MeshRenderer *> & getAllRenderables();
 
 			void initializeMap();
 			void renderMap(const Camera & fromCamera, EngineInstance * instance);

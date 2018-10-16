@@ -22,10 +22,16 @@ namespace RenderLib
 		{
 		public:
 			EngineInstance * engineInstance;
+			AbstractRenderingStage * prevStage;
+			AbstractRenderingStage * nextStage;
 		protected:
 			FBO * outputFBO;
+			GPU::Texture::GPUTexture * finalOutput;
 		public:
 			AbstractRenderingStage();
+
+			GPU::Texture::GPUTexture * getStageOutput();
+
 			virtual void initialize();
 			virtual void runStage() = 0;
 			virtual void finalize();
@@ -46,6 +52,9 @@ namespace RenderLib
 			void tryRegisterElement(DefaultImpl::MeshRenderer * renderable);
 			void forceRegisterRenderable(DefaultImpl::MeshRenderer * renderable);
 
+			RenderableMap & getStaticRenderables();
+			RenderableMap & getDynamicRenderables();
+
 			virtual bool shouldRegisterRenderable(DefaultImpl::MeshRenderer * renderable) = 0;
 		};
 
@@ -54,6 +63,7 @@ namespace RenderLib
 		{
 		protected:
 			GPU::Program::PostProcessProgram * postProcessProgram;
+			GPU::Mesh::GPUBuffer * buffer;
 		public:
 			PostProcessRenderStage()
 			{
@@ -62,16 +72,39 @@ namespace RenderLib
 
 			virtual void initialize()
 			{
+				// Initialize screen quad
+				buffer = engineInstance->getGPUMeshManager()
+					.getPostProcessQuadBuffer();
+
+				// Initialize output FBO
+				const std::string name = std::string(typeid(*this).name()) + "_output";
+				outputFBO = engineInstance->getFBOManager().
+					getFBO(name);
+				if (outputFBO == NULL)
+				{
+					outputFBO = engineInstance->getFBOManager().
+						createFBO(name);
+					finalOutput = outputFBO->addColorAttachment(
+						0,
+						name,
+						GL_RGBA32F,
+						GL_RGBA,
+						GL_FLOAT);
+					outputFBO->setSize(500, 500);
+				}
+				else
+				{
+					finalOutput = outputFBO->getAttachment(name);
+				}
+
+				// Initialize post process shader
 				postProcessProgram = engineInstance->getProgramManager()
 					.getProgram<T>(0);
-
 				postProcessProgram->initializeShader(engineInstance);
 
+				// Configure everything
 				GPU::Mesh::GPUMesh * quad =
 					engineInstance->getGPUMeshManager().getPostProcessQuad();
-
-				GPU::Mesh::GPUBuffer * buffer = engineInstance->getGPUMeshManager()
-					.getPostProcessQuadBuffer();
 
 				buffer->bind();
 				buffer->bindDataBuffer();
@@ -82,20 +115,15 @@ namespace RenderLib
 
 			virtual void runStage()
 			{
-				if (!outputFBO)
-				{
-					throw EngineException("DeferredRenderStage: No FrameBuffer setted. Aborting");
-				}
-
+				buffer->bind();
 				outputFBO->bind();
 
-				GPU::Mesh::GPUBuffer * buffer = engineInstance->getGPUMeshManager()
-					.getPostProcessQuadBuffer();
-
-				buffer->bind();
 				postProcessProgram->bind();
 
-				postProcessProgram->onRender(engineInstance);
+				glDisable(GL_DEPTH_TEST);
+				glDisable(GL_BLEND);
+
+				postProcessProgram->onRender(prevStage->getStageOutput(), engineInstance);
 
 				glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)0);
 			}

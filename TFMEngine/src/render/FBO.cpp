@@ -159,7 +159,7 @@ namespace RenderLib
 			
 			if (depthAttachment.attachment == NULL)
 			{
-				addDepthAttachment("depth");
+				addDepthAttachment("depth" + std::to_string(id));
 			}
 			
 			depthAttachment.attachment->upload(NULL, width, height);

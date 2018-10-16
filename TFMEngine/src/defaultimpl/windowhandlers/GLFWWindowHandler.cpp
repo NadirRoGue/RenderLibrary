@@ -140,6 +140,8 @@ namespace RenderLib
 				}
 			}
 
+			instance->getFBOManager().onResize(width, height);
+
 			glViewport(0, 0, width, height);
 		}
 

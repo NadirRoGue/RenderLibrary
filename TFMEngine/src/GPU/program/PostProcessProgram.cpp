@@ -54,7 +54,7 @@ namespace RenderLib
 
 			}
 
-			void PostProcessProgram::onRender(EngineInstance * instance)
+			void PostProcessProgram::onRender(GPU::Texture::GPUTexture * previousOutput, EngineInstance * instance)
 			{
 
 			}

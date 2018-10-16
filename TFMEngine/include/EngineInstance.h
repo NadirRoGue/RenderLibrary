@@ -31,7 +31,7 @@ namespace RenderLib
 		SceneManager sceneManager;
 
 		Render::FBOManager fboManager;
-
+		
 		GPU::Mesh::GPUMeshManager gpuMeshManager;
 		GPU::Texture::GPUTextureManager gpuTextureManager;
 		GPU::Program::ProgramManager gpuProgramManager;
@@ -59,7 +59,7 @@ namespace RenderLib
 		SceneManager & getSceneManager();
 
 		Render::FBOManager & getFBOManager();
-
+		
 		GPU::Mesh::GPUMeshManager & getGPUMeshManager();
 		GPU::Program::ProgramManager & getProgramManager();
 		GPU::Texture::GPUTextureManager & getGPUTextureManager();

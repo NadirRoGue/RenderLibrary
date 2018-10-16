@@ -7,6 +7,8 @@ namespace RenderLib
 	namespace InputHandlers
 	{
 		InputManager::InputManager()
+			: validKBInput(false)
+			, validMInput(false)
 		{
 
 		}
@@ -64,6 +66,7 @@ namespace RenderLib
 		{
 			lastKeyPressed = key;
 			lastKeyAction = action;
+			validKBInput = true;
 
 			std::vector<KeyboardHandlerPtr> & handlers = keyboardHandlers[key];
 			if (handlers.size() > 0)
@@ -86,6 +89,9 @@ namespace RenderLib
 		{
 			lastMouseButton = button;
 			lastMouseAction = action;
+			lastMouseX = x;
+			lastMouseY = y;
+			validMInput = true;
 
 			std::vector<MouseHandlerPtr> & handlers = mouseInputHandlers[button];
 			if (handlers.size() > 0)
@@ -106,6 +112,9 @@ namespace RenderLib
 
 		void InputManager::handleMouseMotion(int x, int y)
 		{
+			lastMouseX = x;
+			lastMouseY = y;
+
 			for (auto & handler : mouseMotionHandlers)
 			{
 				if (handler.get() != NULL)
@@ -119,29 +128,49 @@ namespace RenderLib
 			}
 		}
 
+		void InputManager::consumeMouseInput()
+		{
+			validMInput = false;
+		}
+
+		void InputManager::consumeKeyboardInput()
+		{
+			validKBInput = false;
+		}
+
 		bool InputManager::mouseButtonDown(int button)
 		{
-			return (lastMouseButton == button) && (lastMouseAction == MouseAction::MOUSE_PRESS);
+			return validMInput && (lastMouseButton == button) && (lastMouseAction == MouseAction::MOUSE_PRESS);
 		}
 
 		bool InputManager::mouseButtonReleased(int button)
 		{
-			return (lastMouseButton != button) || (lastMouseAction == MouseAction::MOUSE_RELEASE);
+			return validMInput && (lastMouseButton != button) || (lastMouseAction == MouseAction::MOUSE_RELEASE);
 		}
 
 		bool InputManager::keyDown(char key)
 		{
-			return (lastKeyPressed == key) && (lastKeyAction == KeyAction::KEY_PRESS);
+			return validKBInput && (lastKeyPressed == key) && (lastKeyAction == KeyAction::KEY_PRESS);
 		}
 
 		bool InputManager::keyPressed(char key)
 		{
-			return (lastKeyPressed == key) && (lastKeyAction != KeyAction::KEY_RELEASED);
+			return validKBInput && (lastKeyPressed == key) && (lastKeyAction != KeyAction::KEY_RELEASED);
 		}
 
 		bool InputManager::keyReleased(char key)
 		{
-			return (lastKeyPressed != key) || (lastKeyAction == KeyAction::KEY_RELEASED);
+			return validKBInput && (lastKeyPressed != key) || (lastKeyAction == KeyAction::KEY_RELEASED);
+		}
+
+		unsigned int InputManager::getLastMouseX()
+		{
+			return lastMouseX;
+		}
+
+		unsigned int InputManager::getLastMouseY()
+		{
+			return lastMouseY;
 		}
 
 		void InputManager::cleanInputHandlers()

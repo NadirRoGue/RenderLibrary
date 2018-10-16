@@ -12,7 +12,7 @@ namespace RenderLib
 	{
 		ForwardRenderStage::ForwardRenderStage()
 		{
-			setTargetFBO(&FBO::DEFAULTFRAMEBUFFER);
+			//setTargetFBO(&FBO::DEFAULTFRAMEBUFFER);
 		}
 
 		bool ForwardRenderStage::shouldRegisterRenderable(DefaultImpl::MeshRenderer * renderable)
@@ -34,6 +34,7 @@ namespace RenderLib
 			}
 
 			outputFBO->bind();
+			//FBO::DEFAULTFRAMEBUFFER.bind();
 
 			//glClear(GL_DEPTH_BUFFER_BIT);
 			glEnable(GL_BLEND);

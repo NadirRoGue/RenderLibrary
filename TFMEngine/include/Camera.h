@@ -26,6 +26,7 @@ namespace RenderLib
 
 	private:
 		FLOAT initWidth, initHeight;
+		VECTOR3 totalRotation;
 	public:
 		Camera();
 		~Camera();

@@ -525,16 +525,7 @@
     <ClInclude Include="include\defaultimpl\components\UserScript.h">
       <Filter>Archivos de encabezado\defaultimpl\components</Filter>
     </ClInclude>
-    <ClInclude Include="include\render\renderstages\BloomPostProcessStage.h">
-      <Filter>Archivos de encabezado\render\renderstages</Filter>
-    </ClInclude>
     <ClInclude Include="include\render\renderstages\DeferredRenderStage.h">
-      <Filter>Archivos de encabezado\render\renderstages</Filter>
-    </ClInclude>
-    <ClInclude Include="include\render\renderstages\HDRPostProcessStage.h">
-      <Filter>Archivos de encabezado\render\renderstages</Filter>
-    </ClInclude>
-    <ClInclude Include="include\render\renderstages\SSAAPostProcessStage.h">
       <Filter>Archivos de encabezado\render\renderstages</Filter>
     </ClInclude>
     <ClInclude Include="include\defaultimpl\shaders\DeferredShadingProgram.h">
@@ -542,6 +533,24 @@
     </ClInclude>
     <ClInclude Include="include\defaultimpl\shaders\BloomProgram.h">
       <Filter>Archivos de encabezado\defaultimpl\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\defaultimpl\shaders\HDRProgram.h">
+      <Filter>Archivos de encabezado\defaultimpl\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\render\renderstages\PipelineOutputStage.h">
+      <Filter>Archivos de encabezado\render\renderstages</Filter>
+    </ClInclude>
+    <ClInclude Include="include\defaultimpl\shaders\OutputProgram.h">
+      <Filter>Archivos de encabezado\defaultimpl\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\render\renderstages\PickingRenderStage.h">
+      <Filter>Archivos de encabezado\render\renderstages</Filter>
+    </ClInclude>
+    <ClInclude Include="include\defaultimpl\shaders\PickingProgram.h">
+      <Filter>Archivos de encabezado\defaultimpl\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\defaultimpl\components\CameraController.h">
+      <Filter>Archivos de encabezado\defaultimpl\components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -836,16 +845,7 @@
     <ClCompile Include="src\defaultimpl\components\UserScript.cpp">
       <Filter>Archivos de origen\defaultimpl\components</Filter>
     </ClCompile>
-    <ClCompile Include="src\render\renderstages\BloomPostProcessStage.cpp">
-      <Filter>Archivos de origen\render\renderstages</Filter>
-    </ClCompile>
     <ClCompile Include="src\render\renderstages\DeferredRenderStage.cpp">
-      <Filter>Archivos de origen\render\renderstages</Filter>
-    </ClCompile>
-    <ClCompile Include="src\render\renderstages\HDRPostProcessStage.cpp">
-      <Filter>Archivos de origen\render\renderstages</Filter>
-    </ClCompile>
-    <ClCompile Include="src\render\renderstages\SSAAPostProcessStage.cpp">
       <Filter>Archivos de origen\render\renderstages</Filter>
     </ClCompile>
     <ClCompile Include="src\defaultimpl\shaders\DeferredShadingProgram.cpp">
@@ -853,6 +853,24 @@
     </ClCompile>
     <ClCompile Include="src\defaultimpl\shaders\BloomProgram.cpp">
       <Filter>Archivos de origen\defaultimpl\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\defaultimpl\shaders\HDRProgram.cpp">
+      <Filter>Archivos de origen\defaultimpl\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\renderstages\PipelineOutputStage.cpp">
+      <Filter>Archivos de origen\render\renderstages</Filter>
+    </ClCompile>
+    <ClCompile Include="src\defaultimpl\shaders\OutputProgram.cpp">
+      <Filter>Archivos de origen\defaultimpl\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\renderstages\PickingRenderStage.cpp">
+      <Filter>Archivos de origen\render\renderstages</Filter>
+    </ClCompile>
+    <ClCompile Include="src\defaultimpl\shaders\PickingProgram.cpp">
+      <Filter>Archivos de origen\defaultimpl\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\defaultimpl\components\CameraController.cpp">
+      <Filter>Archivos de origen\defaultimpl\components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -870,6 +888,18 @@
     </None>
     <None Include="shaders\api\defaultlighting.glsl">
       <Filter>shaders\api</Filter>
+    </None>
+    <None Include="shaders\default\postprocess\bloom.frag">
+      <Filter>shaders\default\postprocess</Filter>
+    </None>
+    <None Include="shaders\default\postprocess\hdr.frag">
+      <Filter>shaders\default\postprocess</Filter>
+    </None>
+    <None Include="shaders\default\picking.frag">
+      <Filter>shaders\default</Filter>
+    </None>
+    <None Include="shaders\default\picking.vert">
+      <Filter>shaders\default</Filter>
     </None>
   </ItemGroup>
 </Project>

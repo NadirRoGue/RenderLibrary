@@ -1,22 +1,16 @@
 #version 430 core
 
-#define MASK_MAX_SIZE 64u
-
 // Output
 layout (location=0) out vec4 outColor;
-//layout (location=1) out vec4 outEmission;
 
 layout (location=1) in vec2 inUV;
 
 // Input
 uniform sampler2D emissive;
-//uniform sampler2D color;
-
-uniform vec2 texelSize;
-
-uniform bool horizontal;
+uniform sampler2D inputColor;
 uniform bool blend;
-
+uniform vec2 texelSize;
+uniform bool horizontal;
 uniform float weight[5] = float[] (0.227027, 0.1945946, 0.1216216, 0.054054, 0.016216);
 
 void main()
@@ -40,13 +34,7 @@ void main()
         }
     }
 
-	// ================================================================================
-
-	//vec4 inColor = texture(color, inUV);
+	result = blend? texture(inputColor, inUV).rgb + result : result;
 	
-	// If its the last pass, we will blend the result with the color texture
-	//vec3 finalColor = blend? inColor.rgb + result : inColor.rgb;
 	outColor = vec4(result, 1.0);
-	//outColor = vec4(finalColor, 1.0);
-	//outEmission = vec4(result * 1.2, 1.0);
 }

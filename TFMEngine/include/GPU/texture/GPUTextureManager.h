@@ -6,6 +6,8 @@
 
 #include "EngineException.h"
 
+#include "logger/Log.h"
+
 #include "GPU/texture/GPUTexture.h"
 
 namespace RenderLib
@@ -77,6 +79,12 @@ namespace RenderLib
 				{
 					if (std::is_base_of<GPUTexture, T>::value)
 					{
+						auto it = customTextures.find(name);
+						if (it != customTextures.end())
+						{
+							Logger::Log::getInstance().logWarning("GPUTextureManager: Overwrote custom texture " + name);
+						}
+
 						std::unique_ptr<GPUTexture> newTexture = std::make_unique<T>();
 						newTexture.get()->generate();
 						T * result = static_cast<T*>(newTexture.get());

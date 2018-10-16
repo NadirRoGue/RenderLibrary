@@ -32,16 +32,12 @@ namespace RenderLib
 
 		size_t RenderableMap::getSize()
 		{
-			size_t size = 0;
-			for (auto it = renderablesMap.begin(); it != renderablesMap.end(); it++)
-			{
-				for (auto it2 = it->second.begin(); it2 != it->second.end(); it2++)
-				{
-					size += it2->second.renderables.size();
-				}
-			}
+			return allRenderables.size();
+		}
 
-			return size;
+		const std::vector<DefaultImpl::MeshRenderer *> & RenderableMap::getAllRenderables()
+		{
+			return allRenderables;
 		}
 
 		void RenderableMap::addRenderable(GPU::Program::ProgramManager & programManager, DefaultImpl::MeshRenderer * renderable)
@@ -63,6 +59,7 @@ namespace RenderLib
 					newStub.program = castedProg;
 					newStub.renderables.push_back(renderable);
 					innerMap[mask] = newStub;
+					allRenderables.push_back(renderable);
 				}
 				else
 				{
@@ -72,6 +69,7 @@ namespace RenderLib
 			else
 			{
 				it->second.renderables.push_back(renderable);
+				allRenderables.push_back(renderable);
 			}
 		}
 

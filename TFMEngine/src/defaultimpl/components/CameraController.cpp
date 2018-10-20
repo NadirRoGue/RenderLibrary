@@ -67,7 +67,7 @@ namespace RenderLib
 						lastMouseX = input.getLastMouseX();
 						lastMouseY = input.getLastMouseY();
 
-						rot = VECTOR3(deltaY, deltaX, 0.0);
+						rot = VECTOR3(static_cast<FLOAT>(deltaY), static_cast<FLOAT>(deltaX), 0.0);
 						cam->rotateView(rot * time.deltaTime() * 0.1f);
 					}
 				}

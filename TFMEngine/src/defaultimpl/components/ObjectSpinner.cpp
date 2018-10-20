@@ -1,7 +1,8 @@
 #include "defaultimpl/components/ObjectSpinner.h"
 
 #include "SceneObject.h"
-#include "Defines.h"
+
+#include "EngineInstance.h"
 
 namespace RenderLib
 {
@@ -9,7 +10,9 @@ namespace RenderLib
 	{
 		void ObjectSpinner::update()
 		{
-			object->transform.rotate(VECTOR3(0, 1, 0), 0.01f);
+			double delta = engineInstance->getTime().deltaTime();
+
+			object->transform.rotate(VECTOR3(0, 1, 0), (FLOAT)1.0 * delta);
 		}
 	}
 }

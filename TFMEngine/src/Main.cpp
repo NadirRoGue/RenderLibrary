@@ -10,17 +10,6 @@
 #include "defaultimpl/components/MeshRenderer.h"
 #include "defaultimpl/components/ObjectSpinner.h"
 #include "defaultimpl/components/CameraController.h"
-#include "defaultimpl/components/UserScript.h"
-
-#include "defaultimpl/pipelinestages/ComponentRegisterStage.h"
-#include "defaultimpl/pipelinestages/CPUToGPUMeshSyncStage.h"
-#include "defaultimpl/pipelinestages/GPUToCPUMeshSyncStage.h"
-#include "defaultimpl/pipelinestages/CPUToGPUTextureSyncStage.h"
-#include "defaultimpl/pipelinestages/RenderStage.h"
-#include "defaultimpl/pipelinestages/IterationEndStage.h"
-#include "defaultimpl/pipelinestages/TransformUpdateStage.h"
-#include "defaultimpl/pipelinestages/ShaderCompilationStage.h"
-#include "defaultimpl/pipelinestages/LightSyncStage.h"
 
 #include "logger/Log.h"
 
@@ -76,17 +65,6 @@ int main(int argc, void ** arg)
 	// Engine Instance creation
 	EngineInstance * instance = InstanceManager::getInstance().createInstance("TestInstance", window);
 
-	// Pipeline set up
-	instance->getPipelineManager().addPipelineStage<DefaultImpl::ComponentRegisterStage>();
-	instance->getPipelineManager().addPipelineStage<DefaultImpl::CPUToGPUMeshSyncStage>();
-	instance->getPipelineManager().addPipelineStage<DefaultImpl::CPUToGPUTextureSyncStage>();
-	instance->getPipelineManager().addPipelineStage<DefaultImpl::ShaderCompilationStage>();
-	instance->getPipelineManager().addPipelineStage<Pipeline::ElementBasedStage<DefaultImpl::UserScript>>();
-	instance->getPipelineManager().addPipelineStage<DefaultImpl::TransformUpdateStage>();
-	instance->getPipelineManager().addPipelineStage<DefaultImpl::LightSyncStage>();
-	instance->getPipelineManager().addPipelineStage<DefaultImpl::RenderStage>();
-	instance->getPipelineManager().addPipelineStage<DefaultImpl::IterationEndStage>();
-	
 	// Scene set up
 	RenderLib::Scene * scene = instance->getSceneManager().createScene("TestScene");
 	instance->getSceneManager().setActiveScene("TestScene");

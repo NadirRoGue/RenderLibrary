@@ -2,12 +2,26 @@
 
 #include "EngineInstance.h"
 
+
+// Default stages
+#include "defaultimpl/pipelinestages/ComponentRegisterStage.h"
+#include "defaultimpl/pipelinestages/CPUToGPUMeshSyncStage.h"
+#include "defaultimpl/pipelinestages/GPUToCPUMeshSyncStage.h"
+#include "defaultimpl/pipelinestages/CPUToGPUTextureSyncStage.h"
+#include "defaultimpl/pipelinestages/RenderStage.h"
+#include "defaultimpl/pipelinestages/IterationEndStage.h"
+#include "defaultimpl/pipelinestages/TransformUpdateStage.h"
+#include "defaultimpl/pipelinestages/ShaderCompilationStage.h"
+#include "defaultimpl/pipelinestages/LightSyncStage.h"
+#include "defaultimpl/components/UserScript.h"
+
 namespace RenderLib
 {
 	namespace Pipeline
 	{
 		PipelineManager::PipelineManager()
 		{
+		
 		}
 
 		PipelineManager::~PipelineManager()
@@ -18,6 +32,11 @@ namespace RenderLib
 		void PipelineManager::setEngineInstance(EngineInstance * instance)
 		{
 			engineInstance = instance;
+			addPipelineStage<DefaultImpl::ComponentRegisterStage>();
+			addPipelineStage<DefaultImpl::CPUToGPUMeshSyncStage>();
+			addPipelineStage<DefaultImpl::CPUToGPUTextureSyncStage>();
+			addPipelineStage<DefaultImpl::ShaderCompilationStage>();
+			addPipelineStage<ElementBasedStage<DefaultImpl::UserScript>>();
 		}
 
 		Pipeline & PipelineManager::getPipeline()
@@ -47,6 +66,11 @@ namespace RenderLib
 
 		void PipelineManager::initializeStages()
 		{
+			addPipelineStage<DefaultImpl::TransformUpdateStage>();
+			addPipelineStage<DefaultImpl::LightSyncStage>();
+			addPipelineStage<DefaultImpl::RenderStage>();
+			addPipelineStage<DefaultImpl::IterationEndStage>();
+
 			for (auto & stagePtr : pipeline.getAllStages())
 			{
 				PipelineStage * stage = stagePtr.get();

@@ -59,12 +59,13 @@ namespace RenderLib
 	void Transform::update()
 	{
 		TRANSFORM transform = TRANSFORM::Identity();
-		transform.scale(scaleV);
 		transform.rotate<QUATERNION>(rotationV);
 		transform.translate(translationV);
+		transform.scale(scaleV);
 
 		modelMatrix = transform.matrix();
 
+		// Extract direction vectors from matrix
 		//forwardVector = VECTOR3(modelMatrix(0, 2), modelMatrix(1, 2), modelMatrix(2, 2));
 		//upVector = VECTOR3(modelMatrix(0, 1), modelMatrix(1, 1), modelMatrix(2, 1));
 		//rightVector = VECTOR3(modelMatrix(0, 0), modelMatrix(1, 0), modelMatrix(2, 0));

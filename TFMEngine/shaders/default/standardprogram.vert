@@ -67,7 +67,7 @@ void main()
 #endif
 
 #ifdef ENABLE_TANGENT
-	outTanget = (modelView * inTangent).xyz;
+	outTangent = (modelView * inTangent).xyz;
 #endif
 
 #ifdef ENABLE_COLOR_ATTRIB

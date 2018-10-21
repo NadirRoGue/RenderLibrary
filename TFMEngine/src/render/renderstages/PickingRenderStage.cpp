@@ -83,7 +83,7 @@ namespace RenderLib
 				if (it != pickTargets.end())
 				{
 					scene->getInputManager().consumeMouseInput();
-					Logger::Log::getInstance().logInfo("Picked " + it->second->getCPUMesh()->sourceFileName);
+					Logger::Log::getInstance().logInfo("Picked " + it->second->object->objectName);
 				}
 			}
 		}

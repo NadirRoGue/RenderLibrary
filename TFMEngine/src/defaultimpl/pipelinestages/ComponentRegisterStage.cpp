@@ -12,13 +12,6 @@ namespace RenderLib
 	{
 		void ComponentRegisterStage::preRunStage()
 		{
-			Scene * scene = engineInstance->getSceneManager().getActiveScene();
-			Graphics::WindowHandler * window = engineInstance->getWindow();
-			for (auto cam : scene->getWindowResizableObservers())
-			{
-				cam->setWindowSize(window->getWidth(), window->getHeight());
-			}
-
 			initAndRegister();
 		}
 

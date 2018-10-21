@@ -11,6 +11,7 @@ layout (location=4) out vec4 outEmissiveSpecScale;
 layout (location=5) out vec4 outAmbient;
 #endif
 
+// Include basic lighting API
 #include shaders/api/defaultlighting.glsl
 
 layout (location=0) in vec3 inPos;

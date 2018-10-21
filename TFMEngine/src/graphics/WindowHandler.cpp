@@ -50,6 +50,8 @@ namespace RenderLib
 				config.openGLConfigurationCallback();
 			}
 
+			glViewport(0, 0, config.windowWidth, config.windowHeight);
+
 			const GLubyte *oglVersion = glGetString(GL_VERSION);
 		  Logger::Log::getInstance().logInfo("This system supports OpenGL Version: " + std::string((const char*)oglVersion));
 		}

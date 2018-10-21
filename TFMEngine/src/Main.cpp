@@ -49,14 +49,15 @@ int main(int argc, void ** arg)
 	Mesh::Mesh * sphere = loadMesh("./assets/sphere_mat_opacity.obj", sphereOptions);
 	Mesh::Mesh * cube2 = loadMesh("./assets/mat_cube_2.obj", cubeOptions);
 	Mesh::Mesh * sun = loadMesh("./assets/emissive_sphere.obj", sphereOptions);
+	Mesh::Mesh * cubeBump = loadMesh("./assets/cube_bump.obj", cubeOptions | Mesh::Mesh::OPTION_COMPUTE_TANGENTSPACE);
 
 	// Window creation
 	Graphics::WindowConfiguration config;
 	config.openGLContextProfile = GLFW_OPENGL_CORE_PROFILE;
 	config.openGLMajorVersion = 4;
 	config.openGLMinorVersion = 2;
-	config.windowHeight = 512;
-	config.windowWidth = 512;
+	config.windowHeight = 750;
+	config.windowWidth = 1200;
 	config.windowTitle = "Test Instance";
 	config.windowPosX = 50;
 	config.windowPosY = 50;
@@ -79,7 +80,7 @@ int main(int argc, void ** arg)
 	RenderLib::Camera * cam = scene->addCamera<RenderLib::Camera>("Main_Camera");
 	cam->addComponent<DefaultImpl::CameraController>();
 	cam->setProjectionParams((FLOAT)0.5, (FLOAT)75.0, (FLOAT)45.0);
-	cam->translateView(VECTOR3(0.0, 0.0, -5.0));
+	cam->translateView(VECTOR3(0.0, 0.0, -8.0));
 
 	// Light set up
 	Lighting::DirectionalLight * dl = scene->addDirectionalLight("Sun");
@@ -87,7 +88,6 @@ int main(int argc, void ** arg)
 	dl->setDiffuseIntensity(1.0f);
 	dl->setSpecularIntensity(1.0f);
 	dl->setAmbientIntensity(0.15f);
-	//dl->setPosition(VECTOR3(-2.0, 2.0, 5.0));
 	dl->setDirection(VECTOR3(1.0, 1.0, 1.0));
 
 	Lighting::PointLight * pl = scene->addPointLight("Bulb");
@@ -120,6 +120,14 @@ int main(int argc, void ** arg)
 	crown->addComponent<DefaultImpl::MeshFilter>()->mesh = cube2;
 	crown->addComponent<DefaultImpl::MeshRenderer>();
 	crown->setParent(obj);
+
+	// Cube feet
+	RenderLib::SceneObject * feet = scene->addObject<SceneObject>("Feet");
+	feet->transform.translate(VECTOR3(0, -2, 0));
+	//feet->transform.scale(VECTOR3(0.5, 0.5, 0.5));
+	feet->addComponent<DefaultImpl::MeshFilter>()->mesh = cubeBump;
+	feet->addComponent<DefaultImpl::MeshRenderer>();
+	feet->setParent(obj);
 
 	RenderLib::SceneObject * sunObj = scene->addObject<SceneObject>("Sun");
 	sunObj->transform.translate(VECTOR3(-3.0, 0.0, -3.0));

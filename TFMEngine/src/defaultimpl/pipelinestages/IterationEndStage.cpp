@@ -6,6 +6,20 @@ namespace RenderLib
 {
 	namespace DefaultImpl
 	{
+		void IterationEndStage::preRunStage()
+		{
+			// Make sure we resize all cameras/FBOs to window size
+			// After they have been initialized during the preRunStages calls
+			Scene * scene = engineInstance->getSceneManager().getActiveScene();
+			Graphics::WindowHandler * window = engineInstance->getWindow();
+			for (auto cam : scene->getWindowResizableObservers())
+			{
+				cam->setWindowSize(window->getWidth(), window->getHeight());
+			}
+
+			engineInstance->getFBOManager().onResize(window->getWidth(), window->getHeight());
+		}
+
 		void IterationEndStage::runStage()
 		{
 			// Swap upload/render buffer for dynamic meshes

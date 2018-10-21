@@ -10,6 +10,7 @@ namespace RenderLib
 		class IterationEndStage : public Pipeline::PipelineStage
 		{
 		public:
+			void preRunStage();
 			void runStage();
 			void postRunStage();
 		};

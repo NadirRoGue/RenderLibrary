@@ -31,8 +31,6 @@ namespace RenderLib
 				unsigned int teShader;
 				unsigned int geomShader;
 				unsigned int fShader;
-			
-				std::function<void(const SceneObject & obj, const Camera & cam)> renderCallback;
 			public:
 				ShaderProgram();
 				~ShaderProgram();

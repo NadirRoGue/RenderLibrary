@@ -13,7 +13,9 @@
 #include "defaultimpl/fileloaders/ImageLoader.h"
 
 #include "GPU/program/UberFactoryManager.h"
+#include "defaultimpl/ubermaskfactories/StandardUberFactory.h"
 
+#include "GPU/program/ProgramManager.h"
 #include "defaultimpl/shaders/StandardProgram.h"
 
 #include "logger/Log.h"
@@ -35,6 +37,7 @@ namespace RenderLib
 		Render::FBO::initializeDefaultFBO();
 		//Logger::Log::getInstance().addLogger<DefaultImpl::BufferedFileLogger>();
 
-		GPU::Program::UberFactoryManager::registerUberFactory<DefaultImpl::StandardProgram, DefaultImpl::StandardUberFactory>();
+		GPU::Program::UberFactoryManager::registerDefaultFactory<DefaultImpl::StandardUberFactory>();
+		GPU::Program::ProgramManager::registerProgram<DefaultImpl::StandardProgram>();
 	}
 }

@@ -12,9 +12,6 @@ namespace RenderLib
 		public:
 			PickingProgram();
 			~PickingProgram();
-
-			void configureShaderAttributes(GPU::Mesh::GPUMesh * targetMesh);
-			void onRenderObject(const SceneObject & object, const Material::Material & material, const Camera & camera);
 		};
 	}
 }

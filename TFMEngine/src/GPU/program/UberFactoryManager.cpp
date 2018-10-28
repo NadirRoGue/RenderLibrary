@@ -6,17 +6,29 @@ namespace RenderLib
 	{
 		namespace Program
 		{
-			std::unordered_map<std::type_index, std::unique_ptr<AbstractMaskFactory>> UberFactoryManager::factories;
+			std::unordered_map<std::type_index, std::unique_ptr<UberMaskFactory>> UberFactoryManager::factories;
+			std::unique_ptr<UberMaskFactory> UberFactoryManager::defaultFactory;
 
-			AbstractMaskFactory * UberFactoryManager::getMaskFactory(const std::type_index & programType)
+			GPU::Program::UberParamMask UberFactoryManager::computeMask(DefaultImpl::MeshRenderer * renderable)
 			{
-				auto it = factories.find(programType);
-				if (it != factories.end())
+				// If specific uber factory exists, use it
+				if (renderable->material != nullptr)
 				{
-					return it->second.get();
+					std::type_index progType = renderable->material->getShaderType();
+					auto it = factories.find(progType);
+					if (it != factories.end())
+					{
+						return it->second.get()->computeMask(renderable);
+					}
 				}
 
-				return NULL;
+				// Otherwise, try to fall back to default one
+				if (defaultFactory.get() != nullptr)
+				{
+					return defaultFactory.get()->computeMask(renderable);
+				}
+
+				return 0;
 			}
 		}
 	}

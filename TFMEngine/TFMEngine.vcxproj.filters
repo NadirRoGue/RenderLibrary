@@ -199,6 +199,18 @@
     <Filter Include="shaders\api">
       <UniqueIdentifier>{dfd82948-e423-4bba-b6b4-38febe0ef206}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Archivos de encabezado\defaultimpl\renderstages">
+      <UniqueIdentifier>{9f1681cc-a87a-4883-a738-4b4218a0aed9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de encabezado\defaultimpl\ubermaskfactories">
+      <UniqueIdentifier>{e65038c8-d9b3-4e7c-a98a-5a6f07713dbb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\defaultimpl\ubermaskfactories">
+      <UniqueIdentifier>{bc89f39f-b30d-4f96-9cb8-5668c9981567}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\defaultimpl\renderstages">
+      <UniqueIdentifier>{aaefddc1-cb6c-464a-9f86-475e4ba4c1b9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Component.h">
@@ -552,6 +564,9 @@
     <ClInclude Include="include\defaultimpl\components\CameraController.h">
       <Filter>Archivos de encabezado\defaultimpl\components</Filter>
     </ClInclude>
+    <ClInclude Include="include\defaultimpl\ubermaskfactories\StandardUberFactory.h">
+      <Filter>Archivos de encabezado\defaultimpl\ubermaskfactories</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Component.cpp">
@@ -872,6 +887,9 @@
     <ClCompile Include="src\defaultimpl\components\CameraController.cpp">
       <Filter>Archivos de origen\defaultimpl\components</Filter>
     </ClCompile>
+    <ClCompile Include="src\defaultimpl\ubermaskfactories\StandardUberFactory.cpp">
+      <Filter>Archivos de origen\defaultimpl\ubermaskfactories</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\default\standardprogram.frag">
@@ -900,6 +918,21 @@
     </None>
     <None Include="shaders\default\picking.vert">
       <Filter>shaders\default</Filter>
+    </None>
+    <None Include="shaders\api\defaultmaterial.glsl">
+      <Filter>shaders\api</Filter>
+    </None>
+    <None Include="shaders\api\meshinputs.glsl">
+      <Filter>shaders\api</Filter>
+    </None>
+    <None Include="shaders\api\meshoutputs.glsl">
+      <Filter>shaders\api</Filter>
+    </None>
+    <None Include="shaders\api\transform.glsl">
+      <Filter>shaders\api</Filter>
+    </None>
+    <None Include="shaders\api\shadingutils.glsl">
+      <Filter>shaders\api</Filter>
     </None>
   </ItemGroup>
 </Project>

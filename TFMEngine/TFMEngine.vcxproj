@@ -193,6 +193,7 @@
     <ClInclude Include="include\defaultimpl\shaders\PickingProgram.h" />
     <ClInclude Include="include\defaultimpl\shaders\StandardProgram.h" />
     <ClInclude Include="include\defaultimpl\textureblockconfigurators\CompactTextureBuilder.h" />
+    <ClInclude Include="include\defaultimpl\ubermaskfactories\StandardUberFactory.h" />
     <ClInclude Include="include\defaultimpl\windowhandlers\GLFWWindowHandler.h" />
     <ClInclude Include="include\Defines.h" />
     <ClInclude Include="include\EngineException.h" />
@@ -305,6 +306,7 @@
     <ClCompile Include="src\defaultimpl\shaders\PickingProgram.cpp" />
     <ClCompile Include="src\defaultimpl\shaders\StandardProgram.cpp" />
     <ClCompile Include="src\defaultimpl\textureblockconfigurators\CompactTextureBuilder.cpp" />
+    <ClCompile Include="src\defaultimpl\ubermaskfactories\StandardUberFactory.cpp" />
     <ClCompile Include="src\defaultimpl\windowhandlers\GLFWWindowHandler.cpp" />
     <ClCompile Include="src\EngineException.cpp" />
     <ClCompile Include="src\EngineInstance.cpp" />
@@ -363,6 +365,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\api\defaultlighting.glsl" />
+    <None Include="shaders\api\defaultmaterial.glsl" />
+    <None Include="shaders\api\meshinputs.glsl" />
+    <None Include="shaders\api\meshoutputs.glsl" />
+    <None Include="shaders\api\shadingutils.glsl" />
+    <None Include="shaders\api\transform.glsl" />
     <None Include="shaders\default\deferredshading.frag" />
     <None Include="shaders\default\picking.frag" />
     <None Include="shaders\default\picking.vert" />

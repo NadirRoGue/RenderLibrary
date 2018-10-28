@@ -102,7 +102,9 @@ namespace RenderLib
 			MaterialTexture normalMapTexture;
 			MaterialTexture opacityTexture;
 			MaterialTexture heightMapTexture;
+			MaterialTexture lightMapTexture;
 			MaterialTexture displacementTexture;
+			MaterialTexture reflectionTexture;
 			MaterialTexture otherTexture;
 
 			bool wireFrameRender;

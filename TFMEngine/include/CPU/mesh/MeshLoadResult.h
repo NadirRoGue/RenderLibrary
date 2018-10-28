@@ -72,6 +72,8 @@ namespace RenderLib
 				std::vector<IO::LoadedParameter<MaterialTextureInfo>> opacityTextures;
 				std::vector<IO::LoadedParameter<MaterialTextureInfo>> heightMapTextures;
 				std::vector<IO::LoadedParameter<MaterialTextureInfo>> displacementTextures;
+				std::vector<IO::LoadedParameter<MaterialTextureInfo>> lightMapTextures;
+				std::vector<IO::LoadedParameter<MaterialTextureInfo>> reflectionTexture;
 				std::vector<IO::LoadedParameter<MaterialTextureInfo>> otherTextures;
 				bool wireFrameRender;
 				bool twoSidedRender;

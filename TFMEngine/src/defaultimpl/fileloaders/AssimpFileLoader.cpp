@@ -267,17 +267,20 @@ namespace RenderLib
 				material, aiTextureType_AMBIENT, matData.ambientTextures, rootPath);
 			gatherMaterialTexturesOfType(
 				material, aiTextureType_OPACITY, matData.opacityTextures, rootPath);
-			// ASSIMP BUG: Normal maps from unofficial objs are mappted to height maps instead of normal maps
+			// ASSIMP BUG: Normal maps from unofficial objs are mapped to height maps instead of normal maps
 			// https://sourceforge.net/p/assimp/discussion/817654/thread/4f1ecef0/
 			gatherMaterialTexturesOfType(
 				material, aiTextureType_HEIGHT, matData.normalMapTextures, rootPath);
-			//gatherMaterialTexturesOfType(
-			//	material, aiTextureType_HEIGHT, matData.heightMapTextures, rootPath);
+			gatherMaterialTexturesOfType(
+				material, aiTextureType_HEIGHT, matData.heightMapTextures, rootPath);
 			gatherMaterialTexturesOfType(
 				material, aiTextureType_DISPLACEMENT, matData.displacementTextures, rootPath);
 			gatherMaterialTexturesOfType(
+				material, aiTextureType_LIGHTMAP, matData.lightMapTextures, rootPath);
+			gatherMaterialTexturesOfType(
+				material, aiTextureType_REFLECTION, matData.reflectionTexture, rootPath);
+			gatherMaterialTexturesOfType(
 				material, aiTextureType_UNKNOWN, matData.otherTextures, rootPath);
-			// NOT DONE: aiTextureType_LIGHTMAP, aiTextureType_REFLECTION
 
 			bool renderMode = false;
 			if (material->Get(AI_MATKEY_ENABLE_WIREFRAME, renderMode) == AI_SUCCESS)

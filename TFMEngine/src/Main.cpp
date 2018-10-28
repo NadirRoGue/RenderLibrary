@@ -103,7 +103,7 @@ int main(int argc, void ** arg)
 	RenderLib::SceneObject * obj = scene->addObject<SceneObject>("Cube");
 	obj->addComponent<DefaultImpl::MeshFilter>()->mesh = cube;
 	obj->addComponent<DefaultImpl::MeshRenderer>();
-	obj->addComponent<DefaultImpl::ObjectSpinner>();
+	//obj->addComponent<DefaultImpl::ObjectSpinner>();
 
 	// "Moon"
 	RenderLib::SceneObject * moon = scene->addObject<SceneObject>("Moon");
@@ -128,7 +128,7 @@ int main(int argc, void ** arg)
 	feet->addComponent<DefaultImpl::MeshFilter>()->mesh = cubeBump;
 	feet->addComponent<DefaultImpl::MeshRenderer>();
 	feet->setParent(obj);
-
+	
 	RenderLib::SceneObject * sunObj = scene->addObject<SceneObject>("Sun");
 	sunObj->transform.translate(VECTOR3(-3.0, 0.0, -3.0));
 	sunObj->addComponent<DefaultImpl::MeshFilter>()->mesh = sun;

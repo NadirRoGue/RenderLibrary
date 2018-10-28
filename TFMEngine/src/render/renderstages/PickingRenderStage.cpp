@@ -110,9 +110,9 @@ namespace RenderLib
 
 					GPU::Mesh::GPUMesh * mesh = r->gpuMesh;
 
-					pickProgram->configureShaderAttributes(mesh);
+					pickProgram->configureMeshParameters(*mesh);
 					pickProgram->setUniform3F("pickColor", red / 255.0f, green / 255.0f, blue / 255.0f);
-					pickProgram->onRenderObject(*(r->object), *(r->material), cam);
+					pickProgram->onRenderObject(*r, cam);
 
 					glDrawElements
 					(

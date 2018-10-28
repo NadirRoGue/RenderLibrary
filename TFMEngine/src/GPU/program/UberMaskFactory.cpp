@@ -6,11 +6,11 @@ namespace RenderLib
 	{
 		namespace Program
 		{
-			UberFactoryParam::UberFactoryParam()
+			UberMaskFactory::UberMaskFactory()
 			{
 			}
 
-			UberFactoryParam::~UberFactoryParam()
+			UberMaskFactory::~UberMaskFactory()
 			{
 			}
 		}

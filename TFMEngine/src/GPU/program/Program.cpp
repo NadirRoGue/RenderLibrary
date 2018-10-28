@@ -5,6 +5,8 @@
 #include "CPU/io/FileManager.h"
 #include "GPU/program/ShaderLoadResult.h"
 
+#include "logger/Log.h"
+
 namespace RenderLib
 {
 	namespace GPU
@@ -26,6 +28,7 @@ namespace RenderLib
 			}
 
 			Program::Program()
+				: configMask(0)
 			{
 			}
 
@@ -92,6 +95,7 @@ namespace RenderLib
 				glGetProgramiv(programId, GL_LINK_STATUS, &linked);
 				if (!linked)
 				{
+					Logger::Log::getInstance().logError("Error linking program");
 					GLint logLen;
 					glGetProgramiv(programId, GL_INFO_LOG_LENGTH, &logLen);
 					std::vector<char> logString(logLen);
@@ -138,6 +142,7 @@ namespace RenderLib
 				glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
 				if (!compiled)
 				{
+					Logger::Log::getInstance().logError("Error compiling shader " + filePath);
 					GLint logLen;
 					glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLen);
 					std::vector<char> logString(logLen);

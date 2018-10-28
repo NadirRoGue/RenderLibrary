@@ -61,6 +61,8 @@ namespace RenderLib
 			parseMaterialTexture(baseName+"_transparent", data.transparentColor.get(), data.opacityTextures, ptr->opacityTexture);
 			parseMaterialTexture(baseName+"_other", VECTOR3(0,0,0), data.otherTextures, ptr->otherTexture);
 			parseMaterialTexture(baseName+"_shininess", VECTOR3(0,0,0), data.shininessTextures, ptr->shininessTexture);
+			parseMaterialTexture(baseName+"_lightmap", VECTOR3(0, 0, 0), data.lightMapTextures, ptr->lightMapTexture);
+			parseMaterialTexture(baseName + "_reflection", VECTOR3(0, 0, 0), data.reflectionTexture, ptr->reflectionTexture);
 
 			materials[fileName][ptr->index] = std::move(newMaterial);
 		}

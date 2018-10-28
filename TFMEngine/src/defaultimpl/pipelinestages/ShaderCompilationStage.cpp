@@ -29,17 +29,11 @@ namespace RenderLib
 					DefaultImpl::MeshRenderer * renderable 
 						= static_cast<DefaultImpl::MeshRenderer*>(component);
 
-					std::type_index shaderType = renderable->material->getShaderType();
-					
-					GPU::Program::ShaderUberFactoryParam param;
-					param.renderable = renderable;
-
-					GPU::Program::AbstractMaskFactory * factory = 
-						GPU::Program::UberFactoryManager::getMaskFactory(shaderType);
+					GPU::Program::UberParamMask mask = GPU::Program::UberFactoryManager::computeMask(renderable);
 
 					// Compile if not done already. Return already compiled shader if present
 					GPU::Program::Program * prog = 
-						factory->createProgram(engineInstance->getProgramManager(), &param);
+						engineInstance->getProgramManager().getProgram(mask, renderable->material->getShaderType());
 
 					if (prog != NULL)
 					{

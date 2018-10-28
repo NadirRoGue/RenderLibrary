@@ -98,8 +98,7 @@ namespace RenderLib
 				}
 
 				// Initialize post process shader
-				postProcessProgram = engineInstance->getProgramManager()
-					.getProgram<T>(0);
+				postProcessProgram = engineInstance->getProgramManager().getProgram<T>(0);
 				postProcessProgram->initializeShader(engineInstance);
 
 				// Configure everything

@@ -51,10 +51,10 @@ namespace RenderLib
 			if (it == innerMap.end())
 			{
 				RenderableStub newStub;
-				GPU::Program::Program * program = programManager.findProgram(progType, mask);
+				GPU::Program::Program * program = programManager.getProgram(mask, progType);
 
 				GPU::Program::ShaderProgram * castedProg = NULL;
-				if (program != NULL && (castedProg = dynamic_cast<GPU::Program::ShaderProgram*>(program)) != NULL)
+				if (program != NULL && (castedProg = static_cast<GPU::Program::ShaderProgram*>(program)) != NULL)
 				{
 					newStub.program = castedProg;
 					newStub.renderables.push_back(renderable);
@@ -85,7 +85,7 @@ namespace RenderLib
 
 					for (auto renderable : stub.renderables)
 					{
-						stub.program->configureShaderAttributes(renderable->gpuMesh);
+						stub.program->configureMeshParameters(*renderable->gpuMesh);
 					}
 				}
 			}
@@ -111,8 +111,10 @@ namespace RenderLib
 
 						GPU::Mesh::GPUMesh * mesh = renderable->gpuMesh;
 
-						stub.program->configureShaderAttributes(mesh);
-						stub.program->onRenderObject(*(renderable->object), *(renderable->material), fromCamera);
+						stub.program->configureMeshParameters(*(renderable->gpuMesh));
+						stub.program->sendMaterialParameters(*(renderable->material));
+						stub.program->sendTransformParameters(*(renderable->object), fromCamera);
+						stub.program->onRenderObject(*renderable, fromCamera);
 						GLenum drawMode = renderable->material->wireFrameRender ? GL_LINES : GL_TRIANGLES;
 
 						glDrawElements

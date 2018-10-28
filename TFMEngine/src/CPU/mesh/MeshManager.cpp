@@ -8,6 +8,8 @@
 
 #include "material/MaterialManager.h"
 
+#include "CPU/mesh/MeshUtil.h"
+
 namespace RenderLib
 {
 	namespace CPU
@@ -225,6 +227,9 @@ namespace RenderLib
 
 				meshPtr->materialIndex = data.materialIndex;
 				meshPtr->sourceFileName = data.srcFile;
+
+				//ComputeNormals(meshPtr);
+				//ComputeTangents(meshPtr);
 
 				return newMesh;
 			}

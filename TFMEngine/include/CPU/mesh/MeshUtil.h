@@ -11,7 +11,6 @@ namespace RenderLib
 		{
 			void ComputeNormals(Mesh * mesh);
 			void ComputeTangents(Mesh * mesh);
-			void ComputeBitangents(Mesh * mesh);
 		}
 	}
 }

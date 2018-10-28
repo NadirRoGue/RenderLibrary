@@ -1,7 +1,6 @@
 #include "defaultimpl/ubermaskfactories/StandardUberFactory.h"
 
 #include "GPU/program/ShaderProgram.h"
-#include <iostream>
 
 namespace RenderLib
 {
@@ -87,7 +86,6 @@ namespace RenderLib
 
 			if (material->diffuseTexture.textureExists())
 			{
-				std::cout << "Has diffuse" << std::endl;
 				materialMask |= GPU::Program::ShaderProgram::HAS_DIFFUSE_TEXTURE;
 			}
 

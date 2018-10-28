@@ -567,6 +567,9 @@
     <ClInclude Include="include\defaultimpl\ubermaskfactories\StandardUberFactory.h">
       <Filter>Archivos de encabezado\defaultimpl\ubermaskfactories</Filter>
     </ClInclude>
+    <ClInclude Include="include\util\MathUtil.h">
+      <Filter>Archivos de encabezado\util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Component.cpp">
@@ -889,6 +892,9 @@
     </ClCompile>
     <ClCompile Include="src\defaultimpl\ubermaskfactories\StandardUberFactory.cpp">
       <Filter>Archivos de origen\defaultimpl\ubermaskfactories</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\MathUtil.cpp">
+      <Filter>Archivos de origen\util</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

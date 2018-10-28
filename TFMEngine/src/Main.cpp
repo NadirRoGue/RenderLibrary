@@ -37,8 +37,7 @@ int main(int argc, void ** arg)
 	DefaultEngineInitialization();
 
 	unsigned int cubeOptions =
-		(Mesh::Mesh::OPTION_COMPUTE_NORMALS_IF_ABSENT
-			| Mesh::Mesh::OPTION_JOIN_IDENTICAL_VERTICES);
+		(Mesh::Mesh::OPTION_COMPUTE_NORMALS_IF_ABSENT);
 
 	unsigned int sphereOptions =
 		(Mesh::Mesh::OPTION_COMPUTE_SMOOTHNORMALS_IF_ABSENT
@@ -103,7 +102,7 @@ int main(int argc, void ** arg)
 	RenderLib::SceneObject * obj = scene->addObject<SceneObject>("Cube");
 	obj->addComponent<DefaultImpl::MeshFilter>()->mesh = cube;
 	obj->addComponent<DefaultImpl::MeshRenderer>();
-	//obj->addComponent<DefaultImpl::ObjectSpinner>();
+	obj->addComponent<DefaultImpl::ObjectSpinner>();
 
 	// "Moon"
 	RenderLib::SceneObject * moon = scene->addObject<SceneObject>("Moon");

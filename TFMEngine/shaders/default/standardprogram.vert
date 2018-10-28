@@ -18,7 +18,7 @@ void main()
 #endif
 
 #ifdef ENABLE_TANGENT
-	outTangent = (modelView * inTangent).xyz;
+	outTangent = (modelView * vec4(inTangent.xyz,0.0)).xyz;
 #endif
 
 #ifdef ENABLE_COLOR

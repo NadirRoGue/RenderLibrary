@@ -28,7 +28,7 @@ void main()
 #if defined ENABLE_TANGENT && defined ENABLE_NORMAL
 	mat3 TBN = computeTangentSpace(inNormal.xyz, inTangent.xyz);
 
-	vec2 uv = parallaxUVMapping(TBN, viewPos, inWorldPos.xyz, diffuseTexture, inUV);
+	vec2 uv = parallaxUVMapping(TBN, viewPos.xyz, inWorldPos.xyz, diffuseTexture, inUV);
 #else
 	vec2 uv = inUV;
 #endif
@@ -75,8 +75,8 @@ void main()
 	specularScaleVal = 1.0;
 #endif
 
-#if defined ENABLE_NORMALMAP_TEXTURE
-	normalVector = computeBumpMapping(texture(normalTexture, uv), TBN);
+#if defined ENABLE_NORMALMAP_TEXTURE && defined ENABLE_NORMAL && defined ENABLE_TANGENT
+	normalVector = normalize(computeBumpMapping(texture(normalTexture, uv), TBN));
 #elif defined ENABLE_NORMAL
 	normalVector = normalize(inNormal.xyz);
 #else
@@ -116,6 +116,7 @@ void main()
 #else
 	outPos											= vec4(pos, 1.0);
 	outColorOpacity							= vec4(Kd, opacityVal);
+	//outColorOpacity = texture(normalTexture, inUV);//vec4(normalVector, 1.0);
 	outNormal										= vec4(normalVector, 1.0);
 	outSpecularColorShininess		= vec4(Ks, shininessVal);
 	outEmissiveSpecScale				= vec4(Ke, specularScaleVal);	

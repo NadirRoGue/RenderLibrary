@@ -16,8 +16,11 @@ vec3 computeBumpMapping(in vec4 inBumpVector, in mat3 tangentSpace)
 
 vec2 parallaxUVMapping(in mat3 TBN, in vec3 viewV, in vec3 posV, in sampler2D heightMap, in vec2 UV)
 {
-	vec3 V = normalize(viewV - posV);
-	//vec3 V = normalize(-posV);
+	// La inversa para trabajar con el plano XY del vector de vista
+	mat3 tTBN = transpose(TBN);
+	vec3 viewTBN = tTBN * viewV;
+	vec3 posTBN = tTBN * posV;
+	vec3 V = normalize(viewTBN - posTBN);
 
 	// number of depth layers
   const float numLayers = 10.0;

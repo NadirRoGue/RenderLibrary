@@ -6,64 +6,70 @@
 
 namespace RenderLib
 {
-	namespace Graphics
-	{
-		WindowHandler::WindowHandler(WindowConfiguration windowConfig)
-			: config(windowConfig)
-		{
-		}
+  namespace Graphics
+  {
+    WindowHandler::WindowHandler(WindowConfiguration windowConfig)
+      : config(windowConfig)
+    {
+    }
 
-		WindowHandler::~WindowHandler()
-		{
-			
-		}
+    WindowHandler::~WindowHandler()
+    {
+    }
 
-		const std::string & WindowHandler::getTitle()
-		{
-			return config.windowTitle;
-		}
+    const std::string &
+    WindowHandler::getTitle()
+    {
+      return config.windowTitle;
+    }
 
-		unsigned int WindowHandler::getWidth()
-		{
-			return config.windowWidth;
-		}
+    unsigned int
+    WindowHandler::getWidth()
+    {
+      return config.windowWidth;
+    }
 
-		unsigned int WindowHandler::getHeight()
-		{
-			return config.windowHeight;
-		}
+    unsigned int
+    WindowHandler::getHeight()
+    {
+      return config.windowHeight;
+    }
 
-		void WindowHandler::initialize()
-		{
-			initializeWindowContext();
+    void
+    WindowHandler::initialize()
+    {
+      initializeWindowContext();
 
-			if (glewInit() != GLEW_OK)
-			{
-				throw EngineException("WindowHandler: Error while initializing GLEW");
-			}
+      if (glewInit() != GLEW_OK)
+      {
+        throw EngineException("WindowHandler: Error while initializing GLEW");
+      }
 
-			// Call a default OpenGL config (may be overwritten by the passed callback)
-			defaultOpenGLConfiguration();
+      // Call a default OpenGL config (may be overwritten by the passed callback)
+      defaultOpenGLConfiguration();
 
-			if (config.openGLConfigurationCallback)
-			{
-				config.openGLConfigurationCallback();
-			}
+      if (config.openGLConfigurationCallback)
+      {
+        config.openGLConfigurationCallback();
+      }
 
-			glViewport(0, 0, config.windowWidth, config.windowHeight);
+      glViewport(0, 0, config.windowWidth, config.windowHeight);
 
-			const GLubyte *oglVersion = glGetString(GL_VERSION);
-		  Logger::Log::getInstance().logInfo("This system supports OpenGL Version: " + std::string((const char*)oglVersion));
-		}
+      const GLubyte * oglVersion = glGetString(GL_VERSION);
+      Logger::Log::getInstance().logInfo(
+          "This system supports OpenGL Version: "
+          + std::string((const char *)oglVersion));
+    }
 
-		void WindowHandler::defaultOpenGLConfiguration()
-		{
-			// Basic OPENGL Context configuration
-			glClearColor(0.7f, 0.7f, 0.7f, 0.0f);
-			glFrontFace(GL_CCW);
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			glEnable(GL_CULL_FACE);
-			glEnable(GL_DEPTH_TEST);
-		}
-	}
-}
+    void
+    WindowHandler::defaultOpenGLConfiguration()
+    {
+      // Basic OPENGL Context configuration
+      glClearColor(0.7f, 0.7f, 0.7f, 0.0f);
+      glFrontFace(GL_CCW);
+      glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+      glEnable(GL_CULL_FACE);
+      glEnable(GL_DEPTH_TEST);
+    }
+  } // namespace Graphics
+} // namespace RenderLib

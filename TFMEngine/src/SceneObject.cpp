@@ -5,91 +5,95 @@
 
 namespace RenderLib
 {
-	SceneObject::SceneObject()
-		: initialized(false)
-		, parent(NULL)
-	{
-		transform.object = this;
-		transform.update();
-	}
+  SceneObject::SceneObject() : initialized(false), parent(NULL)
+  {
+    transform.object = this;
+    transform.update();
+  }
 
-	SceneObject::~SceneObject()
-	{
+  SceneObject::~SceneObject()
+  {
+  }
 
-	}
+  void
+  SceneObject::initialize()
+  {
+    initialized = true;
+  }
 
-	void SceneObject::initialize()
-	{
-		initialized = true;
-	}
+  ComponentList &
+  SceneObject::getComponentList()
+  {
+    return componentList;
+  }
 
-	ComponentList & SceneObject::getComponentList()
-	{
-		return componentList;
-	}
+  void
+  SceneObject::setParent(SceneObject * parentToBe)
+  {
+    if (parentToBe == this)
+    {
+      return;
+    }
 
-	void SceneObject::setParent(SceneObject * parentToBe)
-	{
-		if (parentToBe == this)
-		{
-			return;
-		}
-		
-		if (this->parent != NULL)
-		{
-			this->parent->removeChildren(this);
-		}
+    if (this->parent != NULL)
+    {
+      this->parent->removeChildren(this);
+    }
 
-		// Avoid circular dependency
-		if (parentToBe != NULL && parentToBe->parent != this)
-		{
-			this->parent = parentToBe;
-			parentToBe->children.push_back(this);
-		}
-	}
+    // Avoid circular dependency
+    if (parentToBe != NULL && parentToBe->parent != this)
+    {
+      this->parent = parentToBe;
+      parentToBe->children.push_back(this);
+    }
+  }
 
-	void SceneObject::addChildren(SceneObject * object)
-	{
-		if (object == this)
-		{
-			return;
-		}
+  void
+  SceneObject::addChildren(SceneObject * object)
+  {
+    if (object == this)
+    {
+      return;
+    }
 
-		if (object != NULL)
-		{
-			if (object->parent != NULL && object->parent != this)
-			{
-				object->parent->removeChildren(object);
-			}
-			
-			object->parent = this;
-			object->children.push_back(object);
-		}
-	}
-	
-	SceneObject * SceneObject::getParent()
-	{
-		return parent;
-	}
+    if (object != NULL)
+    {
+      if (object->parent != NULL && object->parent != this)
+      {
+        object->parent->removeChildren(object);
+      }
 
-	std::vector<SceneObject*> & SceneObject::getChildren()
-	{
-		return children;
-	}
+      object->parent = this;
+      object->children.push_back(object);
+    }
+  }
 
-	void SceneObject::removeChildren(SceneObject * object)
-	{
-		if (object->parent == this)
-		{
-			auto it = children.begin();
-			while (it != children.end())
-			{
-				if ((*it) == object)
-				{
-					children.erase(it);
-					break;
-				}
-			}
-		}
-	}
-}
+  SceneObject *
+  SceneObject::getParent()
+  {
+    return parent;
+  }
+
+  std::vector<SceneObject *> &
+  SceneObject::getChildren()
+  {
+    return children;
+  }
+
+  void
+  SceneObject::removeChildren(SceneObject * object)
+  {
+    if (object->parent == this)
+    {
+      auto it = children.begin();
+      while (it != children.end())
+      {
+        if ((*it) == object)
+        {
+          children.erase(it);
+          break;
+        }
+      }
+    }
+  }
+} // namespace RenderLib

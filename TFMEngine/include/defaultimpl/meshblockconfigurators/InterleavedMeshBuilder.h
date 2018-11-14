@@ -7,14 +7,18 @@
 
 namespace RenderLib
 {
-	namespace DefaultImpl
-	{
-		class InterleavedMeshBuilder : public CPU::Memory::PoolObjectBuilder<CPU::Mesh::Mesh>
-		{
-		public:
-			void configureAttributes(CPU::Memory::MemoryBlock * memBlock, CPU::Mesh::Mesh * resource, CPU::Memory::BlockConfiguration * data);
-		};
-	}
-}
+  namespace DefaultImpl
+  {
+    class InterleavedMeshBuilder
+      : public CPU::Memory::PoolObjectBuilder<CPU::Mesh::Mesh>
+    {
+    public:
+      void
+      configureAttributes(CPU::Memory::MemoryBlock * memBlock,
+                          CPU::Mesh::Mesh * resource,
+                          CPU::Memory::BlockConfiguration * data);
+    };
+  } // namespace DefaultImpl
+} // namespace RenderLib
 
 #endif

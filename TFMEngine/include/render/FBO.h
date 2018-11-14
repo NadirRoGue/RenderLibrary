@@ -1,76 +1,86 @@
 #ifndef __RENDERLIB_RENDER_FBO_H__
 #define __RENDERLIB_RENDER_FBO_H__
 
-#include <vector>
-#include <unordered_map>
 #include <string>
+#include <unordered_map>
+#include <vector>
 
 #include "GPU/texture/GPUTexture.h"
 
 namespace RenderLib
 {
-	class EngineInstance;
+  class EngineInstance;
 
-	namespace Render
-	{
-		typedef struct AttachmentInfo
-		{
-			GPU::Texture::GPUTexture * attachment;
-			GLenum attachmentType;
-		} AttachmentInfo;
+  namespace Render
+  {
+    typedef struct AttachmentInfo
+    {
+      GPU::Texture::GPUTexture * attachment;
+      GLenum attachmentType;
+    } AttachmentInfo;
 
-		class FBO
-		{
-		private:
-			static unsigned int MAX_RENDER_TARGETS;
-		public:
-			static FBO DEFAULTFRAMEBUFFER;
-		public:
-			static void queryMaxRenderTargets();
-			static void initializeDefaultFBO();
-		private:
-			std::unordered_map<std::string, GPU::Texture::GPUTexture *> attachmentTextures;
-			std::vector<AttachmentInfo> indexedAttachments;
-			EngineInstance * accessor;
-			unsigned int id;
-			AttachmentInfo depthAttachment;
-			unsigned int width, height;
-		public:
-			FBO();
-			~FBO();
+    class FBO
+    {
+    private:
+      static unsigned int MAX_RENDER_TARGETS;
 
-			void setEngineInstance(EngineInstance * instance);
+    public:
+      static FBO DEFAULTFRAMEBUFFER;
 
-			void generate();
-			void bind();
-			void unBind();
-			void setSize(
-				const unsigned int & width, 
-				const unsigned int & height);
+    public:
+      static void
+      queryMaxRenderTargets();
+      static void
+      initializeDefaultFBO();
 
-			const unsigned int &
-				getWidth();
-			const unsigned int &
-				getHeight();
+    private:
+      std::unordered_map<std::string, GPU::Texture::GPUTexture *>
+          attachmentTextures;
+      std::vector<AttachmentInfo> indexedAttachments;
+      EngineInstance * accessor;
+      unsigned int id;
+      AttachmentInfo depthAttachment;
+      unsigned int width, height;
 
-			GPU::Texture::GPUTexture * addColorAttachment(
-				const unsigned int & index, 
-				const std::string & name,
-				GLenum internalFormat,
-				GLenum format,
-				GLenum pixelType);
+    public:
+      FBO();
+      ~FBO();
 
-			GPU::Texture::GPUTexture * addDepthAttachment(
-				const std::string & name);
+      void
+      setEngineInstance(EngineInstance * instance);
 
-			GPU::Texture::GPUTexture * getAttachment(
-				const std::string & name);
+      void
+      generate();
+      void
+      bind();
+      void
+      unBind();
+      void
+      setSize(const unsigned int & width, const unsigned int & height);
 
-			GPU::Texture::GPUTexture * getDepthAttachment();
+      const unsigned int &
+      getWidth();
+      const unsigned int &
+      getHeight();
 
-			void destroy();
-		};
-	}
-}
+      GPU::Texture::GPUTexture *
+      addColorAttachment(const unsigned int & index, const std::string & name,
+                         GLenum internalFormat, GLenum format,
+                         GLenum pixelType);
+
+      GPU::Texture::GPUTexture *
+      addDepthAttachment(const std::string & name);
+
+      GPU::Texture::GPUTexture *
+      getAttachment(const std::string & name);
+
+      GPU::Texture::GPUTexture *
+      getDepthAttachment();
+
+      void
+      destroy();
+    };
+  } // namespace Render
+} // namespace RenderLib
 
 #endif

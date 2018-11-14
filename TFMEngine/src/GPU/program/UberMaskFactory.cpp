@@ -2,17 +2,17 @@
 
 namespace RenderLib
 {
-	namespace GPU
-	{
-		namespace Program
-		{
-			UberMaskFactory::UberMaskFactory()
-			{
-			}
+  namespace GPU
+  {
+    namespace Program
+    {
+      UberMaskFactory::UberMaskFactory()
+      {
+      }
 
-			UberMaskFactory::~UberMaskFactory()
-			{
-			}
-		}
-	}
-}
+      UberMaskFactory::~UberMaskFactory()
+      {
+      }
+    } // namespace Program
+  } // namespace GPU
+} // namespace RenderLib

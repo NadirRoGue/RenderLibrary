@@ -2,21 +2,24 @@
 
 namespace RenderLib
 {
-	namespace GPU
-	{
-		namespace Texture
-		{
-			class GPUTexture2D : public GPUTexture
-			{
-			public:
-				GPUTexture2D();
-				~GPUTexture2D();
+  namespace GPU
+  {
+    namespace Texture
+    {
+      class GPUTexture2D : public GPUTexture
+      {
+      public:
+        GPUTexture2D();
+        ~GPUTexture2D();
 
-				GLenum getTexturType();
+        GLenum
+        getTexturType();
 
-				void uploadMutable(void * data);
-				void uploadInmutable(void * data);
-			};
-		}
-	}
-}
+        void
+        uploadMutable(void * data);
+        void
+        uploadInmutable(void * data);
+      };
+    } // namespace Texture
+  } // namespace GPU
+} // namespace RenderLib

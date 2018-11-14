@@ -4,53 +4,67 @@
 #include <memory>
 #include <unordered_map>
 
-#include "GPU/mesh/GPUMesh.h"
 #include "GPU/mesh/GPUBuffer.h"
+#include "GPU/mesh/GPUMesh.h"
 
 namespace RenderLib
 {
-	namespace GPU
-	{
-		namespace Mesh
-		{
-			class GPUMeshManager
-			{
-			private:
-				std::unordered_map<size_t, GPUMeshPtr> staticMeshes;
-				std::unordered_map<size_t, GPUMeshPtr> dynamicMeshes;
-				GPUMeshPtr postProcessQuadMesh;
+  namespace GPU
+  {
+    namespace Mesh
+    {
+      class GPUMeshManager
+      {
+      private:
+        std::unordered_map<size_t, GPUMeshPtr> staticMeshes;
+        std::unordered_map<size_t, GPUMeshPtr> dynamicMeshes;
+        GPUMeshPtr postProcessQuadMesh;
 
-				GPUBufferPtr staticBuffer;
+        GPUBufferPtr staticBuffer;
 
-				GPUBufferPtr dynamicFrontBuffer;
-				GPUBufferPtr dynamicBackBuffer;
+        GPUBufferPtr dynamicFrontBuffer;
+        GPUBufferPtr dynamicBackBuffer;
 
-				GPUBufferPtr postProcessQuadBuffer;
-			public:
-				GPUMeshManager();
-				~GPUMeshManager();
+        GPUBufferPtr postProcessQuadBuffer;
 
-				GPUBuffer * initializeStaticBuffer();
-				GPUBuffer * initializeDynamicBuffer();
-				GPUBuffer * initializePostProcessQuadBuffer();
+      public:
+        GPUMeshManager();
+        ~GPUMeshManager();
 
-				GPUBuffer * getStaticMeshBuffer();
-				GPUBuffer * getDynamicMeshBuffer();
-				GPUBuffer * getSyncDynamicBuffer();
-				GPUBuffer * getPostProcessQuadBuffer();
+        GPUBuffer *
+        initializeStaticBuffer();
+        GPUBuffer *
+        initializeDynamicBuffer();
+        GPUBuffer *
+        initializePostProcessQuadBuffer();
 
-				GPUMesh * getPostProcessQuad();
+        GPUBuffer *
+        getStaticMeshBuffer();
+        GPUBuffer *
+        getDynamicMeshBuffer();
+        GPUBuffer *
+        getSyncDynamicBuffer();
+        GPUBuffer *
+        getPostProcessQuadBuffer();
 
-				void generatePostProcessQuad();
+        GPUMesh *
+        getPostProcessQuad();
 
-				void swapDynamicBuffers();
+        void
+        generatePostProcessQuad();
 
-				bool meshAlreadyExists(size_t index, bool staticMesh);
-				GPUMesh * getGPUMesh(size_t index, bool staticMesh);
-				GPUMesh * createGPUMesh(size_t index, bool staticMesh);
-			};
-		}
-	}
-}
+        void
+        swapDynamicBuffers();
+
+        bool
+        meshAlreadyExists(size_t index, bool staticMesh);
+        GPUMesh *
+        getGPUMesh(size_t index, bool staticMesh);
+        GPUMesh *
+        createGPUMesh(size_t index, bool staticMesh);
+      };
+    } // namespace Mesh
+  } // namespace GPU
+} // namespace RenderLib
 
 #endif

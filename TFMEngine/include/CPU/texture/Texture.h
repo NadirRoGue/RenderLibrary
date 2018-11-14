@@ -5,45 +5,49 @@
 
 namespace RenderLib
 {
-	namespace CPU
-	{
-		namespace Texture
-		{
-			enum class TextureType
-			{
-				TEXTURE1D,
-				TEXTURE2D,
-				TEXTURE3D
-			};
+  namespace CPU
+  {
+    namespace Texture
+    {
+      enum class TextureType
+      {
+        TEXTURE1D,
+        TEXTURE2D,
+        TEXTURE3D
+      };
 
-			class Texture
-			{
-			public:
-				Memory::ByteAttribute pixels;
-				unsigned int width, height, depth;
+      class Texture
+      {
+      public:
+        Memory::ByteAttribute pixels;
+        unsigned int width, height, depth;
 
-				TextureType type;
+        TextureType type;
 
-				size_t index;
-			public:
-				Texture();
-				~Texture();
+        size_t index;
 
-				/**
-				 * Returns a memory pool attribute that allows to read the texture
-				 * as wished
-				 */
-				template<class T>
-				Memory::PoolAttribute<T, 1> getTextureReader()
-				{
-					Memory::PoolAttribute<T, 1> reader;
-					reader.setAttributeSource(pixels.getMemorySource(), pixels.getOffset(), sizeof(T), pixels.size());
+      public:
+        Texture();
+        ~Texture();
 
-					return reader;
-				}
-			};
-		}
-	}
-}
+        /**
+   * Returns a memory pool attribute that allows to read the texture
+   * as wished
+   */
+        template <class T>
+        Memory::PoolAttribute<T, 1>
+        getTextureReader()
+        {
+          Memory::PoolAttribute<T, 1> reader;
+          reader.setAttributeSource(pixels.getMemorySource(),
+                                    pixels.getOffset(), sizeof(T),
+                                    pixels.size());
+
+          return reader;
+        }
+      };
+    } // namespace Texture
+  } // namespace CPU
+} // namespace RenderLib
 
 #endif

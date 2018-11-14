@@ -10,46 +10,58 @@
 
 namespace RenderLib
 {
-	class Camera;
+  class Camera;
 
-	typedef std::unique_ptr<Camera> CameraPtr;
+  typedef std::unique_ptr<Camera> CameraPtr;
 
-	class Camera : public SceneObject, public Graphics::WindowResizeObserver
-	{
-	public:
-		MATRIX4 projectionMatrix;
-		MATRIX4 viewMatrix;
+  class Camera : public SceneObject, public Graphics::WindowResizeObserver
+  {
+  public:
+    MATRIX4 projectionMatrix;
+    MATRIX4 viewMatrix;
 
-		FLOAT farPlane;
-		FLOAT nearPlane;
-		FLOAT fov;
+    FLOAT farPlane;
+    FLOAT nearPlane;
+    FLOAT fov;
 
-	private:
-		FLOAT initWidth, initHeight;
-		VECTOR3 totalRotation;
-	public:
-		Camera();
-		~Camera();
+  private:
+    FLOAT initWidth, initHeight;
+    VECTOR3 totalRotation;
 
-		virtual void initialize();
+  public:
+    Camera();
+    ~Camera();
 
-		void setWindowSize(int width, int hegiht);
+    virtual void
+    initialize();
 
-		void setProjectionParams(const FLOAT & nearPlane, const FLOAT & farPlane, const FLOAT & FOV);
+    void
+    setWindowSize(int width, int hegiht);
 
-		void lookAt(const VECTOR3 & eye, const VECTOR3 & target, const VECTOR3 & up);
+    void
+    setProjectionParams(const FLOAT & nearPlane, const FLOAT & farPlane,
+                        const FLOAT & FOV);
 
-		void translateView(const VECTOR3 & translation);
-		void rotateView(const VECTOR3 & angles);
+    void
+    lookAt(const VECTOR3 & eye, const VECTOR3 & target, const VECTOR3 & up);
 
-		void updateViewMatrix();
+    void
+    translateView(const VECTOR3 & translation);
+    void
+    rotateView(const VECTOR3 & angles);
 
-		void onWindowResize(const int & width, const int & height);
+    void
+    updateViewMatrix();
 
-	private:
-		void initializeProjectionMatrix();
-		void initializeViewMatrix();
-	};
-}
+    void
+    onWindowResize(const int & width, const int & height);
+
+  private:
+    void
+    initializeProjectionMatrix();
+    void
+    initializeViewMatrix();
+  };
+} // namespace RenderLib
 
 #endif

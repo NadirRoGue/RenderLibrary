@@ -5,17 +5,21 @@
 
 namespace RenderLib
 {
-	namespace DefaultImpl
-	{
-		class ComponentRegisterStage : public Pipeline::PipelineStage
-		{
-		public:
-			void preRunStage();
-			void runStage();
-		private:
-			void initAndRegister();
-		};
-	}
-}
+  namespace DefaultImpl
+  {
+    class ComponentRegisterStage : public Pipeline::PipelineStage
+    {
+    public:
+      void
+      preRunStage();
+      void
+      runStage();
+
+    private:
+      void
+      initAndRegister();
+    };
+  } // namespace DefaultImpl
+} // namespace RenderLib
 
 #endif

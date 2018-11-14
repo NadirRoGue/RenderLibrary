@@ -7,34 +7,43 @@
 
 namespace RenderLib
 {
-	namespace GPU
-	{
-		namespace Light
-		{
-			class LightManager
-			{
-			private:
-				LightBuffer dirLightBuffer;
-				LightBuffer pointLightBuffer;
-				LightBuffer spotLightBuffer;
-			public:
-				LightManager();
-				~LightManager();
+  namespace GPU
+  {
+    namespace Light
+    {
+      class LightManager
+      {
+      private:
+        LightBuffer dirLightBuffer;
+        LightBuffer pointLightBuffer;
+        LightBuffer spotLightBuffer;
 
-				void initializeBuffers();
+      public:
+        LightManager();
+        ~LightManager();
 
-				LightBuffer & getDirectionalLightBuffer();
-				LightBuffer & getPointLightBuffer();
-				LightBuffer & getSpotLightBuffer();
+        void
+        initializeBuffers();
 
-				void setDirectionalLightData(std::vector<char> & bytesData);
-				void setPointLightData(std::vector<char> & bytesData);
-				void setSpotLightData(std::vector<char> & bytesData);
+        LightBuffer &
+        getDirectionalLightBuffer();
+        LightBuffer &
+        getPointLightBuffer();
+        LightBuffer &
+        getSpotLightBuffer();
 
-				void clean();
-			};
-		}
-	}
-}
+        void
+        setDirectionalLightData(std::vector<char> & bytesData);
+        void
+        setPointLightData(std::vector<char> & bytesData);
+        void
+        setSpotLightData(std::vector<char> & bytesData);
+
+        void
+        clean();
+      };
+    } // namespace Light
+  } // namespace GPU
+} // namespace RenderLib
 
 #endif

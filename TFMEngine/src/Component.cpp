@@ -2,43 +2,44 @@
 
 namespace RenderLib
 {
-	Component::Component()
-	{
-		enabled = true;
-	}
+  Component::Component()
+  {
+    enabled = true;
+  }
 
-	Component::~Component()
-	{
+  Component::~Component()
+  {
+  }
 
-	}
+  void
+  Component::initialize()
+  {
+  }
 
-	void Component::initialize()
-	{
+  void
+  Component::start()
+  {
+  }
 
-	}
+  void
+  Component::update()
+  {
+  }
 
-	void Component::start()
-	{
+  void
+  Component::fixedUpdate()
+  {
+  }
 
-	}
+  void
+  Component::destroy()
+  {
+    enabled = false;
+  }
 
-	void Component::update()
-	{
-
-	}
-
-	void Component::fixedUpdate()
-	{
-
-	}
-
-	void Component::destroy()
-	{
-		enabled = false;
-	}
-
-	std::type_index Component::getComponentType()
-	{
-		return typeid(*this);
-	}
-}
+  std::type_index
+  Component::getComponentType()
+  {
+    return typeid(*this);
+  }
+} // namespace RenderLib

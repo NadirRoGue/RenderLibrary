@@ -2,9 +2,9 @@
 #ifndef __CPU_PIPELINE_STAGE_H__
 #define __CPU_PIPELINE_STAGE_H__
 
-#include <vector>
 #include <typeindex>
 #include <typeinfo>
+#include <vector>
 
 #include <array>
 
@@ -14,103 +14,119 @@
 
 namespace RenderLib
 {
-	class EngineInstance;
+  class EngineInstance;
 
-	namespace Pipeline
-	{
-		class PipelineManager;
+  namespace Pipeline
+  {
+    class PipelineManager;
 
-		class PipelineStage
-		{
-		public:
-			EngineInstance * engineInstance;
-		public:
-			PipelineStage();
-			~PipelineStage();
-			virtual void preRunStage();
-			virtual void runStage() = 0;
-			virtual void postRunStage();
-		};
+    class PipelineStage
+    {
+    public:
+      EngineInstance * engineInstance;
 
-		class AbstractElementBasedStage : public PipelineStage
-		{
-		protected:
-			std::vector<Component*> elements;
-		public:
-			AbstractElementBasedStage();
-			~AbstractElementBasedStage();
+    public:
+      PipelineStage();
+      ~PipelineStage();
+      virtual void
+      preRunStage();
+      virtual void
+      runStage()
+          = 0;
+      virtual void
+      postRunStage();
+    };
 
-			const std::vector<Component*> & getRegisteredElements();
+    class AbstractElementBasedStage : public PipelineStage
+    {
+    protected:
+      std::vector<Component *> elements;
 
-			virtual void registerElement(Component * comp);
+    public:
+      AbstractElementBasedStage();
+      ~AbstractElementBasedStage();
 
-			virtual void runStage();
+      const std::vector<Component *> &
+      getRegisteredElements();
 
-			virtual void processElementWrapper(Component * component) = 0;
+      virtual void
+      registerElement(Component * comp);
 
-			virtual std::type_index getAssociatedElementType() = 0;
-		};
+      virtual void
+      runStage();
 
-		template<class T>
-		class ElementBasedStage : public AbstractElementBasedStage
-		{
-		public:
-			ElementBasedStage()
-			{
-			}
+      virtual void
+      processElementWrapper(Component * component)
+          = 0;
 
-			~ElementBasedStage()
-			{
+      virtual std::type_index
+      getAssociatedElementType()
+          = 0;
+    };
 
-			}
+    template <class T>
+    class ElementBasedStage : public AbstractElementBasedStage
+    {
+    public:
+      ElementBasedStage()
+      {
+      }
 
-			std::type_index getAssociatedElementType()
-			{
-				return typeid(T);
-			}
+      ~ElementBasedStage()
+      {
+      }
 
-			virtual void preRunStage()
-			{
-				if (elements.size() > 1)
-				{
-					// Check whether the type of elements we are storing
-					// can be sorted to access memory more eficiently
-					//Component * comp = elements[0];
-					//if (dynamic_cast<CPU::Memory::SortablePoolElement*>(comp) != NULL)
-					if(std::is_base_of<CPU::Memory::SortablePoolElement, T>::value)
-					{
-						std::sort(elements.begin(), elements.end(),
-						[](Component * a, Component * b) -> bool
-						{
-							if (a == NULL)
-								return false;
+      std::type_index
+      getAssociatedElementType()
+      {
+        return typeid(T);
+      }
 
-							if (b == NULL)
-								return true;
+      virtual void
+      preRunStage()
+      {
+        if (elements.size() > 1)
+        {
+          // Check whether the type of elements we are storing
+          // can be sorted to access memory more eficiently
+          //Component * comp = elements[0];
+          //if (dynamic_cast<CPU::Memory::SortablePoolElement*>(comp) != NULL)
+          if (std::is_base_of<CPU::Memory::SortablePoolElement, T>::value)
+          {
+            std::sort(
+                elements.begin(), elements.end(),
+                [](Component * a, Component * b) -> bool {
+                  if (a == NULL)
+                    return false;
 
-							CPU::Memory::SortablePoolElement * aSortable = 
-								dynamic_cast<CPU::Memory::SortablePoolElement*>(a);
-							CPU::Memory::SortablePoolElement * bSortable = 
-								dynamic_cast<CPU::Memory::SortablePoolElement*>(b);
+                  if (b == NULL)
+                    return true;
 
-							return aSortable->getIndex() < bSortable->getIndex();
-						});
-					}
-				}
-			}
+                  CPU::Memory::SortablePoolElement * aSortable
+                      = dynamic_cast<CPU::Memory::SortablePoolElement *>(a);
+                  CPU::Memory::SortablePoolElement * bSortable
+                      = dynamic_cast<CPU::Memory::SortablePoolElement *>(b);
 
-			void processElementWrapper(Component * component)
-			{
-				processElement(static_cast<T*>(component));
-			}
+                  return aSortable->getIndex() < bSortable->getIndex();
+                });
+          }
+        }
+      }
 
-			virtual void processElement(T * element)
-			{
-				// Default element based stage implementation (call component's update method)
-				static_cast<Component*>(element)->update();
-			}
-		};
-	}
-}
+      void
+      processElementWrapper(Component * component)
+      {
+        processElement(static_cast<T *>(component));
+      }
+
+      virtual void
+      processElement(T * element)
+      {
+        // Default element based stage implementation (call component's update method)
+        static_cast<Component *>(element)->update();
+      }
+    };
+  } // namespace Pipeline
+} // namespace RenderLib
 
 #endif

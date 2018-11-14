@@ -5,19 +5,25 @@
 
 namespace RenderLib
 {
-	namespace DefaultImpl
-	{
-		class LightSyncStage : public Pipeline::PipelineStage
-		{
-		public:
-			void preRunStage();
-			void runStage();
-		private:
-			void syncDirLights();
-			void syncPLLights();
-			void syncSLLights();
-		};
-	}
-}
+  namespace DefaultImpl
+  {
+    class LightSyncStage : public Pipeline::PipelineStage
+    {
+    public:
+      void
+      preRunStage();
+      void
+      runStage();
+
+    private:
+      void
+      syncDirLights();
+      void
+      syncPLLights();
+      void
+      syncSLLights();
+    };
+  } // namespace DefaultImpl
+} // namespace RenderLib
 
 #endif

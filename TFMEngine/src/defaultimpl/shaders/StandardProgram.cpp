@@ -2,18 +2,16 @@
 
 namespace RenderLib
 {
-	namespace DefaultImpl
-	{
-		StandardProgram::StandardProgram()
-			: ShaderProgram()
-		{
-			vShaderF = "shaders/default/standardprogram.vert";
-			fShaderF = "shaders/default/standardprogram.frag";
-		}
+  namespace DefaultImpl
+  {
+    StandardProgram::StandardProgram() : ShaderProgram()
+    {
+      vShaderF = "shaders/default/standardprogram.vert";
+      fShaderF = "shaders/default/standardprogram.frag";
+    }
 
-		StandardProgram::~StandardProgram()
-		{
-
-		}
-	}
-}
+    StandardProgram::~StandardProgram()
+    {
+    }
+  } // namespace DefaultImpl
+} // namespace RenderLib

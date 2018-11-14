@@ -10,125 +10,131 @@
 
 namespace RenderLib
 {
-	namespace Material
-	{
-		// Its a copy from the IO::LoadedParameter class ... but this way we reduce dependency
-		template<class T>
-		class MaterialParameter
-		{
-		private:
-			T value;
-			bool exists;
-		public:
-			MaterialParameter()
-				: exists(false)
-			{
-			}
+  namespace Material
+  {
+    // Its a copy from the IO::LoadedParameter class ... but this way we reduce dependency
+    template <class T> class MaterialParameter
+    {
+    private:
+      T value;
+      bool exists;
 
-			void setData(const T value, const bool & exists)
-			{
-				this->value = value;
-				this->exists = exists;
-			}
+    public:
+      MaterialParameter() : exists(false)
+      {
+      }
 
-			void set(const T & newVal)
-			{
-				value = newVal;
-				exists = true;
-			}
+      void
+      setData(const T value, const bool & exists)
+      {
+        this->value  = value;
+        this->exists = exists;
+      }
 
-			T & get()
-			{
-				return value;
-			}
+      void
+      set(const T & newVal)
+      {
+        value  = newVal;
+        exists = true;
+      }
 
-			T & operator()()
-			{
-				return value;
-			}
+      T &
+      get()
+      {
+        return value;
+      }
 
-			const T & get() const
-			{
-				return value;
-			}
+      T &
+      operator()()
+      {
+        return value;
+      }
 
-			const T & operator()() const
-			{
-				return value;
-			}
+      const T &
+      get() const
+      {
+        return value;
+      }
 
-			bool paramExists()
-			{
-				return exists;
-			}
-		};
+      const T &
+      operator()() const
+      {
+        return value;
+      }
 
-		class MaterialTexture
-		{
-		private:
-			GPU::Texture::GPUTexture * texture;
-			bool exists;
-		public:
-			GPU::Texture::GPUTextureConfig config;
-			std::string fileName;
-		public:
-			MaterialTexture();
-			bool textureExists();
-			GPU::Texture::GPUTexture * getTexture();
-			GPU::Texture::GPUTexture * getTexture() const;
-			void setTexture(GPU::Texture::GPUTexture * texture);
-		};
+      bool
+      paramExists()
+      {
+        return exists;
+      }
+    };
 
-		class Material
-		{
-		public:
-			unsigned int index;
-			MaterialParameter<std::string> name;
-			MaterialParameter<VECTOR3> diffuseColor;
-			MaterialParameter<VECTOR3> specularColor;
-			MaterialParameter<VECTOR3> ambientColor;
-			MaterialParameter<VECTOR3> emissiveColor;
-			MaterialParameter<VECTOR3> transparentColor; //wtf
-			MaterialParameter<FLOAT> opacity;
-			MaterialParameter<FLOAT> shininess;
-			MaterialParameter<FLOAT> specularScale; // A.K.A shininessStrength
-			MaterialParameter<FLOAT> indexOfRefraction;
+    class MaterialTexture
+    {
+    private:
+      GPU::Texture::GPUTexture * texture;
+      bool exists;
 
-			MaterialTexture diffuseTexture;
-			MaterialTexture specularTexture;
-			MaterialTexture shininessTexture;
-			MaterialTexture ambientTexture;
-			MaterialTexture emissiveTexture;
-			MaterialTexture normalMapTexture;
-			MaterialTexture opacityTexture;
-			MaterialTexture heightMapTexture;
-			MaterialTexture lightMapTexture;
-			MaterialTexture displacementTexture;
-			MaterialTexture reflectionTexture;
-			MaterialTexture otherTexture;
+    public:
+      GPU::Texture::GPUTextureConfig config;
+      std::string fileName;
 
-			bool wireFrameRender;
-			bool twoSidedRender;
+    public:
+      MaterialTexture();
+      bool
+      textureExists();
+      GPU::Texture::GPUTexture *
+      getTexture();
+      GPU::Texture::GPUTexture *
+      getTexture() const;
+      void
+      setTexture(GPU::Texture::GPUTexture * texture);
+    };
 
-		private:
-			std::type_index gpuProgram;
-			unsigned long long uberMask;
-		public:
-			Material();
-			~Material();
+    class Material
+    {
+    public:
+      unsigned int index;
+      MaterialParameter<std::string> name;
+      MaterialParameter<VECTOR3> diffuseColor;
+      MaterialParameter<VECTOR3> specularColor;
+      MaterialParameter<VECTOR3> ambientColor;
+      MaterialParameter<VECTOR3> emissiveColor;
+      MaterialParameter<VECTOR3> transparentColor; //wtf
+      MaterialParameter<FLOAT> opacity;
+      MaterialParameter<FLOAT> shininess;
+      MaterialParameter<FLOAT> specularScale; // A.K.A shininessStrength
+      MaterialParameter<FLOAT> indexOfRefraction;
 
-			template<class T>
-			void useShader()
-			{
-				gpuProgram = typeid(T);
-			}
+      MaterialTexture diffuseTexture;
+      MaterialTexture specularTexture;
+      MaterialTexture shininessTexture;
+      MaterialTexture ambientTexture;
+      MaterialTexture emissiveTexture;
+      MaterialTexture normalMapTexture;
+      MaterialTexture opacityTexture;
+      MaterialTexture heightMapTexture;
+      MaterialTexture lightMapTexture;
+      MaterialTexture displacementTexture;
+      MaterialTexture reflectionTexture;
+      MaterialTexture otherTexture;
 
-			void setUberMask(unsigned long long mask);
-			unsigned long long getUberMask();
+      bool wireFrameRender;
+      bool twoSidedRender;
 
-			const std::type_index & getShaderType();
-		};
-	}
-}
+    private:
+      unsigned long long uberMask;
+
+    public:
+      Material();
+      ~Material();
+
+      void
+      setUberMask(unsigned long long mask);
+      unsigned long long
+      getUberMask();
+    };
+  } // namespace Material
+} // namespace RenderLib
 
 #endif

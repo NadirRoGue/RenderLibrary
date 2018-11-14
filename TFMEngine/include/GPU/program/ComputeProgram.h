@@ -5,28 +5,33 @@
 
 namespace RenderLib
 {
-	namespace GPU
-	{
-		namespace Program
-		{
-			class ComputeProgram : public Program
-			{
-			protected:
-				std::string compShaderFile;
-			private:
-				unsigned int compShader;
-			public:
-				ComputeProgram();
-				~ComputeProgram();
+  namespace GPU
+  {
+    namespace Program
+    {
+      class ComputeProgram : public Program
+      {
+      protected:
+        std::string compShaderFile;
 
-				void initialize(std::vector<std::string> & definesBuffer);
+      private:
+        unsigned int compShader;
 
-				void destroyShaders();
+      public:
+        ComputeProgram();
+        ~ComputeProgram();
 
-				void execute(unsigned int xSize, unsigned int ySize, unsigned int zSize);
-			};
-		}
-	}
-}
+        void
+        initialize(std::vector<std::string> & definesBuffer);
+
+        void
+        destroyShaders();
+
+        void
+        execute(unsigned int xSize, unsigned int ySize, unsigned int zSize);
+      };
+    } // namespace Program
+  } // namespace GPU
+} // namespace RenderLib
 
 #endif

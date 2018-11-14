@@ -7,14 +7,18 @@
 
 namespace RenderLib
 {
-	namespace DefaultImpl
-	{
-		class CompactTextureBuilder : public CPU::Memory::PoolObjectBuilder<CPU::Texture::Texture>
-		{
-		public:
-			void configureAttributes(CPU::Memory::MemoryBlock * memBlock, CPU::Texture::Texture * resource, CPU::Memory::BlockConfiguration * data);
-		};
-	}
-}
+  namespace DefaultImpl
+  {
+    class CompactTextureBuilder
+      : public CPU::Memory::PoolObjectBuilder<CPU::Texture::Texture>
+    {
+    public:
+      void
+      configureAttributes(CPU::Memory::MemoryBlock * memBlock,
+                          CPU::Texture::Texture * resource,
+                          CPU::Memory::BlockConfiguration * data);
+    };
+  } // namespace DefaultImpl
+} // namespace RenderLib
 
 #endif

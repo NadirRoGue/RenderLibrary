@@ -1,8 +1,8 @@
 #ifndef __RENDERLIB_RENDER_RENDERINGPIPELINE_H__
 #define __RENDERLIB_RENDER_RENDERINGPIPELINE_H__
 
-#include <vector>
 #include <memory>
+#include <vector>
 
 #include "defaultimpl/components/MeshRenderer.h"
 
@@ -13,89 +13,108 @@
 
 namespace RenderLib
 {
-	class EngineInstance;
+  class EngineInstance;
 
-	namespace Render
-	{
-		class RenderingPipeline
-		{
-		private:
-			AbstractRenderingStagePtr pickStage;
+  namespace Render
+  {
+    class RenderingPipeline
+    {
+    private:
+      AbstractRenderingStagePtr pickStage;
 
-			std::vector<AbstractRenderingStagePtr> renderStages;
-			EngineInstance * engineInstance;
-		public:
-			RenderingPipeline();
-			~RenderingPipeline();
+      std::vector<AbstractRenderingStagePtr> renderStages;
+      EngineInstance * engineInstance;
 
-			void setEngineInstance(EngineInstance * engineInstance);
-			void initializeStages();
-			void executePipelineIteration();
-			void finalizeStages();
+    public:
+      RenderingPipeline();
+      ~RenderingPipeline();
 
-			void registerRenderable(DefaultImpl::MeshRenderer * renderable);
+      void
+      setEngineInstance(EngineInstance * engineInstance);
+      void
+      initializeStages();
+      void
+      executePipelineIteration();
+      void
+      finalizeStages();
 
-			template<class T>
-			T * addRenderStage()
-			{
-				if (!std::is_base_of<AbstractRenderingStage, T>::value)
-				{
-					std::string message = "RenderingPipeline: Attempted to add a non AbstractRenderingStage stage to the pipeline (" + std::string(typeid(T).name()) + ")";
-					throw EngineException(message.c_str());
-				}
+      void
+      registerRenderable(DefaultImpl::MeshRenderer * renderable);
 
-				std::unique_ptr<AbstractRenderingStage> newStage = std::make_unique<T>();
-				T * result = static_cast<T*>(newStage.get());
+      template <class T>
+      T *
+      addRenderStage()
+      {
+        if (!std::is_base_of<AbstractRenderingStage, T>::value)
+        {
+          std::string message = "RenderingPipeline: Attempted to add a non "
+                                "AbstractRenderingStage stage to the pipeline ("
+              + std::string(typeid(T).name()) + ")";
+          throw EngineException(message.c_str());
+        }
 
-				if (renderStages.size() > 0)
-				{
-					AbstractRenderingStage * prev = renderStages[renderStages.size() - 1].get();
-					if (prev)
-					{
-						prev->nextStage = result;
-						newStage.get()->prevStage = prev;
-					}
-				}
+        std::unique_ptr<AbstractRenderingStage> newStage
+            = std::make_unique<T>();
+        T * result = static_cast<T *>(newStage.get());
 
-				renderStages.push_back(std::move(newStage));
+        if (renderStages.size() > 0)
+        {
+          AbstractRenderingStage * prev
+              = renderStages[renderStages.size() - 1].get();
+          if (prev)
+          {
+            prev->nextStage           = result;
+            newStage.get()->prevStage = prev;
+          }
+        }
 
-				return result;
-			}
+        renderStages.push_back(std::move(newStage));
 
-			template<class T>
-			void removeStage()
-			{
-				if (!std::is_base_of<AbstractRenderingStage, T>::value)
-				{
-					std::string message = "RenderingPipeline: Attempted to remove a non AbstractRenderingStage stage to the pipeline (" + std::string(typeid(T).name()) + ")";
-					throw EngineException(message.c_str());
-				}
+        return result;
+      }
 
-				bool found = false;
-				auto previousIt = renderStages.begin();
-				for (auto it = renderStages.begin(); it != renderStages.end() && !found; it++)
-				{
-					AbstractRenderingStage * stage = (*it).get();
-					if (dynamic_cast<T>(stage) != NULL)
-					{
-						// remove stage
-						renderStages.erase(it);
-						found = true;
+      template <class T>
+      void
+      removeStage()
+      {
+        if (!std::is_base_of<AbstractRenderingStage, T>::value)
+        {
+          std::string message = "RenderingPipeline: Attempted to remove a non "
+                                "AbstractRenderingStage stage to the pipeline ("
+              + std::string(typeid(T).name()) + ")";
+          throw EngineException(message.c_str());
+        }
 
-						it++;
+        bool found      = false;
+        auto previousIt = renderStages.begin();
+        for (auto it = renderStages.begin(); it != renderStages.end() && !found;
+             it++)
+        {
+          AbstractRenderingStage * stage = (*it).get();
+          if (dynamic_cast<T>(stage) != NULL)
+          {
+            // remove stage
+						stage->finalize();
+            renderStages.erase(it);
+            found = true;
 
-						// Fix pipeline
-						(*previousIt).get()->nextStage = (*it).get();
-						(*it).get()->prevStage = (*previousIt);
-					}
-					else
-					{
-						previousIt = it;
-					}
-				}
-			}
-		};
-	}
-}
+            it++;
+
+            // Fix pipeline
+            (*previousIt).get()->nextStage = (*it).get();
+            (*it).get()->prevStage         = (*previousIt);
+          }
+          else
+          {
+            previousIt = it;
+          }
+        }
+      }
+
+			void
+			removeAllStages();
+    };
+  } // namespace Render
+} // namespace RenderLib
 
 #endif

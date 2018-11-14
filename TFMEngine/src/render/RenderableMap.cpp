@@ -8,125 +8,139 @@
 
 namespace RenderLib
 {
-	namespace Render
-	{
-		RenderableMap::RenderableMap()
-		{
+  namespace Render
+  {
+    RenderableMap::RenderableMap()
+    {
+    }
 
-		}
+    RenderableMap::~RenderableMap()
+    {
+    }
 
-		RenderableMap::~RenderableMap()
-		{
+    void
+    RenderableMap::setName(const std::string & name)
+    {
+      mapRenderOwnerName = name;
+    }
 
-		}
+    const std::string &
+    RenderableMap::getName()
+    {
+      return mapRenderOwnerName;
+    }
 
-		void RenderableMap::setName(const std::string & name)
-		{
-			mapRenderOwnerName = name;
-		}
+    size_t
+    RenderableMap::getSize()
+    {
+      return allRenderables.size();
+    }
 
-		const std::string & RenderableMap::getName()
-		{
-			return mapRenderOwnerName;
-		}
+    const std::vector<DefaultImpl::MeshRenderer *> &
+    RenderableMap::getAllRenderables()
+    {
+      return allRenderables;
+    }
 
-		size_t RenderableMap::getSize()
-		{
-			return allRenderables.size();
-		}
+    void
+    RenderableMap::addRenderable(GPU::Program::ProgramManager & programManager,
+                                 DefaultImpl::MeshRenderer * renderable)
+    {
+      std::type_index & progType       = renderable->shaderType;
+      GPU::Program::UberParamMask mask = renderable->material->getUberMask();
 
-		const std::vector<DefaultImpl::MeshRenderer *> & RenderableMap::getAllRenderables()
-		{
-			return allRenderables;
-		}
+      auto & innerMap = renderablesMap[progType];
 
-		void RenderableMap::addRenderable(GPU::Program::ProgramManager & programManager, DefaultImpl::MeshRenderer * renderable)
-		{
-			std::type_index progType = renderable->material->getShaderType();
-			GPU::Program::UberParamMask mask = renderable->material->getUberMask();
+      auto it = innerMap.find(mask);
+      if (it == innerMap.end())
+      {
+        RenderableStub newStub;
+        GPU::Program::Program * program
+            = programManager.getProgram(mask, progType);
 
-			auto & innerMap = renderablesMap[progType];
+        GPU::Program::ShaderProgram * castedProg = NULL;
+        if (program != NULL
+            && (castedProg
+                = static_cast<GPU::Program::ShaderProgram *>(program))
+                != NULL)
+        {
+          newStub.program = castedProg;
+          newStub.renderables.push_back(renderable);
+          innerMap[mask] = newStub;
+          allRenderables.push_back(renderable);
+        }
+        else
+        {
+          throw EngineException("RenderableMap: Attempted to register a non "
+                                "ShaderProgram program instance for a mesh");
+        }
+      }
+      else
+      {
+        it->second.renderables.push_back(renderable);
+        allRenderables.push_back(renderable);
+      }
+    }
 
-			auto it = innerMap.find(mask);
-			if (it == innerMap.end())
-			{
-				RenderableStub newStub;
-				GPU::Program::Program * program = programManager.getProgram(mask, progType);
+    void
+    RenderableMap::initializeMap()
+    {
+      for (auto it = renderablesMap.begin(); it != renderablesMap.end(); it++)
+      {
+        for (auto innerIt = it->second.begin(); innerIt != it->second.end();
+             innerIt++)
+        {
+          RenderableStub & stub = innerIt->second;
 
-				GPU::Program::ShaderProgram * castedProg = NULL;
-				if (program != NULL && (castedProg = static_cast<GPU::Program::ShaderProgram*>(program)) != NULL)
-				{
-					newStub.program = castedProg;
-					newStub.renderables.push_back(renderable);
-					innerMap[mask] = newStub;
-					allRenderables.push_back(renderable);
-				}
-				else
-				{
-					throw EngineException("RenderableMap: Attempted to register a non ShaderProgram program instance for a mesh");
-				}
-			}
-			else
-			{
-				it->second.renderables.push_back(renderable);
-				allRenderables.push_back(renderable);
-			}
-		}
+          stub.program->bind();
 
-		void RenderableMap::initializeMap()
-		{
-			for (auto it = renderablesMap.begin(); it != renderablesMap.end(); it++)
-			{
-				for (auto innerIt = it->second.begin(); innerIt != it->second.end(); innerIt++)
-				{
-					RenderableStub & stub = innerIt->second;
+          for (auto renderable : stub.renderables)
+          {
+            stub.program->configureMeshParameters(*renderable->gpuMesh);
+          }
+        }
+      }
+    }
 
-					stub.program->bind();
+    void
+    RenderableMap::renderMap(const Camera & fromCamera,
+                             EngineInstance * instance)
+    {
+      for (auto it = renderablesMap.begin(); it != renderablesMap.end(); it++)
+      {
+        for (auto innerIt = it->second.begin(); innerIt != it->second.end();
+             innerIt++)
+        {
+          RenderableStub & stub = innerIt->second;
 
-					for (auto renderable : stub.renderables)
-					{
-						stub.program->configureMeshParameters(*renderable->gpuMesh);
-					}
-				}
-			}
-		}
+          stub.program->bind();
+          stub.program->onFrameBegin(instance);
 
-		void RenderableMap::renderMap(const Camera & fromCamera, EngineInstance * instance)
-		{
-			for (auto it = renderablesMap.begin(); it != renderablesMap.end(); it++)
-			{
-				for (auto innerIt = it->second.begin(); innerIt != it->second.end(); innerIt++)
-				{
-					RenderableStub & stub = innerIt->second;
-					
-					stub.program->bind(); 
-					stub.program->onFrameBegin(instance);
-					
-					for (auto renderable : stub.renderables)
-					{
-						if (!renderable->enabled)
-						{
-							continue;
-						}
+          for (auto renderable : stub.renderables)
+          {
+            if (!renderable->enabled)
+            {
+              continue;
+            }
 
-						GPU::Mesh::GPUMesh * mesh = renderable->gpuMesh;
+            GPU::Mesh::GPUMesh * mesh = renderable->gpuMesh;
 
-						stub.program->configureMeshParameters(*(renderable->gpuMesh));
-						stub.program->sendMaterialParameters(*(renderable->material));
-						stub.program->sendTransformParameters(*(renderable->object), fromCamera);
-						stub.program->onRenderObject(*renderable, fromCamera);
-						GLenum drawMode = renderable->material->wireFrameRender ? GL_LINES : GL_TRIANGLES;
+            stub.program->configureMeshParameters(*(renderable->gpuMesh));
+            stub.program->sendMaterialParameters(*(renderable->material));
+            stub.program->sendTransformParameters(*(renderable->object),
+                                                  fromCamera);
+            stub.program->onRenderObject(*renderable, fromCamera);
+            GLenum drawMode = renderable->material->wireFrameRender
+                ? GL_LINES
+                : GL_TRIANGLES;
 
-						glDrawElements
-						(
-							drawMode,
-							(GLsizei)(mesh->faces.numElements * mesh->vertices.elementCount),
-							GL_UNSIGNED_INT,
-							(void*)mesh->faceIndexOffset
-						);
-					}
-				}
-			}
-		}
-	}
-}
+            glDrawElements(drawMode,
+                           (GLsizei)(mesh->faces.numElements
+                                     * mesh->vertices.elementCount),
+                           GL_UNSIGNED_INT, (void *)mesh->faceIndexOffset);
+          }
+        }
+      }
+    }
+  } // namespace Render
+} // namespace RenderLib

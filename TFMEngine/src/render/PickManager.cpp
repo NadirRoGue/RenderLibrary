@@ -2,57 +2,103 @@
 
 #include "logger/Log.h"
 
+#include "defaultimpl/components/MeshRenderer.h"
+
 namespace RenderLib
 {
-	namespace Render
-	{
-		std::unordered_map<PickTypeEnum, std::unique_ptr<AbstractPickHandler>> PickManager::pickHandlers;
+  namespace Render
+  {
+    PickManager::PickManager()
+      : lastPick(nullptr), lastArrow(nullptr), activeScene(nullptr)
+    {
+    }
 
-		AbstractPickHandler * PickManager::getPickHandler(PickTypeEnum type)
-		{
-			auto it = pickHandlers.find(type);
-			if (it != pickHandlers.end())
-			{
-				return it->second.get();
-			}
+    PickManager::~PickManager()
+    {
+    }
 
-			return NULL;
-		}
+    void
+    PickManager::setWorkingScene(Scene * scene)
+    {
+      activeScene = scene;
+    }
 
-		PickManager::PickManager()
-		{
+    void
+    PickManager::setLastPick(SceneObject * obj)
+    {
+      if (activeScene == nullptr)
+      {
+        return;
+      }
 
-		}
+      SceneObject * zArrow = activeScene->getZArrow();
+      SceneObject * yArrow = activeScene->getYArrow();
+      SceneObject * xArrow = activeScene->getXArrow();
 
-		PickManager::~PickManager()
-		{
+      if (obj == zArrow || obj == yArrow || obj == xArrow)
+      {
+        activeScene->getInputManager().consumeMouseInput();
+        lastArrow = obj;
+        return;
+      }
 
-		}
+      if (obj != nullptr)
+      {
+        activeScene->getInputManager().consumeMouseInput();
+        lastPick                                                   = obj;
+        zArrow->getComponent<DefaultImpl::MeshRenderer>()->enabled = true;
+        yArrow->getComponent<DefaultImpl::MeshRenderer>()->enabled = true;
+        xArrow->getComponent<DefaultImpl::MeshRenderer>()->enabled = true;
+      }
+      else
+      {
+        if (lastArrow != nullptr)
+        {
+          lastArrow = nullptr;
+          activeScene->getInputManager().consumeMouseInput();
+        }
+        else if (lastPick != nullptr)
+        {
+          zArrow->getComponent<DefaultImpl::MeshRenderer>()->enabled = false;
+          yArrow->getComponent<DefaultImpl::MeshRenderer>()->enabled = false;
+          xArrow->getComponent<DefaultImpl::MeshRenderer>()->enabled = false;
+          lastPick                                                   = nullptr;
+          activeScene->getInputManager().consumeMouseInput();
+        }
+      }
+    }
 
-		PickType & PickManager::getLastPick()
-		{
-			return lastPick;
-		}
+    void
+    PickManager::updatePicking()
+    {
+      if (activeScene != nullptr && lastPick != nullptr)
+      {
+        SceneObject * zArrow = activeScene->getZArrow();
+        SceneObject * yArrow = activeScene->getYArrow();
+        SceneObject * xArrow = activeScene->getXArrow();
 
-		void PickManager::doPick(PickingRenderStage * stage, PickTypeEnum type)
-		{
-			auto it = pickHandlers.find(type);
-			if (it != pickHandlers.end())
-			{
-				AbstractPickHandler * handler = it->second.get();
-				if (handler)
-				{
-					lastPick = handler->doPicking(stage);
-				}
-				else
-				{
-					Logger::Log::getInstance().logWarning("PickManager: A NULL pick handler was found");
-				}
-			}
-			else
-			{
-				Logger::Log::getInstance().logWarning("PickManager: No pick handler supplied for the given type");
-			}
-		}
-	}
-}
+        Transform & transform = lastPick->transform;
+
+        zArrow->transform = transform;
+        zArrow->transform.setScale(VECTOR3(1, 1, 1));
+        yArrow->transform = transform;
+        yArrow->transform.setScale(VECTOR3(1, 1, 1));
+        xArrow->transform = transform;
+        xArrow->transform.setScale(VECTOR3(1, 1, 1));
+      }
+    }
+
+    SceneObject *
+    PickManager::getLastPick()
+    {
+      return lastPick;
+    }
+
+    SceneObject *
+    PickManager::getLastPickArrow()
+    {
+      return lastArrow;
+    }
+
+  } // namespace Render
+} // namespace RenderLib

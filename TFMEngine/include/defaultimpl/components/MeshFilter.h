@@ -9,18 +9,21 @@
 
 namespace RenderLib
 {
-	namespace DefaultImpl
-	{
-		class MeshFilter : public Component, public CPU::Memory::SortablePoolElement
-		{
-		public:
-			CPU::Mesh::Mesh * mesh;
-		public:
-			MeshFilter();
-			void start();
-			size_t getIndex();
-		};
-	}
-}
+  namespace DefaultImpl
+  {
+    class MeshFilter : public Component, public CPU::Memory::SortablePoolElement
+    {
+    public:
+      CPU::Mesh::Mesh * mesh;
+
+    public:
+      MeshFilter();
+      void
+      start();
+      size_t
+      getIndex();
+    };
+  } // namespace DefaultImpl
+} // namespace RenderLib
 
 #endif

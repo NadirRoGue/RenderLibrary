@@ -2,115 +2,130 @@
 
 namespace RenderLib
 {
-	namespace GPU
-	{
-		namespace Texture
-		{
-			GPUTexture::GPUTexture()
-				:id(-1)
-			{
-			}
+  namespace GPU
+  {
+    namespace Texture
+    {
+      GPUTexture::GPUTexture() : id(-1)
+      {
+      }
 
-			GPUTexture::~GPUTexture()
-			{
-			}
+      GPUTexture::~GPUTexture()
+      {
+      }
 
-			void GPUTexture::generate()
-			{
-				glGenTextures(1, &id);
-			}
+      void
+      GPUTexture::generate()
+      {
+        glGenTextures(1, &id);
+      }
 
-			void GPUTexture::bind()
-			{
-				glBindTexture(getTexturType(), id);
-			}
+      void
+      GPUTexture::bind()
+      {
+        glBindTexture(getTexturType(), id);
+      }
 
-			void GPUTexture::unBind()
-			{
-				glBindTexture(getTexturType(), 0);
-			}
+      void
+      GPUTexture::unBind()
+      {
+        glBindTexture(getTexturType(), 0);
+      }
 
-			unsigned int GPUTexture::getId()
-			{
-				return id;
-			}
+      unsigned int
+      GPUTexture::getId()
+      {
+        return id;
+      }
 
-			void GPUTexture::setSize(unsigned int width, unsigned int height, unsigned int depth)
-			{
-				this->width = width;
-				this->height = height;
-				this->depth = depth;
-			}
+      void
+      GPUTexture::setSize(unsigned int width, unsigned int height,
+                          unsigned int depth)
+      {
+        this->width  = width;
+        this->height = height;
+        this->depth  = depth;
+      }
 
-			const unsigned int & GPUTexture::getWidth()
-			{
-				return width;
-			}
+      const unsigned int &
+      GPUTexture::getWidth()
+      {
+        return width;
+      }
 
-			const unsigned int & GPUTexture::getHeight()
-			{
-				return height;
-			}
+      const unsigned int &
+      GPUTexture::getHeight()
+      {
+        return height;
+      }
 
-			const unsigned int & GPUTexture::getDepth()
-			{
-				return depth;
-			}
+      const unsigned int &
+      GPUTexture::getDepth()
+      {
+        return depth;
+      }
 
-			GPUTextureConfig & GPUTexture::getConfig()
-			{
-				return config;
-			}
+      GPUTextureConfig &
+      GPUTexture::getConfig()
+      {
+        return config;
+      }
 
-			bool GPUTexture::isMutable()
-			{
-				return config.isMutable;
-			}
+      bool
+      GPUTexture::isMutable()
+      {
+        return config.isMutable;
+      }
 
-			void GPUTexture::upload(void * data, unsigned int width, unsigned int height, unsigned int depth)
-			{
-				setSize(width, height, depth);
+      void
+      GPUTexture::upload(void * data, unsigned int width, unsigned int height,
+                         unsigned int depth)
+      {
+        setSize(width, height, depth);
 
-				if (id == -1)
-				{
-					generate();
-				}
+        if (id == -1)
+        {
+          generate();
+        }
 
-				bind();
+        bind();
 
-				if (config.isMutable)
-				{
-					uploadMutable(data);
-				}
-				else
-				{
-					uploadInmutable(data);
-				}
+        if (config.isMutable)
+        {
+          uploadMutable(data);
+        }
+        else
+        {
+          uploadInmutable(data);
+        }
 
-				GLenum type = getTexturType();
-				glTexParameteri(type, GL_TEXTURE_MIN_FILTER, config.minificationFilter);
-				glTexParameteri(type, GL_TEXTURE_MAG_FILTER, config.magnificationFilter);
-				glTexParameteri(type, GL_TEXTURE_WRAP_T, config.tComponentWrapType);
-				glTexParameteri(type, GL_TEXTURE_WRAP_S, config.sComponentWrapType);
-				glTexParameteri(type, GL_TEXTURE_WRAP_R, config.rComponentWrapType);
+        GLenum type = getTexturType();
+        glTexParameteri(type, GL_TEXTURE_MIN_FILTER, config.minificationFilter);
+        glTexParameteri(type, GL_TEXTURE_MAG_FILTER,
+                        config.magnificationFilter);
+        glTexParameteri(type, GL_TEXTURE_WRAP_T, config.tComponentWrapType);
+        glTexParameteri(type, GL_TEXTURE_WRAP_S, config.sComponentWrapType);
+        glTexParameteri(type, GL_TEXTURE_WRAP_R, config.rComponentWrapType);
 
-				if (config.anysotropyLevel > 0.0f)
-				{
-					glTexParameterf(type, GL_TEXTURE_MAX_ANISOTROPY_EXT, config.anysotropyLevel);
-				}
-				
-				if (config.generateMipMaps)
-				{
-					glGenerateMipmap(type);
-				}
+        if (config.anysotropyLevel > 0.0f)
+        {
+          glTexParameterf(type, GL_TEXTURE_MAX_ANISOTROPY_EXT,
+                          config.anysotropyLevel);
+        }
 
-				unBind();
-			}
+        if (config.generateMipMaps)
+        {
+          glGenerateMipmap(type);
+        }
 
-			void GPUTexture::destroy()
-			{
-				glDeleteTextures(1, &id);
-			}
-		}
-	}
-}
+        unBind();
+      }
+
+      void
+      GPUTexture::destroy()
+      {
+        glDeleteTextures(1, &id);
+      }
+    } // namespace Texture
+  } // namespace GPU
+} // namespace RenderLib

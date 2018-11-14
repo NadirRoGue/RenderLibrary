@@ -7,17 +7,22 @@
 
 namespace RenderLib
 {
-	namespace DefaultImpl
-	{
-		class ShaderCompilationStage : public Pipeline::ElementBasedStage<DefaultImpl::MeshRenderer>
-		{
-		public:
-			void preRunStage();
-			void runStage();
-		private:
-			void compileShaders();
-		};
-	}
-}
+  namespace DefaultImpl
+  {
+    class ShaderCompilationStage
+      : public Pipeline::ElementBasedStage<DefaultImpl::MeshRenderer>
+    {
+    public:
+      void
+      preRunStage();
+      void
+      runStage();
+
+    private:
+      void
+      compileShaders();
+    };
+  } // namespace DefaultImpl
+} // namespace RenderLib
 
 #endif

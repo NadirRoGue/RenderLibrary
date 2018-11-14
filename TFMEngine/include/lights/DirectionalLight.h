@@ -5,26 +5,29 @@
 
 namespace RenderLib
 {
-	namespace Lighting
-	{
-		typedef struct DirectionalLightData : public LightData
-		{
-			float lightDirection[4];
-		} DirectionalLightData;
+  namespace Lighting
+  {
+    typedef struct DirectionalLightData : public LightData
+    {
+      float lightDirection[4];
+    } DirectionalLightData;
 
-		class DirectionalLight : public Light<DirectionalLightData>
-		{
-		private:
-			VECTOR4 direction;
-		public:
-			DirectionalLight();
-			~DirectionalLight();
+    class DirectionalLight : public Light<DirectionalLightData>
+    {
+    private:
+      VECTOR4 direction;
 
-			void setDirection(const VECTOR3 & direction);
+    public:
+      DirectionalLight();
+      ~DirectionalLight();
 
-			void update(const Camera & camera);
-		};
-	}
-}
+      void
+      setDirection(const VECTOR3 & direction);
+
+      void
+      update(const Camera & camera);
+    };
+  } // namespace Lighting
+} // namespace RenderLib
 
 #endif

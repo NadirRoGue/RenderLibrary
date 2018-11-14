@@ -6,63 +6,69 @@
 
 namespace RenderLib
 {
-	namespace GPU
-	{
-		namespace Light
-		{
-			LightManager::LightManager()
-			{
+  namespace GPU
+  {
+    namespace Light
+    {
+      LightManager::LightManager()
+      {
+      }
 
-			}
+      LightManager::~LightManager()
+      {
+      }
 
-			LightManager::~LightManager()
-			{
+      void
+      LightManager::initializeBuffers()
+      {
+        dirLightBuffer.generate();
+        pointLightBuffer.generate();
+        spotLightBuffer.generate();
+      }
 
-			}
+      LightBuffer &
+      LightManager::getDirectionalLightBuffer()
+      {
+        return dirLightBuffer;
+      }
 
-			void LightManager::initializeBuffers()
-			{
-				dirLightBuffer.generate();
-				pointLightBuffer.generate();
-				spotLightBuffer.generate();
-			}
+      LightBuffer &
+      LightManager::getPointLightBuffer()
+      {
+        return pointLightBuffer;
+      }
 
-			LightBuffer & LightManager::getDirectionalLightBuffer()
-			{
-				return dirLightBuffer;
-			}
+      LightBuffer &
+      LightManager::getSpotLightBuffer()
+      {
+        return spotLightBuffer;
+      }
 
-			LightBuffer & LightManager::getPointLightBuffer()
-			{
-				return pointLightBuffer;
-			}
+      void
+      LightManager::setDirectionalLightData(std::vector<char> & bytesData)
+      {
+        dirLightBuffer.setData(&bytesData[0], bytesData.size());
+      }
 
-			LightBuffer & LightManager::getSpotLightBuffer()
-			{
-				return spotLightBuffer;
-			}
+      void
+      LightManager::setPointLightData(std::vector<char> & bytesData)
+      {
+        pointLightBuffer.setData(&bytesData[0], bytesData.size());
+      }
 
-			void LightManager::setDirectionalLightData(std::vector<char> & bytesData)
-			{
-				dirLightBuffer.setData(&bytesData[0], bytesData.size());
-			}
+      void
+      LightManager::setSpotLightData(std::vector<char> & bytesData)
+      {
+        spotLightBuffer.setData(&bytesData[0], bytesData.size());
+      }
 
-			void LightManager::setPointLightData(std::vector<char> & bytesData)
-			{
-				pointLightBuffer.setData(&bytesData[0], bytesData.size());
-			}
-
-			void LightManager::setSpotLightData(std::vector<char> & bytesData)
-			{
-				spotLightBuffer.setData(&bytesData[0], bytesData.size());
-			}
-
-			void LightManager::clean()
-			{
-				dirLightBuffer.destroy();
-				spotLightBuffer.destroy();
-				pointLightBuffer.destroy();
-			}
-		}
-	}
-}
+      void
+      LightManager::clean()
+      {
+        dirLightBuffer.destroy();
+        spotLightBuffer.destroy();
+        pointLightBuffer.destroy();
+      }
+    } // namespace Light
+  } // namespace GPU
+} // namespace RenderLib

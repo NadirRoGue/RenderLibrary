@@ -5,15 +5,15 @@
 
 namespace RenderLib
 {
-	namespace DefaultImpl
-	{
-		class PickingProgram : public GPU::Program::ShaderProgram
-		{
-		public:
-			PickingProgram();
-			~PickingProgram();
-		};
-	}
-}
+  namespace DefaultImpl
+  {
+    class PickingProgram : public GPU::Program::ShaderProgram
+    {
+    public:
+      PickingProgram();
+      ~PickingProgram();
+    };
+  } // namespace DefaultImpl
+} // namespace RenderLib
 
 #endif

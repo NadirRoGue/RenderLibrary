@@ -7,34 +7,42 @@
 
 namespace RenderLib
 {
-	namespace GPU
-	{
-		namespace Program
-		{
-			class PostProcessProgram : public Program
-			{
-			private:
-				std::string vShaderFile;
+  namespace GPU
+  {
+    namespace Program
+    {
+      class PostProcessProgram : public Program
+      {
+      private:
+        std::string vShaderFile;
 
-				unsigned int vShader;
-				unsigned int fShader;
-			protected:
-				std::string fShaderFile;
-			public:
-				PostProcessProgram();
-				~PostProcessProgram();
+        unsigned int vShader;
+        unsigned int fShader;
 
-				void initialize(std::vector<std::string> & definesBuffer);
+      protected:
+        std::string fShaderFile;
 
-				void destroyShaders();
+      public:
+        PostProcessProgram();
+        ~PostProcessProgram();
 
-				void configureRenderQuad(GPU::Mesh::GPUMesh * quad);
+        void
+        initialize(std::vector<std::string> & definesBuffer);
 
-				virtual void initializeShader(EngineInstance * instance);
-				virtual void onRender(GPU::Texture::GPUTexture * previousOutput, EngineInstance * instance);
-			};
-		}
-	}
-}
+        void
+        destroyShaders();
+
+        void
+        configureRenderQuad(GPU::Mesh::GPUMesh * quad);
+
+        virtual void
+        initializeShader(EngineInstance * instance);
+        virtual void
+        onRender(GPU::Texture::GPUTexture * previousOutput,
+                 EngineInstance * instance);
+      };
+    } // namespace Program
+  } // namespace GPU
+} // namespace RenderLib
 
 #endif

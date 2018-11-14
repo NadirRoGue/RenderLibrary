@@ -1,80 +1,95 @@
 #ifndef __CPU_MEMORY_MEMORYPOOL__
 #define __CPU_MEMORY_MEMORYPOOL__
 
-#include <vector>
 #include <memory>
 #include <unordered_map>
+#include <vector>
 
 namespace RenderLib
 {
-	namespace CPU
-	{
-		namespace Memory
-		{
+  namespace CPU
+  {
+    namespace Memory
+    {
 
-			class MemoryPool;
+      class MemoryPool;
 
-			typedef struct MemoryBlock
-			{
-				size_t index;
-				size_t offset;
-				size_t length;
-				size_t sizeUsedBlock;
-				MemoryPool * pool;
+      typedef struct MemoryBlock
+      {
+        size_t index;
+        size_t offset;
+        size_t length;
+        size_t sizeUsedBlock;
+        MemoryPool * pool;
 
-				MemoryBlock(size_t offset, size_t lenght, MemoryPool * pool)
-					: offset(offset)
-					, length(lenght)
-					, pool(pool)
-				{
-				}
+        MemoryBlock(size_t offset, size_t lenght, MemoryPool * pool)
+          : offset(offset), length(lenght), pool(pool)
+        {
+        }
 
-				bool operator==(const struct MemoryBlock & other)
-				{
-					return pool == other.pool
-						&& index == other.index;
-				}
+        bool
+        operator==(const struct MemoryBlock & other)
+        {
+          return pool == other.pool && index == other.index;
+        }
 
-			} MemoryBlock;
+      } MemoryBlock;
 
-			class MemoryPool
-			{
-			private:
+      class MemoryPool
+      {
+      private:
+        void * allocatedMemory;
+        size_t sizeBytes;
+        size_t usedBytes;
+        std::unordered_map<size_t, MemoryBlock *> blocksByIndex;
+        std::vector<std::unique_ptr<MemoryBlock>> memoryBlockList;
 
-				void * allocatedMemory;
-				size_t sizeBytes;
-				size_t usedBytes;
-				std::unordered_map<size_t, MemoryBlock*> blocksByIndex;
-				std::vector<std::unique_ptr<MemoryBlock>> memoryBlockList;
+      public:
+        MemoryPool(size_t size);
+        MemoryPool(const MemoryPool & other);
 
-			public:
+        MemoryBlock *
+        requestMemoryBlock(size_t sizeBytes, bool checkForGaps = false);
+        MemoryBlock *
+        append(void * data, size_t sizeBytes, bool checkForGaps = false);
+        void
+        retrieve(void * dst, MemoryBlock * block, size_t offset,
+                 size_t length) const;
+        void
+        compact();
 
-				MemoryPool(size_t size);
-				MemoryPool(const MemoryPool & other);
+        void
+        resize(size_t newSizeBytes);
+        void
+        allocate(size_t newSizeBytes);
+        void
+        release();
 
-				MemoryBlock * requestMemoryBlock(size_t sizeBytes, bool checkForGaps = false);
-				MemoryBlock * append(void * data, size_t sizeBytes, bool checkForGaps = false);
-				void retrieve(void * dst, MemoryBlock * block, size_t offset, size_t length) const;
-				void compact();
+        void
+        setBlockData(MemoryBlock * block, size_t offset, size_t length,
+                     char * data);
 
-				void resize(size_t newSizeBytes);
-				void allocate(size_t newSizeBytes);
-				void release();
+        std::unordered_map<size_t, MemoryBlock *> &
+        getBlocksByIndex();
 
-				void setBlockData(MemoryBlock * block, size_t offset, size_t length, char * data);
+        void *
+        getData();
+        char *
+        getDataAsBytes();
 
-				std::unordered_map<size_t, MemoryBlock*> & getBlocksByIndex();
-
-				void * getData();
-				char * getDataAsBytes();
-
-			private:
-				void destroyBlock(std::unique_ptr<MemoryBlock> block); // Pass-by-value unique_ptr http://www.codingstandard.com/rule/8-2-4-do-not-pass-stdunique_ptr-by-const-reference/
-				void copyToPool(void * src, size_t srcSizeBytes, MemoryBlock * block);
-				void copyFromPool(void * dst, MemoryBlock * block, size_t offset, size_t lenght) const;
-			};
-		}
-	}
-}
+      private:
+        void
+        destroyBlock(
+            std::unique_ptr<MemoryBlock> block); // Pass-by-value unique_ptr
+        // http://www.codingstandard.com/rule/8-2-4-do-not-pass-stdunique_ptr-by-const-reference/
+        void
+        copyToPool(void * src, size_t srcSizeBytes, MemoryBlock * block);
+        void
+        copyFromPool(void * dst, MemoryBlock * block, size_t offset,
+                     size_t lenght) const;
+      };
+    } // namespace Memory
+  } // namespace CPU
+} // namespace RenderLib
 
 #endif

@@ -2,136 +2,216 @@
 
 #include "logger/Log.h"
 
+#include "CPU/mesh/MeshManager.h"
+#include "defaultimpl/components/MeshFilter.h"
+#include "defaultimpl/components/MeshRenderer.h"
+#include "defaultimpl/components/PickArrowMovement.h"
+
+#include "defaultimpl/shaders/PickArrowProgram.h"
+
 namespace RenderLib
 {
-	Scene::Scene(std::string sceneName)
-		: name(sceneName)
-		, activeCamera(NULL)
-		, sceneTreeUpdated(false)
-	{
-		sceneRoot = addObject<SceneObject>();
-		sceneRoot->objectName = "Root";
-	}
+  Scene::Scene(std::string sceneName)
+    : name(sceneName), activeCamera(NULL), sceneTreeUpdated(false)
+  {
+    sceneRoot             = addObject<SceneObject>();
+    sceneRoot->objectName = "Root";
 
-	Scene::~Scene()
-	{
-	}
+    zArrowObj = addObject<SceneObject>();
+    zArrowObj->addComponent<DefaultImpl::MeshFilter>()->mesh
+        = CPU::Mesh::MeshManager::getInstance().getZArrowMesh();
+    DefaultImpl::MeshRenderer * zRend
+        = zArrowObj->addComponent<DefaultImpl::MeshRenderer>();
+    zRend->enabled = false;
+    zRend->setShaderType<DefaultImpl::PickArrowProgram>();
+    zRend->preferredRender = DefaultImpl::FORWARD_RENDER;
+    zArrowObj->addComponent<DefaultImpl::PickArrowMovement>()->arrowType
+        = DefaultImpl::ArrowAxis::AXIS_FORWARD;
 
-	const std::string & Scene::getSceneName()
-	{
-		return name;
-	}
+    yArrowObj = addObject<SceneObject>();
+    yArrowObj->addComponent<DefaultImpl::MeshFilter>()->mesh
+        = CPU::Mesh::MeshManager::getInstance().getYArrowMesh();
+    DefaultImpl::MeshRenderer * yRend
+        = yArrowObj->addComponent<DefaultImpl::MeshRenderer>();
+    yRend->enabled = false;
+    yRend->setShaderType<DefaultImpl::PickArrowProgram>();
+    yRend->preferredRender = DefaultImpl::FORWARD_RENDER;
+    yArrowObj->addComponent<DefaultImpl::PickArrowMovement>()->arrowType
+        = DefaultImpl::ArrowAxis::AXIS_UP;
 
-	void Scene::makeCameraActive(const std::string & name)
-	{
-		auto it = sceneCameras.find(name);
-		if (it != sceneCameras.end())
-		{
-			activeCamera = it->second;
-		}
-		else
-		{
-			Logger::Log::getInstance().logWarning("Scene: Attempt to set camera " + name + " as active failed: No such camera");
-		}
-	}
+    xArrowObj = addObject<SceneObject>();
+    xArrowObj->addComponent<DefaultImpl::MeshFilter>()->mesh
+        = CPU::Mesh::MeshManager::getInstance().getXArrowMesh();
+    DefaultImpl::MeshRenderer * xRend
+        = xArrowObj->addComponent<DefaultImpl::MeshRenderer>();
+    xRend->enabled = false;
+    xRend->setShaderType<DefaultImpl::PickArrowProgram>();
+    xRend->preferredRender = DefaultImpl::FORWARD_RENDER;
+    xArrowObj->addComponent<DefaultImpl::PickArrowMovement>()->arrowType
+        = DefaultImpl::ArrowAxis::AXIS_RIGHT;
+  }
 
-	void Scene::makeCameraActive(Camera * cam)
-	{
-		activeCamera = cam;
-	}
+  Scene::~Scene()
+  {
+  }
 
-	Camera * Scene::getActiveCamera()
-	{
-		return activeCamera;
-	}
+  const std::string &
+  Scene::getSceneName()
+  {
+    return name;
+  }
 
-	SceneObject * Scene::getSceneRoot()
-	{
-		return sceneRoot;
-	}
+  void
+  Scene::makeCameraActive(const std::string & name)
+  {
+    auto it = sceneCameras.find(name);
+    if (it != sceneCameras.end())
+    {
+      activeCamera = it->second;
+    }
+    else
+    {
+      Logger::Log::getInstance().logWarning(
+          "Scene: Attempt to set camera " + name
+          + " as active failed: No such camera");
+    }
+  }
 
-	bool Scene::sceneTreeNeedsUpdate()
-	{
-		return sceneTreeUpdated;
-	}
+  void
+  Scene::makeCameraActive(Camera * cam)
+  {
+    activeCamera = cam;
+  }
 
-	void Scene::setSceneTreeNeedsUpdate(const bool & val)
-	{
-		sceneTreeUpdated = val;
-	}
+  Camera *
+  Scene::getActiveCamera()
+  {
+    return activeCamera;
+  }
 
-	std::vector<SceneObjectPtr> & Scene::getSceneObjects()
-	{
-		return sceneObjects;
-	}
-	
-	std::vector<Graphics::WindowResizeObserver*> & Scene::getWindowResizableObservers()
-	{
-		return windowResizables;
-	}
-	
-	InputHandlers::InputManager & Scene::getInputManager()
-	{
-		return inputManager;
-	}
+  SceneObject *
+  Scene::getSceneRoot()
+  {
+    return sceneRoot;
+  }
 
-	Lighting::DirectionalLight * Scene::addDirectionalLight(const std::string & name)
-	{
-		std::unique_ptr<SceneObject> newDL = std::make_unique<Lighting::DirectionalLight>();
-		Lighting::DirectionalLight * result = static_cast<Lighting::DirectionalLight*>(newDL.get());
-		
-		newDL.get()->objectName = name;
+  SceneObject *
+  Scene::getZArrow()
+  {
+    return zArrowObj;
+  }
 
-		sceneTreeUpdated = true;
+  SceneObject *
+  Scene::getYArrow()
+  {
+    return yArrowObj;
+  }
 
-		direcionalLights.push_back(result);
-		sceneObjects.push_back(std::move(newDL));
+  SceneObject *
+  Scene::getXArrow()
+  {
+    return xArrowObj;
+  }
 
-		return result;
-	}
+  bool
+  Scene::sceneTreeNeedsUpdate()
+  {
+    return sceneTreeUpdated;
+  }
 
-	Lighting::SpotLight * Scene::addSpotLight(const std::string & name)
-	{
-		std::unique_ptr<SceneObject> newSL = std::make_unique<Lighting::SpotLight>();
-		Lighting::SpotLight * result = static_cast<Lighting::SpotLight*>(newSL.get());
+  void
+  Scene::setSceneTreeNeedsUpdate(const bool & val)
+  {
+    sceneTreeUpdated = val;
+  }
 
-		newSL.get()->objectName = name;
+  std::vector<SceneObjectPtr> &
+  Scene::getSceneObjects()
+  {
+    return sceneObjects;
+  }
 
-		sceneTreeUpdated = true;
+  std::vector<Graphics::WindowResizeObserver *> &
+  Scene::getWindowResizableObservers()
+  {
+    return windowResizables;
+  }
 
-		spotLights.push_back(result);
-		sceneObjects.push_back(std::move(newSL));
+  InputHandlers::InputManager &
+  Scene::getInputManager()
+  {
+    return inputManager;
+  }
 
-		return result;
-	}
+  Lighting::DirectionalLight *
+  Scene::addDirectionalLight(const std::string & name)
+  {
+    std::unique_ptr<SceneObject> newDL
+        = std::make_unique<Lighting::DirectionalLight>();
+    Lighting::DirectionalLight * result
+        = static_cast<Lighting::DirectionalLight *>(newDL.get());
 
-	Lighting::PointLight * Scene::addPointLight(const std::string & name)
-	{
-		std::unique_ptr<SceneObject> newPL = std::make_unique<Lighting::PointLight>();
-		Lighting::PointLight * result = static_cast<Lighting::PointLight*>(newPL.get());
+    newDL.get()->objectName = name;
 
-		newPL.get()->objectName = name;
+    sceneTreeUpdated = true;
 
-		sceneTreeUpdated = true;
+    direcionalLights.push_back(result);
+    sceneObjects.push_back(std::move(newDL));
 
-		pointLights.push_back(result);
-		sceneObjects.push_back(std::move(newPL));
+    return result;
+  }
 
-		return result;
-	}
+  Lighting::SpotLight *
+  Scene::addSpotLight(const std::string & name)
+  {
+    std::unique_ptr<SceneObject> newSL
+        = std::make_unique<Lighting::SpotLight>();
+    Lighting::SpotLight * result
+        = static_cast<Lighting::SpotLight *>(newSL.get());
 
-	std::vector<Lighting::DirectionalLight*> & Scene::getDirectionalLights()
-	{
-		return direcionalLights;
-	}
+    newSL.get()->objectName = name;
 
-	std::vector<Lighting::SpotLight*> & Scene::getSpotLights()
-	{
-		return spotLights;
-	}
+    sceneTreeUpdated = true;
 
-	std::vector<Lighting::PointLight*> & Scene::getPointLights()
-	{
-		return pointLights;
-	}
-}
+    spotLights.push_back(result);
+    sceneObjects.push_back(std::move(newSL));
+
+    return result;
+  }
+
+  Lighting::PointLight *
+  Scene::addPointLight(const std::string & name)
+  {
+    std::unique_ptr<SceneObject> newPL
+        = std::make_unique<Lighting::PointLight>();
+    Lighting::PointLight * result
+        = static_cast<Lighting::PointLight *>(newPL.get());
+
+    newPL.get()->objectName = name;
+
+    sceneTreeUpdated = true;
+
+    pointLights.push_back(result);
+    sceneObjects.push_back(std::move(newPL));
+
+    return result;
+  }
+
+  std::vector<Lighting::DirectionalLight *> &
+  Scene::getDirectionalLights()
+  {
+    return direcionalLights;
+  }
+
+  std::vector<Lighting::SpotLight *> &
+  Scene::getSpotLights()
+  {
+    return spotLights;
+  }
+
+  std::vector<Lighting::PointLight *> &
+  Scene::getPointLights()
+  {
+    return pointLights;
+  }
+} // namespace RenderLib

@@ -5,15 +5,15 @@
 
 namespace RenderLib
 {
-	namespace DefaultImpl
-	{
-		class ObjectSpinner : public UserScript
-		{
-		public:
-			virtual void update();
-		};
-	}
-}
+  namespace DefaultImpl
+  {
+    class ObjectSpinner : public UserScript
+    {
+    public:
+      virtual void
+      update();
+    };
+  } // namespace DefaultImpl
+} // namespace RenderLib
 
 #endif
-

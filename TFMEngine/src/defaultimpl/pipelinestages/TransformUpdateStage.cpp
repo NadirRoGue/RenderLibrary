@@ -1,95 +1,101 @@
 #include "defaultimpl/pipelinestages/TransformUpdateStage.h"
 
-#include <queue>
 #include <iostream>
+#include <queue>
 
 #include "EngineInstance.h"
 
 namespace RenderLib
 {
-	namespace DefaultImpl
-	{
-		void TransformUpdateStage::updateLinealGraph()
-		{
-			Scene * scene = engineInstance->getSceneManager().getActiveScene();
-			
-			std::queue<SceneObject*> toProcess;
-			std::queue<SceneObject*> tempQueue;
+  namespace DefaultImpl
+  {
+    void
+    TransformUpdateStage::updateLinealGraph()
+    {
+      Scene * scene = engineInstance->getSceneManager().getActiveScene();
 
-			// Add initial batch: scene's root children
-			for (auto rootChild : scene->getSceneRoot()->getChildren())
-			{
-				tempQueue.push(rootChild);
-			}
+      std::queue<SceneObject *> toProcess;
+      std::queue<SceneObject *> tempQueue;
 
-			// Updates graph by level, ensuring children will have access
-			// to parent's UPDATED transforms
-			linearGraph.clear();
-			do
-			{
-				// Change queues: previous iteration added children will be
-				// updated parents now
-				toProcess.swap(tempQueue);
+      // Add initial batch: scene's root children
+      for (auto rootChild : scene->getSceneRoot()->getChildren())
+      {
+        tempQueue.push(rootChild);
+      }
 
-				std::vector<Component*> treeLevel;
+      // Updates graph by level, ensuring children will have access
+      // to parent's UPDATED transforms
+      linearGraph.clear();
+      do
+      {
+        // Change queues: previous iteration added children will be
+        // updated parents now
+        toProcess.swap(tempQueue);
 
-				while (!toProcess.empty())
-				{
-					SceneObject * next = toProcess.front();
-					toProcess.pop();
+        std::vector<Component *> treeLevel;
 
-					treeLevel.push_back(&(next->transform));
+        while (!toProcess.empty())
+        {
+          SceneObject * next = toProcess.front();
+          toProcess.pop();
 
-					if (next->getChildren().size() > 0)
-					{
-						for (auto child : next->getChildren())
-						{
-							tempQueue.push(child);
-						}
-					}
-				}
+          treeLevel.push_back(&(next->transform));
 
-				// Push current level
-				linearGraph.push_back(treeLevel);
+          if (next->getChildren().size() > 0)
+          {
+            for (auto child : next->getChildren())
+            {
+              tempQueue.push(child);
+            }
+          }
+        }
 
-			} while (!tempQueue.empty());
+        // Push current level
+        linearGraph.push_back(treeLevel);
 
-			scene->setSceneTreeNeedsUpdate(false);
-		}
+      } while (!tempQueue.empty());
 
-		void TransformUpdateStage::preRunStage()
-		{
-			elements.clear();
-			Scene * scene = engineInstance->getSceneManager().getActiveScene();
-			for (auto child : scene->getSceneRoot()->getChildren())
-			{
-				registerElement(&(child->transform));
-			}
-		}
+      scene->setSceneTreeNeedsUpdate(false);
+    }
 
-		void TransformUpdateStage::runStage()
-		{
-			Scene * scene = engineInstance->getSceneManager().getActiveScene();
-			
-			if (scene->sceneTreeNeedsUpdate())
-			{
-				preRunStage();
-			}
+    void
+    TransformUpdateStage::preRunStage()
+    {
+      elements.clear();
+      Scene * scene = engineInstance->getSceneManager().getActiveScene();
+      for (auto child : scene->getSceneRoot()->getChildren())
+      {
+        registerElement(&(child->transform));
+      }
+    }
 
-			ElementBasedStage<Transform>::runStage();
-		}
+    void
+    TransformUpdateStage::runStage()
+    {
+      Scene * scene = engineInstance->getSceneManager().getActiveScene();
 
-		void TransformUpdateStage::processElement(Transform * element)
-		{
-			element->updateGraph();
-			Pipeline::ThreadPool & pool = engineInstance->getPipelineManager().getThreadPool();
-			for (auto child : element->object->getChildren())
-			{
-				std::unique_ptr<Pipeline::Runnable> newTask = std::make_unique<Pipeline::Runnable>();
-				newTask.get()->elementsToProcess.push_back(&(child->transform));
-				newTask.get()->stage = this;
-				pool.addTask(newTask);
-			}
-		}
-	}
-}
+      if (scene->sceneTreeNeedsUpdate())
+      {
+        preRunStage();
+      }
+
+      ElementBasedStage<Transform>::runStage();
+    }
+
+    void
+    TransformUpdateStage::processElement(Transform * element)
+    {
+      element->updateGraph();
+      Pipeline::ThreadPool & pool
+          = engineInstance->getPipelineManager().getThreadPool();
+      for (auto child : element->object->getChildren())
+      {
+        std::unique_ptr<Pipeline::Runnable> newTask
+            = std::make_unique<Pipeline::Runnable>();
+        newTask.get()->elementsToProcess.push_back(&(child->transform));
+        newTask.get()->stage = this;
+        pool.addTask(newTask);
+      }
+    }
+  } // namespace DefaultImpl
+} // namespace RenderLib

@@ -9,21 +9,28 @@
 
 namespace RenderLib
 {
-	namespace DefaultImpl
-	{
-		class GPUToCPUMeshSyncStage : public Pipeline::ElementBasedStage<DefaultImpl::MeshRenderer>
-		{
-		private:
-			std::vector<GPU::Mesh::GPUMesh *> syncContinousMeshes;
-			std::vector<GPU::Mesh::GPUMesh *> syncOnceMeshes;
-		public:
-			void registerElement(Component * comp);
-			void runStage();
-			void postRunStage();
-		private:
-			void updateCPUMeshes(std::vector<GPU::Mesh::GPUMesh*> & list);
-		};
-	}
-}
+  namespace DefaultImpl
+  {
+    class GPUToCPUMeshSyncStage
+      : public Pipeline::ElementBasedStage<DefaultImpl::MeshRenderer>
+    {
+    private:
+      std::vector<GPU::Mesh::GPUMesh *> syncContinousMeshes;
+      std::vector<GPU::Mesh::GPUMesh *> syncOnceMeshes;
+
+    public:
+      void
+      registerElement(Component * comp);
+      void
+      runStage();
+      void
+      postRunStage();
+
+    private:
+      void
+      updateCPUMeshes(std::vector<GPU::Mesh::GPUMesh *> & list);
+    };
+  } // namespace DefaultImpl
+} // namespace RenderLib
 
 #endif

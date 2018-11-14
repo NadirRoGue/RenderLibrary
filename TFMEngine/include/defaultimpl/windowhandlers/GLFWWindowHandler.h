@@ -7,34 +7,40 @@
 
 namespace RenderLib
 {
-	namespace DefaultImpl
-	{
-		class GLFWWindowHandler : public Graphics::WindowHandler
-		{
-		private:
-			GLFWwindow * window;
+  namespace DefaultImpl
+  {
+    class GLFWWindowHandler : public Graphics::WindowHandler
+    {
+    private:
+      GLFWwindow * window;
 
-		public:
-			double lastMouseX;
-			double lastMouseY;
+    public:
+      double lastMouseX;
+      double lastMouseY;
 
-		public:
-			GLFWWindowHandler(Graphics::WindowConfiguration config);
-			~GLFWWindowHandler();
+    public:
+      GLFWWindowHandler(Graphics::WindowConfiguration config);
+      ~GLFWWindowHandler();
 
-			virtual void initializeWindowContext();
+      virtual void
+      initializeWindowContext();
 
-			bool isActive();
+      bool
+      isActive();
 
-			void activateContext();
+      void
+      activateContext();
 
-			void onRenderLoopIteration();
+      void
+      onRenderLoopIteration();
 
-			double elapsedTimeSinceStart();
+      double
+      elapsedTimeSinceStart();
 
-			void cleanUp();
-		};
-	}
-}
+      void
+      cleanUp();
+    };
+  } // namespace DefaultImpl
+} // namespace RenderLib
 
 #endif

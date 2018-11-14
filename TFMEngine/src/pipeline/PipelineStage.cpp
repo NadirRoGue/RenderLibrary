@@ -6,57 +6,57 @@
 
 namespace RenderLib
 {
-	namespace Pipeline
-	{
-		PipelineStage::PipelineStage()
-		{
+  namespace Pipeline
+  {
+    PipelineStage::PipelineStage()
+    {
+    }
 
-		}
+    PipelineStage::~PipelineStage()
+    {
+    }
 
-		PipelineStage::~PipelineStage()
-		{
+    void
+    PipelineStage::preRunStage()
+    {
+    }
 
-		}
+    void
+    PipelineStage::postRunStage()
+    {
+    }
 
-		void PipelineStage::preRunStage()
-		{
+    AbstractElementBasedStage::AbstractElementBasedStage()
+    {
+    }
 
-		}
+    AbstractElementBasedStage::~AbstractElementBasedStage()
+    {
+    }
 
-		void PipelineStage::postRunStage()
-		{
+    void
+    AbstractElementBasedStage::registerElement(Component * comp)
+    {
+      if (comp != NULL)
+      {
+        elements.push_back(comp);
+      }
+    }
 
-		}
+    const std::vector<Component *> &
+    AbstractElementBasedStage::getRegisteredElements()
+    {
+      return elements;
+    }
 
-		AbstractElementBasedStage::AbstractElementBasedStage()
-		{
-
-		}
-
-		AbstractElementBasedStage::~AbstractElementBasedStage()
-		{
-
-		}
-
-		void AbstractElementBasedStage::registerElement(Component * comp)
-		{
-			if (comp != NULL)
-			{
-				elements.push_back(comp);
-			}
-		}
-
-		const std::vector<Component*> & AbstractElementBasedStage::getRegisteredElements()
-		{
-			return elements;
-		}
-
-		void AbstractElementBasedStage::runStage()
-		{
-			if (elements.size() > 0)
-			{
-				engineInstance->getPipelineManager().getThreadPool().processStage(*this);
-			}
-		}
-	}
-}
+    void
+    AbstractElementBasedStage::runStage()
+    {
+      if (elements.size() > 0)
+      {
+        engineInstance->getPipelineManager().getThreadPool().processStage(
+            *this);
+      }
+    }
+  } // namespace Pipeline
+} // namespace RenderLib

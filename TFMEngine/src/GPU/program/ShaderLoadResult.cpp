@@ -2,15 +2,16 @@
 
 namespace RenderLib
 {
-	namespace GPU
-	{
-		namespace Program
-		{
-			size_t ShaderLoadResult::getResultSizeBytes()
-			{
-				//return text.size();
-				return (header.length() + body.length());
-			}
-		}
-	}
-}
+  namespace GPU
+  {
+    namespace Program
+    {
+      size_t
+      ShaderLoadResult::getResultSizeBytes()
+      {
+        //return text.size();
+        return (header.length() + body.length());
+      }
+    } // namespace Program
+  } // namespace GPU
+} // namespace RenderLib

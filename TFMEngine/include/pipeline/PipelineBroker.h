@@ -4,8 +4,8 @@
 #include <unordered_map>
 #include <vector>
 
-#include <typeinfo>
 #include <typeindex>
+#include <typeinfo>
 
 #include "Component.h"
 
@@ -13,23 +13,30 @@
 
 namespace RenderLib
 {
-	namespace Pipeline
-	{
-		class PipelineBroker
-		{
-		private:
-			std::unordered_map<std::type_index, std::vector<AbstractElementBasedStage*>> elementStages;
-		public:
-			PipelineBroker();
-			~PipelineBroker();
+  namespace Pipeline
+  {
+    class PipelineBroker
+    {
+    private:
+      std::unordered_map<std::type_index,
+                         std::vector<AbstractElementBasedStage *>>
+          elementStages;
 
-			void registerPipelineStage(PipelineStage * stage);
+    public:
+      PipelineBroker();
+      ~PipelineBroker();
 
-			void registerElement(Component * component);
+      void
+      registerPipelineStage(PipelineStage * stage);
 
-			const std::unordered_map<std::type_index, std::vector<AbstractElementBasedStage*>> & getElementStages();
-		};
-	}
-}
+      void
+      registerElement(Component * component);
+
+      const std::unordered_map<std::type_index,
+                               std::vector<AbstractElementBasedStage *>> &
+      getElementStages();
+    };
+  } // namespace Pipeline
+} // namespace RenderLib
 
 #endif

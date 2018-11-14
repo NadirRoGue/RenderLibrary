@@ -2,31 +2,30 @@
 
 namespace RenderLib
 {
-	namespace Logger
-	{
-		AbstractLogger::AbstractLogger()
-		{
+  namespace Logger
+  {
+    AbstractLogger::AbstractLogger()
+    {
+    }
 
-		}
+    AbstractLogger::~AbstractLogger()
+    {
+    }
 
-		AbstractLogger::~AbstractLogger()
-		{
-
-		}
-
-		void AbstractLogger::log(const std::string & text, const LogLevel & level)
-		{
-			switch (level)
-			{
-			case LogLevel::LEVEL_INFO:
-				logInfo(text);
-				break;
-			case LogLevel::LEVEL_WARNING:
-				logWarning(text);
-				break;
-			case LogLevel::LEVEL_ERROR:
-				logError(text);
-			}
-		}
-	}
-}
+    void
+    AbstractLogger::log(const std::string & text, const LogLevel & level)
+    {
+      switch (level)
+      {
+        case LogLevel::LEVEL_INFO:
+          logInfo(text);
+          break;
+        case LogLevel::LEVEL_WARNING:
+          logWarning(text);
+          break;
+        case LogLevel::LEVEL_ERROR:
+          logError(text);
+      }
+    }
+  } // namespace Logger
+} // namespace RenderLib

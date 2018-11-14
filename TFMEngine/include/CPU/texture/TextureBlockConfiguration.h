@@ -5,23 +5,24 @@
 
 namespace RenderLib
 {
-	namespace CPU
-	{
-		namespace Texture
-		{
-			class TextureBlockConfiguration : public Memory::BlockConfiguration
-			{
-			public:
-				unsigned int width;
-				unsigned int height;
-				unsigned int depth;
+  namespace CPU
+  {
+    namespace Texture
+    {
+      class TextureBlockConfiguration : public Memory::BlockConfiguration
+      {
+      public:
+        unsigned int width;
+        unsigned int height;
+        unsigned int depth;
 
-				unsigned int pixelSize;
+        unsigned int pixelSize;
 
-				size_t getSizeBytes();
-			};
-		}
-	}
-}
+        size_t
+        getSizeBytes();
+      };
+    } // namespace Texture
+  } // namespace CPU
+} // namespace RenderLib
 
 #endif

@@ -5,14 +5,15 @@
 
 namespace RenderLib
 {
-	namespace DefaultImpl
-	{
-		class UserScript : public Component
-		{
-		public:
-			std::type_index getComponentType();
-		};
-	}
-}
+  namespace DefaultImpl
+  {
+    class UserScript : public Component
+    {
+    public:
+      std::type_index
+      getComponentType();
+    };
+  } // namespace DefaultImpl
+} // namespace RenderLib
 
 #endif

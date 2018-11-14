@@ -6,32 +6,34 @@
 
 namespace RenderLib
 {
-	namespace DefaultImpl
-	{
-		MeshFilter::MeshFilter()
-			: mesh(NULL)
-		{
+  namespace DefaultImpl
+  {
+    MeshFilter::MeshFilter() : mesh(NULL)
+    {
+    }
 
-		}
+    void
+    MeshFilter::start()
+    {
+      if (mesh == NULL)
+      {
+        enabled = false;
 
-		void MeshFilter::start()
-		{
-			if (mesh == NULL)
-			{
-				enabled = false;
-				
-				Logger::Log::getInstance().logWarning("MeshFilter: No mesh setted. Component disabled for object " + object->objectName);
-			}
-		}
+        Logger::Log::getInstance().logWarning(
+            "MeshFilter: No mesh setted. Component disabled for object "
+            + object->objectName);
+      }
+    }
 
-		size_t MeshFilter::getIndex()
-		{
-			if (mesh)
-			{
-				return mesh->index;
-			}
+    size_t
+    MeshFilter::getIndex()
+    {
+      if (mesh)
+      {
+        return mesh->index;
+      }
 
-			return 0;
-		}
-	}
-}
+      return 0;
+    }
+  } // namespace DefaultImpl
+} // namespace RenderLib

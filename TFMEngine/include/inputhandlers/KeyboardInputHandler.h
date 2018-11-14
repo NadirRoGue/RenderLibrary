@@ -5,22 +5,24 @@
 
 namespace RenderLib
 {
-	namespace InputHandlers
-	{
-		enum KeyAction
-		{
-			KEY_PRESS,
-			KEY_REPEAT,
-			KEY_RELEASED
-		};
+  namespace InputHandlers
+  {
+    enum KeyAction
+    {
+      KEY_PRESS,
+      KEY_REPEAT,
+      KEY_RELEASED
+    };
 
-		class KeyboardInputHandler
-		{
-		public:
-			virtual std::vector<char> getUsedKeys() = 0;
-			virtual void handleKeyPress(char key, const KeyAction & action);
-		};
-	}
-}
+    class KeyboardInputHandler
+    {
+    public:
+      virtual std::vector<char>
+      getUsedKeys() = 0;
+      virtual void
+      handleKeyPress(char key, const KeyAction & action);
+    };
+  } // namespace InputHandlers
+} // namespace RenderLib
 
 #endif

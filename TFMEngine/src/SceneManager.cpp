@@ -2,67 +2,70 @@
 
 namespace RenderLib
 {
-	SceneManager::SceneManager()
-	{
+  SceneManager::SceneManager()
+  {
+  }
 
-	}
+  SceneManager::~SceneManager()
+  {
+  }
 
-	SceneManager::~SceneManager()
-	{
+  Scene *
+  SceneManager::createScene(const std::string & sceneName)
+  {
+    auto it = sceneCache.find(sceneName);
 
-	}
+    Scene * scene = NULL;
 
-	Scene * SceneManager::createScene(const std::string & sceneName)
-	{
-		auto it = sceneCache.find(sceneName);
+    if (it != sceneCache.end())
+    {
+      return NULL; // FIXME: Throw exception
+    }
 
-		Scene * scene = NULL;
+    std::unique_ptr<Scene> newScene = std::make_unique<Scene>(sceneName);
+    scene                           = newScene.get();
+    sceneCache[sceneName]           = std::move(newScene);
 
-		if (it != sceneCache.end())
-		{
-			return NULL; // FIXME: Throw exception
-		}
+    return scene;
+  }
 
-		std::unique_ptr<Scene> newScene = std::make_unique<Scene>(sceneName);
-		scene = newScene.get();
-		sceneCache[sceneName] = std::move(newScene);
-		
-		return scene;
-	}
+  void
+  SceneManager::deleteScene(const std::string & sceneName)
+  {
+    auto it = sceneCache.find(sceneName);
+    if (it != sceneCache.end())
+    {
+      it->second.reset();
 
-	void SceneManager::deleteScene(const std::string & sceneName)
-	{
-		auto it = sceneCache.find(sceneName);
-		if (it != sceneCache.end())
-		{
-			it->second.reset();
+      sceneCache.erase(it);
+    }
+  }
 
-			sceneCache.erase(it);
-		}
-	}
+  Scene *
+  SceneManager::getScene(const std::string & sceneName)
+  {
+    auto it = sceneCache.find(sceneName);
+    if (it == sceneCache.end())
+    {
+      return NULL;
+    }
 
-	Scene * SceneManager::getScene(const std::string & sceneName)
-	{
-		auto it = sceneCache.find(sceneName);
-		if (it == sceneCache.end())
-		{
-			return NULL;
-		}
+    return it->second.get();
+  }
 
-		return it->second.get();
-	}
+  Scene *
+  SceneManager::getActiveScene()
+  {
+    return activeScene;
+  }
 
-	Scene * SceneManager::getActiveScene()
-	{
-		return activeScene;
-	}
-
-	void SceneManager::setActiveScene(std::string sceneName)
-	{
-		auto it = sceneCache.find(sceneName);
-		if (it != sceneCache.end())
-		{
-			activeScene = it->second.get();
-		}
-	}
-}
+  void
+  SceneManager::setActiveScene(std::string sceneName)
+  {
+    auto it = sceneCache.find(sceneName);
+    if (it != sceneCache.end())
+    {
+      activeScene = it->second.get();
+    }
+  }
+} // namespace RenderLib

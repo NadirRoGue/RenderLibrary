@@ -3,17 +3,19 @@
 
 namespace RenderLib
 {
-	namespace CPU
-	{
-		namespace Memory
-		{
-			class SortablePoolElement
-			{
-			public:
-				virtual size_t getIndex() = 0;
-			};
-		}
-	}
-}
+  namespace CPU
+  {
+    namespace Memory
+    {
+      class SortablePoolElement
+      {
+      public:
+        virtual size_t
+        getIndex()
+            = 0;
+      };
+    } // namespace Memory
+  } // namespace CPU
+} // namespace RenderLib
 
 #endif

@@ -4,8 +4,8 @@
 #include <unordered_map>
 #include <vector>
 
-#include "GPU/program/ShaderProgram.h"
 #include "GPU/program/ProgramManager.h"
+#include "GPU/program/ShaderProgram.h"
 
 #include "Camera.h"
 
@@ -15,38 +15,50 @@
 
 namespace RenderLib
 {
-	namespace Render
-	{
-		typedef struct RenderableStub
-		{
-			GPU::Program::ShaderProgram * program;
-			std::vector<DefaultImpl::MeshRenderer*> renderables;
+  namespace Render
+  {
+    typedef struct RenderableStub
+    {
+      GPU::Program::ShaderProgram * program;
+      std::vector<DefaultImpl::MeshRenderer *> renderables;
 
-		} RenderableStub;
+    } RenderableStub;
 
-		class RenderableMap
-		{
-		private:
-			std::string mapRenderOwnerName;
-			std::unordered_map<std::type_index, std::unordered_map<GPU::Program::UberParamMask, RenderableStub>> renderablesMap;
-			std::vector<DefaultImpl::MeshRenderer *> allRenderables;
-		public:
-			RenderableMap();
-			~RenderableMap();
+    class RenderableMap
+    {
+    private:
+      std::string mapRenderOwnerName;
+      std::unordered_map<
+          std::type_index,
+          std::unordered_map<GPU::Program::UberParamMask, RenderableStub>>
+          renderablesMap;
+      std::vector<DefaultImpl::MeshRenderer *> allRenderables;
 
-			size_t getSize();
+    public:
+      RenderableMap();
+      ~RenderableMap();
 
-			void setName(const std::string & name);
-			const std::string & getName();
+      size_t
+      getSize();
 
-			void addRenderable(GPU::Program::ProgramManager & programManager, DefaultImpl::MeshRenderer * renderable);
-			
-			const std::vector<DefaultImpl::MeshRenderer *> & getAllRenderables();
+      void
+      setName(const std::string & name);
+      const std::string &
+      getName();
 
-			void initializeMap();
-			void renderMap(const Camera & fromCamera, EngineInstance * instance);
-		};
-	}
-}
+      void
+      addRenderable(GPU::Program::ProgramManager & programManager,
+                    DefaultImpl::MeshRenderer * renderable);
+
+      const std::vector<DefaultImpl::MeshRenderer *> &
+      getAllRenderables();
+
+      void
+      initializeMap();
+      void
+      renderMap(const Camera & fromCamera, EngineInstance * instance);
+    };
+  } // namespace Render
+} // namespace RenderLib
 
 #endif

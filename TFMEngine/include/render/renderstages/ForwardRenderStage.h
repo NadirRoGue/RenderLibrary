@@ -9,16 +9,18 @@
 
 namespace RenderLib
 {
-	namespace Render
-	{
-		class ForwardRenderStage : public MeshRenderingStage
-		{
-	public:
-			ForwardRenderStage();
-			bool shouldRegisterRenderable(DefaultImpl::MeshRenderer * renderable);
-			void runStage();
-		};
-	}
-}
+  namespace Render
+  {
+    class ForwardRenderStage : public MeshRenderingStage
+    {
+    public:
+      ForwardRenderStage();
+      bool
+      shouldRegisterRenderable(DefaultImpl::MeshRenderer * renderable);
+      void
+      runStage();
+    };
+  } // namespace Render
+} // namespace RenderLib
 
 #endif

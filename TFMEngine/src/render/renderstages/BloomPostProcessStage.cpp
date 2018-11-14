@@ -2,13 +2,13 @@
 
 namespace RenderLib
 {
-	namespace Render
-	{
-		void BloomPostProcessStage::initialize()
-		{
-			PostProcessRenderStage<DefaultImpl::BloomProgram>::initialize();
+  namespace Render
+  {
+    void BloomPostProcessStage::initialize()
+    {
+      PostProcessRenderStage<DefaultImpl::BloomProgram>::initialize();
 
-			outputFBO = &(FBO::DEFAULTFRAMEBUFFER);
-		}
-	}
-}
+      outputFBO = &(FBO::DEFAULTFRAMEBUFFER);
+    }
+  } // namespace Render
+} // namespace RenderLib

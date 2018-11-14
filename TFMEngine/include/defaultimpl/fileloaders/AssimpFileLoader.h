@@ -6,28 +6,41 @@
 
 #include "CPU/mesh/Mesh.h"
 
-#include <assimp/scene.h>
 #include <assimp/mesh.h>
+#include <assimp/scene.h>
 
 namespace RenderLib
 {
-	namespace DefaultImpl
-	{
-		class AssimpFileLoader : public CPU::IO::FileLoader
-		{
-		public:
-			AssimpFileLoader();
-			CPU::IO::AbstractLoadResultPtr loadFile(const std::string & fileName, unsigned int options =
-			(CPU::Mesh::Mesh::OPTION_JOIN_IDENTICAL_VERTICES 
-				| CPU::Mesh::Mesh::OPTION_COMPUTE_SMOOTHNORMALS_IF_ABSENT));
-		private:
-			void processSceneMaterials(const aiScene * scene, CPU::Mesh::MeshLoadResult * dst, const std::string & rootPath);
-			void processSceneMeshes(const aiScene * scene, CPU::Mesh::MeshLoadResult * dst, const std::string & rootPath);
+  namespace DefaultImpl
+  {
+    class AssimpFileLoader : public CPU::IO::FileLoader
+    {
+    public:
+      AssimpFileLoader();
+      CPU::IO::AbstractLoadResultPtr
+      loadFile(const std::string & fileName,
+               unsigned int options
+               = (CPU::Mesh::Mesh::OPTION_JOIN_IDENTICAL_VERTICES
+                  | CPU::Mesh::Mesh::OPTION_COMPUTE_SMOOTHNORMALS_IF_ABSENT));
 
-			void processFileMaterial(aiMaterial * material, CPU::Mesh::MaterialLoadedData & dst, const std::string & roothPath);
-			void processFileMesh(aiMesh * assimpMesh, CPU::Mesh::MeshLoadedData & dst, const std::string & rootPath);
-		};
-	}
-}
+    private:
+      void
+      processSceneMaterials(const aiScene * scene,
+                            CPU::Mesh::MeshLoadResult * dst,
+                            const std::string & rootPath);
+      void
+      processSceneMeshes(const aiScene * scene, CPU::Mesh::MeshLoadResult * dst,
+                         const std::string & rootPath);
+
+      void
+      processFileMaterial(aiMaterial * material,
+                          CPU::Mesh::MaterialLoadedData & dst,
+                          const std::string & roothPath);
+      void
+      processFileMesh(aiMesh * assimpMesh, CPU::Mesh::MeshLoadedData & dst,
+                      const std::string & rootPath);
+    };
+  } // namespace DefaultImpl
+} // namespace RenderLib
 
 #endif

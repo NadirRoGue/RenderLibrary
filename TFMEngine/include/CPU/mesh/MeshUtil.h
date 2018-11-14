@@ -5,14 +5,16 @@
 
 namespace RenderLib
 {
-	namespace CPU
-	{
-		namespace Mesh
-		{
-			void ComputeNormals(Mesh * mesh);
-			void ComputeTangents(Mesh * mesh);
-		}
-	}
-}
+  namespace CPU
+  {
+    namespace Mesh
+    {
+      void
+      ComputeNormals(Mesh * mesh);
+      void
+      ComputeTangents(Mesh * mesh);
+    } // namespace Mesh
+  } // namespace CPU
+} // namespace RenderLib
 
 #endif

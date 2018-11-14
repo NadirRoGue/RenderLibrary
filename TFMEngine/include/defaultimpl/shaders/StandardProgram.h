@@ -9,15 +9,15 @@
 
 namespace RenderLib
 {
-	namespace DefaultImpl
-	{
-		class StandardProgram : public GPU::Program::ShaderProgram
-		{
-		public:
-			StandardProgram();
-			~StandardProgram();
-		};
-	}
-}
+  namespace DefaultImpl
+  {
+    class StandardProgram : public GPU::Program::ShaderProgram
+    {
+    public:
+      StandardProgram();
+      ~StandardProgram();
+    };
+  } // namespace DefaultImpl
+} // namespace RenderLib
 
 #endif

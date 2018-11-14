@@ -4,56 +4,64 @@
 
 namespace RenderLib
 {
-	namespace DefaultImpl
-	{
-		void IterationEndStage::preRunStage()
-		{
-			// Make sure we resize all cameras/FBOs to window size
-			// After they have been initialized during the preRunStages calls
-			Scene * scene = engineInstance->getSceneManager().getActiveScene();
-			Graphics::WindowHandler * window = engineInstance->getWindow();
-			for (auto cam : scene->getWindowResizableObservers())
-			{
-				cam->setWindowSize(window->getWidth(), window->getHeight());
-			}
+  namespace DefaultImpl
+  {
+    void
+    IterationEndStage::preRunStage()
+    {
+      // Make sure we resize all cameras/FBOs to window size
+      // After they have been initialized during the preRunStages calls
+      Scene * scene = engineInstance->getSceneManager().getActiveScene();
+      Graphics::WindowHandler * window = engineInstance->getWindow();
+      for (auto cam : scene->getWindowResizableObservers())
+      {
+        cam->setWindowSize(window->getWidth(), window->getHeight());
+      }
 
-			engineInstance->getFBOManager().onResize(window->getWidth(), window->getHeight());
-		}
+      engineInstance->getFBOManager().onResize(window->getWidth(),
+                                               window->getHeight());
+    }
 
-		void IterationEndStage::runStage()
-		{
-			// Swap upload/render buffer for dynamic meshes
-			engineInstance->getGPUMeshManager().swapDynamicBuffers();
+    void
+    IterationEndStage::runStage()
+    {
+      // Swap upload/render buffer for dynamic meshes
+      engineInstance->getGPUMeshManager().swapDynamicBuffers();
 
-			// Update time
-			engineInstance->acquireContext();
+      engineInstance->getPickManager().updatePicking();
 
-			double elapsedTime = engineInstance->getWindow()->elapsedTimeSinceStart();
-			engineInstance->getTime().update(elapsedTime);
-			engineInstance->releaseContext();
-		}
+      // Update time
+      engineInstance->acquireContext();
 
-		void IterationEndStage::postRunStage()
-		{
-			engineInstance->acquireContext();
+      double elapsedTime = engineInstance->getWindow()->elapsedTimeSinceStart();
+      engineInstance->getTime().update(elapsedTime);
+      engineInstance->releaseContext();
+    }
 
-			// Clear programs created on this context
-			engineInstance->getProgramManager().clear();
+    void
+    IterationEndStage::postRunStage()
+    {
+      engineInstance->acquireContext();
 
-			engineInstance->releaseContext();
+      // Clear programs created on this context
+      engineInstance->getProgramManager().clear();
 
-			// Non context-related clean ups
-			engineInstance->getPipelineManager().getThreadPool().shutDown();
+      engineInstance->releaseContext();
 
-			// Call component's destroy method
-			for (auto & obj : engineInstance->getSceneManager().getActiveScene()->getSceneObjects())
-			{
-				SceneObject * objPtr = obj.get();
-				for (auto & comp : objPtr->getAllComponents())
-				{
-					comp.get()->destroy();
-				}
-			}
-		}
-	}
-}
+      // Non context-related clean ups
+      engineInstance->getPipelineManager().getThreadPool().shutDown();
+
+      // Call component's destroy method
+      for (auto & obj : engineInstance->getSceneManager()
+                            .getActiveScene()
+                            ->getSceneObjects())
+      {
+        SceneObject * objPtr = obj.get();
+        for (auto & comp : objPtr->getAllComponents())
+        {
+          comp.get()->destroy();
+        }
+      }
+    }
+  } // namespace DefaultImpl
+} // namespace RenderLib

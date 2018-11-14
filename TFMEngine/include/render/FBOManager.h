@@ -10,32 +10,39 @@
 
 namespace RenderLib
 {
-	class EngineInstance;
+  class EngineInstance;
 
-	namespace Render
-	{
-		class FBOManager
-		{
-		private:
-			std::unordered_map<std::string, std::unique_ptr<FBO>> fbos;
-			EngineInstance * instance;
-		public:
-			FBOManager();
-			~FBOManager();
+  namespace Render
+  {
+    class FBOManager
+    {
+    private:
+      std::unordered_map<std::string, std::unique_ptr<FBO>> fbos;
+      EngineInstance * instance;
 
-			void setEngineInstance(EngineInstance * instance);
+    public:
+      FBOManager();
+      ~FBOManager();
 
-			FBO * createFBO(const std::string & name);
+      void
+      setEngineInstance(EngineInstance * instance);
 
-			FBO * getFBO(const std::string & name);
+      FBO *
+      createFBO(const std::string & name);
 
-			void destroyFBO(const std::string & name);
+      FBO *
+      getFBO(const std::string & name);
 
-			void onResize(const unsigned int & width, const unsigned int & height);
+      void
+      destroyFBO(const std::string & name);
 
-			void clean();
-		};
-	}
-}
+      void
+      onResize(const unsigned int & width, const unsigned int & height);
+
+      void
+      clean();
+    };
+  } // namespace Render
+} // namespace RenderLib
 
 #endif

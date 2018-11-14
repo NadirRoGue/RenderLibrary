@@ -3,59 +3,68 @@
 
 #include <memory>
 
-#include <mutex>
 #include <condition_variable>
+#include <mutex>
 
 #include <vector>
 
 #include <string>
 
-#include "EngineInstance.h"
 #include "EngineException.h"
+#include "EngineInstance.h"
 
 #include "graphics/WindowHandler.h"
 
 namespace RenderLib
 {
-	namespace Graphics
-	{
-		class ContextManager
-		{
-		private:
-			static std::unique_ptr<ContextManager> INSTANCE;
-		private:
-			std::mutex mutex;
-			std::condition_variable monitor;
+  namespace Graphics
+  {
+    class ContextManager
+    {
+    private:
+      static std::unique_ptr<ContextManager> INSTANCE;
 
-			std::vector<std::unique_ptr<WindowHandler>> windows;
+    private:
+      std::mutex mutex;
+      std::condition_variable monitor;
 
-			bool contextTaken;
-		public:
-			static ContextManager & getInstance();
-		public:
-			ContextManager();
-			~ContextManager();
+      std::vector<std::unique_ptr<WindowHandler>> windows;
 
-			void aquireContext();
-			void releaseContext();
+      bool contextTaken;
 
-			template<class T>
-			T * createWindow(const WindowConfiguration & config)
-			{
-				if (!std::is_base_of<WindowHandler, T>::value)
-				{
-					std::string message = "ContextManager: Attempted to create window with a non WindowHandler derived class (" + std::string(typeid(T).name()) + ")";
-					throw EngineException(message.c_str());
-				}
+    public:
+      static ContextManager &
+      getInstance();
 
-				std::unique_ptr<T> window = std::make_unique<T>(config);
-				T * result = window.get();
-				windows.push_back(std::move(window));
+    public:
+      ContextManager();
+      ~ContextManager();
 
-				return result;
-			}
-		};
-	}
-}
+      void
+      aquireContext();
+      void
+      releaseContext();
+
+      template <class T>
+      T *
+      createWindow(const WindowConfiguration & config)
+      {
+        if (!std::is_base_of<WindowHandler, T>::value)
+        {
+          std::string message = "ContextManager: Attempted to create window "
+                                "with a non WindowHandler derived class ("
+              + std::string(typeid(T).name()) + ")";
+          throw EngineException(message.c_str());
+        }
+
+        std::unique_ptr<T> window = std::make_unique<T>(config);
+        T * result                = window.get();
+        windows.push_back(std::move(window));
+
+        return result;
+      }
+    };
+  } // namespace Graphics
+} // namespace RenderLib
 
 #endif

@@ -9,19 +9,25 @@
 
 namespace RenderLib
 {
-	namespace DefaultImpl
-	{
-		class CPUToGPUTextureSyncStage : public Pipeline::ElementBasedStage<MeshRenderer>
-		{
-		public:
-			void preRunStage();
-			void runStage();
-		private:
-			void syncTextures();
+  namespace DefaultImpl
+  {
+    class CPUToGPUTextureSyncStage
+      : public Pipeline::ElementBasedStage<MeshRenderer>
+    {
+    public:
+      void
+      preRunStage();
+      void
+      runStage();
 
-			void syncTexture(Material::MaterialTexture & textureParameter);
-		};
-	}
-}
+    private:
+      void
+      syncTextures();
+
+      void
+      syncTexture(Material::MaterialTexture & textureParameter);
+    };
+  } // namespace DefaultImpl
+} // namespace RenderLib
 
 #endif

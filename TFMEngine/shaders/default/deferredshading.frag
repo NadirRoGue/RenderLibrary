@@ -20,7 +20,7 @@ void main()
 	vec4 emiAndSpecScale = texture(emissiveAndSpecScale, inUV);
 	vec4 diffAndOpac = texture(diffuseAndOpacity, inUV);
 	vec4 specAndShini = texture(specularAndShininess, inUV);
-
+	
 	pos = texture(position, inUV).xyz;
 	Ka = texture(ambient, inUV).rgb;
 	Kd = diffAndOpac.rgb;

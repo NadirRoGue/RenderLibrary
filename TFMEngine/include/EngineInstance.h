@@ -9,73 +9,98 @@
 
 #include "graphics/WindowHandler.h"
 
+#include "GPU/light/LightManager.h"
 #include "GPU/mesh/GPUMeshManager.h"
 #include "GPU/program/ProgramManager.h"
 #include "GPU/texture/GPUTextureManager.h"
-#include "GPU/light/LightManager.h"
 #include "render/FBOManager.h"
+#include "render/PickManager.h"
 
 #include "EngineTime.h"
 
 namespace RenderLib
 {
-	class EngineInstance
-	{
-	private:
-		std::string instanceName;
+  class EngineInstance
+  {
+  private:
+    std::string instanceName;
 
-		unsigned int instanceID;
+    unsigned int instanceID;
 
-		Pipeline::PipelineManager pipelineManager;
+    Pipeline::PipelineManager pipelineManager;
 
-		SceneManager sceneManager;
+    SceneManager sceneManager;
 
-		Render::FBOManager fboManager;
-		
-		GPU::Mesh::GPUMeshManager gpuMeshManager;
-		GPU::Texture::GPUTextureManager gpuTextureManager;
-		GPU::Program::ProgramManager gpuProgramManager;
-		GPU::Light::LightManager lightManager;
+    Render::FBOManager fboManager;
+    Render::PickManager pickManager;
 
-		Time timeHandler;
+    GPU::Mesh::GPUMeshManager gpuMeshManager;
+    GPU::Texture::GPUTextureManager gpuTextureManager;
+    GPU::Program::ProgramManager gpuProgramManager;
+    GPU::Light::LightManager lightManager;
 
-		Graphics::WindowHandler * window;
+    Time timeHandler;
 
-		bool enableFlag;
-	public:
-		EngineInstance(const unsigned int & ID, const std::string & instanceName, Graphics::WindowHandler * windowHandler);
-		~EngineInstance();
+    Graphics::WindowHandler * window;
 
-		const std::string & getInstanceName();
-		const unsigned int & getInstanceID();
+    bool enableFlag;
 
-		void loadActiveScene();
-		void loadScene(const std::string & name);
-		
-		Graphics::WindowHandler * getWindow();
+  public:
+    EngineInstance(const unsigned int & ID, const std::string & instanceName,
+                   Graphics::WindowHandler * windowHandler);
+    ~EngineInstance();
 
-		Pipeline::PipelineManager & getPipelineManager();
+    const std::string &
+    getInstanceName();
+    const unsigned int &
+    getInstanceID();
 
-		SceneManager & getSceneManager();
+    void
+    loadActiveScene();
+    void
+    loadScene(const std::string & name);
 
-		Render::FBOManager & getFBOManager();
-		
-		GPU::Mesh::GPUMeshManager & getGPUMeshManager();
-		GPU::Program::ProgramManager & getProgramManager();
-		GPU::Texture::GPUTextureManager & getGPUTextureManager();
-		GPU::Light::LightManager & getGPULightManager();
+    Graphics::WindowHandler *
+    getWindow();
 
-		Time & getTime();
+    Pipeline::PipelineManager &
+    getPipelineManager();
 
-		void acquireContext();
-		void releaseContext();
+    SceneManager &
+    getSceneManager();
 
-		void disable();
-		bool isEnabled();
+    Render::FBOManager &
+    getFBOManager();
+    Render::PickManager &
+    getPickManager();
 
-		void executeIteration();
-		void cleanUp();
-	};
-}
+    GPU::Mesh::GPUMeshManager &
+    getGPUMeshManager();
+    GPU::Program::ProgramManager &
+    getProgramManager();
+    GPU::Texture::GPUTextureManager &
+    getGPUTextureManager();
+    GPU::Light::LightManager &
+    getGPULightManager();
+
+    Time &
+    getTime();
+
+    void
+    acquireContext();
+    void
+    releaseContext();
+
+    void
+    disable();
+    bool
+    isEnabled();
+
+    void
+    executeIteration();
+    void
+    cleanUp();
+  };
+} // namespace RenderLib
 
 #endif

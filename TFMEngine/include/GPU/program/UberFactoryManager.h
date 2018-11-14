@@ -9,50 +9,63 @@
 
 namespace RenderLib
 {
-	namespace GPU
-	{
-		namespace Program
-		{
-			class UberFactoryManager
-			{
-			private:
-				static std::unordered_map<std::type_index, std::unique_ptr<UberMaskFactory>> factories;
-				static std::unique_ptr<UberMaskFactory> defaultFactory;
-			public:
-				template<class ProgramType, class FactoryType>
-				static void registerUberFactory()
-				{
-					if (!std::is_base_of<Program, ProgramType>::value)
-					{
-						throw EngineException("UberFactoryManager: Attempted to register a UberFactory for a non Program derived class!");
-					}
+  namespace GPU
+  {
+    namespace Program
+    {
+      class UberFactoryManager
+      {
+      private:
+        static std::unordered_map<std::type_index,
+                                  std::unique_ptr<UberMaskFactory>>
+            factories;
+        static std::unique_ptr<UberMaskFactory> defaultFactory;
 
-					if (!std::is_base_of<UberMaskFactory, FactoryType>::value)
-					{
-						throw EngineException("UberFactoryManager:: Attempted to register a UberFactory non derived from AbstractMaskFactory!");
-					}
+      public:
+        template <class ProgramType, class FactoryType>
+        static void
+        registerUberFactory()
+        {
+          if (!std::is_base_of<Program, ProgramType>::value)
+          {
+            throw EngineException(
+                "UberFactoryManager: Attempted to register a UberFactory for a "
+                "non Program derived class!");
+          }
 
-					std::type_index programId = typeid(ProgramType);
-					std::unique_ptr<AbstractMaskFactory> newFactory = std::make_unique<FactoryType>();
-					factories[programId] = std::move(newFactory);
-				}
+          if (!std::is_base_of<UberMaskFactory, FactoryType>::value)
+          {
+            throw EngineException(
+                "UberFactoryManager:: Attempted to register a UberFactory non "
+                "derived from AbstractMaskFactory!");
+          }
 
-				template<class FactoryType>
-				static void registerDefaultFactory()
-				{
-					if (!std::is_base_of<UberMaskFactory, FactoryType>::value)
-					{
-						throw EngineException("UberFactoryManager:: Attempted to register a UberFactory non derived from AbstractMaskFactory!");
-					}
+          std::type_index programId = typeid(ProgramType);
+          std::unique_ptr<UberMaskFactory> newFactory
+              = std::make_unique<FactoryType>();
+          factories[programId] = std::move(newFactory);
+        }
 
-					std::type_index programId = typeid(FactoryType);
-					defaultFactory = std::make_unique<FactoryType>();
-				}
+        template <class FactoryType>
+        static void
+        registerDefaultFactory()
+        {
+          if (!std::is_base_of<UberMaskFactory, FactoryType>::value)
+          {
+            throw EngineException(
+                "UberFactoryManager:: Attempted to register a UberFactory non "
+                "derived from AbstractMaskFactory!");
+          }
 
-				static GPU::Program::UberParamMask computeMask(DefaultImpl::MeshRenderer * renderable);
-			};
-		}
-	}
-}
+          std::type_index programId = typeid(FactoryType);
+          defaultFactory            = std::make_unique<FactoryType>();
+        }
+
+        static GPU::Program::UberParamMask
+        computeMask(DefaultImpl::MeshRenderer * renderable);
+      };
+    } // namespace Program
+  } // namespace GPU
+} // namespace RenderLib
 
 #endif

@@ -5,28 +5,33 @@
 
 namespace RenderLib
 {
-	namespace Lighting
-	{
-		typedef struct PointLightData : public LightData
-		{
-			float position[4];
-			float attenuation[4];
-		} PointLightData;
+  namespace Lighting
+  {
+    typedef struct PointLightData : public LightData
+    {
+      float position[4];
+      float attenuation[4];
+    } PointLightData;
 
-		class PointLight : public Light<PointLightData>
-		{
-		private:
-			VECTOR4 position;
-		public:
-			PointLight();
-			~PointLight();
+    class PointLight : public Light<PointLightData>
+    {
+    private:
+      VECTOR4 position;
 
-			void setPosition(const VECTOR3 & position);
-			void setAttenuationFactors(const float & linear, const float & cuadratic, const float & cubic);
+    public:
+      PointLight();
+      ~PointLight();
 
-			void update(const Camera & cam);
-		};
-	}
-}
+      void
+      setPosition(const VECTOR3 & position);
+      void
+      setAttenuationFactors(const float & linear, const float & cuadratic,
+                            const float & cubic);
+
+      void
+      update(const Camera & cam);
+    };
+  } // namespace Lighting
+} // namespace RenderLib
 
 #endif

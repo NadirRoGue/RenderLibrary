@@ -7,20 +7,24 @@
 
 namespace RenderLib
 {
-	namespace DefaultImpl
-	{
-		class FileLogger : public Logger::AbstractLogger
-		{
-		private:
-			FILE * file;
-		public:
-			FileLogger();
-			~FileLogger();
-			virtual void logInfo(const std::string & info);
-			virtual void logWarning(const std::string & warn);
-			virtual void logError(const std::string & error);
-		};
-	}
-}
+  namespace DefaultImpl
+  {
+    class FileLogger : public Logger::AbstractLogger
+    {
+    private:
+      FILE * file;
+
+    public:
+      FileLogger();
+      ~FileLogger();
+      virtual void
+      logInfo(const std::string & info);
+      virtual void
+      logWarning(const std::string & warn);
+      virtual void
+      logError(const std::string & error);
+    };
+  } // namespace DefaultImpl
+} // namespace RenderLib
 
 #endif

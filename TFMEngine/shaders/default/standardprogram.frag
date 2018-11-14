@@ -27,8 +27,10 @@ void main()
 
 #if defined ENABLE_TANGENT && defined ENABLE_NORMAL
 	mat3 TBN = computeTangentSpace(inNormal.xyz, inTangent.xyz);
+#endif
 
-	vec2 uv = parallaxUVMapping(TBN, viewPos.xyz, inWorldPos.xyz, diffuseTexture, inUV);
+#ifdef ENABLE_DISPLACEMENTMAP_TEXTURE
+	vec2 uv = parallaxUVMapping(TBN, viewPos.xyz, inWorldPos.xyz, displacementTexture, inUV);
 #else
 	vec2 uv = inUV;
 #endif
@@ -114,12 +116,11 @@ void main()
 	outColor = vec4(c, opacityVal);
 
 #else
-	outPos											= vec4(pos, 1.0);
-	outColorOpacity							= vec4(Kd, opacityVal);
-	//outColorOpacity = texture(normalTexture, inUV);//vec4(normalVector, 1.0);
-	outNormal										= vec4(normalVector, 1.0);
-	outSpecularColorShininess		= vec4(Ks, shininessVal);
-	outEmissiveSpecScale				= vec4(Ke, specularScaleVal);	
-	outAmbient									= vec4(Ka, 1.0);
+	outPos						= vec4(pos, gl_FragDepth);
+	outColorOpacity				= vec4(Kd, opacityVal);
+	outNormal					= vec4(normalVector, 1.0);
+	outSpecularColorShininess	= vec4(Ks, shininessVal);
+	outEmissiveSpecScale		= vec4(Ke, specularScaleVal);	
+	outAmbient					= vec4(Ka, 1.0);
 #endif
 }

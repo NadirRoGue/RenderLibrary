@@ -7,20 +7,22 @@
 
 namespace RenderLib
 {
-	namespace GPU
-	{
-		namespace Program
-		{
-			class UberMaskFactory
-			{
-			public:
-				UberMaskFactory();
-				~UberMaskFactory();
+  namespace GPU
+  {
+    namespace Program
+    {
+      class UberMaskFactory
+      {
+      public:
+        UberMaskFactory();
+        ~UberMaskFactory();
 
-				virtual UberParamMask computeMask(DefaultImpl::MeshRenderer * renderable) = 0;
-			};
-		}
-	}
-}
+        virtual UberParamMask
+        computeMask(DefaultImpl::MeshRenderer * renderable)
+            = 0;
+      };
+    } // namespace Program
+  } // namespace GPU
+} // namespace RenderLib
 
 #endif

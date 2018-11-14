@@ -5,20 +5,19 @@
 
 namespace RenderLib
 {
-	namespace CPU
-	{
-		namespace Texture
-		{
-			class BlendAdd : public TextureBlendOperation
-			{
-			public:
-				void doBlend(
-					std::vector<unsigned char> & firstAndDst,
-					std::vector<unsigned char> & second,
-					float blendStrength);
-			};
-		}
-	}
-}
+  namespace CPU
+  {
+    namespace Texture
+    {
+      class BlendAdd : public TextureBlendOperation
+      {
+      public:
+        void
+        doBlend(std::vector<unsigned char> & firstAndDst,
+                std::vector<unsigned char> & second, float blendStrength);
+      };
+    } // namespace Texture
+  } // namespace CPU
+} // namespace RenderLib
 
 #endif

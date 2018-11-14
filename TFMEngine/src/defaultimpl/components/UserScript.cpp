@@ -4,11 +4,12 @@
 
 namespace RenderLib
 {
-	namespace DefaultImpl
-	{
-		std::type_index UserScript::getComponentType()
-		{
-			return typeid(UserScript);
-		}
-	}
-}
+  namespace DefaultImpl
+  {
+    std::type_index
+    UserScript::getComponentType()
+    {
+      return typeid(UserScript);
+    }
+  } // namespace DefaultImpl
+} // namespace RenderLib

@@ -7,20 +7,24 @@
 
 namespace RenderLib
 {
-	namespace Render
-	{
-		class DeferredRenderStage : public MeshRenderingStage
-		{
-		private:
-			FBO * gBuffers;
-			DefaultImpl::DeferredShadingProgram * deferredShading;
-		public:
-			DeferredRenderStage();
-			void initialize();
-			bool shouldRegisterRenderable(DefaultImpl::MeshRenderer * renderable);
-			void runStage();
-		};
-	}
-}
+  namespace Render
+  {
+    class DeferredRenderStage : public MeshRenderingStage
+    {
+    private:
+      FBO * gBuffers;
+      DefaultImpl::DeferredShadingProgram * deferredShading;
+
+    public:
+      DeferredRenderStage();
+      void
+      initialize();
+      bool
+      shouldRegisterRenderable(DefaultImpl::MeshRenderer * renderable);
+      void
+      runStage();
+    };
+  } // namespace Render
+} // namespace RenderLib
 
 #endif

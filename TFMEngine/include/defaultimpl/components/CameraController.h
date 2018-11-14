@@ -5,18 +5,20 @@
 
 namespace RenderLib
 {
-	namespace DefaultImpl
-	{
-		class CameraController : public UserScript
-		{
-		private:
-			float moveSpeed;
-			unsigned int lastMouseX, lastMouseY;
-		public:
-			CameraController();
-			void update();
-		};
-	}
-}
+  namespace DefaultImpl
+  {
+    class CameraController : public UserScript
+    {
+    private:
+      float moveSpeed;
+      unsigned int lastMouseX, lastMouseY;
+
+    public:
+      CameraController();
+      void
+      update();
+    };
+  } // namespace DefaultImpl
+} // namespace RenderLib
 
 #endif

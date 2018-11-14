@@ -7,14 +7,15 @@
 
 namespace RenderLib
 {
-	namespace Render
-	{
-		class BloomPostProcessStage : public PostProcessRenderStage<DefaultImpl::BloomProgram>
-		{
-		public:
-			void initialize();
-		};
-	}
-}
+  namespace Render
+  {
+    class BloomPostProcessStage
+        : public PostProcessRenderStage<DefaultImpl::BloomProgram>
+    {
+    public:
+      void initialize();
+    };
+  } // namespace Render
+} // namespace RenderLib
 
 #endif

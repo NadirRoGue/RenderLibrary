@@ -1,32 +1,39 @@
 #ifndef __RENDERLIB_COMPONENT__
 #define __RENDERLIB_COMPONENT__
 
-#include <typeinfo>
 #include <typeindex>
+#include <typeinfo>
 
 namespace RenderLib
 {
-	class SceneObject;
-	class EngineInstance;
+  class SceneObject;
+  class EngineInstance;
 
-	class Component
-	{
-	public:
-		bool enabled;
-		SceneObject * object;
-		EngineInstance * engineInstance;
-	public:
-		Component();
-		~Component();
-		virtual void initialize();
-		virtual void start();
-		virtual void update();
-		virtual void fixedUpdate();
+  class Component
+  {
+  public:
+    bool enabled;
+    SceneObject * object;
+    EngineInstance * engineInstance;
 
-		virtual void destroy();
+  public:
+    Component();
+    ~Component();
+    virtual void
+    initialize();
+    virtual void
+    start();
+    virtual void
+    update();
+    virtual void
+    fixedUpdate();
 
-		virtual std::type_index getComponentType();
-	};
-}
+    virtual void
+    destroy();
+
+    virtual std::type_index
+    getComponentType();
+  };
+} // namespace RenderLib
 
 #endif

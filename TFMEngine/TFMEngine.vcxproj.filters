@@ -211,6 +211,12 @@
     <Filter Include="Archivos de origen\defaultimpl\renderstages">
       <UniqueIdentifier>{aaefddc1-cb6c-464a-9f86-475e4ba4c1b9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Archivos de encabezado\tests">
+      <UniqueIdentifier>{0cfa0fdf-5a28-4dd4-86d5-dff8a4f63fd3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivos de origen\tests">
+      <UniqueIdentifier>{c3e05283-61f8-4544-a93d-91221f455abe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Component.h">
@@ -570,6 +576,42 @@
     <ClInclude Include="include\util\MathUtil.h">
       <Filter>Archivos de encabezado\util</Filter>
     </ClInclude>
+    <ClInclude Include="include\defaultimpl\shaders\PickArrowProgram.h">
+      <Filter>Archivos de encabezado\defaultimpl\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\render\PickManager.h">
+      <Filter>Archivos de encabezado\render</Filter>
+    </ClInclude>
+    <ClInclude Include="include\defaultimpl\components\PickArrowMovement.h">
+      <Filter>Archivos de encabezado\defaultimpl\components</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tests\Building.h">
+      <Filter>Archivos de encabezado\tests</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tests\SimpleScene.h">
+      <Filter>Archivos de encabezado\tests</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tests\BoneFlower.h">
+      <Filter>Archivos de encabezado\tests</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tests\Nefertiti.h">
+      <Filter>Archivos de encabezado\tests</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tests\MultipleInstances.h">
+      <Filter>Archivos de encabezado\tests</Filter>
+    </ClInclude>
+    <ClInclude Include="include\defaultimpl\shaders\DebugColorProgram.h">
+      <Filter>Archivos de encabezado\defaultimpl\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\defaultimpl\shaders\DebugDepthProgram.h">
+      <Filter>Archivos de encabezado\defaultimpl\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\defaultimpl\shaders\DebugNormalProgram.h">
+      <Filter>Archivos de encabezado\defaultimpl\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="include\defaultimpl\shaders\DebugPositionProgram.h">
+      <Filter>Archivos de encabezado\defaultimpl\shaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Component.cpp">
@@ -896,6 +938,42 @@
     <ClCompile Include="src\util\MathUtil.cpp">
       <Filter>Archivos de origen\util</Filter>
     </ClCompile>
+    <ClCompile Include="src\defaultimpl\shaders\PickArrowProgram.cpp">
+      <Filter>Archivos de origen\defaultimpl\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render\PickManager.cpp">
+      <Filter>Archivos de origen\render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\defaultimpl\components\PickArrowMovement.cpp">
+      <Filter>Archivos de origen\defaultimpl\components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tests\Building.cpp">
+      <Filter>Archivos de origen\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tests\SimpleScene.cpp">
+      <Filter>Archivos de origen\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tests\BoneFlower.cpp">
+      <Filter>Archivos de origen\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tests\Nefertiti.cpp">
+      <Filter>Archivos de origen\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tests\MultipleInstances.cpp">
+      <Filter>Archivos de origen\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="src\defaultimpl\shaders\DebugColorProgram.cpp">
+      <Filter>Archivos de origen\defaultimpl\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\defaultimpl\shaders\DebugDepthProgram.cpp">
+      <Filter>Archivos de origen\defaultimpl\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\defaultimpl\shaders\DebugNormalProgram.cpp">
+      <Filter>Archivos de origen\defaultimpl\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="src\defaultimpl\shaders\DebugPositionProgram.cpp">
+      <Filter>Archivos de origen\defaultimpl\shaders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\default\standardprogram.frag">
@@ -939,6 +1017,24 @@
     </None>
     <None Include="shaders\api\shadingutils.glsl">
       <Filter>shaders\api</Filter>
+    </None>
+    <None Include="shaders\default\pickarrow.frag">
+      <Filter>shaders\default</Filter>
+    </None>
+    <None Include="shaders\default\pickarrow.vert">
+      <Filter>shaders\default</Filter>
+    </None>
+    <None Include="shaders\default\postprocess\debugcolor.frag">
+      <Filter>shaders\default\postprocess</Filter>
+    </None>
+    <None Include="shaders\default\postprocess\debugdepth.frag">
+      <Filter>shaders\default\postprocess</Filter>
+    </None>
+    <None Include="shaders\default\postprocess\debugnormal.frag">
+      <Filter>shaders\default\postprocess</Filter>
+    </None>
+    <None Include="shaders\default\postprocess\debugpos.frag">
+      <Filter>shaders\default\postprocess</Filter>
     </None>
   </ItemGroup>
 </Project>

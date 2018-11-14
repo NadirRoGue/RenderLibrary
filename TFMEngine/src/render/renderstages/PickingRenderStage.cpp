@@ -2,127 +2,166 @@
 
 #include "logger/Log.h"
 
+#include "defaultimpl/components/PickArrowMovement.h"
+
 namespace RenderLib
 {
-	namespace Render
-	{
-		void PickingRenderStage::initialize()
-		{
-			// Static meshes
-			GPU::Mesh::GPUBuffer * staticBuffer = engineInstance->getGPUMeshManager().getStaticMeshBuffer();
-			staticBuffer->bind();
-			staticBuffer->bindDataBuffer();
-			staticRenderables.initializeMap();
-			staticBuffer->unBindDataBuffer();
-			staticBuffer->unBind();
+  namespace Render
+  {
+    void
+    PickingRenderStage::initialize()
+    {
+      // Static meshes
+      GPU::Mesh::GPUBuffer * staticBuffer
+          = engineInstance->getGPUMeshManager().getStaticMeshBuffer();
+      staticBuffer->bind();
+      staticBuffer->bindDataBuffer();
+      staticRenderables.initializeMap();
+      staticBuffer->unBindDataBuffer();
+      staticBuffer->unBind();
 
-			// Dynamic meshes buffer 1
-			GPU::Mesh::GPUBuffer * dynamicBuffer = engineInstance->getGPUMeshManager().getDynamicMeshBuffer();
-			dynamicBuffer->bind();
-			dynamicBuffer->bindDataBuffer();
-			dynamicRenderables.initializeMap();
-			dynamicBuffer->unBindDataBuffer();
-			dynamicBuffer->unBind();
+      // Dynamic meshes buffer 1
+      GPU::Mesh::GPUBuffer * dynamicBuffer
+          = engineInstance->getGPUMeshManager().getDynamicMeshBuffer();
+      dynamicBuffer->bind();
+      dynamicBuffer->bindDataBuffer();
+      dynamicRenderables.initializeMap();
+      dynamicBuffer->unBindDataBuffer();
+      dynamicBuffer->unBind();
 
-			engineInstance->getGPUMeshManager().swapDynamicBuffers();
+      engineInstance->getGPUMeshManager().swapDynamicBuffers();
 
-			// Dynamic meshes buffer 2
-			dynamicBuffer = engineInstance->getGPUMeshManager().getDynamicMeshBuffer();
-			dynamicBuffer->bind();
-			dynamicBuffer->bindDataBuffer();
-			dynamicRenderables.initializeMap();
-			dynamicBuffer->unBindDataBuffer();
-			dynamicBuffer->unBind();
+      // Dynamic meshes buffer 2
+      dynamicBuffer
+          = engineInstance->getGPUMeshManager().getDynamicMeshBuffer();
+      dynamicBuffer->bind();
+      dynamicBuffer->bindDataBuffer();
+      dynamicRenderables.initializeMap();
+      dynamicBuffer->unBindDataBuffer();
+      dynamicBuffer->unBind();
 
-			outputFBO = &(FBO::DEFAULTFRAMEBUFFER);
+      outputFBO = &(FBO::DEFAULTFRAMEBUFFER);
 
-			pickProgram = engineInstance->getProgramManager().getProgram<DefaultImpl::PickingProgram>(0);
-		}
+      pickProgram = engineInstance->getProgramManager()
+                        .getProgram<DefaultImpl::PickingProgram>(0);
 
-		bool PickingRenderStage::shouldRegisterRenderable(DefaultImpl::MeshRenderer * renderable)
-		{
-			return true;
-		}
+      engineInstance->getPickManager().setWorkingScene(
+          engineInstance->getSceneManager().getActiveScene());
+    }
 
-		void PickingRenderStage::runStage()
-		{
-			Scene * scene = engineInstance->getSceneManager().getActiveScene();
+    bool
+    PickingRenderStage::shouldRegisterRenderable(
+        DefaultImpl::MeshRenderer * renderable)
+    {
+      return true;
+    }
 
-			if (scene->getInputManager().mouseButtonDown(0))
-			{
-				pickTargets.clear();
+    void
+    PickingRenderStage::runStage()
+    {
+      Scene * scene = engineInstance->getSceneManager().getActiveScene();
 
-				outputFBO->bind();
-				glDisable(GL_BLEND);
-				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+      if (scene->getInputManager().mouseButtonDown(0))
+      {
+        pickTargets.clear();
 
-				pickProgram->bind();
+        outputFBO->bind();
+        glDisable(GL_BLEND);
+        glEnable(GL_DEPTH_TEST);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-				const Camera & cam = *(scene->getActiveCamera());
+        pickProgram->bind();
 
-				GPU::Mesh::GPUBuffer * staticBuf = engineInstance->getGPUMeshManager().getStaticMeshBuffer();
-				drawList(staticBuf, staticRenderables.getAllRenderables(), cam);
+        const Camera & cam = *(scene->getActiveCamera());
 
-				GPU::Mesh::GPUBuffer * dynamicBuf = engineInstance->getGPUMeshManager().getDynamicMeshBuffer();
-				drawList(dynamicBuf, dynamicRenderables.getAllRenderables(), cam);
+        GPU::Mesh::GPUBuffer * staticBuf
+            = engineInstance->getGPUMeshManager().getStaticMeshBuffer();
+        drawList(staticBuf, staticRenderables.getAllRenderables(), cam);
 
-				glFlush();
-				glFinish();
+        GPU::Mesh::GPUBuffer * dynamicBuf
+            = engineInstance->getGPUMeshManager().getDynamicMeshBuffer();
+        drawList(dynamicBuf, dynamicRenderables.getAllRenderables(), cam);
 
-				unsigned int x = scene->getInputManager().getLastMouseX();
-				unsigned int y = engineInstance->getWindow()->getHeight() - scene->getInputManager().getLastMouseY();
+        glFlush();
+        glFinish();
 
-				glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-				unsigned char readColor[4];
-				glReadPixels(x, y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, readColor);
+        unsigned int x = scene->getInputManager().getLastMouseX();
+        unsigned int y = engineInstance->getWindow()->getHeight()
+            - scene->getInputManager().getLastMouseY();
 
-				unsigned int pickedID = readColor[0] + readColor[1] * 256 +
-					readColor[2] * 256 * 256;
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        unsigned char readColor[4];
+        glReadPixels(x, y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, readColor);
 
-				auto it = pickTargets.find(pickedID);
-				if (it != pickTargets.end())
-				{
-					scene->getInputManager().consumeMouseInput();
-					Logger::Log::getInstance().logInfo("Picked " + it->second->object->objectName);
-				}
-			}
-		}
+        unsigned int pickedID
+            = readColor[0] + readColor[1] * 256 + readColor[2] * 256 * 256;
 
-		
-		void PickingRenderStage::drawList(GPU::Mesh::GPUBuffer * buffer,
-			const std::vector<DefaultImpl::MeshRenderer*> & renderables,
-			const Camera & cam)
-		{
-			if (renderables.size() > 0)
-			{
-				buffer->bind();
-				buffer->bindDataBuffer();
+        auto it = pickTargets.find(pickedID);
 
-				for (auto r : renderables)
-				{
-					unsigned int tempID = (unsigned int)pickTargets.size() + 1;
+        if (it != pickTargets.end())
+        {
+          engineInstance->getPickManager().setLastPick(it->second->object);
+        }
+        else
+        {
+          engineInstance->getPickManager().setLastPick(nullptr);
+        }
+      }
+    }
 
-					float red = (float)(tempID & 0xff);
-					float green = (float)((tempID >> 8) & 0xff);
-					float blue = (float)((tempID >> 16 & 0xff));
+    void
+    PickingRenderStage::drawList(
+        GPU::Mesh::GPUBuffer * buffer,
+        const std::vector<DefaultImpl::MeshRenderer *> & renderables,
+        const Camera & cam)
+    {
+      if (renderables.size() > 0)
+      {
+        buffer->bind();
+        buffer->bindDataBuffer();
 
-					pickTargets[tempID] = r;
+        bool currentlyPicked
+            = engineInstance->getPickManager().getLastPick() != nullptr;
 
-					GPU::Mesh::GPUMesh * mesh = r->gpuMesh;
+        for (auto r : renderables)
+        {
+          if (!r->enabled)
+          {
+            continue;
+          }
 
-					pickProgram->configureMeshParameters(*mesh);
-					pickProgram->setUniform3F("pickColor", red / 255.0f, green / 255.0f, blue / 255.0f);
-					pickProgram->onRenderObject(*r, cam);
+          unsigned int tempID = (unsigned int)pickTargets.size() + 1;
 
-					glDrawElements
-					(
-						GL_TRIANGLES,
-						(GLsizei)(mesh->faces.numElements * mesh->vertices.elementCount),
-						GL_UNSIGNED_INT,
-						(void*)mesh->faceIndexOffset
-					);
-				}
-			}
-		}
-	}
-}
+          float red   = (float)(tempID & 0xff);
+          float green = (float)((tempID >> 8) & 0xff);
+          float blue  = (float)((tempID >> 16 & 0xff));
+
+          pickTargets[tempID] = r;
+
+          GPU::Mesh::GPUMesh * mesh = r->gpuMesh;
+
+          pickProgram->configureMeshParameters(*mesh);
+          pickProgram->sendTransformParameters(*(r->object), cam);
+          pickProgram->setUniform3F("pickColor", red / 255.0f, green / 255.0f,
+                                    blue / 255.0f);
+
+          if (currentlyPicked
+              && r->object->getComponent<DefaultImpl::PickArrowMovement>()
+                  != NULL)
+          {
+            pickProgram->setUniformI("zeroDepth", 1);
+          }
+          else
+          {
+            pickProgram->setUniformI("zeroDepth", 0);
+          }
+
+          glDrawElements(
+              GL_TRIANGLES,
+              (GLsizei)(mesh->faces.numElements * mesh->vertices.elementCount),
+              GL_UNSIGNED_INT, (void *)mesh->faceIndexOffset);
+        }
+      }
+    }
+  } // namespace Render
+} // namespace RenderLib

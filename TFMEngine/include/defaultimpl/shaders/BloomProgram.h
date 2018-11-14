@@ -7,24 +7,28 @@
 
 namespace RenderLib
 {
-	namespace DefaultImpl
-	{
-		typedef struct BloomFBOInfo
-		{
-			Render::FBO * fbo;
-			GPU::Texture::GPUTexture * input;
-		} BloomFBOInfo;
+  namespace DefaultImpl
+  {
+    typedef struct BloomFBOInfo
+    {
+      Render::FBO * fbo;
+      GPU::Texture::GPUTexture * input;
+    } BloomFBOInfo;
 
-		class BloomProgram : public GPU::Program::PostProcessProgram
-		{
-		private:
-			BloomFBOInfo fbos[2];
-		public:
-			BloomProgram();
-			void initializeShader(EngineInstance * instance);
-			void onRender(GPU::Texture::GPUTexture * previousOutput, EngineInstance * instance);
-		};
-	}
-}
+    class BloomProgram : public GPU::Program::PostProcessProgram
+    {
+    private:
+      BloomFBOInfo fbos[2];
+
+    public:
+      BloomProgram();
+      void
+      initializeShader(EngineInstance * instance);
+      void
+      onRender(GPU::Texture::GPUTexture * previousOutput,
+               EngineInstance * instance);
+    };
+  } // namespace DefaultImpl
+} // namespace RenderLib
 
 #endif

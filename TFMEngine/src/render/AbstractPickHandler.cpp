@@ -2,11 +2,8 @@
 
 namespace RenderLib
 {
-	namespace Render
-	{
-		void AbstractPickHandler::initialize(EngineInstance * instance)
-		{
-
-		}
-	}
-}
+  namespace Render
+  {
+    void AbstractPickHandler::initialize(EngineInstance * instance) {}
+  } // namespace Render
+} // namespace RenderLib

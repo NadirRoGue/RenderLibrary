@@ -1,88 +1,102 @@
 #ifndef __CPU_SCENEOBJECT__
 #define __CPU_SCENEOBJECT__
 
-#include <vector>
-#include <string>
 #include <memory>
+#include <string>
+#include <vector>
 
 #include "ComponentList.hpp"
 #include "Transform.h"
 
 namespace RenderLib
 {
-	typedef std::unique_ptr<SceneObject> SceneObjectPtr;
+  typedef std::unique_ptr<SceneObject> SceneObjectPtr;
 
-	class SceneObject
-	{
-	public:
-		// Transformation state for this object
-		Transform transform;
-		// Wether this object is enabled for processing
-		bool active;
-		// Object name
-		std::string objectName;
-		// Wether this object has called its initialization method
-		bool initialized;
-	private:
-		// List with all the components attached to this object
-		ComponentList componentList;
+  class SceneObject
+  {
+  public:
+    // Transformation state for this object
+    Transform transform;
+    // Wether this object is enabled for processing
+    bool active;
+    // Object name
+    std::string objectName;
+    // Wether this object has called its initialization method
+    bool initialized;
 
-		// Parent object
-		SceneObject * parent;
-		
-		// Child objects
-		std::vector<SceneObject *> children;
-	public:
-		SceneObject();
-		~SceneObject();
+  private:
+    // List with all the components attached to this object
+    ComponentList componentList;
 
-		virtual void initialize();
+    // Parent object
+    SceneObject * parent;
 
-		void setParent(SceneObject * object);
-		void addChildren(SceneObject * object);
-		void removeChildren(SceneObject * object);
+    // Child objects
+    std::vector<SceneObject *> children;
 
-		SceneObject * getParent();
-		std::vector<SceneObject*> & getChildren();
+  public:
+    SceneObject();
+    ~SceneObject();
 
-		ComponentList & getComponentList();
+    virtual void
+    initialize();
 
-		template<class T>
-		T * addComponent()
-		{
-			T * comp = componentList.addComponent<T>();
-			if(comp)
-			{
-				Component * compInstance = static_cast<Component*>(comp);
-				compInstance->object = this;
-			}
+    void
+    setParent(SceneObject * object);
+    void
+    addChildren(SceneObject * object);
+    void
+    removeChildren(SceneObject * object);
 
-			return comp;
-		}
+    SceneObject *
+    getParent();
+    std::vector<SceneObject *> &
+    getChildren();
 
-		template<class T>
-		void removeComponent()
-		{
-			componentList.removeComponent<T>();
-		}
+    ComponentList &
+    getComponentList();
 
-		template<class T>
-		T * getComponent()
-		{
-			return componentList.getComponent<T>();
-		}
+    template <class T>
+    T *
+    addComponent()
+    {
+      T * comp = componentList.addComponent<T>();
+      if (comp)
+      {
+        Component * compInstance = static_cast<Component *>(comp);
+        compInstance->object     = this;
+      }
 
-		const std::vector<std::unique_ptr<Component>> & getAllComponents()
-		{
-			return componentList.getAllComponents();
-		}
+      return comp;
+    }
 
-		template<class T>
-		std::vector<T*> getAllComponentsOfType()
-		{
-			return componentList.getComponentsOfType<T>();
-		}
-	};
-}
+    template <class T>
+    void
+    removeComponent()
+    {
+      componentList.removeComponent<T>();
+    }
+
+    template <class T>
+    T *
+    getComponent()
+    {
+      return componentList.getComponent<T>();
+    }
+
+    const std::vector<std::unique_ptr<Component>> &
+    getAllComponents()
+    {
+      return componentList.getAllComponents();
+    }
+
+    template <class T>
+    std::vector<T *>
+    getAllComponentsOfType()
+    {
+      return componentList.getComponentsOfType<T>();
+    }
+  };
+} // namespace RenderLib
 
 #endif

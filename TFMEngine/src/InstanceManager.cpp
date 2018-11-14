@@ -14,202 +14,218 @@
 
 namespace RenderLib
 {
-	void SequentialInstanceExecution(std::vector<EngineInstance *> instancePool)
-	{
-		// Initialize graphics
-		for (auto instance : instancePool)
-		{
-			instance->getWindow()->initialize();
-			instance->loadActiveScene();
-		}
+  void
+  SequentialInstanceExecution(std::vector<EngineInstance *> instancePool)
+  {
+    // Initialize graphics
+    for (auto instance : instancePool)
+    {
+      instance->getWindow()->initialize();
+      instance->loadActiveScene();
+    }
 
-		GPU::Texture::GPUTextureManager::queryAnisotropicFilterSupport();
-		Render::FBO::queryMaxRenderTargets();
+    GPU::Texture::GPUTextureManager::queryAnisotropicFilterSupport();
+    Render::FBO::queryMaxRenderTargets();
 
-		bool activeInstances = true;
-		std::vector<unsigned int> instancesToClean;
-		instancesToClean.reserve(instancePool.size());
+    bool activeInstances = true;
+    std::vector<unsigned int> instancesToClean;
+    instancesToClean.reserve(instancePool.size());
 
-		while (activeInstances)
-		{
-			activeInstances = false;
-			// Launch instances
-			for (auto instance : instancePool)
-			{
-				if (instance->getWindow()->isActive() && instance->isEnabled())
-				{
-					instance->acquireContext();
-					instance->executeIteration();
-					instance->releaseContext();
-					activeInstances = true;
-				}
-				else
-				{
-					instancesToClean.push_back(instance->getInstanceID());
-				}
-			}
+    while (activeInstances)
+    {
+      activeInstances = false;
+      // Launch instances
+      for (auto instance : instancePool)
+      {
+        if (instance->getWindow()->isActive() && instance->isEnabled())
+        {
+          instance->acquireContext();
+          instance->executeIteration();
+          instance->releaseContext();
+          activeInstances = true;
+        }
+        else
+        {
+          instancesToClean.push_back(instance->getInstanceID());
+        }
+      }
 
-			// Clean up finished instances
-			if (instancesToClean.size() > 0)
-			{
-				for (auto ID : instancesToClean)
-				{
-					auto it = instancePool.begin();
-					bool found = false;
-					while (it != instancePool.end() && !found)
-					{
-						EngineInstance * instance = *it;
-						if (instance && instance->getInstanceID() == ID)
-						{
-							found = true;
-							instance->cleanUp();
-							instancePool.erase(it);
-						}
-						it++;
-					}
-				}
-			}
-		}
-	}
+      // Clean up finished instances
+      if (instancesToClean.size() > 0)
+      {
+        for (auto ID : instancesToClean)
+        {
+          auto it    = instancePool.begin();
+          bool found = false;
+          while (it != instancePool.end() && !found)
+          {
+            EngineInstance * instance = *it;
+            if (instance && instance->getInstanceID() == ID)
+            {
+              found = true;
+              instance->cleanUp();
+              instancePool.erase(it);
+            }
+            it++;
+          }
+        }
+      }
+    }
+  }
 
-	void ThreadedInstanceExecution(EngineInstance * instance)
-	{
-		Graphics::WindowHandler * graphicsHandler = instance->getWindow();
+  void
+  ThreadedInstanceExecution(EngineInstance * instance)
+  {
+    Graphics::WindowHandler * graphicsHandler = instance->getWindow();
 
-		// Aquire GPU Context ownership
-		Graphics::ContextManager::getInstance().aquireContext();
-		// Initialize graphics
-		graphicsHandler->initialize();
-		GPU::Texture::GPUTextureManager::queryAnisotropicFilterSupport();
-		Render::FBO::queryMaxRenderTargets();
-		// Release context ownership
-		Graphics::ContextManager::getInstance().releaseContext();
+    // Aquire GPU Context ownership
+    Graphics::ContextManager::getInstance().aquireContext();
+    // Initialize graphics
+    graphicsHandler->initialize();
+    GPU::Texture::GPUTextureManager::queryAnisotropicFilterSupport();
+    Render::FBO::queryMaxRenderTargets();
+    // Release context ownership
+    Graphics::ContextManager::getInstance().releaseContext();
 
-		instance->loadActiveScene();
-		
-		// Launch instance
-		while (graphicsHandler->isActive() && instance->isEnabled())
-		{
-			instance->executeIteration();
-		}
+    instance->loadActiveScene();
 
-		instance->cleanUp();
-	}
+    // Launch instance
+    while (graphicsHandler->isActive() && instance->isEnabled())
+    {
+      instance->executeIteration();
+    }
 
-	InstanceManager InstanceManager::INSTANCE;
+    instance->cleanUp();
+  }
 
-	InstanceManager & InstanceManager::getInstance()
-	{
-		return INSTANCE;
-	}
+  InstanceManager InstanceManager::INSTANCE;
 
-	InstanceManager::InstanceManager()
-		: instanceIDSeed(0)
-	{
-	}
+  InstanceManager &
+  InstanceManager::getInstance()
+  {
+    return INSTANCE;
+  }
 
-	InstanceManager::~InstanceManager()
-	{
-		for (auto it = instances.begin(); it != instances.end(); it++)
-		{
-			destroyInstance(it->second);
-		}
-	}
+  InstanceManager::InstanceManager() : instanceIDSeed(0)
+  {
+  }
 
-	EngineInstance * InstanceManager::createInstance(const std::string & instanceName, Graphics::WindowHandler * windowHandler)
-	{
-		if (!windowHandler)
-		{
-			const std::string message = "InstanceManager: Failed to create instance " + instanceName + " - No WindowHandler provided";
-			throw EngineException(message.c_str());
+  InstanceManager::~InstanceManager()
+  {
+    for (auto it = instances.begin(); it != instances.end(); it++)
+    {
+      destroyInstance(it->second);
+    }
+  }
 
-			return NULL;
-		}
+  EngineInstance *
+  InstanceManager::createInstance(const std::string & instanceName,
+                                  Graphics::WindowHandler * windowHandler)
+  {
+    if (!windowHandler)
+    {
+      const std::string message = "InstanceManager: Failed to create instance "
+          + instanceName + " - No WindowHandler provided";
+      throw EngineException(message.c_str());
 
-		std::unique_lock<std::mutex> lock(aquireIDMtx);
-		//lock.lock();
+      return NULL;
+    }
 
-		unsigned int id = instanceIDSeed;
-		instanceIDSeed++;
+    std::unique_lock<std::mutex> lock(aquireIDMtx);
+    // lock.lock();
 
-		EngineInstancePtr newInstance = std::make_unique<EngineInstance>(id, instanceName, windowHandler);
-		EngineInstance * result = newInstance.get();
-		instances[id] = std::move(newInstance);
+    unsigned int id = instanceIDSeed;
+    instanceIDSeed++;
 
-		lock.unlock();
+    EngineInstancePtr newInstance
+        = std::make_unique<EngineInstance>(id, instanceName, windowHandler);
+    EngineInstance * result = newInstance.get();
+    instances[id]           = std::move(newInstance);
 
-		Logger::Log::getInstance().logInfo("InstanceManager: Created new EngineInstance with ID = " + std::to_string(id) + " and name = " + instanceName);
+    lock.unlock();
 
-		return result;
-	}
+    Logger::Log::getInstance().logInfo(
+        "InstanceManager: Created new EngineInstance with ID = "
+        + std::to_string(id) + " and name = " + instanceName);
 
-	EngineInstance * InstanceManager::getInstanceByID(unsigned int ID)
-	{
-		auto it = instances.find(ID);
-		if (it != instances.end())
-		{
-			return it->second.get();
-		}
+    return result;
+  }
 
-		return NULL;
-	}
+  EngineInstance *
+  InstanceManager::getInstanceByID(unsigned int ID)
+  {
+    auto it = instances.find(ID);
+    if (it != instances.end())
+    {
+      return it->second.get();
+    }
 
-	void InstanceManager::launchInstances(const ExecutionMode & mode)
-	{
-		std::vector<std::thread> instanceThreads;
+    return NULL;
+  }
 
-		switch (mode)
-		{
-		case ExecutionMode::EXECUTION_PARALLEL:
-			launchParallel(instanceThreads);
-			break;
-		case ExecutionMode::EXECUTION_SEQUENTIAL:
-			launchSequential(instanceThreads);
-			break;
-		}
+  void
+  InstanceManager::launchInstances(const ExecutionMode & mode)
+  {
+    std::vector<std::thread> instanceThreads;
 
-		for (auto & thread : instanceThreads)
-		{
-			thread.join();
-		}
+    switch (mode)
+    {
+      case ExecutionMode::EXECUTION_PARALLEL:
+        launchParallel(instanceThreads);
+        break;
+      case ExecutionMode::EXECUTION_SEQUENTIAL:
+        launchSequential(instanceThreads);
+        break;
+    }
 
-		// Release memory
-		CPU::Memory::MemoryManager::getInstance().destroyAllPools();
-	}
+    for (auto & thread : instanceThreads)
+    {
+      thread.join();
+    }
 
-	void InstanceManager::launchParallel(std::vector<std::thread> & createdThreads)
-	{
-		for (auto it = instances.begin(); it != instances.end(); it++)
-		{
-			createdThreads.emplace_back(std::thread(ThreadedInstanceExecution, it->second.get()));
-		}
-	}
+    // Release memory
+    CPU::Memory::MemoryManager::getInstance().destroyAllPools();
+  }
 
-	void InstanceManager::launchSequential(std::vector<std::thread> & createdThreads)
-	{
-		std::vector<EngineInstance *> instancesPtr;
-		instancesPtr.reserve(instances.size());
+  void
+  InstanceManager::launchParallel(std::vector<std::thread> & createdThreads)
+  {
+    for (auto it = instances.begin(); it != instances.end(); it++)
+    {
+      createdThreads.emplace_back(
+          std::thread(ThreadedInstanceExecution, it->second.get()));
+    }
+  }
 
-		for (auto it = instances.begin(); it != instances.end(); it++)
-		{
-			instancesPtr.push_back(it->second.get());
-		}
+  void
+  InstanceManager::launchSequential(std::vector<std::thread> & createdThreads)
+  {
+    std::vector<EngineInstance *> instancesPtr;
+    instancesPtr.reserve(instances.size());
 
-		createdThreads.push_back(std::thread(SequentialInstanceExecution, instancesPtr));
-	}
+    for (auto it = instances.begin(); it != instances.end(); it++)
+    {
+      instancesPtr.push_back(it->second.get());
+    }
 
-	void InstanceManager::destroyInstance(unsigned int ID)
-	{
-		auto it = instances.find(ID);
-		if (it != instances.end())
-		{
-			destroyInstance(it->second);
-			instances.erase(it);
-		}
-	}
+    createdThreads.push_back(
+        std::thread(SequentialInstanceExecution, instancesPtr));
+  }
 
-	void InstanceManager::destroyInstance(EngineInstancePtr & instance)
-	{
-		instance.reset();
-	}
-}
+  void
+  InstanceManager::destroyInstance(unsigned int ID)
+  {
+    auto it = instances.find(ID);
+    if (it != instances.end())
+    {
+      destroyInstance(it->second);
+      instances.erase(it);
+    }
+  }
+
+  void
+  InstanceManager::destroyInstance(EngineInstancePtr & instance)
+  {
+    instance.reset();
+  }
+} // namespace RenderLib

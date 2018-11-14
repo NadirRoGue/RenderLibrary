@@ -3,21 +3,21 @@
 
 namespace RenderLib
 {
-	namespace CPU
-	{
-		namespace Texture
-		{
-			enum class TextureStackBlendOperation
-			{
-				OP_ADD,
-				OP_SUBSTRACT,
-				OP_MULTIPLY,
-				OP_DIVIDE,
-				OP_SMOOTHADD,
-				OP_SIGNEDADD
-			};
-		}
-	}
-}
+  namespace CPU
+  {
+    namespace Texture
+    {
+      enum class TextureStackBlendOperation
+      {
+        OP_ADD,
+        OP_SUBSTRACT,
+        OP_MULTIPLY,
+        OP_DIVIDE,
+        OP_SMOOTHADD,
+        OP_SIGNEDADD
+      };
+    }
+  } // namespace CPU
+} // namespace RenderLib
 
 #endif

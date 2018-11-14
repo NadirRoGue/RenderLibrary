@@ -7,17 +7,20 @@
 
 namespace RenderLib
 {
-	namespace DefaultImpl
-	{
-		class ShaderLoader : public CPU::IO::FileLoader
-		{
-		public:
-			ShaderLoader();
-			CPU::IO::AbstractLoadResultPtr loadFile(const std::string & filePath, unsigned int options);
-		private:
-			void handleInclude(const std::string & include, std::string & dst);
-		};
-	}
-}
+  namespace DefaultImpl
+  {
+    class ShaderLoader : public CPU::IO::FileLoader
+    {
+    public:
+      ShaderLoader();
+      CPU::IO::AbstractLoadResultPtr
+      loadFile(const std::string & filePath, unsigned int options);
+
+    private:
+      void
+      handleInclude(const std::string & include, std::string & dst);
+    };
+  } // namespace DefaultImpl
+} // namespace RenderLib
 
 #endif

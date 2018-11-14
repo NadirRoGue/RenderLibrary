@@ -7,21 +7,23 @@
 
 namespace RenderLib
 {
-	namespace GPU
-	{
-		namespace Program
-		{
-			class ShaderLoadResult : public CPU::IO::AbstractLoadResult
-			{
-			public:
-				std::string header;
-				std::string body;
-				std::vector<char> text;
-			public:
-				size_t getResultSizeBytes();
-			};
-		}
-	}
-}
+  namespace GPU
+  {
+    namespace Program
+    {
+      class ShaderLoadResult : public CPU::IO::AbstractLoadResult
+      {
+      public:
+        std::string header;
+        std::string body;
+        std::vector<char> text;
+
+      public:
+        size_t
+        getResultSizeBytes();
+      };
+    } // namespace Program
+  } // namespace GPU
+} // namespace RenderLib
 
 #endif

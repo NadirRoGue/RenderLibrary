@@ -1,124 +1,160 @@
 #ifndef __RENDERLIB_SCENE_H__
 #define __RENDERLIB_SCENE_H__
 
-#include <vector>
-#include <unordered_map>
 #include <memory>
+#include <unordered_map>
+#include <vector>
 
-#include "SceneObject.h"
 #include "Camera.h"
+#include "SceneObject.h"
 
 #include "EngineException.h"
 
 #include "inputhandlers/InputManager.h"
 
 #include "lights/DirectionalLight.h"
-#include "lights/SpotLight.h"
 #include "lights/PointLight.h"
+#include "lights/SpotLight.h"
 
 namespace RenderLib
 {
-	class Scene
-	{
-	private:
-		std::string name;
+  class Scene
+  {
+  private:
+    std::string name;
 
-		std::vector<SceneObjectPtr> sceneObjects;
+    std::vector<SceneObjectPtr> sceneObjects;
 
-		std::unordered_map<std::string, Camera *> sceneCameras;
-		std::vector<Graphics::WindowResizeObserver *> windowResizables;
-		Camera * activeCamera;
+    std::unordered_map<std::string, Camera *> sceneCameras;
+    std::vector<Graphics::WindowResizeObserver *> windowResizables;
+    Camera * activeCamera;
 
-		std::vector<Lighting::DirectionalLight*> direcionalLights;
-		std::vector<Lighting::SpotLight*> spotLights;
-		std::vector<Lighting::PointLight*> pointLights;
+    std::vector<Lighting::DirectionalLight *> direcionalLights;
+    std::vector<Lighting::SpotLight *> spotLights;
+    std::vector<Lighting::PointLight *> pointLights;
 
-		InputHandlers::InputManager inputManager;
+    InputHandlers::InputManager inputManager;
 
-		SceneObject * sceneRoot;
+    SceneObject * sceneRoot;
 
-		bool sceneTreeUpdated;
-	public:
-		Scene(std::string name);
-		~Scene();
+    SceneObject * zArrowObj;
+    SceneObject * yArrowObj;
+    SceneObject * xArrowObj;
 
-		const std::string & getSceneName();
+    bool sceneTreeUpdated;
 
-		void makeCameraActive(const std::string & name);
-		void makeCameraActive(Camera * cam);
-		Camera * getActiveCamera();
+  public:
+    Scene(std::string name);
+    ~Scene();
 
-		SceneObject * getSceneRoot();
-		bool sceneTreeNeedsUpdate();
-		void setSceneTreeNeedsUpdate(const bool & val);
+    const std::string &
+    getSceneName();
 
-		std::vector<SceneObjectPtr> & getSceneObjects();
-		std::vector<Graphics::WindowResizeObserver*> & getWindowResizableObservers();
-		InputHandlers::InputManager & getInputManager();
+    void
+    makeCameraActive(const std::string & name);
+    void
+    makeCameraActive(Camera * cam);
+    Camera *
+    getActiveCamera();
 
-		template<class T>
-		T * addObject(const std::string & objName = "")
-		{
-			if (std::is_base_of<SceneObject, T>::value)
-			{
-				std::unique_ptr<SceneObject> newObject = std::make_unique<T>();
-				newObject.get()->objectName = objName;
-				T * result = newObject.get();
-				sceneObjects.push_back(std::move(newObject));
+    SceneObject *
+    getSceneRoot();
 
-				sceneTreeUpdated = true;
+    SceneObject *
+    getZArrow();
+    SceneObject *
+    getYArrow();
+    SceneObject *
+    getXArrow();
 
-				return result;
-			}
+    bool
+    sceneTreeNeedsUpdate();
+    void
+    setSceneTreeNeedsUpdate(const bool & val);
 
-			throw EngineException("Scene: Attempted to add a non-derived SceneObject element");
-			return NULL;
-		}
+    std::vector<SceneObjectPtr> &
+    getSceneObjects();
+    std::vector<Graphics::WindowResizeObserver *> &
+    getWindowResizableObservers();
+    InputHandlers::InputManager &
+    getInputManager();
 
-		template<class T>
-		T * addCamera(const std::string & name)
-		{
-			auto alreadyExist = sceneCameras.find(name);
-			if (alreadyExist != sceneCameras.end())
-			{
-				throw EngineException("Scene: Attempted to create a camera with a name already present in the scene: " + name);
-				return NULL;
-			}
+    template <class T>
+    T *
+    addObject(const std::string & objName = "")
+    {
+      if (std::is_base_of<SceneObject, T>::value)
+      {
+        std::unique_ptr<SceneObject> newObject = std::make_unique<T>();
+        newObject.get()->objectName            = objName;
+        T * result                             = newObject.get();
+        sceneObjects.push_back(std::move(newObject));
 
-			if (std::is_base_of<Camera, T>::value)
-			{
-				std::unique_ptr<SceneObject> newCamPtr = std::make_unique<T>();
-				
-				T * result = static_cast<T*>(newCamPtr.get());
+        sceneTreeUpdated = true;
 
-				if (activeCamera == NULL)
-				{
-					activeCamera = result;
-				}
+        return result;
+      }
 
-				newCamPtr.get()->objectName = name;
+      throw EngineException(
+          "Scene: Attempted to add a non-derived SceneObject element");
+      return NULL;
+    }
 
-				sceneObjects.push_back(std::move(newCamPtr));
-				sceneCameras[name] = result;
-				windowResizables.push_back(static_cast<Graphics::WindowResizeObserver*>(result));
-				
-				sceneTreeUpdated = true;
+    template <class T>
+    T *
+    addCamera(const std::string & name)
+    {
+      auto alreadyExist = sceneCameras.find(name);
+      if (alreadyExist != sceneCameras.end())
+      {
+        throw EngineException("Scene: Attempted to create a camera with a name "
+                              "already present in the scene: "
+                              + name);
+        return NULL;
+      }
 
-			  return result;
-			}
+      if (std::is_base_of<Camera, T>::value)
+      {
+        std::unique_ptr<SceneObject> newCamPtr = std::make_unique<T>();
 
-			throw EngineException("Scene: Attempted to add a non-derived Camera camera");
-			return NULL;
-		}
+        T * result = static_cast<T *>(newCamPtr.get());
 
-		Lighting::DirectionalLight * addDirectionalLight(const std::string & name);
-		Lighting::PointLight * addPointLight(const std::string & name);
-		Lighting::SpotLight * addSpotLight(const std::string & name);
+        if (activeCamera == NULL)
+        {
+          activeCamera = result;
+        }
 
-		std::vector<Lighting::DirectionalLight*> & getDirectionalLights();
-		std::vector<Lighting::PointLight*> & getPointLights();
-		std::vector<Lighting::SpotLight*> & getSpotLights();
-	};
-}
+        newCamPtr.get()->objectName = name;
+
+        sceneObjects.push_back(std::move(newCamPtr));
+        sceneCameras[name] = result;
+        windowResizables.push_back(
+            static_cast<Graphics::WindowResizeObserver *>(result));
+
+        sceneTreeUpdated = true;
+
+        return result;
+      }
+
+      throw EngineException(
+          "Scene: Attempted to add a non-derived Camera camera");
+      return NULL;
+    }
+
+    Lighting::DirectionalLight *
+    addDirectionalLight(const std::string & name);
+    Lighting::PointLight *
+    addPointLight(const std::string & name);
+    Lighting::SpotLight *
+    addSpotLight(const std::string & name);
+
+    std::vector<Lighting::DirectionalLight *> &
+    getDirectionalLights();
+    std::vector<Lighting::PointLight *> &
+    getPointLights();
+    std::vector<Lighting::SpotLight *> &
+    getSpotLights();
+  };
+} // namespace RenderLib
 
 #endif

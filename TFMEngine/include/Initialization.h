@@ -3,7 +3,8 @@
 
 namespace RenderLib
 {
-	void DefaultEngineInitialization();
+  void
+  DefaultEngineInitialization();
 }
 
 #endif

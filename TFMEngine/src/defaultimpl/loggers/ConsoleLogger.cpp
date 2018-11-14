@@ -10,21 +10,24 @@
 
 namespace RenderLib
 {
-	namespace DefaultImpl
-	{
-		void ConsoleLogger::logInfo(const std::string & message)
-		{
-			PRINTF(stdout, "%s\n", message.c_str());
-		}
+  namespace DefaultImpl
+  {
+    void
+    ConsoleLogger::logInfo(const std::string & message)
+    {
+      PRINTF(stdout, "%s\n", message.c_str());
+    }
 
-		void ConsoleLogger::logWarning(const std::string & warning)
-		{
-			PRINTF(stdout, "%s\n", warning.c_str());
-		}
+    void
+    ConsoleLogger::logWarning(const std::string & warning)
+    {
+      PRINTF(stdout, "%s\n", warning.c_str());
+    }
 
-		void ConsoleLogger::logError(const std::string & error)
-		{
-			PRINTF(stderr, "%s\n", error.c_str());
-		}
-	}
-}
+    void
+    ConsoleLogger::logError(const std::string & error)
+    {
+      PRINTF(stderr, "%s\n", error.c_str());
+    }
+  } // namespace DefaultImpl
+} // namespace RenderLib

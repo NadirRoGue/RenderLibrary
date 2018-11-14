@@ -7,24 +7,26 @@
 
 namespace RenderLib
 {
-	namespace CPU
-	{
-		namespace Texture
-		{
-			class TextureLoadResult : public CPU::IO::AbstractLoadResult
-			{
-			public:
-				std::vector<unsigned char> loadedPixels;
-				unsigned int width;
-				unsigned int height;
-				unsigned int numPixelComponents; // RGBA = 4, RGB = 3,...
+  namespace CPU
+  {
+    namespace Texture
+    {
+      class TextureLoadResult : public CPU::IO::AbstractLoadResult
+      {
+      public:
+        std::vector<unsigned char> loadedPixels;
+        unsigned int width;
+        unsigned int height;
+        unsigned int numPixelComponents; // RGBA = 4, RGB = 3,...
 
-				void resizeBuffer();
+        void
+        resizeBuffer();
 
-				size_t getResultSizeBytes();
-			};
-		}
-	}
-}
+        size_t
+        getResultSizeBytes();
+      };
+    } // namespace Texture
+  } // namespace CPU
+} // namespace RenderLib
 
 #endif

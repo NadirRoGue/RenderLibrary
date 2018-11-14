@@ -7,15 +7,16 @@
 
 namespace RenderLib
 {
-	namespace DefaultImpl
-	{
-		class ImageLoader : public CPU::IO::FileLoader
-		{
-		public:
-			ImageLoader();
-			CPU::IO::AbstractLoadResultPtr loadFile(const std::string & filePath, unsigned int options);
-		};
-	}
-}
+  namespace DefaultImpl
+  {
+    class ImageLoader : public CPU::IO::FileLoader
+    {
+    public:
+      ImageLoader();
+      CPU::IO::AbstractLoadResultPtr
+      loadFile(const std::string & filePath, unsigned int options);
+    };
+  } // namespace DefaultImpl
+} // namespace RenderLib
 
 #endif

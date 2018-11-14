@@ -7,14 +7,16 @@
 
 namespace RenderLib
 {
-	namespace Render
-	{
-		class PipelineOutputStage : public PostProcessRenderStage<DefaultImpl::OutputProgram>
-		{
-		public:
-			void initialize();
-		};
-	}
-}
+  namespace Render
+  {
+    class PipelineOutputStage
+      : public PostProcessRenderStage<DefaultImpl::OutputProgram>
+    {
+    public:
+      void
+      initialize();
+    };
+  } // namespace Render
+} // namespace RenderLib
 
 #endif

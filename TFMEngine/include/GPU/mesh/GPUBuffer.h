@@ -7,45 +7,57 @@
 
 namespace RenderLib
 {
-	namespace GPU
-	{
-		namespace Mesh
-		{
-			class GPUBuffer
-			{
-			private:
-				size_t faceSize;
-				size_t dataSize;
-			public:
-				unsigned int vao;
-				unsigned int indexBuffer;
-				unsigned int dataBuffer;
+  namespace GPU
+  {
+    namespace Mesh
+    {
+      class GPUBuffer
+      {
+      private:
+        size_t faceSize;
+        size_t dataSize;
 
-				GLenum usage;
+      public:
+        unsigned int vao;
+        unsigned int indexBuffer;
+        unsigned int dataBuffer;
 
-				GPUBuffer();
-				~GPUBuffer();
+        GLenum usage;
 
-				void generate();
+        GPUBuffer();
+        ~GPUBuffer();
 
-				void bind();
-				void unBind();
+        void
+        generate();
 
-				void bindIndexBuffer();
-				void unBindIndexBuffer();
+        void
+        bind();
+        void
+        unBind();
 
-				void bindDataBuffer();
-				void unBindDataBuffer();
+        void
+        bindIndexBuffer();
+        void
+        unBindIndexBuffer();
 
-				void updateData(char * faceData, const size_t & faceSize, char * vertexData, const size_t & vertexSize);
+        void
+        bindDataBuffer();
+        void
+        unBindDataBuffer();
 
-				const size_t & getFacesSizeBytes();
-				const size_t & getDataSizeBytes();
-			};
+        void
+        updateData(char * faceData, const size_t & faceSize, char * vertexData,
+                   const size_t & vertexSize);
 
-			typedef std::unique_ptr<GPUBuffer> GPUBufferPtr;
-		}
-	}
-}
+        const size_t &
+        getFacesSizeBytes();
+        const size_t &
+        getDataSizeBytes();
+      };
+
+      typedef std::unique_ptr<GPUBuffer> GPUBufferPtr;
+    } // namespace Mesh
+  } // namespace GPU
+} // namespace RenderLib
 
 #endif

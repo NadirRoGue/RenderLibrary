@@ -1,69 +1,88 @@
 #ifndef __RENDERLIB_GRAPHICS_WINDOW_H__
 #define __RENDERLIB_GRAPHICS_WINDOW_H__
 
-#include <string>
 #include <functional>
+#include <string>
 
 #include <GL/glew.h>
 
 namespace RenderLib
 {
-	class EngineInstance;
+  class EngineInstance;
 
-	namespace Graphics
-	{
-		typedef struct WindowConfiguration
-		{
-			unsigned int windowPosX;
-			unsigned int windowPosY;
+  namespace Graphics
+  {
+    typedef struct WindowConfiguration
+    {
+      unsigned int windowPosX;
+      unsigned int windowPosY;
 
-			unsigned int windowWidth;
-			unsigned int windowHeight;
+      unsigned int windowWidth;
+      unsigned int windowHeight;
 
-			unsigned int openGLMajorVersion;
-			unsigned int openGLMinorVersion;
+      unsigned int openGLMajorVersion;
+      unsigned int openGLMinorVersion;
 
-			unsigned int openGLContextProfile;
+      unsigned int openGLContextProfile;
 
-			std::string windowTitle;
+      std::string windowTitle;
 
-			std::function<void(void)> openGLConfigurationCallback;
+      std::function<void(void)> openGLConfigurationCallback;
 
-		} WindowConfiguration;
+    } WindowConfiguration;
 
-		class WindowHandler
-		{
-		public:
-			EngineInstance * instance;
-		protected:
-			WindowConfiguration config;
-		public:
-			WindowHandler(WindowConfiguration windowConfig);
-			~WindowHandler();
+    class WindowHandler
+    {
+    public:
+      EngineInstance * instance;
 
-			unsigned int getWidth();
-			unsigned int getHeight();
+    protected:
+      WindowConfiguration config;
 
-			const std::string & getTitle();
+    public:
+      WindowHandler(WindowConfiguration windowConfig);
+      ~WindowHandler();
 
-			virtual void initialize();
+      unsigned int
+      getWidth();
+      unsigned int
+      getHeight();
 
-			virtual void initializeWindowContext() = 0;
+      const std::string &
+      getTitle();
 
-			virtual bool isActive() = 0;
+      virtual void
+      initialize();
 
-			virtual void activateContext() = 0;
+      virtual void
+      initializeWindowContext()
+          = 0;
 
-			virtual void onRenderLoopIteration() = 0;
+      virtual bool
+      isActive()
+          = 0;
 
-			virtual void cleanUp() = 0;
+      virtual void
+      activateContext()
+          = 0;
 
-			virtual double elapsedTimeSinceStart() = 0;
+      virtual void
+      onRenderLoopIteration()
+          = 0;
 
-		protected:
-			void defaultOpenGLConfiguration();
-		};
-	}
-}
+      virtual void
+      cleanUp()
+          = 0;
+
+      virtual double
+      elapsedTimeSinceStart()
+          = 0;
+
+    protected:
+      void
+      defaultOpenGLConfiguration();
+    };
+  } // namespace Graphics
+} // namespace RenderLib
 
 #endif

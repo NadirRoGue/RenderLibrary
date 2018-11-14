@@ -11,58 +11,69 @@
 
 namespace RenderLib
 {
-	class EngineInstance;
+  class EngineInstance;
 
-	namespace Pipeline
-	{
-		class PipelineManager
-		{
-		private:
-			EngineInstance * engineInstance;
-			Pipeline pipeline;
-			PipelineBroker stageBroker;
-			ThreadPool threadPool;
+  namespace Pipeline
+  {
+    class PipelineManager
+    {
+    private:
+      EngineInstance * engineInstance;
+      Pipeline pipeline;
+      PipelineBroker stageBroker;
+      ThreadPool threadPool;
 
-		public:
-			PipelineManager();
-			~PipelineManager();
+    public:
+      PipelineManager();
+      ~PipelineManager();
 
-			void setEngineInstance(EngineInstance * instance);
+      void
+      setEngineInstance(EngineInstance * instance);
 
-			Pipeline & getPipeline();
-			PipelineBroker & getStageBroker();
-			ThreadPool & getThreadPool();
+      Pipeline &
+      getPipeline();
+      PipelineBroker &
+      getStageBroker();
+      ThreadPool &
+      getThreadPool();
 
-			template<class T>
-			T * addPipelineStage()
-			{
-				T * result = pipeline.registerStage<T>();
-				PipelineStage * stage = dynamic_cast<PipelineStage*>(result);
-				stage->engineInstance = engineInstance;
-				if (result && stage)
-				{
-					stageBroker.registerPipelineStage(result);
-				}
+      template <class T>
+      T *
+      addPipelineStage()
+      {
+        T * result            = pipeline.registerStage<T>();
+        PipelineStage * stage = dynamic_cast<PipelineStage *>(result);
+        stage->engineInstance = engineInstance;
+        if (result && stage)
+        {
+          stageBroker.registerPipelineStage(result);
+        }
 
-				return result;
-			}
+        return result;
+      }
 
-			template<class T>
-			T * getPipelineStage()
-			{
-				return pipeline.getStage<T>();
-			}
+      template <class T>
+      T *
+      getPipelineStage()
+      {
+        return pipeline.getStage<T>();
+      }
 
-			void registerComponent(Component * component);
-			void removeComponent(Component * component);
+      void
+      registerComponent(Component * component);
+      void
+      removeComponent(Component * component);
 
-			void initializeStages();
+      void
+      initializeStages();
 
-			void finishStages();
+      void
+      finishStages();
 
-			void executePipeline();
-		};
-	}
-}
+      void
+      executePipeline();
+    };
+  } // namespace Pipeline
+} // namespace RenderLib
 
 #endif

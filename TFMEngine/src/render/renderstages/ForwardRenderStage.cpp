@@ -8,48 +8,57 @@
 
 namespace RenderLib
 {
-	namespace Render
-	{
-		ForwardRenderStage::ForwardRenderStage()
-		{
-		}
+  namespace Render
+  {
+    ForwardRenderStage::ForwardRenderStage()
+    {
+    }
 
-		bool ForwardRenderStage::shouldRegisterRenderable(DefaultImpl::MeshRenderer * renderable)
-		{
-			Material::Material * mat = renderable->material;
-			if (mat->opacity() < (FLOAT)1.0 || renderable->preferredRender == DefaultImpl::FORWARD_RENDER)
-			{
-				return true;
-			}
+    bool
+    ForwardRenderStage::shouldRegisterRenderable(
+        DefaultImpl::MeshRenderer * renderable)
+    {
+      Material::Material * mat = renderable->material;
+      if (mat->opacity() < (FLOAT)1.0
+          || renderable->preferredRender == DefaultImpl::FORWARD_RENDER)
+      {
+        return true;
+      }
 
-			return false;
-		}
+      return false;
+    }
 
-		void ForwardRenderStage::runStage()
-		{
-			if (!outputFBO)
-			{
-				throw EngineException("ForwardRenderStage: No FrameBuffer setted. Aborting");
-			}
+    void
+    ForwardRenderStage::runStage()
+    {
+      if (!outputFBO)
+      {
+        throw EngineException(
+            "ForwardRenderStage: No FrameBuffer setted. Aborting");
+      }
 
-			outputFBO->bind();
+      outputFBO->bind();
 
-			glEnable(GL_BLEND);
-			glEnable(GL_CULL_FACE);
-			glEnable(GL_DEPTH_TEST);
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-			
-			Camera * cam = engineInstance->getSceneManager().getActiveScene()->getActiveCamera();
+      glEnable(GL_BLEND);
+      glEnable(GL_CULL_FACE);
+      glEnable(GL_DEPTH_TEST);
+      glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-			GPU::Mesh::GPUBuffer * staticBuf = engineInstance->getGPUMeshManager().getStaticMeshBuffer();
-			staticBuf->bind();
-			staticBuf->bindDataBuffer();
-			staticRenderables.renderMap(*cam, engineInstance);
+      Camera * cam = engineInstance->getSceneManager()
+                         .getActiveScene()
+                         ->getActiveCamera();
 
-			GPU::Mesh::GPUBuffer * dynamicBuf = engineInstance->getGPUMeshManager().getDynamicMeshBuffer();
-			dynamicBuf->bind();
-			dynamicBuf->bindDataBuffer();
-			dynamicRenderables.renderMap(*cam, engineInstance);
-		}
-	}
-}
+      GPU::Mesh::GPUBuffer * staticBuf
+          = engineInstance->getGPUMeshManager().getStaticMeshBuffer();
+      staticBuf->bind();
+      staticBuf->bindDataBuffer();
+      staticRenderables.renderMap(*cam, engineInstance);
+
+      GPU::Mesh::GPUBuffer * dynamicBuf
+          = engineInstance->getGPUMeshManager().getDynamicMeshBuffer();
+      dynamicBuf->bind();
+      dynamicBuf->bindDataBuffer();
+      dynamicRenderables.renderMap(*cam, engineInstance);
+    }
+  } // namespace Render
+} // namespace RenderLib

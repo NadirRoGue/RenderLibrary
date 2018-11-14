@@ -8,51 +8,54 @@
 
 namespace RenderLib
 {
-	namespace DefaultImpl
-	{
-		void RenderStage::preRunStage()
-		{
-			// Sort all elements
-			Pipeline::ElementBasedStage<MeshRenderer>::preRunStage();
+  namespace DefaultImpl
+  {
+    void
+    RenderStage::preRunStage()
+    {
+      // Sort all elements
+      Pipeline::ElementBasedStage<MeshRenderer>::preRunStage();
 
-			engineInstance->acquireContext();
+      engineInstance->acquireContext();
 
-			renderPipeline.setEngineInstance(engineInstance);
+      renderPipeline.setEngineInstance(engineInstance);
 
-			// Instantiate the common quad
-			engineInstance->getGPUMeshManager().generatePostProcessQuad();
+      // Instantiate the common quad
+      engineInstance->getGPUMeshManager().generatePostProcessQuad();
 
-			// Add them sorted to the correspondent places
-			for (auto comp : elements)
-			{
-				renderPipeline.registerRenderable(static_cast<MeshRenderer*>(comp));
-			}
+      // Add them sorted to the correspondent places
+      for (auto comp : elements)
+      {
+        renderPipeline.registerRenderable(static_cast<MeshRenderer *>(comp));
+      }
 
-			renderPipeline.initializeStages();
+      renderPipeline.initializeStages();
 
-			engineInstance->getFBOManager().onResize(
-				engineInstance->getWindow()->getWidth(),
-				engineInstance->getWindow()->getHeight());
+      engineInstance->getFBOManager().onResize(
+          engineInstance->getWindow()->getWidth(),
+          engineInstance->getWindow()->getHeight());
 
-			engineInstance->releaseContext();
-		}
+      engineInstance->releaseContext();
+    }
 
-		void RenderStage::runStage()
-		{
-			engineInstance->acquireContext();
+    void
+    RenderStage::runStage()
+    {
+      engineInstance->acquireContext();
 
-			renderPipeline.executePipelineIteration();
+      renderPipeline.executePipelineIteration();
 
-			engineInstance->releaseContext();
-		}
+      engineInstance->releaseContext();
+    }
 
-		void RenderStage::postRunStage()
-		{
-			engineInstance->acquireContext();
+    void
+    RenderStage::postRunStage()
+    {
+      engineInstance->acquireContext();
 
-			renderPipeline.finalizeStages();
+      renderPipeline.finalizeStages();
 
-			engineInstance->releaseContext();
-		}
-	}
-}
+      engineInstance->releaseContext();
+    }
+  } // namespace DefaultImpl
+} // namespace RenderLib

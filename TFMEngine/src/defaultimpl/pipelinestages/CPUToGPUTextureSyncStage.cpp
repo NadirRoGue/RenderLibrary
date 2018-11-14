@@ -3,83 +3,94 @@
 #include "material/Material.h"
 
 #include "CPU/texture/TextureManager.h"
-#include "GPU/texture/GPUTextureManager.h"
 #include "EngineInstance.h"
+#include "GPU/texture/GPUTextureManager.h"
 
 #include "GPU/texture/GPUTexture2D.h"
 
 namespace RenderLib
 {
-	namespace DefaultImpl
-	{
-		void CPUToGPUTextureSyncStage::preRunStage()
-		{
-			syncTextures();
-		}
+  namespace DefaultImpl
+  {
+    void
+    CPUToGPUTextureSyncStage::preRunStage()
+    {
+      syncTextures();
+    }
 
-		void CPUToGPUTextureSyncStage::runStage()
-		{
-			syncTextures();
-		}
+    void
+    CPUToGPUTextureSyncStage::runStage()
+    {
+      syncTextures();
+    }
 
-		void CPUToGPUTextureSyncStage::syncTextures()
-		{
-			if (elements.size() > 0)
-			{
-				engineInstance->acquireContext();
+    void
+    CPUToGPUTextureSyncStage::syncTextures()
+    {
+      if (elements.size() > 0)
+      {
+        engineInstance->acquireContext();
 
-				for (auto component : elements)
-				{
-					MeshRenderer * renderable = static_cast<MeshRenderer*>(component);
+        for (auto component : elements)
+        {
+          MeshRenderer * renderable = static_cast<MeshRenderer *>(component);
 
-					Material::Material * mat = renderable->material;
+          Material::Material * mat = renderable->material;
 
-					syncTexture(mat->diffuseTexture);
-					syncTexture(mat->ambientTexture);
-					syncTexture(mat->specularTexture);
-					syncTexture(mat->shininessTexture);
-					syncTexture(mat->heightMapTexture);
-					syncTexture(mat->displacementTexture);
-					syncTexture(mat->normalMapTexture);
-					syncTexture(mat->opacityTexture);
-					syncTexture(mat->emissiveTexture);
-					syncTexture(mat->otherTexture);
-				}
-				
-				engineInstance->releaseContext();
+          syncTexture(mat->diffuseTexture);
+          syncTexture(mat->ambientTexture);
+          syncTexture(mat->specularTexture);
+          syncTexture(mat->shininessTexture);
+          syncTexture(mat->heightMapTexture);
+          syncTexture(mat->displacementTexture);
+          syncTexture(mat->normalMapTexture);
+          syncTexture(mat->opacityTexture);
+          syncTexture(mat->emissiveTexture);
+          syncTexture(mat->otherTexture);
+        }
 
-				elements.clear();
-			}
-		}
+        engineInstance->releaseContext();
 
-		void CPUToGPUTextureSyncStage::syncTexture(Material::MaterialTexture & textureParameter)
-		{
-			CPU::Texture::Texture * cpuTexture = 
-				CPU::Texture::TextureManager::getInstance().getTexture(textureParameter.fileName);
+        elements.clear();
+      }
+    }
 
-			if (cpuTexture != NULL)
-			{
-				GPU::Texture::GPUTexture * gpuTexture = NULL;
-				if ((gpuTexture = engineInstance->getGPUTextureManager().getTexture<GPU::Texture::GPUTexture2D>(cpuTexture->index)) != NULL)
-				{
-					textureParameter.setTexture(gpuTexture);
-					return;
-				}
+    void
+    CPUToGPUTextureSyncStage::syncTexture(
+        Material::MaterialTexture & textureParameter)
+    {
+      CPU::Texture::Texture * cpuTexture
+          = CPU::Texture::TextureManager::getInstance().getTexture(
+              textureParameter.fileName);
 
-				std::vector<unsigned char> buf;
-				cpuTexture->pixels.dumpAttributes(buf);
+      if (cpuTexture != NULL)
+      {
+        GPU::Texture::GPUTexture * gpuTexture = NULL;
+        if ((gpuTexture
+             = engineInstance->getGPUTextureManager()
+                   .getTexture<GPU::Texture::GPUTexture2D>(cpuTexture->index))
+            != NULL)
+        {
+          textureParameter.setTexture(gpuTexture);
+          return;
+        }
 
-				if (buf.size() > 0)
-				{
-					GPU::Texture::GPUTexture * gpuTexture =
-						engineInstance->getGPUTextureManager().createTexture<GPU::Texture::GPUTexture2D>(cpuTexture->index);
+        std::vector<unsigned char> buf;
+        cpuTexture->pixels.dumpAttributes(buf);
 
-					gpuTexture->upload(&buf[0], cpuTexture->width, cpuTexture->height, cpuTexture->depth);
+        if (buf.size() > 0)
+        {
+          GPU::Texture::GPUTexture * gpuTexture
+              = engineInstance->getGPUTextureManager()
+                    .createTexture<GPU::Texture::GPUTexture2D>(
+                        cpuTexture->index);
 
-					textureParameter.setTexture(gpuTexture);
-				}
-				
-			}
-		}
-	}
-}
+          gpuTexture->upload(&buf[0], cpuTexture->width, cpuTexture->height,
+                             cpuTexture->depth);
+
+          textureParameter.setTexture(gpuTexture);
+        }
+      }
+    }
+  } // namespace DefaultImpl
+} // namespace RenderLib

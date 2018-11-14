@@ -4,151 +4,181 @@
 
 #include "graphics/ContextManager.h"
 
-#include "SceneManager.h"
 #include "EngineException.h"
+#include "SceneManager.h"
 
 namespace RenderLib
 {
-	EngineInstance::EngineInstance(const unsigned int & ID, const std::string & instanceName, Graphics::WindowHandler * handler)
-		: instanceID(ID)
-		, instanceName(instanceName)
-		, window(handler)
-		, enableFlag(true)
-	{
-		if (!handler)
-		{
-			throw EngineException(("EngineInstance: Failed constructing instance " + instanceName + ", WindowHandler is NULL").c_str());
-		}
+  EngineInstance::EngineInstance(const unsigned int & ID,
+                                 const std::string & instanceName,
+                                 Graphics::WindowHandler * handler)
+    : instanceID(ID)
+    , instanceName(instanceName)
+    , window(handler)
+    , enableFlag(true)
+  {
+    if (!handler)
+    {
+      throw EngineException(("EngineInstance: Failed constructing instance "
+                             + instanceName + ", WindowHandler is NULL")
+                                .c_str());
+    }
 
-		pipelineManager.setEngineInstance(this);
-		fboManager.setEngineInstance(this);
-		window->instance = this;
-	}
+    pipelineManager.setEngineInstance(this);
+    fboManager.setEngineInstance(this);
+    window->instance = this;
+  }
 
-	EngineInstance::~EngineInstance()
-	{
-	}
+  EngineInstance::~EngineInstance()
+  {
+  }
 
-	// ==============================================================
-	// ACCESORS
+  // ==============================================================
+  // ACCESORS
 
-	const unsigned int & EngineInstance::getInstanceID()
-	{
-		return instanceID;
-	}
+  const unsigned int &
+  EngineInstance::getInstanceID()
+  {
+    return instanceID;
+  }
 
-	const std::string & EngineInstance::getInstanceName()
-	{
-		return instanceName;
-	}
+  const std::string &
+  EngineInstance::getInstanceName()
+  {
+    return instanceName;
+  }
 
-	Graphics::WindowHandler * EngineInstance::getWindow()
-	{
-		return window;
-	}
+  Graphics::WindowHandler *
+  EngineInstance::getWindow()
+  {
+    return window;
+  }
 
-	GPU::Mesh::GPUMeshManager & EngineInstance::getGPUMeshManager()
-	{
-		return gpuMeshManager;
-	}
+  GPU::Mesh::GPUMeshManager &
+  EngineInstance::getGPUMeshManager()
+  {
+    return gpuMeshManager;
+  }
 
-	GPU::Texture::GPUTextureManager & EngineInstance::getGPUTextureManager()
-	{
-		return gpuTextureManager;
-	}
+  GPU::Texture::GPUTextureManager &
+  EngineInstance::getGPUTextureManager()
+  {
+    return gpuTextureManager;
+  }
 
-	Time & EngineInstance::getTime()
-	{
-		return timeHandler;
-	}
+  Time &
+  EngineInstance::getTime()
+  {
+    return timeHandler;
+  }
 
-	void EngineInstance::disable()
-	{
-		enableFlag = false;
-	}
+  void
+  EngineInstance::disable()
+  {
+    enableFlag = false;
+  }
 
-	bool EngineInstance::isEnabled()
-	{
-		return enableFlag;
-	}
+  bool
+  EngineInstance::isEnabled()
+  {
+    return enableFlag;
+  }
 
-	Pipeline::PipelineManager & EngineInstance::getPipelineManager()
-	{
-		return pipelineManager;
-	}
+  Pipeline::PipelineManager &
+  EngineInstance::getPipelineManager()
+  {
+    return pipelineManager;
+  }
 
-	SceneManager & EngineInstance::getSceneManager()
-	{
-		return sceneManager;
-	}
+  SceneManager &
+  EngineInstance::getSceneManager()
+  {
+    return sceneManager;
+  }
 
-	Render::FBOManager & EngineInstance::getFBOManager()
-	{
-		return fboManager;
-	}
+  Render::FBOManager &
+  EngineInstance::getFBOManager()
+  {
+    return fboManager;
+  }
 
-	GPU::Program::ProgramManager & EngineInstance::getProgramManager()
-	{
-		return gpuProgramManager;
-	}
+  Render::PickManager &
+  EngineInstance::getPickManager()
+  {
+    return pickManager;
+  }
 
-	GPU::Light::LightManager & EngineInstance::getGPULightManager()
-	{
-		return lightManager;
-	}
+  GPU::Program::ProgramManager &
+  EngineInstance::getProgramManager()
+  {
+    return gpuProgramManager;
+  }
 
-	// ==============================================================
-	// EXECUTION
+  GPU::Light::LightManager &
+  EngineInstance::getGPULightManager()
+  {
+    return lightManager;
+  }
 
-	void EngineInstance::loadActiveScene()
-	{
-		Scene * scene = sceneManager.getActiveScene();
-		pipelineManager.initializeStages();
-	}
-	
-	void EngineInstance::loadScene(const std::string & sceneName)
-	{
-		Scene * scene = sceneManager.getScene(sceneName);
-		if (scene)
-		{
-			sceneManager.setActiveScene(sceneName);
-			loadActiveScene();
-		}
-		else
-		{
-			std::string message = "EngineInstance [name=" + instanceName + ", ID=" + std::to_string(instanceID) + "]: Failed to load scene " + sceneName;
-			throw EngineException(message.c_str());
-		}
-	}
+  // ==============================================================
+  // EXECUTION
 
-	void EngineInstance::executeIteration()
-	{
-		// Execute pipeline stages
-		pipelineManager.executePipeline();
+  void
+  EngineInstance::loadActiveScene()
+  {
+    Scene * scene = sceneManager.getActiveScene();
+    pipelineManager.initializeStages();
+  }
 
-		// Swap buffers
-		acquireContext();
-		window->onRenderLoopIteration();
-		releaseContext();
-	}
+  void
+  EngineInstance::loadScene(const std::string & sceneName)
+  {
+    Scene * scene = sceneManager.getScene(sceneName);
+    if (scene)
+    {
+      sceneManager.setActiveScene(sceneName);
+      loadActiveScene();
+    }
+    else
+    {
+      std::string message = "EngineInstance [name=" + instanceName + ", ID="
+          + std::to_string(instanceID) + "]: Failed to load scene " + sceneName;
+      throw EngineException(message.c_str());
+    }
+  }
 
-	void EngineInstance::cleanUp()
-	{
-		pipelineManager.finishStages();
-		window->cleanUp();
-	}
+  void
+  EngineInstance::executeIteration()
+  {
+    // Execute pipeline stages
+    pipelineManager.executePipeline();
 
-	// ==============================================================
-	// CONTEXT MANAGEMENT
+    // Swap buffers
+    acquireContext();
+    window->onRenderLoopIteration();
+    releaseContext();
+  }
 
-	void EngineInstance::acquireContext()
-	{
-		Graphics::ContextManager().getInstance().aquireContext();
-		window->activateContext();
-	}
+  void
+  EngineInstance::cleanUp()
+  {
+    pipelineManager.finishStages();
+    window->cleanUp();
+  }
 
-	void EngineInstance::releaseContext()
-	{
-		Graphics::ContextManager::getInstance().releaseContext();
-	}
-}
+  // ==============================================================
+  // CONTEXT MANAGEMENT
+
+  void
+  EngineInstance::acquireContext()
+  {
+    Graphics::ContextManager().getInstance().aquireContext();
+    window->activateContext();
+  }
+
+  void
+  EngineInstance::releaseContext()
+  {
+    Graphics::ContextManager::getInstance().releaseContext();
+  }
+} // namespace RenderLib

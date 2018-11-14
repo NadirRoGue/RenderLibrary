@@ -5,21 +5,24 @@
 
 namespace RenderLib
 {
-	namespace InputHandlers
-	{
-		enum MouseAction
-		{
-			MOUSE_PRESS,
-			MOUSE_RELEASE
-		};
+  namespace InputHandlers
+  {
+    enum MouseAction
+    {
+      MOUSE_PRESS,
+      MOUSE_RELEASE
+    };
 
-		class MouseInputHandler
-		{
-		public:
-			virtual std::vector<int> getUsedButtons() = 0;
-			virtual void handleMouseClick(int button, const MouseAction & action, int x, int y) = 0;
-		};
-	}
-}
+    class MouseInputHandler
+    {
+    public:
+      virtual std::vector<int>
+      getUsedButtons() = 0;
+      virtual void
+      handleMouseClick(int button, const MouseAction & action, int x, int y)
+          = 0;
+    };
+  } // namespace InputHandlers
+} // namespace RenderLib
 
 #endif

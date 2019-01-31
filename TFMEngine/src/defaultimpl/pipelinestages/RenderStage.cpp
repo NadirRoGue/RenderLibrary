@@ -10,6 +10,11 @@ namespace RenderLib
 {
   namespace DefaultImpl
   {
+		Render::RenderingPipeline & RenderStage::getRenderPipeline()
+		{
+			return renderPipeline;
+		}
+
     void
     RenderStage::preRunStage()
     {

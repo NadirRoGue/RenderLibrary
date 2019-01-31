@@ -45,7 +45,7 @@ namespace RenderLib
       T *
       getStage()
       {
-        for (auto st : stages)
+        for (auto & st : stages)
         {
           T * castTest = dynamic_cast<T *>(st.get());
           if (castTest != NULL)

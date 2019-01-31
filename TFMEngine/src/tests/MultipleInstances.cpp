@@ -16,6 +16,16 @@
 #include "defaultimpl/components/ObjectSpinner.h"
 #include "defaultimpl/components/CameraController.h"
 
+#include "defaultimpl/pipelinestages/RenderStage.h"
+#include "render/RenderingPipeline.h"
+#include "render/renderstages/DeferredRenderStage.h"
+#include "render/AbstractRenderingStage.h"
+
+#include "defaultimpl/shaders/DebugColorProgram.h"
+#include "defaultimpl/shaders/DebugNormalProgram.h"
+#include "defaultimpl/shaders/DebugDepthProgram.h"
+#include "defaultimpl/shaders/DebugPositionProgram.h"
+
 #include "logger/Log.h"
 
 using namespace RenderLib;
@@ -78,6 +88,8 @@ namespace MultipleInstances
 		{
 			SceneObject * obj = scene->addObject<SceneObject>("part_" + std::to_string(i));
 			obj->transform.scale(VECTOR3(8.0, 8.0, 8.0));
+			obj->transform.translate(VECTOR3(10.0, -3.0, 15.0));
+			obj->transform.rotate(VECTOR3(0, 1, 0), 45.0 * 3.14159 / 180.0);
 			//obj->transform.rotate(VECTOR3(0.0, 1.0, 0.0), 90.0 * 3.1415 / 180.0);
 			i++;
 			obj->addComponent<DefaultImpl::MeshFilter>()->mesh = m;
@@ -85,6 +97,18 @@ namespace MultipleInstances
 		}
 
 		return instance;
+	}
+
+	template<class T>
+	void configureDebugInstance(EngineInstance * instance)
+	{
+		DefaultImpl::RenderStage * rs = instance->getPipelineManager().getPipeline().getStage<DefaultImpl::RenderStage>();
+		Render::RenderingPipeline & pipeline = rs->getRenderPipeline();
+		
+		pipeline.removeAllStages();
+
+		pipeline.addRenderStage<Render::DeferredRenderStage>();
+		pipeline.addRenderStage<Render::PostProcessRenderStage<T>>();
 	}
 
 	int main(int argc, char ** argv)
@@ -97,10 +121,18 @@ namespace MultipleInstances
 		Mesh::MeshManager::getInstance().loadMeshFromFile("assets/pig/pig_triangulated.obj", options);
 
 		EngineInstance * render = createInstance("Material Render");
+
 		EngineInstance * pos = createInstance("Position");
+		configureDebugInstance<DefaultImpl::DebugPositionProgram>(pos);
+
 		EngineInstance * normal = createInstance("Normal");
+		configureDebugInstance<DefaultImpl::DebugNormalProgram>(normal);
+
 		EngineInstance * color = createInstance("Color");
+		configureDebugInstance<DefaultImpl::DebugColorProgram>(color);
+
 		EngineInstance * depth = createInstance("Depth");
+		configureDebugInstance<DefaultImpl::DebugDepthProgram>(depth);
 
 		InstanceManager::getInstance().launchInstances(ExecutionMode::EXECUTION_PARALLEL);
 

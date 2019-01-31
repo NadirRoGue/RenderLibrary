@@ -1,4 +1,4 @@
-#include "tests/BoneFlower.h"
+#include "tests/Gladiator.h"
 
 #include "Initialization.h"
 
@@ -20,7 +20,7 @@ using namespace RenderLib;
 using namespace RenderLib::CPU;
 using namespace RenderLib::Logger;
 
-namespace BoneFlower
+namespace Gladiator
 {
 	int main(int argc, char ** argv)
 	{
@@ -33,13 +33,13 @@ namespace BoneFlower
 		config.openGLMinorVersion = 2;
 		config.windowHeight = 750;
 		config.windowWidth = 1200;
-		config.windowTitle = "Bone Flower";
+		config.windowTitle = "Gladiator";
 		config.windowPosX = 50;
 		config.windowPosY = 50;
 		DefaultImpl::GLFWWindowHandler * window = Graphics::ContextManager::getInstance().createWindow<DefaultImpl::GLFWWindowHandler>(config);
 
 		// Engine Instance creation
-		EngineInstance * instance = InstanceManager::getInstance().createInstance("Bone Flower", window);
+		EngineInstance * instance = InstanceManager::getInstance().createInstance("Gladiator", window);
 
 		// Scene set up
 		RenderLib::Scene * scene = instance->getSceneManager().createScene("TestScene");
@@ -68,7 +68,7 @@ namespace BoneFlower
 		unsigned int options =
 			(Mesh::Mesh::OPTION_COMPUTE_SMOOTHNORMALS_IF_ABSENT
 				| Mesh::Mesh::OPTION_JOIN_IDENTICAL_VERTICES);
-		std::vector<Mesh::Mesh *> meshes = Mesh::MeshManager::getInstance().loadMeshFromFile("assets/Bonesculpt_2.obj", options);
+		std::vector<Mesh::Mesh *> meshes = Mesh::MeshManager::getInstance().loadMeshFromFile("assets/3dgladiator.com-helmet.obj", options);
 		if (meshes.size() == 0)
 		{
 			Log::getInstance().logInfo("No meshes were found in the given file");
@@ -84,8 +84,8 @@ namespace BoneFlower
 		for (auto m : meshes)
 		{
 			SceneObject * obj = scene->addObject<SceneObject>("part_" + std::to_string(i));
-			//obj->transform.scale(VECTOR3(0.2, 0.2, 0.2));
-			obj->transform.rotate(VECTOR3(0.0, 1.0, 0.0), 90.0 * 3.1415 / 180.0);
+			obj->transform.scale(VECTOR3(0.2, 0.2, 0.2));
+			obj->transform.translate(VECTOR3(0.0, -30.0, 0.0));
 			i++;
 			obj->addComponent<DefaultImpl::MeshFilter>()->mesh = m;
 			obj->addComponent<DefaultImpl::MeshRenderer>();

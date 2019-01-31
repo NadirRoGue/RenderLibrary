@@ -35,6 +35,10 @@ namespace RenderLib
       addPipelineStage<DefaultImpl::CPUToGPUTextureSyncStage>();
       addPipelineStage<DefaultImpl::ShaderCompilationStage>();
       addPipelineStage<ElementBasedStage<DefaultImpl::UserScript>>();
+			addPipelineStage<DefaultImpl::TransformUpdateStage>();
+			addPipelineStage<DefaultImpl::LightSyncStage>();
+			addPipelineStage<DefaultImpl::RenderStage>();
+			addPipelineStage<DefaultImpl::IterationEndStage>();
     }
 
     Pipeline &
@@ -69,11 +73,6 @@ namespace RenderLib
     void
     PipelineManager::initializeStages()
     {
-      addPipelineStage<DefaultImpl::TransformUpdateStage>();
-      addPipelineStage<DefaultImpl::LightSyncStage>();
-      addPipelineStage<DefaultImpl::RenderStage>();
-      addPipelineStage<DefaultImpl::IterationEndStage>();
-
       for (auto & stagePtr : pipeline.getAllStages())
       {
         PipelineStage * stage = stagePtr.get();

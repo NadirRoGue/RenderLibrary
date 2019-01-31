@@ -136,10 +136,22 @@ namespace RenderLib
         glDisable(GL_DEPTH_TEST);
         glDisable(GL_BLEND);
 
+				GLboolean cfenabled;
+				glGetBooleanv(GL_CULL_FACE, &cfenabled);
+				if (cfenabled)
+				{
+					glDisable(GL_CULL_FACE);
+				}
+
         postProcessProgram->onRender(prevStage->getStageOutput(),
                                      engineInstance);
 
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void *)0);
+
+				if (cfenabled)
+				{
+					glEnable(GL_CULL_FACE);
+				}
       }
     };
   } // namespace Render

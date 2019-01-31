@@ -79,7 +79,10 @@ namespace RenderLib
     void
     RenderingPipeline::finalizeStages()
     {
-      pickStage.get()->finalize();
+			if (pickStage.get())
+			{
+				//pickStage.get()->finalize();
+			}
 
       for (auto & stages : renderStages)
       {

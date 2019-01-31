@@ -41,6 +41,7 @@ namespace RenderLib
       T *
       addPipelineStage()
       {
+
         T * result            = pipeline.registerStage<T>();
         PipelineStage * stage = dynamic_cast<PipelineStage *>(result);
         stage->engineInstance = engineInstance;

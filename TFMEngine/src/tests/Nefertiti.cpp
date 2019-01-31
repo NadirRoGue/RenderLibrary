@@ -1,4 +1,4 @@
-#include "tests/BoneFlower.h"
+#include "tests/Nefertiti.h"
 
 #include "Initialization.h"
 
@@ -47,7 +47,7 @@ namespace Nefertiti
 
 		if (scene == NULL)
 		{
-			std::cout << "RenderLib: Could not create a new scene named TestScene" << std::endl;
+			Log::getInstance().logError("RenderLib: Could not create a new scene named TestScene");
 			return -1;
 		}
 
@@ -79,6 +79,8 @@ namespace Nefertiti
 		Log::getInstance().logInfo("Loaded meshes: " + std::to_string(meshes.size()));
 
 		int i = 0;
+		unsigned int vs = 0;
+		unsigned int fs = 0;
 		for (auto m : meshes)
 		{
 			SceneObject * obj = scene->addObject<SceneObject>("part_" + std::to_string(i));
@@ -88,7 +90,12 @@ namespace Nefertiti
 			i++;
 			obj->addComponent<DefaultImpl::MeshFilter>()->mesh = m;
 			obj->addComponent<DefaultImpl::MeshRenderer>();
+
+			fs += m->getNumFaces();
+			vs += m->getNumVertices();
 		}
+
+		Log::getInstance().logInfo("Total faces: " + std::to_string(fs) + ", total vertices: " + std::to_string(vs));
 
 		InstanceManager::getInstance().launchInstances(ExecutionMode::EXECUTION_PARALLEL);
 

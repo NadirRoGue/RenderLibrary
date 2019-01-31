@@ -92,7 +92,7 @@ namespace RenderLib
       glClearColor(0.0, 0.0, 0.0, 0.0);
       glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
       glClearColor(bkColor[0], bkColor[1], bkColor[2], 0.0f);
-      glEnable(GL_CULL_FACE);
+      //glEnable(GL_CULL_FACE);
       glEnable(GL_DEPTH_TEST);
       glDisable(GL_BLEND);
 
@@ -115,6 +115,9 @@ namespace RenderLib
       outputFBO->bind();
 
       glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+
+			GLboolean cfenabled;
+			glGetBooleanv(GL_CULL_FACE, &cfenabled);
       glDisable(GL_CULL_FACE);
 
       GPU::Mesh::GPUBuffer * postProcessBuf
@@ -125,6 +128,11 @@ namespace RenderLib
       deferredShading->onRender(engineInstance);
 
       glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void *)0);
+
+			if (cfenabled)
+			{
+				glEnable(GL_CULL_FACE);
+			}
     }
   } // namespace Render
 } // namespace RenderLib

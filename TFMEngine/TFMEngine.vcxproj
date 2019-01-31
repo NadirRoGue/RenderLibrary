@@ -258,7 +258,8 @@
     <ClInclude Include="include\SceneManager.h" />
     <ClInclude Include="include\SceneObject.h" />
     <ClInclude Include="include\EngineTime.h" />
-    <ClInclude Include="include\tests\Building.h" />
+    <ClInclude Include="include\tests\Gladiator.h" />
+    <ClInclude Include="include\tests\LegoPlane.h" />
     <ClInclude Include="include\tests\BoneFlower.h" />
     <ClInclude Include="include\tests\MultipleInstances.h" />
     <ClInclude Include="include\tests\Nefertiti.h" />
@@ -380,7 +381,8 @@
     <ClCompile Include="src\SceneManager.cpp" />
     <ClCompile Include="src\SceneObject.cpp" />
     <ClCompile Include="src\EngineTime.cpp" />
-    <ClCompile Include="src\tests\Building.cpp" />
+    <ClCompile Include="src\tests\Gladiator.cpp" />
+    <ClCompile Include="src\tests\LegoPlane.cpp" />
     <ClCompile Include="src\tests\BoneFlower.cpp" />
     <ClCompile Include="src\tests\MultipleInstances.cpp" />
     <ClCompile Include="src\tests\Nefertiti.cpp" />

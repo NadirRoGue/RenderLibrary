@@ -18,6 +18,9 @@ namespace RenderLib
       Render::RenderingPipeline renderPipeline;
 
     public:
+
+			Render::RenderingPipeline & getRenderPipeline();
+
       // void registerElement(Component * component);
       void
       preRunStage();
